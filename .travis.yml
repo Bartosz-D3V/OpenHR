@@ -1,16 +1,23 @@
 dist: trusty
 sudo: false
 
-language: node_js
-node_js:
-  - "6"
-  - "8"
+language: java
+  jdk:
+    - oraclejdk8
+
+env:
+  - NODE_VERSION=6
+  - NODE_VERSION=8
 
 cache:
   directories:
      - ./node_modules
 
 before_install:
+  - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
+  - source ~/.nvm/nvm.sh
+  - node --version
+  - nvm install $NODE_VERSION
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sudo apt-get update
