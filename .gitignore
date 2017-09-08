@@ -27,11 +27,12 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+/frontend/coverage
 /libpeerconnection.log
 npm-debug.log
 testem.log
 /typings
+/coverage
 yarn-error.log
 
 # e2e
