@@ -32,6 +32,7 @@
 npm-debug.log
 testem.log
 /typings
+/coverage
 yarn-error.log
 
 # e2e

@@ -10,9 +10,15 @@
     source-map "^0.5.6"
     typescript "^2.3.3"
 
-"@angular/animations@^4.2.4":
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-4.3.6.tgz#bf9283ec7c8c98b32f569d84dcda10890fdc0262"
+"@angular/animations@^4.4.0-RC.0":
+  version "4.4.0-RC.0"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-4.4.0-RC.0.tgz#cfd5937ce11eaba03ae3ebd778b0871b77539665"
+  dependencies:
+    tslib "^1.7.1"
+
+"@angular/cdk@^2.0.0-beta.10":
+  version "2.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-2.0.0-beta.10.tgz#7ffcc430d6f67dfde1df25e1fa693c188e4da08a"
   dependencies:
     tslib "^1.7.1"
 
@@ -111,6 +117,12 @@
   dependencies:
     tslib "^1.7.1"
 
+"@angular/flex-layout@^2.0.0-beta.9":
+  version "2.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-2.0.0-beta.9.tgz#3e54f898e805d0b1426d15e6139db415d04ee75f"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/forms@^4.2.4":
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-4.3.6.tgz#0f20c4597c16a152745d7cd95559855a0a5c6687"
@@ -126,6 +138,12 @@
 "@angular/language-service@^4.2.4":
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-4.3.6.tgz#71cf2dbb4661568f3d12a9c0e4b9e043ef93bd3a"
+
+"@angular/material@^2.0.0-beta.10":
+  version "2.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.10.tgz#23f5887d5e34da89dd6da1fe4da0b3f779da4807"
+  dependencies:
+    tslib "^1.7.1"
 
 "@angular/platform-browser-dynamic@^4.2.4":
   version "4.3.6"
@@ -2256,6 +2274,10 @@ globule@^1.0.0:
 graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
 
 handle-thing@^1.2.5:
   version "1.2.5"
