@@ -91,6 +91,7 @@ hs_err_pid*
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
+/build
 
 # CMake
 cmake-build-debug/
@@ -104,7 +105,9 @@ cmake-build-debug/
 ## Plugin-specific files:
 
 # IntelliJ
+.idea/
 /out/
+*.iml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
