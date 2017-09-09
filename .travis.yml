@@ -28,8 +28,13 @@ install:
   - npm install
 
 script:
+  - npm run build
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
+  - ../backend
+  - ./gradlew check
+  - ./gradlew assemble
+  - ./gradlew test
 
 notifications:
   email: false
