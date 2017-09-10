@@ -26,7 +26,7 @@ before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - cd ./backend
-  - chmod +x ./gradlew
+  - chmod +x ./mvnw
   - cd ../
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
