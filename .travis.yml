@@ -40,7 +40,7 @@ script:
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend
   - ./mvnw install -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
-  - ./mwnw test -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - ./mvnw test -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 notifications:
   email: false
