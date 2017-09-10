@@ -1,7 +1,10 @@
 dist: trusty
-sudo: false
+sudo: required
 
 language: java
+
+services:
+  - mysql
 
 env:
   - NODE_VERSION=6
@@ -25,6 +28,7 @@ before_install:
   - cd ./backend
   - chmod +x ./gradlew
   - cd ../
+  - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
   - cd frontend/
@@ -35,9 +39,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend
-  - ./gradlew check
-  - ./gradlew assemble
-  - ./gradlew test
+  - ./mvnw install -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - ./mwnw test -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 notifications:
   email: false
