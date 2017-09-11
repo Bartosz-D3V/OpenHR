@@ -11,7 +11,7 @@
     "lint": "ng lint && npm run stylelint",
     "e2e": "ng e2e",
     "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
-    "precommit": "npm test",
+    "precommit": "cd ./frontend && npm test && cd ../",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist",
     "dist": "ng build --prod --aot --no-sourcemap"
