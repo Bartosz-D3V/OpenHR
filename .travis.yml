@@ -1,7 +1,12 @@
 dist: trusty
-sudo: false
+sudo: required
 
 language: java
+jdk:
+  - oraclejdk8
+
+services:
+  - mysql
 
 env:
   - NODE_VERSION=6
@@ -10,6 +15,7 @@ env:
 cache:
   directories:
      - ./node_modules
+     - $HOME/.m2
 
 before_install:
   - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
@@ -22,7 +28,7 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - chmod +x gradlew
+  - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
   - cd frontend/
@@ -33,9 +39,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend
-  - ./gradlew check
-  - ./gradlew assemble
-  - ./gradlew test
+  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 notifications:
   email: false
