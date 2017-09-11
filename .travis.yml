@@ -2,6 +2,8 @@ dist: trusty
 sudo: required
 
 language: java
+jdk:
+  - oraclejdk8
 
 services:
   - mysql
@@ -25,9 +27,6 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - cd ./backend
-  - chmod +x ./mvnw
-  - cd ../
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
@@ -39,8 +38,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend
-  - ./mvnw install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
-  - ./mvnw test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvnw install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvnw test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 notifications:
   email: false
