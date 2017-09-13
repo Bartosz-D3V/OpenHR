@@ -1,19 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Item } from './item';
+import { Component, Input } from '@angular/core';
+import { SidenavItem } from './sidenav-item';
 
 @Component({
   selector: 'app-sidenav-item',
   templateUrl: './sidenav-item.component.html',
   styleUrls: ['./sidenav-item.component.scss']
 })
-export class SidenavItemComponent implements OnInit {
+export class SidenavItemComponent {
 
   @Input()
-  public item: Item;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+  public sidenavItem: SidenavItem;
 
 }

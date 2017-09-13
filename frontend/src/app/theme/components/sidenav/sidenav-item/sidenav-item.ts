@@ -1,4 +1,4 @@
-export class Item {
+export class SidenavItem {
   private _text: String;
   private _icon: String;
   private _isVisible: boolean;
