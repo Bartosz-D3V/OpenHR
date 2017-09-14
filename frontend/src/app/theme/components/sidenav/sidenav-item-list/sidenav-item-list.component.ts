@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Item } from '../sidenav-item/item';
+import { SidenavList } from './sidenav-list';
+import { SidenavItem } from '../sidenav-item/sidenav-item';
 
 @Component({
   selector: 'app-sidenav-item-list',
@@ -8,8 +9,9 @@ import { Item } from '../sidenav-item/item';
 })
 export class SidenavItemListComponent {
 
-  public itemList: Array<Item> = [
-    new Item('Test', 'star', true)
-  ];
+  public itemList: Array<SidenavItem>;
 
+  constructor() {
+    this.itemList = new SidenavList().itemList;
+  }
 }
