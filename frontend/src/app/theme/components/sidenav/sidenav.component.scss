@@ -2,4 +2,21 @@
   height: 100%;
   position: fixed;
   width: 100%;
+
+  &__list {
+    width: 20vw;
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  &__toggleBtn {
+    display: block;
+    margin-right: 0;
+  }
+
+  &--minimised {
+    background-color: red;
+  }
 }

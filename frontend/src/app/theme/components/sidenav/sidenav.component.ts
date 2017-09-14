@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MdSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent {
+
+  public toggleSidenav(sidenav: MdSidenav): void {
+
+  }
 
 }
