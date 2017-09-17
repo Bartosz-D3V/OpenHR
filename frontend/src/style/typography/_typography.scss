@@ -1,0 +1,23 @@
+@import 'variables';
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+.c-header {
+  font-family: 'Work Sans', sans-serif;
+
+  &--light {
+    font-size: small;
+  }
+
+  &__line {
+    background-color: $light-grey;
+    border: 0;
+    height: 1px;
+    width: 80%;
+  }
+}
