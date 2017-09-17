@@ -1,0 +1,20 @@
+.c-sidenav {
+  height: 100%;
+  position: fixed;
+  width: 100%;
+
+  &__list {
+    margin-top: 10%;
+  }
+
+  &__switch {
+    display: inline-block;
+  }
+
+  &__title {
+    display: inline-block;
+    font-size: 2.5em;
+    font-weight: 200;
+    margin-left: 12%;
+  }
+}

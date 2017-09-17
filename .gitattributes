@@ -1,0 +1,2 @@
+frontend/src/style/external/_reset.scss merge=theirs
+frontend/yarn.lock merge=theirs
