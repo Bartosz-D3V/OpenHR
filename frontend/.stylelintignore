@@ -1,0 +1,4 @@
+src/style/external/**/*.*
+src/style/external/*
+src/style/external/
+**/*.css
