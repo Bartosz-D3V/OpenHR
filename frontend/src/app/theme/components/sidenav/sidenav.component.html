@@ -1,12 +1,8 @@
 <md-sidenav-container class="c-sidenav">
-  <md-sidenav #sidenav mode="side" class="c-sidenav__list">
+  <md-sidenav #sidenav mode="side" [opened]="true" class="c-sidenav__list">
     <h3 class="c-sidenav__title">OpenHR</h3>
+    <hr class="c-header__line">
     <app-sidenav-item-list></app-sidenav-item-list>
   </md-sidenav>
-  <md-toolbar color="primary">
-    <button md-icon-button (click)="sidenav.toggle()">
-      <md-icon class="md-24">menu</md-icon>
-    </button>
-  </md-toolbar>
   <!--<router-outlet></router-outlet>-->
 </md-sidenav-container>

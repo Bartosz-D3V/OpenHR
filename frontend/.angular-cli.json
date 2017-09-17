@@ -22,6 +22,12 @@
         "styles.scss"
       ],
       "scripts": [],
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "style/variables",
+          "style/mixins"
+        ]
+      },
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

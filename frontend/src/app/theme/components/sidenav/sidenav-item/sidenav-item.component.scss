@@ -1,8 +1,25 @@
-.c-sidenav__item {
-  display: block;
-  position: relative;
-  padding-top: 2%;
-  height: 8%;
-  width: 100%;
-  font-size: 1.2em;
+@import 'variables';
+
+.c-sidenav {
+  &__item {
+    border-radius: 5px;
+    color: $white;
+    display: block;
+    font-size: 1.2em;
+    font-weight: 200;
+    height: 8%;
+    margin-left: 10%;
+    padding-top: 2%;
+    position: relative;
+    width: 80%;
+
+    &--shadow {
+      background-color: $light-red;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    }
+  }
+
+  &__icon {
+    color: $white;
+  }
 }
