@@ -1,0 +1,19 @@
+@import 'variables';
+
+.c-page-header {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 10%;
+
+  &__paragraph {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  &__line {
+    border: 0;
+    background-color: $light-grey;
+    height: 2px;
+    width: 80%;
+  }
+}
