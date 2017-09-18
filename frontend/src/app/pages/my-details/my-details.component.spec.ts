@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyDetailsComponent } from './my-details.component';
+import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MyDetailsComponent', () => {
   let component: MyDetailsComponent;
@@ -8,9 +13,23 @@ describe('MyDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyDetailsComponent ]
+      declarations: [
+        MyDetailsComponent,
+        PageHeaderComponent,
+        CapitalizePipe,
+      ],
+      imports: [
+        MdToolbarModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MdToolbarModule,
+        MdExpansionModule,
+        MdDatepickerModule,
+        MdNativeDateModule,
+        NoopAnimationsModule,
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

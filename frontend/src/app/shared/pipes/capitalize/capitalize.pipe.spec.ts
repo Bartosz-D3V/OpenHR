@@ -18,5 +18,5 @@ describe('CapitalizePipe', () => {
 
     expect(pipe.transform(sampleText1)).toBe('Sample text');
     expect(pipe.transform(sampleText2)).toBe('Sample text');
-  })
+  });
 });

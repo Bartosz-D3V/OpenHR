@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PageHeaderComponent } from './page-header.component';
+import { CapitalizePipe } from '../../pipes/capitalize/capitalize.pipe';
 
 describe('PageHeaderComponent', () => {
   let component: PageHeaderComponent;
@@ -8,14 +9,18 @@ describe('PageHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageHeaderComponent ]
+      declarations: [
+        PageHeaderComponent,
+        CapitalizePipe,
+      ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageHeaderComponent);
     component = fixture.componentInstance;
+    component.header = '';
     fixture.detectChanges();
   });
 
