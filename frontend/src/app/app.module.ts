@@ -8,12 +8,13 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { SidenavComponent } from './theme/components/sidenav/sidenav.component';
-import { SidenavItemComponent } from './theme/components/sidenav/sidenav-item/sidenav-item.component';
-import { SidenavItemListComponent } from './theme/components/sidenav/sidenav-item-list/sidenav-item-list.component';
+import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
+import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
+import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { RouterModule } from '@angular/router';
+import { MyDetailsComponent } from './pages/my-details/my-details.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RouterModule } from '@angular/router';
     SidenavComponent,
     SidenavItemComponent,
     SidenavItemListComponent,
+    MyDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,15 @@ import { RouterModule } from '@angular/router';
     MdSliderModule,
     MdSlideToggleModule,
     MdToolbarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RouterModule.forRoot([
+      {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full'
+      },
+
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent]
