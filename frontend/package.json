@@ -11,7 +11,7 @@
     "lint": "ng lint && npm run stylelint",
     "e2e": "ng e2e",
     "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
-    "precommit": "cd ./frontend && npm test && cd ../",
+    "precommit": "npm test",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist",
     "dist": "ng build --prod --aot --no-sourcemap"
@@ -46,7 +46,6 @@
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
     "@angular/core": "^4.2.4",
-    "@angular/flex-layout": "^2.0.0-beta.9",
     "@angular/forms": "^4.2.4",
     "@angular/http": "^4.2.4",
     "@angular/material": "^2.0.0-beta.10",

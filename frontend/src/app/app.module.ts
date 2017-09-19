@@ -13,7 +13,6 @@ import { AppComponent } from './app.component';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
 import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { RouterModule } from '@angular/router';
 import { MyDetailsComponent } from './pages/my-details/my-details.component';
@@ -45,7 +44,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MdSliderModule,
     MdSlideToggleModule,
     MdToolbarModule,
-    FlexLayoutModule,
     MdDatepickerModule,
     MdNativeDateModule,
     MdExpansionModule,
