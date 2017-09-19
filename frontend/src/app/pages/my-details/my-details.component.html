@@ -1,0 +1,106 @@
+<app-page-header [header]="'My details'"></app-page-header>
+<section class="c-drawer">
+  <md-toolbar [color]="'primary'">My details</md-toolbar>
+  <md-accordion>
+
+    <md-expansion-panel>
+      <md-expansion-panel-header>
+        <md-panel-title>
+          Personal information
+        </md-panel-title>
+        <md-panel-description>
+          <md-icon>account_circle</md-icon>
+        </md-panel-description>
+      </md-expansion-panel-header>
+      <form class="c-form">
+        <md-form-field class="c-form__element">
+          <label for="my-details-first-name"></label>
+          <input mdInput required="required" placeholder="First name" id="my-details-first-name">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-middle-name"></label>
+          <input mdInput placeholder="Middle name" id="my-details-middle-name">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-last-name"></label>
+          <input mdInput required="required" placeholder="Last name" id="my-details-last-name">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-date-of-birth"></label>
+          <input mdInput [mdDatepicker]="picker" placeholder="Date of birth" id="my-details-date-of-birth">
+          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+          <md-datepicker #picker></md-datepicker>
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-position"></label>
+          <input mdInput required="required" disabled placeholder="Position" id="my-details-position">
+        </md-form-field>
+      </form>
+    </md-expansion-panel>
+
+    <md-expansion-panel>
+      <md-expansion-panel-header>
+        <md-panel-title>
+          Contact information
+        </md-panel-title>
+        <md-panel-description>
+          <md-icon>phone</md-icon>
+        </md-panel-description>
+      </md-expansion-panel-header>
+      <form class="c-form">
+        <md-form-field class="c-form__element">
+          <span mdPrefix>+44 (0) &nbsp;</span>
+          <label for="my-details-telephone"></label>
+          <input type="tel" mdInput placeholder="Telephone" id="my-details-telephone">
+          <md-icon mdSuffix>mode_edit</md-icon>
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-email"></label>
+          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="my-details-email">
+          <md-error *ngIf="emailFormControl.hasError('pattern')">
+            Please enter a valid email address
+          </md-error>
+          <md-error *ngIf="emailFormControl.hasError('required')">
+            Email is required
+          </md-error>
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-1st-line-address"></label>
+          <input type="text" mdInput placeholder="First line address" id="my-details-1st-line-address">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-2nd-line-address"></label>
+          <input type="text" mdInput placeholder="Second line address" id="my-details-2nd-line-address">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-3rd-line-address"></label>
+          <input type="text" mdInput placeholder="Third line address" id="my-details-3rd-line-address">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-postcode"></label>
+          <input type="text" mdInput placeholder="Postcode" id="my-details-postcode">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-city"></label>
+          <input type="text" mdInput placeholder="City" id="my-details-city">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="my-details-country"></label>
+          <input type="text" mdInput placeholder="Country" id="my-details-country">
+        </md-form-field>
+      </form>
+    </md-expansion-panel>
+
+  </md-accordion>
+</section>

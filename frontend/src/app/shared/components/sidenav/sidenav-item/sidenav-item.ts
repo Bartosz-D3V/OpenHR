@@ -1,11 +1,13 @@
 export class SidenavItem {
   private _text: String;
   private _icon: String;
+  private _link: String;
   private _isVisible: boolean;
 
-  constructor(text: String, icon: String, isVisible: boolean) {
+  constructor(text: String, icon: String, link: String, isVisible: boolean) {
     this._text = text;
     this._icon = icon;
+    this._link = link;
     this._isVisible = isVisible;
   }
 
@@ -23,6 +25,14 @@ export class SidenavItem {
 
   set icon(value: String) {
     this._icon = value;
+  }
+
+  get link(): String {
+    return this._link;
+  }
+
+  set link(value: String) {
+    this._link = value;
   }
 
   get isVisible(): boolean {
