@@ -11,7 +11,7 @@ export class MyDetailsComponent {
 
   emailFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(RegularExpressions.EMAIL_REGEX),
+    Validators.pattern(RegularExpressions.EMAIL),
   ]);
 
 }
