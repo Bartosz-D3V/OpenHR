@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { RegularExpressions } from '../../shared/constants/regular-expressions';
 
 @Component({
   selector: 'app-my-details',
@@ -8,11 +9,9 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class MyDetailsComponent {
 
-  private EMAIL_REGEX: RegExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
   emailFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(this.EMAIL_REGEX)
+    Validators.pattern(RegularExpressions.EMAIL_REGEX),
   ]);
 
 }
