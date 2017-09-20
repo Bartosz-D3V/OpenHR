@@ -19,6 +19,7 @@ import { MyDetailsComponent } from './pages/my-details/my-details.component';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NamePipe } from './shared/pipes/name/name.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MyDetailsComponent,
     PageHeaderComponent,
     CapitalizePipe,
+    NamePipe,
   ],
   imports: [
     BrowserModule,
