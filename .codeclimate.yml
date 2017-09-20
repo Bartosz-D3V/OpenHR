@@ -1,0 +1,31 @@
+engines:
+  pmd:
+    enabled: true
+    channel: "beta"
+  tslint:
+    enabled: true
+    channel: beta
+    config: tslint.json
+  fixme:
+    enabled: true
+  git-legal:
+      enabled: true
+  stylelint:
+    enabled: true
+  markdownlint:
+      enabled: true
+
+ratings:
+  paths:
+  - "**.java"
+  - "**.ts"
+  - "**.scss"
+  - "**.md"
+  - "package.json"
+  - "yarn.lock"
+
+exclude_paths:
+  - "/frontend/node_modules"
+  - "/frontend/coverage"
+  - "/frontend/dist"
+  - "/backend/.mvn"
