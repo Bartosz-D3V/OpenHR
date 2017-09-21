@@ -87,7 +87,14 @@
 
         <md-form-field class="c-form__element">
           <label for="my-details-postcode"></label>
-          <input type="text" mdInput placeholder="Postcode" id="my-details-postcode">
+          <input type="text" mdInput placeholder="Postcode" [formControl]="postcodeFormControl"
+                 id="my-details-postcode">
+          <md-error *ngIf="postcodeFormControl.hasError('pattern')">
+            Please enter a valid postcode
+          </md-error>
+          <md-error *ngIf="postcodeFormControl.hasError('required')">
+            Postcode is required
+          </md-error>
         </md-form-field>
 
         <md-form-field class="c-form__element">

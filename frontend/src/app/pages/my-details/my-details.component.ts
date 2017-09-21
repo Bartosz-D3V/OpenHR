@@ -9,6 +9,11 @@ import { RegularExpressions } from '../../shared/constants/regular-expressions';
 })
 export class MyDetailsComponent {
 
+  postcodeFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(RegularExpressions.UK_POSTCODE),
+  ]);
+
   emailFormControl: FormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(RegularExpressions.EMAIL),
