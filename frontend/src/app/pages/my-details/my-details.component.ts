@@ -19,4 +19,10 @@ export class MyDetailsComponent {
     Validators.pattern(RegularExpressions.EMAIL),
   ]);
 
+  telephoneFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(7),
+    Validators.maxLength(11),
+  ]);
+
 }

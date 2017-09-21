@@ -55,7 +55,17 @@
         <md-form-field class="c-form__element">
           <span mdPrefix>+44 (0) &nbsp;</span>
           <label for="my-details-telephone"></label>
-          <input type="tel" mdInput placeholder="Telephone" id="my-details-telephone">
+          <input type="tel" mdInput placeholder="Telephone" [formControl]="telephoneFormControl"
+                 id="my-details-telephone">
+          <md-error *ngIf="telephoneFormControl.hasError('minLength')">
+            Telephone number must contains at least 7 digits
+          </md-error>
+          <md-error *ngIf="telephoneFormControl.hasError('maxLength')">
+            Telephone number must contains maximum 11 digits
+          </md-error>
+          <md-error *ngIf="telephoneFormControl.hasError('required')">
+            Telephone is required
+          </md-error>
           <md-icon mdSuffix>mode_edit</md-icon>
         </md-form-field>
 
@@ -87,7 +97,7 @@
 
         <md-form-field class="c-form__element">
           <label for="my-details-postcode"></label>
-          <input type="text" mdInput placeholder="Postcode" [formControl]="postcodeFormControl"
+          <input type="text" mdInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
                  id="my-details-postcode">
           <md-error *ngIf="postcodeFormControl.hasError('pattern')">
             Please enter a valid postcode

@@ -81,4 +81,43 @@ describe('MyDetailsComponent', () => {
     });
 
   });
+
+  describe('Telephone validator', () => {
+
+    it('should mark form as invalid if input is empty', () => {
+      expect(component.telephoneFormControl.valid).toBeFalsy();
+    });
+
+    it('should mark form as invalid if input is less than 7 digits', () => {
+      const invalidTelephone: String = '123456';
+      component.telephoneFormControl.setValue(invalidTelephone);
+
+      expect(component.telephoneFormControl.valid).toBeFalsy();
+    });
+
+    it('should mark form as invalid if input is greater than 11 digits', () => {
+      const invalidTelephone: String = '123456789101112';
+      component.telephoneFormControl.setValue(invalidTelephone);
+
+      expect(component.telephoneFormControl.valid).toBeFalsy();
+    });
+
+    it('should mark form as valid if input is between 7 and 11 digits', () => {
+      const validTelephone1: String = '1234567';
+      const validTelephone2: String = '12345678911';
+      const validTelephone3: String = '12345678';
+
+      component.telephoneFormControl.setValue(validTelephone1);
+      expect(component.telephoneFormControl.valid).toBeTruthy();
+      component.telephoneFormControl.reset();
+
+      component.telephoneFormControl.setValue(validTelephone2);
+      expect(component.telephoneFormControl.valid).toBeTruthy();
+      component.telephoneFormControl.reset();
+
+      component.telephoneFormControl.setValue(validTelephone3);
+      expect(component.telephoneFormControl.valid).toBeTruthy();
+    });
+
+  });
 });
