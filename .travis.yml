@@ -37,6 +37,7 @@ install:
   - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 script:
+  - cd ../frontend/
   - npm run build
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
