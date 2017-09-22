@@ -15,29 +15,34 @@
       <form class="c-form">
         <md-form-field class="c-form__element">
           <label for="my-details-first-name"></label>
-          <input mdInput required="required" placeholder="First name" id="my-details-first-name">
+          <input mdInput required="required" placeholder="First name" id="my-details-first-name"
+                 name="firstName" [(ngModel)]="subject.firstName">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-middle-name"></label>
-          <input mdInput placeholder="Middle name" id="my-details-middle-name">
+          <input mdInput placeholder="Middle name" id="my-details-middle-name"
+                 name="middleName" [(ngModel)]="subject.middleName">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-last-name"></label>
-          <input mdInput required="required" placeholder="Last name" id="my-details-last-name">
+          <input mdInput required="required" placeholder="Last name" id="my-details-last-name"
+                 name="lastName" [(ngModel)]="subject.lastName">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-date-of-birth"></label>
-          <input mdInput [mdDatepicker]="picker" placeholder="Date of birth" id="my-details-date-of-birth">
+          <input mdInput [mdDatepicker]="picker" placeholder="Date of birth" id="my-details-date-of-birth"
+                 name="dateOfBirth" [(ngModel)]="subject.dateOfBirth">
           <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
           <md-datepicker #picker></md-datepicker>
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-position"></label>
-          <input mdInput required="required" disabled placeholder="Position" id="my-details-position">
+          <input mdInput required="required" disabled placeholder="Position" id="my-details-position"
+                 name="position" [(ngModel)]="subject.position">
         </md-form-field>
       </form>
     </md-expansion-panel>
@@ -56,7 +61,7 @@
           <span mdPrefix>+44 (0) &nbsp;</span>
           <label for="my-details-telephone"></label>
           <input type="tel" mdInput placeholder="Telephone" [formControl]="telephoneFormControl"
-                 id="my-details-telephone">
+                 id="my-details-telephone" name="telephone" [(ngModel)]="subject.telephone">
           <md-error *ngIf="telephoneFormControl.hasError('minLength')">
             Telephone number must contains at least 7 digits
           </md-error>
@@ -71,7 +76,8 @@
 
         <md-form-field class="c-form__element">
           <label for="my-details-email"></label>
-          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="my-details-email">
+          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="my-details-email"
+                 name="email" [(ngModel)]="subject.email">
           <md-error *ngIf="emailFormControl.hasError('pattern')">
             Please enter a valid email address
           </md-error>
@@ -82,23 +88,26 @@
 
         <md-form-field class="c-form__element">
           <label for="my-details-1st-line-address"></label>
-          <input type="text" mdInput placeholder="First line address" id="my-details-1st-line-address">
+          <input type="text" mdInput placeholder="First line address" id="my-details-1st-line-address"
+                 name="firstLineAddress" [(ngModel)]="subject.address.firstLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-2nd-line-address"></label>
-          <input type="text" mdInput placeholder="Second line address" id="my-details-2nd-line-address">
+          <input type="text" mdInput placeholder="Second line address" id="my-details-2nd-line-address"
+                 name="secondLineAddress" [(ngModel)]="subject.address.secondLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-3rd-line-address"></label>
-          <input type="text" mdInput placeholder="Third line address" id="my-details-3rd-line-address">
+          <input type="text" mdInput placeholder="Third line address" id="my-details-3rd-line-address"
+                 name="thirdLineAddress" [(ngModel)]="subject.address.thirdLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-postcode"></label>
           <input type="text" mdInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
-                 id="my-details-postcode">
+                 id="my-details-postcode" name="postcode" [(ngModel)]="subject.address.postcode">
           <md-error *ngIf="postcodeFormControl.hasError('pattern')">
             Please enter a valid postcode
           </md-error>
@@ -109,15 +118,18 @@
 
         <md-form-field class="c-form__element">
           <label for="my-details-city"></label>
-          <input type="text" mdInput placeholder="City" id="my-details-city">
+          <input type="text" mdInput placeholder="City" id="my-details-city" name="city"
+                 [(ngModel)]="subject.address.city">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-country"></label>
-          <input type="text" mdInput placeholder="Country" id="my-details-country">
+          <input type="text" mdInput placeholder="Country" id="my-details-country"
+                 name="country" [(ngModel)]="subject.address.country">
         </md-form-field>
       </form>
     </md-expansion-panel>
 
   </md-accordion>
+  <button type="submit" md-raised-button color="accent" [disabled]="!isValid()">Save</button>
 </section>
