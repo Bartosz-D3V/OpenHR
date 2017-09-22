@@ -17,6 +17,9 @@ cache:
      - ./node_modules
      - $HOME/.m2
 
+matrix:
+  fast_finish: true
+
 before_install:
   - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
   - source ~/.nvm/nvm.sh
