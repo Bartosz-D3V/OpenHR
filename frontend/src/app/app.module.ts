@@ -20,6 +20,7 @@ import { PageHeaderComponent } from './shared/components/page-header/page-header
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NamePipe } from './shared/pipes/name/name.pipe';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { NamePipe } from './shared/pipes/name/name.pipe';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpModule,
     MdButtonModule,
     MdButtonToggleModule,
     MdCardModule,
