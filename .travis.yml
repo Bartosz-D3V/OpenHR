@@ -17,6 +17,9 @@ cache:
      - ./node_modules
      - $HOME/.m2
 
+matrix:
+  fast_finish: true
+
 before_install:
   - node --version
   - nvm install $NODE_VERSION
