@@ -18,8 +18,6 @@ cache:
      - $HOME/.m2
 
 before_install:
-  - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
-  - source ~/.nvm/nvm.sh
   - node --version
   - nvm install $NODE_VERSION
   - export CHROME_BIN=/usr/bin/google-chrome
