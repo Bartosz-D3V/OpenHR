@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "pretest": "npm run lint",
-    "test": "ng test --watch=false --code-coverage",
+    "test": "ng test -- --watch=false --code-coverage",
     "lint": "ng lint && npm run stylelint",
     "e2e": "ng e2e",
     "stylelint": "node node_modules/stylelint/bin/stylelint.js --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",

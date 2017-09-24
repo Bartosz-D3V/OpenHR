@@ -36,4 +36,16 @@ describe('SidenavComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  xdescribe('isScreenSmall method', () => {
+
+    it('should return true if max-width is less or equal than 840px', () => {
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: true
+      });
+      fixture.detectChanges();
+      expect(component.isScreenSmall()).toBeTruthy();
+    });
+
+  });
 });

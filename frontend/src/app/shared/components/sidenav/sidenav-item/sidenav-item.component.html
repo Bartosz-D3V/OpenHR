@@ -1,4 +1,4 @@
-<button md-raised-button class="c-sidenav__item c-sidenav__item--shadow">
+<button md-button class="c-sidenav__item" [routerLink]="[sidenavItem.link]">
   <i class="material-icons c-sidenav__icon">{{sidenavItem.icon}}</i>
-  <a [routerLink]="[sidenavItem.link]" class="c-sidenav__anchor">{{sidenavItem.text}}</a>
+  {{sidenavItem.text}}
 </button>
