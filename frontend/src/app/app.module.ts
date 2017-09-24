@@ -57,9 +57,8 @@ import { HttpModule } from '@angular/http';
       {
         path: 'my-details',
         component: MyDetailsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
-
     ]),
   ],
   providers: [],
