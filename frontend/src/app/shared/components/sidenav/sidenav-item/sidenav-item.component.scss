@@ -1,21 +1,13 @@
 @import 'variables';
 
 .c-sidenav {
-
   &__item {
+    display: inline-block;
     width: 100%;
-    display: inline-block;
-  }
-
-  &__anchor {
-    display: inline-block;
-    font-size: 1em;
-    text-decoration: inherit;
-    color: inherit;
   }
 
   &__icon {
-    color: $navBar__icon-color;
+    color: $navbar-icon-color;
     display: inline;
   }
 }

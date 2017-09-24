@@ -1,5 +1,6 @@
 <md-sidenav-container class="c-sidenav">
-  <md-sidenav #sidenav mode="side" class="c-sidenav__bar" [opened]="true">
+  <md-sidenav #sidenav class="c-sidenav__bar" [opened]="!isScreenSmall()"
+              [mode]="isScreenSmall() ? 'over' : 'side'">
     <div class="c-sidenav__list">
       <h3 class="c-sidenav__title">OpenHR</h3>
       <hr class="c-header__line">
