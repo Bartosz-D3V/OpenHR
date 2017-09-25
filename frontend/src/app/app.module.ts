@@ -6,7 +6,8 @@ import {
   MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
   MdGridListModule,
   MdIconModule,
-  MdInputModule, MdNativeDateModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdToolbarModule
+  MdInputModule, MdNativeDateModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule,
+  MdToolbarModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -21,6 +22,8 @@ import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NamePipe } from './shared/pipes/name/name.pipe';
 import { HttpModule } from '@angular/http';
+import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
+import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/date-range-picker.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import { HttpModule } from '@angular/http';
     PageHeaderComponent,
     CapitalizePipe,
     NamePipe,
+    MyLeaveComponent,
+    DateRangePickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +56,7 @@ import { HttpModule } from '@angular/http';
     MdDatepickerModule,
     MdNativeDateModule,
     MdExpansionModule,
+    MdStepperModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
@@ -59,6 +65,11 @@ import { HttpModule } from '@angular/http';
         component: MyDetailsComponent,
         pathMatch: 'full',
       },
+      {
+        path: 'my-leave',
+        component: MyLeaveComponent,
+        pathMatch: 'full',
+      }
     ]),
   ],
   providers: [],
