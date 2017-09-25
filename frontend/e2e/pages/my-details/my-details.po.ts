@@ -1,8 +1,8 @@
 import { browser, by, element } from 'protractor';
 
-export class AppPage {
+export class MyDetailsPo {
   navigateTo() {
-    return browser.get('/');
+    return browser.get('/my-details');
   }
 
   getParagraphText() {

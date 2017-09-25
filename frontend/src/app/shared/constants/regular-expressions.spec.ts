@@ -1,4 +1,5 @@
 import { RegularExpressions } from './regular-expressions';
+
 describe('RegularExpressions', () => {
 
   it('should be defined', () => {
@@ -46,6 +47,24 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.EMAIL.test(exampleInvalidEmail1)).toBeFalsy();
       expect(RegularExpressions.EMAIL.test(exampleInvalidEmail2)).toBeFalsy();
       expect(RegularExpressions.EMAIL.test(exampleInvalidEmail3)).toBeFalsy();
+    });
+  });
+
+  describe('NUMBERS_ONLY', () => {
+    it('should accept numbers only', () => {
+      const exampleNumber1 = '1233322';
+      const exampleNumber2 = '21556';
+
+      expect(RegularExpressions.NUMBERS_ONLY.test(exampleNumber1)).toBeTruthy();
+      expect(RegularExpressions.NUMBERS_ONLY.test(exampleNumber2)).toBeTruthy();
+    });
+
+    it('should accept numbers only', () => {
+      const exampleInNumber1 = '1sda233322';
+      const exampleInNumber2 = '21556abv';
+
+      expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber1)).toBeFalsy();
+      expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber2)).toBeFalsy();
     });
   });
 });

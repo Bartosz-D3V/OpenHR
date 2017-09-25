@@ -62,6 +62,65 @@ describe('MyDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should contains step variable set to 0', () => {
+    expect(component.step).toBeDefined();
+    expect(component.step).toEqual(0);
+  });
+
+  describe('First name validator', () => {
+
+    it('should mark form as valid if input is not empty', () => {
+      const name: String = 'Test';
+      component.firstNameFormControl.setValue(name);
+
+      expect(component.firstNameFormControl.valid).toBeTruthy();
+    });
+
+    it('should mark form as invalid if input is empty', () => {
+      const emptyText: String = '';
+      component.firstNameFormControl.setValue(emptyText);
+
+      expect(component.firstNameFormControl.valid).toBeFalsy();
+    });
+
+  });
+
+  describe('Last name validator', () => {
+
+    it('should mark form as valid if input is not empty', () => {
+      const name: String = 'Test';
+      component.lastNameFormControl.setValue(name);
+
+      expect(component.lastNameFormControl.valid).toBeTruthy();
+    });
+
+    it('should mark form as invalid if input is empty', () => {
+      const emptyText: String = '';
+      component.lastNameFormControl.setValue(emptyText);
+
+      expect(component.lastNameFormControl.valid).toBeFalsy();
+    });
+
+  });
+
+  describe('Date of birth validator', () => {
+
+    it('should mark form as valid if input is not empty', () => {
+      const dob: Date = new Date('11 October 1960 15:00 UTC');
+      component.dobFormControl.setValue(dob);
+
+      expect(component.dobFormControl.valid).toBeTruthy();
+    });
+
+    it('should mark form as invalid if input is empty', () => {
+      const emptyText: String = '';
+      component.dobFormControl.setValue(emptyText);
+
+      expect(component.dobFormControl.valid).toBeFalsy();
+    });
+
+  });
+
   describe('Postcode validator', () => {
 
     beforeEach(() => {
@@ -151,6 +210,13 @@ describe('MyDetailsComponent', () => {
       expect(component.telephoneFormControl.valid).toBeTruthy();
     });
 
+    it('should mark form as invalid if input contains letters', () => {
+      const invalidTelephone1: String = '1234567abc';
+
+      component.telephoneFormControl.setValue(invalidTelephone1);
+      expect(component.telephoneFormControl.valid).toBeFalsy();
+    });
+
   });
 
   describe('isValid method', () => {
@@ -158,6 +224,9 @@ describe('MyDetailsComponent', () => {
     let spy1: Spy;
     let spy2: Spy;
     let spy3: Spy;
+    let spy4: Spy;
+    let spy5: Spy;
+    let spy6: Spy;
 
     beforeEach(() => {
       component.postcodeFormControl.reset();
@@ -167,34 +236,46 @@ describe('MyDetailsComponent', () => {
       spy1 = spyOnProperty(component.postcodeFormControl, 'valid', 'get');
       spy2 = spyOnProperty(component.emailFormControl, 'valid', 'get');
       spy3 = spyOnProperty(component.telephoneFormControl, 'valid', 'get');
+      spy4 = spyOnProperty(component.firstNameFormControl, 'valid', 'get');
+      spy5 = spyOnProperty(component.lastNameFormControl, 'valid', 'get');
+      spy6 = spyOnProperty(component.dobFormControl, 'valid', 'get');
     });
 
     it('should return true if all formsControls are valid', () => {
-      preparePropertySpies([true, true, true]);
+      preparePropertySpies([true, true, true, true, true, true]);
 
       expect(component.isValid()).toBeTruthy();
     });
 
     it('should return false if any of the formControl is invalid', () => {
-      preparePropertySpies([true, false, true]);
+      preparePropertySpies([true, false, true, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([true, true, false]);
+      preparePropertySpies([true, true, false, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, true, true]);
+      preparePropertySpies([false, true, true, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, false, true]);
+      preparePropertySpies([false, false, true, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([true, false, false]);
+      preparePropertySpies([true, false, false, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, true, false]);
+      preparePropertySpies([false, true, false, true, true, true]);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, false, false]);
+      preparePropertySpies([false, false, false, true, true, true]);
+      expect(component.isValid()).toBeFalsy();
+
+      preparePropertySpies([true, true, true, false, true, true]);
+      expect(component.isValid()).toBeFalsy();
+
+      preparePropertySpies([true, true, true, true, false, true]);
+      expect(component.isValid()).toBeFalsy();
+
+      preparePropertySpies([true, true, true, true, true, false]);
       expect(component.isValid()).toBeFalsy();
     });
 
@@ -202,7 +283,40 @@ describe('MyDetailsComponent', () => {
       spy1.and.returnValue(logicTable[0]);
       spy2.and.returnValue(logicTable[1]);
       spy3.and.returnValue(logicTable[2]);
+      spy4.and.returnValue(logicTable[3]);
+      spy5.and.returnValue(logicTable[4]);
+      spy6.and.returnValue(logicTable[5]);
     };
+
+  });
+
+  describe('methods for expansion panel', () => {
+
+    it('setStep should set the step', () => {
+      component.setStep(1);
+
+      expect(component.step).toEqual(1);
+    });
+
+    it('get should return current step', () => {
+      component.step = 1;
+
+      expect(component.getStep()).toEqual(1);
+    });
+
+    it('next step should increase current step', () => {
+      component.step = 0;
+      component.nextStep();
+
+      expect(component.step).toEqual(1);
+    });
+
+    it('previous step should decrease current step', () => {
+      component.step = 1;
+      component.prevStep();
+
+      expect(component.step).toEqual(0);
+    });
 
   });
 });
