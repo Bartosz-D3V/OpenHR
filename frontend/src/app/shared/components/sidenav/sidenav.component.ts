@@ -12,8 +12,7 @@ export class SidenavComponent implements OnInit {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
   private sidenav: MdSidenav;
 
-  constructor(private _router: Router,
-              private zone: NgZone) {
+  constructor(private _router: Router, private zone: NgZone) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
 
