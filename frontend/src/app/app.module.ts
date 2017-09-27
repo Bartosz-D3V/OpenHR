@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -15,15 +17,14 @@ import { SidenavComponent } from './shared/components/sidenav/sidenav.component'
 import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 
-import { RouterModule } from '@angular/router';
 import { MyDetailsComponent } from './pages/my-details/my-details.component';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NamePipe } from './shared/pipes/name/name.pipe';
-import { HttpModule } from '@angular/http';
 import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/date-range-picker.component';
+import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/dat
     NamePipe,
     MyLeaveComponent,
     DateRangePickerComponent,
+    StaticModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/dat
     ]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [StaticModalComponent],
 })
 export class AppModule {
 }

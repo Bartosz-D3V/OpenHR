@@ -6,13 +6,15 @@ import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarMod
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from '../../shared/classes/subject/subject';
-import { SubjectService } from '../../shared/services/subject/subject.service';
+import { Subject } from './classes/subject';
 import { Injectable } from '@angular/core';
-import { Address } from '../../shared/classes/subject/address';
+import { Address } from './classes/address';
 import { HttpModule } from '@angular/http';
 
 import Spy = jasmine.Spy;
+import { MyDetailsService } from './service/my-details.service';
+import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('MyDetailsComponent', () => {
   let component: MyDetailsComponent;
@@ -28,10 +30,16 @@ describe('MyDetailsComponent', () => {
       }
     }
 
+    TestBed.overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [StaticModalComponent],
+      },
+    });
     TestBed.configureTestingModule({
       declarations: [
         MyDetailsComponent,
         PageHeaderComponent,
+        StaticModalComponent,
         CapitalizePipe,
       ],
       imports: [
@@ -46,7 +54,7 @@ describe('MyDetailsComponent', () => {
         NoopAnimationsModule,
       ],
       providers: [{
-        provide: SubjectService, useClass: FakeSubjectService,
+        provide: MyDetailsService, useClass: FakeSubjectService,
       }],
     })
       .compileComponents();
