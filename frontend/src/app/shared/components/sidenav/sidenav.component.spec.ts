@@ -9,6 +9,7 @@ import { MdSidenav, MdSidenavModule } from '@angular/material';
 import { SidenavComponent } from './sidenav.component';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
+import { Observable } from 'rxjs/Observable';
 
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
@@ -50,26 +51,27 @@ describe('SidenavComponent', () => {
     }));
 
     it('should call isScreenSmall every time when router emits event', () => {
+      spyOnProperty(router, 'events', 'get').and.returnValue(new Observable());
       spyOn(component, 'isScreenSmall');
       fixture.detectChanges();
 
       expect(component.isScreenSmall).toHaveBeenCalled();
     });
 
-    // FIX ME
-    xit('should close sidenav if screen is small', fakeAsync(() => {
+
+    it('should close sidenav if screen is small', fakeAsync(() => {
       spyOn(component, 'isScreenSmall').and.returnValue(true);
       spyOn(sidenav, 'close');
       tick();
       fixture.detectChanges();
 
       expect(component.isScreenSmall).toHaveBeenCalled();
-      expect(sidenav.close).toHaveBeenCalled();
+      expect(sidenav.opened).toBeFalsy();
     }));
 
   });
 
-  // FIX ME
+  // FIXME
   xdescribe('isScreenSmall method', () => {
 
     it('should return true if max-width is less or equal than 840px', () => {
