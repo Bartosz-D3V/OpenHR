@@ -25,6 +25,8 @@ import { NamePipe } from './shared/pipes/name/name.pipe';
 import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/date-range-picker.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
+import { MyDetailsService } from './pages/my-details/service/my-details.service';
+import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 
 @NgModule({
   declarations: [
@@ -74,7 +76,7 @@ import { StaticModalComponent } from './shared/components/static-modal/static-mo
       }
     ]),
   ],
-  providers: [],
+  providers: [MyDetailsService, ErrorResolverService],
   bootstrap: [AppComponent],
   entryComponents: [StaticModalComponent],
 })

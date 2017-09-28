@@ -10,7 +10,6 @@ import { ErrorResolverService } from '../../shared/services/error-resolver/error
   selector: 'app-my-details',
   templateUrl: './my-details.component.html',
   styleUrls: ['./my-details.component.scss'],
-  providers: [MyDetailsService, ErrorResolverService],
 })
 export class MyDetailsComponent implements OnInit {
 
@@ -78,7 +77,7 @@ export class MyDetailsComponent implements OnInit {
       this.telephoneFormControl.valid;
   }
 
-  getCurrentSubject() {
+  getCurrentSubject(): void {
     this._myDetailsService
       .getCurrentSubject()
       .subscribe((subject: Subject) => {

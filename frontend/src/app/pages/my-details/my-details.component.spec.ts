@@ -9,12 +9,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from './classes/subject';
 import { Injectable } from '@angular/core';
 import { Address } from './classes/address';
-import { HttpModule } from '@angular/http';
 
 import Spy = jasmine.Spy;
 import { MyDetailsService } from './service/my-details.service';
 import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import { HttpModule } from '@angular/http';
 
 describe('MyDetailsComponent', () => {
   let component: MyDetailsComponent;
@@ -22,19 +24,14 @@ describe('MyDetailsComponent', () => {
   const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
-  beforeEach(async(() => {
-    @Injectable()
-    class FakeSubjectService {
-      getCurrentSubject(): Subject {
-        return mockSubject;
-      }
+  @Injectable()
+  class FakeSubjectService {
+    public getCurrentSubject(): any {
+      return Observable.of(mockSubject);
     }
+  }
 
-    TestBed.overrideModule(BrowserDynamicTestingModule, {
-      set: {
-        entryComponents: [StaticModalComponent],
-      },
-    });
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyDetailsComponent,
@@ -53,9 +50,11 @@ describe('MyDetailsComponent', () => {
         MdNativeDateModule,
         NoopAnimationsModule,
       ],
-      providers: [{
-        provide: MyDetailsService, useClass: FakeSubjectService,
-      }],
+      providers: [
+        {
+          provide: MyDetailsService, useClass: FakeSubjectService,
+        },
+      ],
     })
       .compileComponents();
   }));
@@ -327,4 +326,5 @@ describe('MyDetailsComponent', () => {
     });
 
   });
+
 });
