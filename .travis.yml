@@ -4,13 +4,13 @@ sudo: required
 language: java
 jdk:
   - oraclejdk8
+  - openjdk8
 
 services:
   - mysql
 
 env:
-  - NODE_VERSION=6
-  - NODE_VERSION=8
+  - NODE_VERSION=node
 
 cache:
   directories:
@@ -39,7 +39,7 @@ install:
 
 script:
   - cd ../frontend/
-  - npm run build
+  - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/

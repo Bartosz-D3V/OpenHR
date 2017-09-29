@@ -248,6 +248,15 @@ describe('MyDetailsComponent', () => {
       spy6 = spyOnProperty(component.dobFormControl, 'valid', 'get');
     });
 
+    const preparePropertySpies = function (logicTable: Array<boolean>): void {
+      spy1.and.returnValue(logicTable[0]);
+      spy2.and.returnValue(logicTable[1]);
+      spy3.and.returnValue(logicTable[2]);
+      spy4.and.returnValue(logicTable[3]);
+      spy5.and.returnValue(logicTable[4]);
+      spy6.and.returnValue(logicTable[5]);
+    };
+
     it('should return true if all formsControls are valid', () => {
       preparePropertySpies([true, true, true, true, true, true]);
 
@@ -285,15 +294,6 @@ describe('MyDetailsComponent', () => {
       preparePropertySpies([true, true, true, true, true, false]);
       expect(component.isValid()).toBeFalsy();
     });
-
-    const preparePropertySpies = function (logicTable: Array<boolean>): void {
-      spy1.and.returnValue(logicTable[0]);
-      spy2.and.returnValue(logicTable[1]);
-      spy3.and.returnValue(logicTable[2]);
-      spy4.and.returnValue(logicTable[3]);
-      spy5.and.returnValue(logicTable[4]);
-      spy6.and.returnValue(logicTable[5]);
-    };
 
   });
 
