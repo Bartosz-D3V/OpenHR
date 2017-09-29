@@ -1,9 +1,14 @@
 import { Injectable, ReflectiveInjector } from '@angular/core';
-import { BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions } from '@angular/http';
+import {
+  BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions,
+  ResponseOptions, Response
+} from '@angular/http';
 
-import { TestBed, inject, async, fakeAsync } from '@angular/core/testing';
+import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 
+import { Subject } from '../classes/subject';
+import { Address } from '../classes/address';
 import { MyDetailsService } from './my-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
@@ -14,6 +19,9 @@ class FakeErrorResolverService {
 }
 
 describe('MyDetailsService', () => {
+  const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
+    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -80,6 +88,44 @@ describe('MyDetailsService', () => {
 
       expect(this.lastConnection.request.url).toMatch(/app\/my-details/);
     }));
+
+    describe('getCurrentSubject', () => {
+
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        this.myDetailsService.getCurrentSubject()
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        this.lastConnection.mockRespond(new Response(new ResponseOptions({
+          body: JSON.stringify(mockSubject),
+        })));
+        tick();
+
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
+
+      it('should resolve error if server is down', fakeAsync(() => {
+        spyOn(this.myDetailsService, 'handleError');
+        let result: Object;
+        let error: any;
+        this.myDetailsService.getCurrentSubject()
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        this.lastConnection.mockError(new Response(new ResponseOptions({
+          status: 404,
+          statusText: 'URL not found',
+        })));
+        tick();
+
+        expect(this.myDetailsService['handleError']).toHaveBeenCalled();
+      }));
+
+    });
 
   });
 

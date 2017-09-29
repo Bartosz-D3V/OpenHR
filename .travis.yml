@@ -14,7 +14,7 @@ env:
 
 cache:
   directories:
-     - ./node_modules
+     - ./frontend/node_modules
      - $HOME/.m2
 
 matrix:
