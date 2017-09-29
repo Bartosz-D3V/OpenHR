@@ -66,5 +66,7 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber1)).toBeFalsy();
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber2)).toBeFalsy();
     });
+
   });
+
 });

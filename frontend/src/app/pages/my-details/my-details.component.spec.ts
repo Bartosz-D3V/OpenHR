@@ -1,19 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
-import { Injectable } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarModule } from '@angular/material';
 
 import { MyDetailsComponent } from './my-details.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { Subject } from '../../shared/classes/subject/subject';
-import { SubjectService } from '../../shared/services/subject/subject.service';
-import { Address } from '../../shared/classes/subject/address';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Subject } from './classes/subject';
+import { Injectable } from '@angular/core';
+import { Address } from './classes/address';
 
 import Spy = jasmine.Spy;
+import { MyDetailsService } from './service/my-details.service';
+import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import { HttpModule } from '@angular/http';
 
 describe('MyDetailsComponent', () => {
   let component: MyDetailsComponent;
@@ -21,18 +24,19 @@ describe('MyDetailsComponent', () => {
   const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
-  beforeEach(async(() => {
-    @Injectable()
-    class FakeSubjectService {
-      getCurrentSubject(): Subject {
-        return mockSubject;
-      }
+  @Injectable()
+  class FakeSubjectService {
+    public getCurrentSubject(): any {
+      return Observable.of(mockSubject);
     }
+  }
 
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyDetailsComponent,
         PageHeaderComponent,
+        StaticModalComponent,
         CapitalizePipe,
       ],
       imports: [
@@ -46,9 +50,11 @@ describe('MyDetailsComponent', () => {
         MdNativeDateModule,
         NoopAnimationsModule,
       ],
-      providers: [{
-        provide: SubjectService, useClass: FakeSubjectService,
-      }],
+      providers: [
+        {
+          provide: MyDetailsService, useClass: FakeSubjectService,
+        },
+      ],
     })
       .compileComponents();
   }));
@@ -229,15 +235,6 @@ describe('MyDetailsComponent', () => {
     let spy5: Spy;
     let spy6: Spy;
 
-    const preparePropertySpies = function (logicTable: Array<boolean>): void {
-      spy1.and.returnValue(logicTable[0]);
-      spy2.and.returnValue(logicTable[1]);
-      spy3.and.returnValue(logicTable[2]);
-      spy4.and.returnValue(logicTable[3]);
-      spy5.and.returnValue(logicTable[4]);
-      spy6.and.returnValue(logicTable[5]);
-    };
-
     beforeEach(() => {
       component.postcodeFormControl.reset();
       component.emailFormControl.reset();
@@ -289,6 +286,15 @@ describe('MyDetailsComponent', () => {
       expect(component.isValid()).toBeFalsy();
     });
 
+    const preparePropertySpies = function (logicTable: Array<boolean>): void {
+      spy1.and.returnValue(logicTable[0]);
+      spy2.and.returnValue(logicTable[1]);
+      spy3.and.returnValue(logicTable[2]);
+      spy4.and.returnValue(logicTable[3]);
+      spy5.and.returnValue(logicTable[4]);
+      spy6.and.returnValue(logicTable[5]);
+    };
+
   });
 
   describe('methods for expansion panel', () => {
@@ -320,4 +326,5 @@ describe('MyDetailsComponent', () => {
     });
 
   });
+
 });
