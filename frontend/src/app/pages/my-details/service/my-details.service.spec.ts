@@ -75,10 +75,6 @@ describe('MyDetailsService', () => {
 
   describe('API access method', () => {
 
-    beforeEach(() => {
-      spyOn(console, 'log');
-    });
-
     it('should query current service URL', fakeAsync(() => {
       this.myDetailsService.getCurrentSubject();
 
