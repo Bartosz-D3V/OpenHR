@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
@@ -20,10 +21,9 @@ export class MyDetailsService {
     headers: this.headers,
   });
 
-  private handleError(error: any): Observable<any> {
+  private handleError(error: any): void {
     console.log('An error occurred', error);
     this._errorResolver.createAlert(error);
-    throw Observable.throw(error.message || error);
   }
 
   constructor(private _http: Http,
@@ -34,7 +34,10 @@ export class MyDetailsService {
     return this._http
       .get(this.url, this.options)
       .map((response: any) => <Subject> response.json())
-      .catch((error: any) => this.handleError(error));
+      .catch((error: any) => {
+        this.handleError(error);
+        return Observable.of(error);
+      });
   }
 
 }
