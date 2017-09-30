@@ -12,4 +12,8 @@ export class StaticModalComponent {
               @Optional() @Inject(MD_DIALOG_DATA) public data: any) {
   }
 
+  public close(): void {
+    this.dialogRef.close();
+  }
+
 }

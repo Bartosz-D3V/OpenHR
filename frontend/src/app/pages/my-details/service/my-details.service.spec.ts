@@ -53,6 +53,8 @@ describe('MyDetailsService', () => {
     this.myDetailsService = this.injector.get(MyDetailsService);
     this.backend = this.injector.get(ConnectionBackend) as MockBackend;
     this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
+
+    spyOn(console, 'log');
   });
 
   it('should be created', inject([MyDetailsService], (service: MyDetailsService) => {
@@ -63,7 +65,6 @@ describe('MyDetailsService', () => {
     const mockError = 'Mock Error';
 
     it('should log actual error', inject([MyDetailsService], (service: MyDetailsService) => {
-      spyOn(console, 'log');
       service['handleError'](mockError);
 
       expect(console.log).toHaveBeenCalledTimes(1);

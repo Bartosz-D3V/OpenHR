@@ -1,3 +1,7 @@
 <div class="c-static-modal">
-  {{data?.error}}
+  <h3 class="c-static-modal__header">{{data?.header}}</h3>
+  <p class="c-static-modal__text">
+    {{data?.text}}
+  </p>
+  <button md-button class="c-static-modal__btn" color="warn" (click)="close()">Close</button>
 </div>
