@@ -27,10 +27,12 @@ describe('ErrorResolverService', () => {
 
   it('should open an alert', inject([ErrorResolverService], (service: ErrorResolverService) => {
     const mockError = 'Example error message';
+    const mockTitle = 'Error';
     const data: Object = {
       width: '250px',
       data: {
-        error: mockError,
+        text: mockError,
+        header: mockTitle,
       }
     };
     spyOn(service.dialog, 'open');

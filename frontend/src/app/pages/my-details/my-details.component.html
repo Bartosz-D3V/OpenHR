@@ -104,25 +104,25 @@
         <md-form-field class="c-form__element">
           <label for="my-details-1st-line-address"></label>
           <input type="text" mdInput placeholder="First line address" id="my-details-1st-line-address"
-                 name="firstLineAddress" [ngModel]="subject?.address.firstLineAddress">
+                 name="firstLineAddress" [ngModel]="subject?.address?.firstLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-2nd-line-address"></label>
           <input type="text" mdInput placeholder="Second line address" id="my-details-2nd-line-address"
-                 name="secondLineAddress" [ngModel]="subject?.address.secondLineAddress">
+                 name="secondLineAddress" [ngModel]="subject?.address?.secondLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-3rd-line-address"></label>
           <input type="text" mdInput placeholder="Third line address" id="my-details-3rd-line-address"
-                 name="thirdLineAddress" [ngModel]="subject?.address.thirdLineAddress">
+                 name="thirdLineAddress" [ngModel]="subject?.address?.thirdLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-postcode"></label>
           <input type="text" mdInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
-                 id="my-details-postcode" name="postcode" [ngModel]="subject?.address.postcode">
+                 id="my-details-postcode" name="postcode" [ngModel]="subject?.address?.postcode">
           <md-error *ngIf="postcodeFormControl.hasError('pattern')">
             Please enter a valid postcode
           </md-error>
@@ -134,13 +134,13 @@
         <md-form-field class="c-form__element">
           <label for="my-details-city"></label>
           <input type="text" mdInput placeholder="City" id="my-details-city" name="city"
-                 [ngModel]="subject?.address.city">
+                 [ngModel]="subject?.address?.city">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="my-details-country"></label>
           <input type="text" mdInput placeholder="Country" id="my-details-country"
-                 name="country" [ngModel]="subject?.address.country">
+                 name="country" [ngModel]="subject?.address?.country">
         </md-form-field>
       </form>
       <md-action-row>

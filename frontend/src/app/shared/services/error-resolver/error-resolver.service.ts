@@ -6,6 +6,8 @@ import { StaticModalComponent } from '../../components/static-modal/static-modal
 @Injectable()
 export class ErrorResolverService {
 
+  private header = 'Error';
+
   constructor(public dialog: MdDialog) {
   }
 
@@ -13,7 +15,8 @@ export class ErrorResolverService {
     const dialogRef = this.dialog.open(StaticModalComponent, {
       width: '250px',
       data: {
-        error: error
+        text: error,
+        header: this.header,
       },
     });
   }
