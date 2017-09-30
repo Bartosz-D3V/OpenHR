@@ -2,10 +2,7 @@
 <md-horizontal-stepper [linear]="isLinear">
   <md-step [stepControl]="dateRangeForm">
     <form [formGroup]="dateRangeForm">
-      <ng-template mdStepLabel>Fill out your name</ng-template>
-      <md-form-field>
-        <input mdInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-      </md-form-field>
+      <ng-template mdStepLabel>Leave type</ng-template>
       <div>
         <button md-button mdStepperNext>Next</button>
       </div>

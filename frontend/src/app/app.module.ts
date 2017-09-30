@@ -8,7 +8,8 @@ import {
   MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
   MdGridListModule,
   MdIconModule,
-  MdInputModule, MdNativeDateModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule,
+  MdInputModule, MdMenuModule, MdNativeDateModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule,
+  MdStepperModule,
   MdToolbarModule
 } from '@angular/material';
 
@@ -27,6 +28,7 @@ import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/dat
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { MyDetailsService } from './pages/my-details/service/my-details.service';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
+import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
     MyLeaveComponent,
     DateRangePickerComponent,
     StaticModalComponent,
+    DropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
     MdNativeDateModule,
     MdExpansionModule,
     MdStepperModule,
+    MdMenuModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
