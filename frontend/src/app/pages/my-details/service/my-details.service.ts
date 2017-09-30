@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -32,8 +32,8 @@ export class MyDetailsService {
 
   public getCurrentSubject(): Observable<Subject> {
     return this._http
-      .get(this.url, this.options)
-      .map((response: any) => <Subject> response.json())
+      .get(this.url)
+      .map((response: Response) => <Subject> response.json())
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of(error);
