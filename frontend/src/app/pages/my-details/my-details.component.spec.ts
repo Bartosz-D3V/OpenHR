@@ -40,10 +40,10 @@ describe('MyDetailsComponent', () => {
         CapitalizePipe,
       ],
       imports: [
-        MdToolbarModule,
-        FormsModule,
         HttpModule,
+        FormsModule,
         ReactiveFormsModule,
+        MdToolbarModule,
         MdToolbarModule,
         MdExpansionModule,
         MdDatepickerModule,

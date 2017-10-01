@@ -4,7 +4,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
 import { Subject } from './classes/subject';
 import { MyDetailsService } from './service/my-details.service';
-import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
 
 @Component({
   selector: 'app-my-details',
@@ -80,8 +79,8 @@ export class MyDetailsComponent implements OnInit {
   getCurrentSubject(): void {
     this._myDetailsService
       .getCurrentSubject()
-      .subscribe((subject: Subject) => {
-        this.subject = subject;
+      .subscribe((response: Subject) => {
+        this.subject = response;
       });
   }
 

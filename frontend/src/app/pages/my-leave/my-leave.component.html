@@ -3,9 +3,8 @@
   <md-step [stepControl]="dateRangeForm">
     <form [formGroup]="dateRangeForm">
       <ng-template mdStepLabel>Leave type</ng-template>
-      <div>
-        <button md-button mdStepperNext>Next</button>
-      </div>
+      <app-dropdown [description]="'Select leave type'"></app-dropdown>
+        <button md-button mdStepperNext class="c-my-leave__btn">Next</button>
     </form>
   </md-step>
   <md-step [stepControl]="leaveDetailsForm">
