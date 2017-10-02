@@ -26,7 +26,7 @@ export class MyLeaveService {
   public getLeaveTypes(): Observable<Array<string>> {
     return this._http
       .get(this.url)
-      .map((response: Response) => response.json())
+      .map((response: Response) => <Array<string>> response.json())
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of(error);
