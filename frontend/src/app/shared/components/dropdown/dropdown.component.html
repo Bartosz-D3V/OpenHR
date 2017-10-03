@@ -1,6 +1,6 @@
-<button md-button [mdMenuTriggerFor]="menu">{{description}}</button>
+<button md-button [mdMenuTriggerFor]="menu">{{dropdownBtn?.value || description}}</button>
 <md-menu #menu="mdMenu">
   <div *ngFor="let element of elements">
-    <button md-menu-item>element.text</button>
+    <button md-menu-item #dropdownBtn>element.text</button>
   </div>
 </md-menu>

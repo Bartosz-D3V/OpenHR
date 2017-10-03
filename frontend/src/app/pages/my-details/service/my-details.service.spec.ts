@@ -12,15 +12,15 @@ import { Address } from '../classes/address';
 import { MyDetailsService } from './my-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
-@Injectable()
-class FakeErrorResolverService {
-  public createAlert(error: any): void {
-  }
-}
-
 describe('MyDetailsService', () => {
   const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public createAlert(error: any): void {
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

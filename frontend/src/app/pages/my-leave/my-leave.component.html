@@ -9,7 +9,7 @@
   </md-step>
   <md-step [stepControl]="leaveDetailsForm">
     <form [formGroup]="leaveDetailsForm">
-      <ng-template mdStepLabel>Fill out your address</ng-template>
+      <ng-template mdStepLabel>Date range</ng-template>
       <md-form-field>
         <input mdInput placeholder="Address" formControlName="secondCtrl" required>
       </md-form-field>
@@ -20,7 +20,7 @@
     </form>
   </md-step>
   <md-step>
-    <ng-template mdStepLabel>Done</ng-template>
+    <ng-template mdStepLabel>Confirm</ng-template>
     You are now done.
     <div>
       <button md-button mdStepperPrevious>Back</button>

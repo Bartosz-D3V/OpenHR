@@ -10,14 +10,14 @@ import { MockBackend } from '@angular/http/testing';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 import { MyLeaveService } from './my-leave.service';
 
-@Injectable()
-class FakeErrorResolverService {
-  public createAlert(error: any): void {
-  }
-}
-
 describe('MyLeaveService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public createAlert(error: any): void {
+    }
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,7 +29,6 @@ describe('MyLeaveService', () => {
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
-
       ],
     });
   });

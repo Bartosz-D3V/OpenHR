@@ -17,6 +17,7 @@ import { MyDetailsService } from './service/my-details.service';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
+import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
 
 import Spy = jasmine.Spy;
 
@@ -30,6 +31,12 @@ describe('MyDetailsComponent', () => {
   class FakeSubjectService {
     public getCurrentSubject(): any {
       return Observable.of(mockSubject);
+    }
+  }
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public createAlert(error: any): void {
     }
   }
 
@@ -56,6 +63,9 @@ describe('MyDetailsComponent', () => {
         {
           provide: MyDetailsService, useClass: FakeSubjectService,
         },
+        {
+          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+        },
       ],
     })
       .compileComponents();
@@ -65,6 +75,8 @@ describe('MyDetailsComponent', () => {
     fixture = TestBed.createComponent(MyDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    spyOn(console, 'log');
   });
 
   it('should be created', () => {
