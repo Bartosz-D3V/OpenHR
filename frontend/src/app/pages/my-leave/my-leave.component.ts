@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import * as moment from 'moment';
-import { Moment } from 'moment';
-
-import { IMyDateRangeModel } from 'mydaterangepicker';
-
 import { MyLeaveService } from './service/my-leave.service';
 
 @Component({
@@ -20,8 +15,6 @@ export class MyLeaveComponent implements OnInit {
   public dateRangeForm: FormGroup;
   public leaveDetailsForm: FormGroup;
   public leaveTypes: Array<string>;
-  public startDate: Moment;
-  public endDate: Moment;
 
   constructor(private _formBuilder: FormBuilder,
               private _myLeaveService: MyLeaveService) {
@@ -42,11 +35,6 @@ export class MyLeaveComponent implements OnInit {
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
       });
-  }
-
-  public onDateRangeChanged(event: IMyDateRangeModel): void {
-    this.startDate = moment(event.beginJsDate);
-    this.endDate = moment(event.endJsDate);
   }
 
 }
