@@ -8,4 +8,8 @@ export class MyDetailsPo {
   getParagraphText() {
     return element(by.css('app-root h1')).getText();
   }
+
+  getAppPageHeader() {
+    return element(by.name('app-page-header'));
+  }
 }
