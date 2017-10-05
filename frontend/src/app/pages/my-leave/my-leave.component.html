@@ -3,13 +3,15 @@
   <md-step [stepControl]="dateRangeForm">
     <form [formGroup]="dateRangeForm">
       <ng-template mdStepLabel>Leave type</ng-template>
-      <app-dropdown [description]="'Select leave type'"></app-dropdown>
+      <app-dropdown [description]="'Select leave type'" [required]="true"></app-dropdown>
       <button md-button mdStepperNext class="c-my-leave__btn">Next</button>
     </form>
   </md-step>
   <md-step [stepControl]="leaveDetailsForm">
     <form [formGroup]="leaveDetailsForm">
       <ng-template mdStepLabel>Leave details</ng-template>
+      <p-calendar [inline]="true" [selectionMode]="'range'" [dateFormat]="'dd/mm/yyyy'"
+                  [selectOtherMonths]="true"></p-calendar>
       <div>
         <button md-button mdStepperPrevious>Back</button>
         <button md-button mdStepperNext>Next</button>

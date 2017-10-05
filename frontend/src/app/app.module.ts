@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
-  MdGridListModule, MdIconModule, MdInputModule, MdMenuModule, MdNativeDateModule, MdSidenavModule, MdSliderModule,
-  MdSlideToggleModule, MdStepperModule, MdToolbarModule
+  MdGridListModule, MdIconModule, MdInputModule, MdNativeDateModule, MdSelectModule, MdSidenavModule,
+  MdSliderModule, MdSlideToggleModule, MdStepperModule, MdToolbarModule
 } from '@angular/material';
+
+import { CalendarModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
@@ -58,7 +60,8 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
     MdNativeDateModule,
     MdExpansionModule,
     MdStepperModule,
-    MdMenuModule,
+    MdSelectModule,
+    CalendarModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([

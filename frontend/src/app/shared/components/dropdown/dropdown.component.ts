@@ -13,4 +13,7 @@ export class DropdownComponent {
   @Input()
   public description: String;
 
+  @Input()
+  public required: boolean;
+
 }
