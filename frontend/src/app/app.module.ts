@@ -16,8 +16,6 @@ import { SidenavComponent } from './shared/components/sidenav/sidenav.component'
 import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 
-import { MyDateRangePickerModule } from 'mydaterangepicker';
-
 import { MyDetailsComponent } from './pages/my-details/my-details.component';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
@@ -61,7 +59,6 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
     MdExpansionModule,
     MdStepperModule,
     MdMenuModule,
-    MyDateRangePickerModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
