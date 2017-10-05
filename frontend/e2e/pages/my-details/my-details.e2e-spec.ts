@@ -10,14 +10,6 @@ describe('My details page', () => {
     page.waitForAngular();
   });
 
-  it('should have a header module', () => {
-    const pageHeader: ElementFinder = page.getAppPageHeader();
-
-    expect(pageHeader).toBeDefined();
-    expect(pageHeader.isDisplayed()).toBeTruthy();
-    expect(pageHeader.getText()).toEqual('My details');
-  });
-
   describe('panel titles', () => {
 
     it('should have a panel title with name "Personal information"', () => {

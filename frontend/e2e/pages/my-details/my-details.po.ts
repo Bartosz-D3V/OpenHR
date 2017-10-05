@@ -13,11 +13,7 @@ export class MyDetailsPo {
   }
 
   public getParagraphText(): Promise<string> {
-    return element(by.css('app-root h1')).getText();
-  }
-
-  public getAppPageHeader(): ElementFinder {
-    return element(by.css('app-page-header .c-page-header__paragraph'));
+    return element(by.tagName('app-root h1')).getText();
   }
 
   public getPanelTitle(): ElementArrayFinder {
