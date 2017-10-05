@@ -1,21 +1,26 @@
-import { browser, by, element, ElementFinder } from 'protractor';
+import { browser, by, element, ElementArrayFinder, ElementFinder } from 'protractor';
 import { promise } from 'selenium-webdriver';
 import Promise = promise.Promise;
 
 export class MyDetailsPo {
-  navigateTo(): Promise<any> {
+  public navigateTo(): Promise<any> {
     return browser.get('/my-details');
   }
 
-  waitForAngular(): Promise<any> {
+  public waitForAngular(): Promise<any> {
+    browser.waitForAngularEnabled(true);
     return browser.waitForAngular();
   }
 
-  getParagraphText(): Promise<string> {
+  public getParagraphText(): Promise<string> {
     return element(by.css('app-root h1')).getText();
   }
 
-  getAppPageHeader(): ElementFinder {
-    return element(by.tagName('app-page-header'));
+  public getAppPageHeader(): ElementFinder {
+    return element(by.css('app-page-header .c-page-header__paragraph'));
+  }
+
+  public getPanelTitle(): ElementArrayFinder {
+    return element.all(by.tagName('md-panel-title'));
   }
 }
