@@ -20,11 +20,15 @@ cache:
 matrix:
   fast_finish: true
 
+before_script:
+  - sh -e /etc/init.d/xvfb start
+  - export DISPLAY=:99.0
+  - sleep 3
+
 before_install:
   - node --version
   - nvm install $NODE_VERSION
   - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
   - sudo apt-get update
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -41,7 +45,7 @@ script:
   - cd ../frontend/
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
-  - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
+  - xvfb-run -a npm run e2e -- --no-progress --config=./frontend/protractor.conf.js
   - cd ../backend/
   - mvn package -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
   - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
