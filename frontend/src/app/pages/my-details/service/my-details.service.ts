@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/timeout';
 
 import { Subject } from '../classes/subject';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
@@ -35,7 +34,6 @@ export class MyDetailsService {
     return this._http
       .get(this.url)
       .map((response: Response) => <Subject> response.json())
-      .timeout(5000, null)
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of(error);
