@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import { ISubscription } from 'rxjs/Subscription';
 
 import { MyLeaveService } from './service/my-leave.service';
+import { Leave } from './domain/leave';
 
 @Component({
   selector: 'app-my-leave',
@@ -9,31 +11,53 @@ import { MyLeaveService } from './service/my-leave.service';
   styleUrls: ['./my-leave.component.scss'],
   providers: [MyLeaveService],
 })
-export class MyLeaveComponent implements OnInit {
+export class MyLeaveComponent implements OnInit, OnDestroy {
 
-  public isLinear = false;
-  public dateRangeForm: FormGroup;
-  public leaveDetailsForm: FormGroup;
   public leaveTypes: Array<string>;
+  public $leaveTypes: ISubscription;
+  public dateRange: Date[];
+  public startDate: Date;
+  public endDate: Date;
+  public selectorType = 'range';
+  public leave: Leave = new Leave();
 
-  constructor(private _formBuilder: FormBuilder,
-              private _myLeaveService: MyLeaveService) {
+  constructor(private _myLeaveService: MyLeaveService) {
   }
 
   ngOnInit() {
-    this.dateRangeForm = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.leaveDetailsForm = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
     this.getLeaveTypes();
   }
 
+  ngOnDestroy() {
+    this.$leaveTypes.unsubscribe();
+  }
+
+  displayDates(): void {
+    this.startDate = this.dateRange[0];
+    if (this.dateRange[1]) {
+      this.endDate = this.dateRange[1];
+    }
+  }
+
+  clearDisplayedDates(): void {
+    this.startDate = null;
+    this.endDate = null;
+  }
+
+  clearEndDate(): void {
+    this.endDate = null;
+  }
+
+  setDates(): void {
+    this.leave.selectedDays = this.dateRange;
+  }
+
   public getLeaveTypes(): void {
-    this._myLeaveService.getLeaveTypes()
+    this.$leaveTypes = this._myLeaveService.getLeaveTypes()
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
+      }, (err: any) => {
+        this.leaveTypes = [];
       });
   }
 

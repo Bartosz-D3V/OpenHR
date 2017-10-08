@@ -11,9 +11,6 @@ export class DropdownComponent {
   public elements: Array<Object>;
 
   @Input()
-  public description: String;
-
-  @Input()
   public required: boolean;
 
 }
