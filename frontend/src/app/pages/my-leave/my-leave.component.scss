@@ -11,10 +11,18 @@
 }
 
 .c-textarea,
-.c-dropdown,
+.c-dropdown {
+  margin-top: 2%;
+  width: 60%;
+}
+
 .c-radio {
   margin-top: 2%;
   width: 60%;
+
+  &__option {
+    margin-left: 3%;
+  }
 }
 
 .c-form {

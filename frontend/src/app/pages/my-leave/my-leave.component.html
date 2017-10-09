@@ -6,9 +6,9 @@
       <div class="c-form--column">
         <md-radio-group class="c-radio" [required]="true" [(ngModel)]="selectorType"
                         [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl>
-          <md-radio-button value="single">Single day</md-radio-button>
-          <md-radio-button value="range">Range</md-radio-button>
-          <md-radio-button value="multiple">Multiple days</md-radio-button>
+          <md-radio-button class="c-radio__option" value="single">Single day</md-radio-button>
+          <md-radio-button class="c-radio__option" value="range">Range</md-radio-button>
+          <md-radio-button class="c-radio__option" value="multiple">Multiple days</md-radio-button>
         </md-radio-group>
         <md-select placeholder="Leave type">
           <md-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leaveApplication.leaveType" name="leaveType">
