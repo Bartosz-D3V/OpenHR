@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
-import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
+
 import { Observable } from 'rxjs/Observable';
+
+import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
 export class MyLeaveService {
@@ -29,7 +31,7 @@ export class MyLeaveService {
       .map((response: Response) => <Array<string>> response.json())
       .catch((error: any) => {
         this.handleError(error);
-        return Observable.of(error);
+        return Observable.of([]);
       });
   }
 
