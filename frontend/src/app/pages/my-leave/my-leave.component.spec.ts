@@ -88,4 +88,49 @@ describe('MyLeaveComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('displayDates method', () => {
+
+    it('should set the start day and leave the end date empty if start day is selected and end date is empty', () => {
+      component.dateRange = [new Date('06/12/2019')];
+      component.displayDates();
+
+      expect(component.startDate).toEqual(new Date('06/12/2019'));
+      expect(component.endDate).toBeUndefined();
+    });
+
+    it('should set the start day and end date if start and end date are selected', () => {
+      component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
+      component.displayDates();
+
+      expect(component.startDate).toEqual(new Date('06/12/2019'));
+      expect(component.endDate).toEqual(new Date('10/01/2020'));
+    });
+
+  });
+
+  it('clearDisplayedDates method should set startDay and endDay to null', () => {
+    component.startDate = new Date('06/12/2019');
+    component.endDate = new Date('10/01/2020');
+    component.clearDisplayedDates();
+
+    expect(component.startDate).toBeNull();
+    expect(component.endDate).toBeNull();
+  });
+
+  it('clearEndDate should set endDate to null', () => {
+    component.startDate = new Date('06/12/2019');
+    component.endDate = new Date('10/01/2020');
+    component.clearEndDate();
+
+    expect(component.startDate).toEqual(new Date('06/12/2019'));
+    expect(component.endDate).toBeNull();
+  });
+
+  it('setDates should set the domain property to selected days', () => {
+    component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
+    component.setDates();
+
+    expect(component.leave.selectedDays).toEqual(component.dateRange);
+  });
+
 });

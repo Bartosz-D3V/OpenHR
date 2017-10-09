@@ -56,8 +56,6 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
     this.$leaveTypes = this._myLeaveService.getLeaveTypes()
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
-      }, (err: any) => {
-        this.leaveTypes = [];
       });
   }
 
