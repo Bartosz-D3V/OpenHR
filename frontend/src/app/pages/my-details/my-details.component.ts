@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
-import { RegularExpressions } from '../../shared/constants/regular-expressions';
 import { Subject } from './domain/subject';
+
 import { MyDetailsService } from './service/my-details.service';
-import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { RegularExpressions } from '../../shared/constants/regular-expressions';
 
 @Component({
   selector: 'app-my-details',
   templateUrl: './my-details.component.html',
   styleUrls: ['./my-details.component.scss'],
+  providers: [MyDetailsService],
 })
 export class MyDetailsComponent implements OnInit {
 
@@ -80,8 +81,8 @@ export class MyDetailsComponent implements OnInit {
   getCurrentSubject(): void {
     this._myDetailsService
       .getCurrentSubject()
-      .subscribe((subject: Subject) => {
-        this.subject = subject;
+      .subscribe((response: Subject) => {
+        this.subject = response;
       });
   }
 

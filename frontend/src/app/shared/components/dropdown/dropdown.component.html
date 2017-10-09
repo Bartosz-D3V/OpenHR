@@ -1,0 +1,5 @@
+<md-select placeholder="Leave type" [required]="[required]">
+  <md-option *ngFor="let element of elements" [value]="element.value">
+    {{ element.viewValue }}
+  </md-option>
+</md-select>
