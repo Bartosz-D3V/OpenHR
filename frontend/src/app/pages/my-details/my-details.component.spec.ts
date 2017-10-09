@@ -10,14 +10,14 @@ import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarMod
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { Subject } from './classes/subject';
-import { Address } from './classes/address';
+import { Subject } from './domain/subject';
+import { Address } from './domain/address';
 import { MyDetailsComponent } from './my-details.component';
-import { MyDetailsService } from './service/my-details.service';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { MyDetailsService } from './service/my-details.service';
 
 import Spy = jasmine.Spy;
 
