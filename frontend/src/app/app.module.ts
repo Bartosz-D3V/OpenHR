@@ -26,7 +26,6 @@ import { NamePipe } from './shared/pipes/name/name.pipe';
 import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
-import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +39,6 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
     NamePipe,
     MyLeaveComponent,
     StaticModalComponent,
-    DropdownComponent,
   ],
   imports: [
     BrowserModule,
