@@ -7,8 +7,8 @@ import {
 import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 
-import { Subject } from '../classes/subject';
-import { Address } from '../classes/address';
+import { Subject } from '../domain/subject';
+import { Address } from '../domain/address';
 import { MyDetailsService } from './my-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 

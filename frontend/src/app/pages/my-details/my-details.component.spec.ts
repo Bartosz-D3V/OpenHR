@@ -1,22 +1,25 @@
+import { Injectable } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyDetailsComponent } from './my-details.component';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarModule } from '@angular/material';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from './classes/subject';
-import { Injectable } from '@angular/core';
-import { Address } from './classes/address';
 
-import Spy = jasmine.Spy;
-import { MyDetailsService } from './service/my-details.service';
-import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { HttpModule } from '@angular/http';
+
+import { Subject } from './domain/subject';
+import { Address } from './domain/address';
+import { MyDetailsComponent } from './my-details.component';
+import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
+import { MyDetailsService } from './service/my-details.service';
+
+
+import Spy = jasmine.Spy;
 
 describe('MyDetailsComponent', () => {
   let component: MyDetailsComponent;

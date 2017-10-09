@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
-import { Subject } from './classes/subject';
+import { Subject } from './domain/subject';
 import { MyDetailsService } from './service/my-details.service';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
 
