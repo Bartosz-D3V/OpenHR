@@ -5,7 +5,7 @@
     <form class="c-form">
       <div class="c-form--column">
         <md-radio-group class="c-radio" [required]="true" [(ngModel)]="selectorType"
-                        [ngModelOptions]="{standalone: true}" name="selectorType">
+                        [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl>
           <md-radio-button value="single">Single day</md-radio-button>
           <md-radio-button value="range">Range</md-radio-button>
           <md-radio-button value="multiple">Multiple days</md-radio-button>
