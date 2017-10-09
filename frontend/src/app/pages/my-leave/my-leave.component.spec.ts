@@ -5,7 +5,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdButtonModule, MdMenuModule, MdStepperModule } from '@angular/material';
+import { MdButtonModule, MdMenuModule, MdSelectModule, MdStepperModule, MdToolbarModule } from '@angular/material';
+
+import { CalendarModule } from 'primeng/primeng';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -14,10 +16,19 @@ import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { Leave } from './domain/leave';
 
 describe('MyLeaveComponent', () => {
   let component: MyLeaveComponent;
   let fixture: ComponentFixture<MyLeaveComponent>;
+  const appliedDays = [
+    new Date('03/05/2017')
+  ];
+  const mockLeave = new Leave();
+  mockLeave.subjectId = 1;
+  mockLeave.selectedDays = appliedDays;
+  mockLeave.leaveType = 'Holiday';
+  mockLeave.message = '';
 
   @Injectable()
   class FakeMyLeaveComponent {
@@ -47,6 +58,9 @@ describe('MyLeaveComponent', () => {
         MdStepperModule,
         MdButtonModule,
         MdMenuModule,
+        MdToolbarModule,
+        MdSelectModule,
+        CalendarModule,
         NoopAnimationsModule,
       ],
       providers: [
@@ -65,6 +79,7 @@ describe('MyLeaveComponent', () => {
     fixture = TestBed.createComponent(MyLeaveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.leave = mockLeave;
 
     spyOn(console, 'log');
   });

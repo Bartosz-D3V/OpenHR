@@ -7,7 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
-  MdGridListModule, MdIconModule, MdInputModule, MdNativeDateModule, MdSelectModule, MdSidenavModule,
+  MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule, MdRadioModule, MdSelectModule,
+  MdSidenavModule,
   MdSliderModule, MdSlideToggleModule, MdStepperModule, MdToolbarModule
 } from '@angular/material';
 
@@ -46,11 +47,13 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
     BrowserAnimationsModule,
     HttpModule,
     MdButtonModule,
+    MdRadioModule,
     MdButtonToggleModule,
     MdCardModule,
     MdDialogModule,
     MdGridListModule,
     MdIconModule,
+    MdListModule,
     MdInputModule,
     MdSidenavModule,
     MdSliderModule,

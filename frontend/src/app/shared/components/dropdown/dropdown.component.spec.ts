@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdMenuModule } from '@angular/material';
+import { MdSelectModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DropdownComponent } from './dropdown.component';
@@ -15,7 +15,7 @@ describe('DropdownComponent', () => {
         DropdownComponent
       ],
       imports: [
-        MdMenuModule,
+        MdSelectModule,
         NoopAnimationsModule,
       ]
     })

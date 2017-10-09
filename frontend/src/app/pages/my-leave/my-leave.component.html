@@ -1,28 +1,31 @@
 <app-page-header [header]="'My leave'"></app-page-header>
-<md-horizontal-stepper [linear]="isLinear" class="c-my-leave">
-  <md-step [stepControl]="dateRangeForm">
-    <form [formGroup]="dateRangeForm">
-      <ng-template mdStepLabel>Leave type</ng-template>
-      <app-dropdown [description]="'Select leave type'" [required]="true"></app-dropdown>
-      <button md-button mdStepperNext class="c-my-leave__btn">Next</button>
-    </form>
-  </md-step>
-  <md-step [stepControl]="leaveDetailsForm">
-    <form [formGroup]="leaveDetailsForm">
-      <ng-template mdStepLabel>Leave details</ng-template>
-      <p-calendar [inline]="true" [selectionMode]="'range'" [dateFormat]="'dd/mm/yyyy'"
-                  [selectOtherMonths]="true"></p-calendar>
-      <div>
-        <button md-button mdStepperPrevious>Back</button>
-        <button md-button mdStepperNext>Next</button>
+<section class="c-drawer">
+  <md-toolbar [color]="'primary'">Apply for a leave</md-toolbar>
+  <md-card>
+    <form class="c-form">
+      <div class="c-form--column">
+        <md-radio-group class="c-radio" [required]="true" [(ngModel)]="selectorType"
+                        [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl>
+          <md-radio-button value="single">Single day</md-radio-button>
+          <md-radio-button value="range">Range</md-radio-button>
+          <md-radio-button value="multiple">Multiple days</md-radio-button>
+        </md-radio-group>
+        <md-select placeholder="Leave type">
+          <md-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leave.leaveType" name="leaveType">
+            {{ leaveType }}
+          </md-option>
+        </md-select>
+        <md-input-container class="c-textarea">
+          <textarea mdInput #message maxlength="500" placeholder="Message (optional)" [(ngModel)]="leave.message"
+                    name="message"></textarea>
+          <md-hint align="end">{{message.value.length}} / 500</md-hint>
+        </md-input-container>
       </div>
+      <p-calendar class="c-calendar" [selectionMode]="selectorType" [showIcon]="true" [inline]="true"
+                  [dateFormat]="'dd/mm/yy'" [readonlyInput]="true" [selectOtherMonths]="true" [(ngModel)]="dateRange"
+                  [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="displayDates()"
+                  (onClearClick)="clearDisplayedDates()" (onTodayClick)="clearEndDate()"
+                  (blur)="setDates()" name="selectedDays"></p-calendar>
     </form>
-  </md-step>
-  <md-step>
-    <ng-template mdStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button md-button mdStepperPrevious>Back</button>
-    </div>
-  </md-step>
-</md-horizontal-stepper>
+  </md-card>
+</section>

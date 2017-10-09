@@ -1,9 +1,33 @@
-.c-my-leave {
-  &__btn {
-    display: block;
-  }
+.c-drawer {
+  margin-left: 10%;
+  margin-top: 2%;
+  width: 80%;
+}
 
-  &__date-picker {
-    display: block;
+.c-calendar {
+  margin-right: 5%;
+  padding: 0;
+  position: relative;
+}
+
+.c-textarea,
+.c-dropdown,
+.c-radio {
+  margin-top: 2%;
+  width: 60%;
+}
+
+.c-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  &--column {
+    align-items: flex-start;
+    display: inherit;
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
   }
 }
