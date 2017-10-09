@@ -1,8 +1,8 @@
-export class Leave {
+export class LeaveApplication {
   private _subjectId: number;
   private _leaveType: string;
   private _selectedDays: Array<Date>;
-  private _message: string;
+  private _message?: string;
 
   constructor() {
   }

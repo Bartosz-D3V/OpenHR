@@ -11,21 +11,21 @@
           <md-radio-button value="multiple">Multiple days</md-radio-button>
         </md-radio-group>
         <md-select placeholder="Leave type">
-          <md-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leave.leaveType" name="leaveType">
+          <md-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leaveApplication.leaveType" name="leaveType">
             {{ leaveType }}
           </md-option>
         </md-select>
         <md-input-container class="c-textarea">
-          <textarea mdInput #message maxlength="500" placeholder="Message (optional)" [(ngModel)]="leave.message"
-                    name="message"></textarea>
+          <textarea mdInput #message maxlength="500" placeholder="Message (optional)"
+                    [(ngModel)]="leaveApplication.message" name="message"></textarea>
           <md-hint align="end">{{message.value.length}} / 500</md-hint>
         </md-input-container>
       </div>
       <p-calendar class="c-calendar" [selectionMode]="selectorType" [showIcon]="true" [inline]="true"
                   [dateFormat]="'dd/mm/yy'" [readonlyInput]="true" [selectOtherMonths]="true" [(ngModel)]="dateRange"
-                  [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="displayDates()"
-                  (onClearClick)="clearDisplayedDates()" (onTodayClick)="clearEndDate()"
-                  (blur)="setDates()" name="selectedDays"></p-calendar>
+                  [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="setEntryDates()"
+                  (onClearClick)="clearEntryDates()" (onTodayClick)="clearEndDate()"
+                  (blur)="setLeaveDates()" name="selectedDays"></p-calendar>
     </form>
   </md-card>
 </section>
