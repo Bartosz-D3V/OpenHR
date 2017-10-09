@@ -12,11 +12,11 @@ import { CalendarModule } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 
 import { MyLeaveComponent } from './my-leave.component';
+import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
-import { Leave } from './domain/leave';
 
 describe('MyLeaveComponent', () => {
   let component: MyLeaveComponent;
@@ -24,7 +24,7 @@ describe('MyLeaveComponent', () => {
   const appliedDays = [
     new Date('03/05/2017')
   ];
-  const mockLeave = new Leave();
+  const mockLeave = new LeaveApplication();
   mockLeave.subjectId = 1;
   mockLeave.selectedDays = appliedDays;
   mockLeave.leaveType = 'Holiday';
@@ -79,7 +79,7 @@ describe('MyLeaveComponent', () => {
     fixture = TestBed.createComponent(MyLeaveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.leave = mockLeave;
+    component.leaveApplication = mockLeave;
 
     spyOn(console, 'log');
   });
@@ -88,11 +88,11 @@ describe('MyLeaveComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('displayDates method', () => {
+  describe('setEntryDates method', () => {
 
     it('should set the start day and leave the end date empty if start day is selected and end date is empty', () => {
       component.dateRange = [new Date('06/12/2019')];
-      component.displayDates();
+      component.setEntryDates();
 
       expect(component.startDate).toEqual(new Date('06/12/2019'));
       expect(component.endDate).toBeUndefined();
@@ -100,7 +100,7 @@ describe('MyLeaveComponent', () => {
 
     it('should set the start day and end date if start and end date are selected', () => {
       component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-      component.displayDates();
+      component.setEntryDates();
 
       expect(component.startDate).toEqual(new Date('06/12/2019'));
       expect(component.endDate).toEqual(new Date('10/01/2020'));
@@ -108,10 +108,10 @@ describe('MyLeaveComponent', () => {
 
   });
 
-  it('clearDisplayedDates method should set startDay and endDay to null', () => {
+  it('clearEntryDates method should set startDay and endDay to null', () => {
     component.startDate = new Date('06/12/2019');
     component.endDate = new Date('10/01/2020');
-    component.clearDisplayedDates();
+    component.clearEntryDates();
 
     expect(component.startDate).toBeNull();
     expect(component.endDate).toBeNull();
@@ -126,11 +126,11 @@ describe('MyLeaveComponent', () => {
     expect(component.endDate).toBeNull();
   });
 
-  it('setDates should set the domain property to selected days', () => {
+  it('setLeaveDates should set the domain property to selected days', () => {
     component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-    component.setDates();
+    component.setLeaveDates();
 
-    expect(component.leave.selectedDays).toEqual(component.dateRange);
+    expect(component.leaveApplication.selectedDays).toEqual(component.dateRange);
   });
 
 });

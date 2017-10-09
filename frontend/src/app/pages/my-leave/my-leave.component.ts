@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { MyLeaveService } from './service/my-leave.service';
-import { Leave } from './domain/leave';
+import { LeaveApplication } from './domain/leave-application';
 
 @Component({
   selector: 'app-my-leave',
@@ -19,7 +19,7 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
   public startDate: Date;
   public endDate: Date;
   public selectorType = 'range';
-  public leave: Leave = new Leave();
+  public leaveApplication: LeaveApplication = new LeaveApplication();
 
   constructor(private _myLeaveService: MyLeaveService) {
   }
@@ -32,14 +32,14 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
     this.$leaveTypes.unsubscribe();
   }
 
-  displayDates(): void {
+  setEntryDates(): void {
     this.startDate = this.dateRange[0];
     if (this.dateRange[1]) {
       this.endDate = this.dateRange[1];
     }
   }
 
-  clearDisplayedDates(): void {
+  clearEntryDates(): void {
     this.startDate = null;
     this.endDate = null;
   }
@@ -48,8 +48,8 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
     this.endDate = null;
   }
 
-  setDates(): void {
-    this.leave.selectedDays = this.dateRange;
+  setLeaveDates(): void {
+    this.leaveApplication.selectedDays = this.dateRange;
   }
 
   public getLeaveTypes(): void {
