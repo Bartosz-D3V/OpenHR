@@ -14,7 +14,6 @@ import { Observable } from 'rxjs/Observable';
 import { MyLeaveComponent } from './my-leave.component';
 import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
 
@@ -49,7 +48,6 @@ describe('MyLeaveComponent', () => {
         MyLeaveComponent,
         PageHeaderComponent,
         CapitalizePipe,
-        DropdownComponent,
       ],
       imports: [
         HttpModule,
