@@ -5,6 +5,9 @@ export class SidenavList {
     new SidenavItem('Dashboard', 'dashboard', '', true),
     new SidenavItem('My details', 'account_circle', '/my-details', true),
     new SidenavItem('My leave', 'card_travel', '/my-leave', true),
+    new SidenavItem('Delegation', 'airplanemode_active', '/delegation', true),
+    new SidenavItem('Report', 'show_chart', '/report', true),
+    new SidenavItem('About', 'info_outline', '/about', true),
   ];
 
   get itemList(): Array<SidenavItem> {
