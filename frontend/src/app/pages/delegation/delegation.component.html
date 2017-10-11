@@ -6,28 +6,75 @@
       <div formGroupName="name">
         <md-form-field class="c-form__element">
           <label for="delegation-subject-id"></label>
-          <input mdInput required="required" disabled placeholder="Subject ID" id="delegation-subject-id"
+          <input mdInput required="required" placeholder="Subject ID" id="delegation-subject-id"
                  name="subjectId" value="{{delegationApplication.subjectId}}" formControlName="subjectId">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-first-name"></label>
-          <input mdInput required="required" disabled placeholder="Subject ID" id="delegation-first-name"
-                 name="firstName"
-                 value="{{delegationApplication.firstName}}" formControlName="first">
+          <input mdInput required="required" placeholder="Subject ID" id="delegation-first-name"
+                 name="firstName" value="{{delegationApplication.firstName}}">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-middle-name"></label>
-          <input mdInput placeholder="Middle name" disabled id="delegation-middle-name" name="middleName"
+          <input mdInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
                  value="{{delegationApplication.middleName}}" formControlName="middle">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-last-name"></label>
-          <input mdInput required="required" disabled placeholder="Last name" id="delegation-last-name" name="lastName"
+          <input mdInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
                  value="{{delegationApplication.lastName}}" formControlName="last">
         </md-form-field>
+      </div>
+
+      <div formGroupName="organisation">
+        <md-form-field class="c-form__element">
+          <label for="delegation-position"></label>
+          <input mdInput required="required" placeholder="Position" id="delegation-position" name="position"
+                 value="{{delegationApplication.position}}" formControlName="position">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-last-name"></label>
+          <input mdInput required="required" placeholder="Department" id="delegation-department" name="department"
+                 value="{{delegationApplication.department}}" formControlName="department">
+        </md-form-field>
+      </div>
+
+      <div>
+        <div formGroupName="delegation">
+          <md-form-field class="c-form__element">
+            <input mdInput placeholder="Country" aria-label="Country" [mdAutocomplete]="auto"
+                   [formControl]="countryCtrl">
+            <md-autocomplete #auto="mdAutocomplete">
+            </md-autocomplete>
+          </md-form-field>
+
+          <md-form-field class="c-form__element">
+            <label for="delegation-city"></label>
+            <input mdInput required="required" placeholder="City" id="delegation-city" name="city"
+                   formControlName="city">
+          </md-form-field>
+        </div>
+
+        <div class="c-drawer__table">
+          <md-table [dataSource]="delegationApplication.destination">
+            <ng-container mdColumnDef="country">
+              <md-header-cell *mdHeaderCellDef> Country</md-header-cell>
+              <md-cell *mdCellDef="let destination"> {{destination.country}}</md-cell>
+            </ng-container>
+
+            <ng-container mdColumnDef="city">
+              <md-header-cell *mdHeaderCellDef> City</md-header-cell>
+              <md-cell *mdCellDef="let destination"> {{destination.city}}</md-cell>
+            </ng-container>
+
+            <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+            <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+          </md-table>
+        </div>
       </div>
     </form>
   </md-card>

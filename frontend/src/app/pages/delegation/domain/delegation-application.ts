@@ -7,7 +7,7 @@ export class DelegationApplication {
   public readonly lastName: string;
   public readonly position: string;
   public readonly department: string;
-  public destination: Set<Destination>;
+  public destination: Array<Destination>;
   public selectedDays: Array<Date>;
   public budget: number;
   public meansOfTransport: Array<string>;
