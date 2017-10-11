@@ -59,7 +59,7 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleNumber2)).toBeTruthy();
     });
 
-    it('should accept numbers only', () => {
+    it('should not accept letters only', () => {
       const exampleInNumber1 = '1sda233322';
       const exampleInNumber2 = '21556abv';
 
@@ -67,6 +67,28 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber2)).toBeFalsy();
     });
 
+  });
+
+  describe('LETTERS_ONLY', () => {
+    it('should accept letters only', () => {
+      const exampleText1 = 'test';
+      const exampleText2 = 'TEST';
+      const exampleText3 = 'TesT';
+
+      expect(RegularExpressions.LETTERS_ONLY.test(exampleText1)).toBeTruthy();
+      expect(RegularExpressions.LETTERS_ONLY.test(exampleText2)).toBeTruthy();
+      expect(RegularExpressions.LETTERS_ONLY.test(exampleText3)).toBeTruthy();
+    });
+  });
+
+  it('should not accept numbers or special characters', () => {
+    const exampleText1 = 't35t';
+    const exampleText2 = '&^%$';
+    const exampleText3 = 'T e s t !';
+
+    expect(RegularExpressions.LETTERS_ONLY.test(exampleText1)).toBeFalsy();
+    expect(RegularExpressions.LETTERS_ONLY.test(exampleText2)).toBeFalsy();
+    expect(RegularExpressions.LETTERS_ONLY.test(exampleText3)).toBeFalsy();
   });
 
 });
