@@ -1,0 +1,33 @@
+<app-page-header [header]="'Delegation'"></app-page-header>
+<section class="c-drawer">
+  <md-toolbar [color]="'primary'">Apply for a delegation</md-toolbar>
+  <md-card>
+    <form class="c-form" [formGroup]="applicationForm">
+      <div formGroupName="name">
+        <md-form-field class="c-form__element">
+          <label for="delegation-subject-id"></label>
+          <input mdInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
+                 [(ngModel)]="delegationApplication.subjectId" formControlName="subjectId">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-first-name"></label>
+          <input mdInput required="required" placeholder="Subject ID" id="delegation-first-name" name="firstName"
+                 [(ngModel)]="delegationApplication.firstName" formControlName="first">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-middle-name"></label>
+          <input mdInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
+                 [(ngModel)]="delegationApplication.middleName" formControlName="middle">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-last-name"></label>
+          <input mdInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
+                 [(ngModel)]="delegationApplication.lastName" formControlName="last">
+        </md-form-field>
+      </div>
+    </form>
+  </md-card>
+</section>

@@ -26,6 +26,7 @@ import { NamePipe } from './shared/pipes/name/name.pipe';
 import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
+import { DelegationComponent } from './pages/delegation/delegation.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
     NamePipe,
     MyLeaveComponent,
     StaticModalComponent,
+    DelegationComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +77,12 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
         path: 'my-leave',
         component: MyLeaveComponent,
         pathMatch: 'full',
-      }
+      },
+      {
+        path: 'delegation',
+        component: DelegationComponent,
+        pathMatch: 'full',
+      },
     ]),
   ],
   providers: [ErrorResolverService],
