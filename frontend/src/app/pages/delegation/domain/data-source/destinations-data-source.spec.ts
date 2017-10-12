@@ -1,5 +1,5 @@
 import { DestinationsDataSource } from './destinations-data-source';
-import { Destination } from './destination';
+import { Destination } from '../destination/destination';
 
 describe('DestinationDataSource', () => {
 

@@ -11,5 +11,13 @@
 .c-form {
   &__element {
     width: 40%;
+
+    &--right {
+      margin-left: 70%;
+    }
   }
+}
+
+.c-calendar {
+  padding: 14%;
 }

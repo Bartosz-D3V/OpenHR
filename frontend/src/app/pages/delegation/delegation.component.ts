@@ -7,8 +7,10 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
-import { DelegationApplication } from './domain/delegation-application';
-import { DestinationsDataSource } from './domain/destinations-data-source';
+import { DelegationApplication } from './domain/application/delegation-application';
+import { DestinationsDataSource } from './domain/data-source/destinations-data-source';
+import { Delegation } from './domain/delegation/delegation';
+import { Destination } from './domain/destination/destination';
 
 @Component({
   selector: 'app-delegation',
@@ -31,7 +33,7 @@ export class DelegationComponent implements OnInit {
 
   ngOnInit() {
     this.delegationApplication = new DelegationApplication();
-    this.dataSource = new DestinationsDataSource(this.delegationApplication.destination);
+    this.dataSource = new DestinationsDataSource(this.countries);
     this.constructForm();
   }
 
@@ -51,7 +53,9 @@ export class DelegationComponent implements OnInit {
         department: ['']
       }),
       delegation: this._fb.group({
-        city: ['']
+        city: [''],
+        dateRange: [''],
+        budget: ['0', Validators.min(0)],
       })
     });
 
@@ -62,7 +66,7 @@ export class DelegationComponent implements OnInit {
 
   public filterCountries(name: string): Array<string> {
     return this.countries.filter(country =>
-      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(): Observable<Array<string>> {
@@ -70,6 +74,19 @@ export class DelegationComponent implements OnInit {
       .valueChanges
       .startWith(null)
       .map(state => state ? this.filterCountries(state) : this.countries.slice());
+  }
+
+  public addNewDelegation(country: string, city: string, dateRange: Array<Date>, budget: number): void {
+    const destination: Destination = new Destination(country, city);
+    const delegation: Delegation = new Delegation(destination, dateRange, budget);
+
+    this.delegationApplication.delegations.push(delegation);
+    this.clearForm();
+  }
+
+  public clearForm(): void {
+    this.applicationForm.get('delegation').reset();
+    this.countryCtrl.reset();
   }
 
   public isValid(): boolean {
