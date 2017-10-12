@@ -55,21 +55,21 @@ export class DelegationComponent implements OnInit {
       })
     });
 
-    this.filteredCountries = this.reduceCountries();
+    this.filteredCountries = this.reduceCountries(this.countries);
     this.applicationForm.get('name').disable();
     this.applicationForm.get('organisation').disable();
   }
 
-  public filterCountries(name: string): Array<string> {
-    return this.countries.filter(country =>
-      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+  public filterCountries(countries: Array<string>, name: string): Array<string> {
+    return countries.filter(country =>
+    country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
-  public reduceCountries(): Observable<Array<string>> {
+  public reduceCountries(countries: Array<string>): Observable<Array<string>> {
     return this.countryCtrl
       .valueChanges
       .startWith(null)
-      .map(state => state ? this.filterCountries(state) : this.countries.slice());
+      .map(country => country ? this.filterCountries(countries, country) : countries.slice());
   }
 
   public isValid(): boolean {
