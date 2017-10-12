@@ -40,4 +40,60 @@ describe('DelegationComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('autocomplete', () => {
+    let filteredCountries;
+    const mockCountries: Array<string> = [
+      'Algeria',
+      'South Korea',
+      'Germany',
+      'Poland',
+      'Portugal',
+      'Zanzibar'
+    ];
+
+    afterEach(() => {
+      filteredCountries.length = 0;
+    });
+
+    it('filterCountries method should filter an array by name of the country', () => {
+      filteredCountries = component.filterCountries(mockCountries, 'Pol');
+
+      expect(filteredCountries.length).toEqual(1);
+      expect(filteredCountries[0]).toEqual('Poland');
+
+      filteredCountries = component.filterCountries(mockCountries, 'Po');
+
+      expect(filteredCountries.length).toEqual(2);
+      expect(filteredCountries[0]).toEqual('Poland');
+      expect(filteredCountries[1]).toEqual('Portugal');
+    });
+
+    describe('reduceCountries method', () => {
+      let result: Array<string>;
+
+      it('should not filter results if input is empty', () => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+          result = data;
+        });
+        component.countryCtrl.setValue('');
+
+        expect(result).toBeDefined();
+        expect(result).toEqual(mockCountries);
+      });
+
+      it('should filter results accordingly to input value', () => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+          result = data;
+        });
+        component.countryCtrl.setValue('Ger');
+
+        expect(result).toBeDefined();
+        expect(result[0]).toEqual('Germany');
+      });
+
+    });
+
+  });
+
 });
