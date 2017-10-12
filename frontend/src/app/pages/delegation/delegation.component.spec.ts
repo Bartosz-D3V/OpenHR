@@ -2,7 +2,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdToolbarModule } from '@angular/material';
+import { MdAutocompleteModule, MdTableModule, MdToolbarModule } from '@angular/material';
 
 import { DelegationComponent } from './delegation.component';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
@@ -24,6 +24,8 @@ describe('DelegationComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MdToolbarModule,
+        MdTableModule,
+        MdAutocompleteModule,
       ]
     })
       .compileComponents();
