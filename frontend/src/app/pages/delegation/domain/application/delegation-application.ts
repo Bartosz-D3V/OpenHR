@@ -7,7 +7,7 @@ export class DelegationApplication {
   public readonly lastName: string;
   public readonly position: string;
   public readonly department: string;
-  public delegations: Array<Delegation>;
+  public delegations: Array<Delegation> = [];
   public readonly canExceedExpenses = false;
   public readonly approvedByManager = false;
   public readonly approvedByHR = false;

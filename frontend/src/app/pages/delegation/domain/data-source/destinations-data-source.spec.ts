@@ -4,7 +4,7 @@ import { Destination } from '../destination/destination';
 describe('DestinationDataSource', () => {
 
   let destinationDataSource: DestinationsDataSource;
-  const mockDestinations: Array<Destination> = [new Destination('United Kingdom', 'London')];
+  const mockDestinations: Array<string> = ['United Kingdom', 'Holland'];
 
   beforeEach(() => {
     destinationDataSource = new DestinationsDataSource(mockDestinations);
