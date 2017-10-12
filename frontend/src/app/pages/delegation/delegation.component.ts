@@ -23,7 +23,7 @@ export class DelegationComponent implements OnInit {
   public delegationApplication: DelegationApplication;
   public filteredCountries: Observable<Array<string>>;
   public readonly countries: Array<string>;
-  public readonly displayedColumns: Array<string> = ['country', 'city'];
+  public readonly displayedColumns: Array<string> = ['country', 'city', 'budget'];
   public dataSource: DestinationsDataSource;
   public readonly countryCtrl: FormControl;
 

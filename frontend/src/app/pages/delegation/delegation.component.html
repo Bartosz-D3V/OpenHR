@@ -75,15 +75,20 @@
         </div>
 
         <div class="c-drawer__table">
-          <md-table [dataSource]="delegationApplication.destination">
+          <md-table [dataSource]="delegationApplication.delegations">
             <ng-container mdColumnDef="country">
               <md-header-cell *mdHeaderCellDef> Country</md-header-cell>
-              <md-cell *mdCellDef="let destination"> {{destination.country}}</md-cell>
+              <md-cell *mdCellDef="let delegation"> {{delegation.destination.country}}</md-cell>
             </ng-container>
 
             <ng-container mdColumnDef="city">
               <md-header-cell *mdHeaderCellDef> City</md-header-cell>
-              <md-cell *mdCellDef="let destination"> {{destination.city}}</md-cell>
+              <md-cell *mdCellDef="let delegation"> {{delegation.destination.city}}</md-cell>
+            </ng-container>
+
+            <ng-container mdColumnDef="budget">
+              <md-header-cell *mdHeaderCellDef> City</md-header-cell>
+              <md-cell *mdCellDef="let delegation"> {{delegation.budget}}</md-cell>
             </ng-container>
 
             <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
