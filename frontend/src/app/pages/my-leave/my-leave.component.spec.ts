@@ -24,7 +24,6 @@ describe('MyLeaveComponent', () => {
     new Date('03/05/2017')
   ];
   const mockLeave = new LeaveApplication();
-  mockLeave.subjectId = 1;
   mockLeave.selectedDays = appliedDays;
   mockLeave.leaveType = 'Holiday';
   mockLeave.message = '';
