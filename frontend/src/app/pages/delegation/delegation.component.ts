@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
 import { DelegationApplication } from './domain/application/delegation-application';
-import { DestinationsDataSource } from './domain/data-source/destinations-data-source';
 import { Delegation } from './domain/delegation/delegation';
 import { Destination } from './domain/destination/destination';
+import { DelegationsDataSource } from './domain/data-source/delegations-data-source';
 
 @Component({
   selector: 'app-delegation',
@@ -24,7 +24,7 @@ export class DelegationComponent implements OnInit {
   public filteredCountries: Observable<Array<string>>;
   public readonly countries: Array<string>;
   public readonly displayedColumns: Array<string> = ['country', 'city', 'budget'];
-  public dataSource: DestinationsDataSource;
+  public dataSource: DelegationsDataSource;
   public countryCtrl: FormControl;
 
   constructor(private _fb: FormBuilder) {
@@ -32,7 +32,7 @@ export class DelegationComponent implements OnInit {
 
   ngOnInit() {
     this.delegationApplication = new DelegationApplication();
-    this.dataSource = new DestinationsDataSource(this.countries);
+    this.dataSource = new DelegationsDataSource(this.delegationApplication.delegations);
     this.constructForm();
   }
 

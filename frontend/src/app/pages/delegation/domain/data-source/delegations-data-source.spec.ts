@@ -1,13 +1,16 @@
-import { DestinationsDataSource } from './destinations-data-source';
+import { DelegationsDataSource } from './delegations-data-source';
 import { Destination } from '../destination/destination';
+import { Delegation } from '../delegation/delegation';
 
 describe('DestinationDataSource', () => {
 
-  let destinationDataSource: DestinationsDataSource;
-  const mockDestinations: Array<string> = ['United Kingdom', 'Holland'];
+  let destinationDataSource: DelegationsDataSource;
+  const mockDestination: Destination = new Destination('United Kingdom', 'Nottinghamshire');
+  const mockDelegation: Delegation = new Delegation(mockDestination, [new Date()], 1000);
+  const mockDestinations: Array<Delegation> = [mockDelegation];
 
   beforeEach(() => {
-    destinationDataSource = new DestinationsDataSource(mockDestinations);
+    destinationDataSource = new DelegationsDataSource(mockDestinations);
   });
 
   it('should be created', () => {
