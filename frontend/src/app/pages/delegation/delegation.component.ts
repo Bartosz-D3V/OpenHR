@@ -25,10 +25,9 @@ export class DelegationComponent implements OnInit {
   public readonly countries: Array<string>;
   public readonly displayedColumns: Array<string> = ['country', 'city', 'budget'];
   public dataSource: DestinationsDataSource;
-  public readonly countryCtrl: FormControl;
+  public countryCtrl: FormControl;
 
   constructor(private _fb: FormBuilder) {
-    this.countryCtrl = new FormControl();
   }
 
   ngOnInit() {
@@ -38,6 +37,7 @@ export class DelegationComponent implements OnInit {
   }
 
   public constructForm(): void {
+    this.countryCtrl = new FormControl();
     this.applicationForm = this._fb.group({
       name: this._fb.group({
         subjectId: ['',

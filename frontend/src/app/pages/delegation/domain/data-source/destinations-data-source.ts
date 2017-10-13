@@ -2,8 +2,6 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Destination } from '../destination/destination';
-
 export class DestinationsDataSource extends DataSource<string> {
 
   public dataSource: Array<string>;

@@ -75,7 +75,7 @@
         </div>
 
         <div class="c-drawer__table">
-          <md-table [dataSource]="delegationApplication.delegations">
+          <md-table [dataSource]="dataSource">
             <ng-container mdColumnDef="country">
               <md-header-cell *mdHeaderCellDef> Country</md-header-cell>
               <md-cell *mdCellDef="let delegation"> {{delegation.destination.country}}</md-cell>

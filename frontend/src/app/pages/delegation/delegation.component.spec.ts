@@ -1,7 +1,7 @@
 import { HttpModule } from '@angular/http';
-import { AbstractControl, FormGroup, FormGroupName, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MdAutocompleteModule, MdTableModule, MdToolbarModule } from '@angular/material';
 
