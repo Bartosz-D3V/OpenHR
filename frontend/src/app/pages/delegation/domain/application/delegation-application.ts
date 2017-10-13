@@ -1,4 +1,4 @@
-import { Destination } from './destination';
+import { Delegation } from '../delegation/delegation';
 
 export class DelegationApplication {
   public readonly subjectId: number;
@@ -7,10 +7,7 @@ export class DelegationApplication {
   public readonly lastName: string;
   public readonly position: string;
   public readonly department: string;
-  public destination: Array<Destination>;
-  public selectedDays: Array<Date>;
-  public budget: number;
-  public meansOfTransport: Array<string>;
+  public delegations: Array<Delegation> = [];
   public readonly canExceedExpenses = false;
   public readonly approvedByManager = false;
   public readonly approvedByHR = false;
