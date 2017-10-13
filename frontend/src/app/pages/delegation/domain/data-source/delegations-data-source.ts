@@ -1,17 +1,18 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 
 import { Observable } from 'rxjs/Observable';
+import { Delegation } from '../delegation/delegation';
 
-export class DestinationsDataSource extends DataSource<string> {
+export class DelegationsDataSource extends DataSource<any> {
 
-  public dataSource: Array<string>;
+  public dataSource: Array<Delegation>;
 
-  constructor(dataSource: Array<string>) {
+  constructor(dataSource: Array<Delegation>) {
     super();
     this.dataSource = dataSource;
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<string[]> {
+  connect(collectionViewer: CollectionViewer): Observable<Array<Delegation>> {
     return Observable.of(this.dataSource);
   }
 
