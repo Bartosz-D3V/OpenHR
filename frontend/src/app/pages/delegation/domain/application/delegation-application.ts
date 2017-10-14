@@ -14,4 +14,8 @@ export class DelegationApplication {
 
   constructor() {
   }
+
+  addDelegation(delegation: Delegation): void {
+    this.delegations.push(delegation);
+  }
 }

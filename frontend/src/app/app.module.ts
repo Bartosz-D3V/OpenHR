@@ -7,7 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdAutocompleteModule,
-  MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
+  MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdDatepickerModule, MdDialogModule,
+  MdExpansionModule,
   MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule, MdRadioModule, MdSelectModule,
   MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule, MdTableModule, MdToolbarModule
 } from '@angular/material';
@@ -66,6 +67,7 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
     MdSelectModule,
     MdTableModule,
     MdAutocompleteModule,
+    MdCheckboxModule,
     CalendarModule,
     FormsModule,
     ReactiveFormsModule,
