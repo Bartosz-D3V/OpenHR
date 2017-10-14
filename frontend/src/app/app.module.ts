@@ -41,6 +41,7 @@ import { AppRoutingModule } from './app-routing.module';
     MyLeaveComponent,
     StaticModalComponent,
     DelegationComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
