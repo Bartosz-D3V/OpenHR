@@ -27,6 +27,7 @@ import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { DelegationComponent } from './pages/delegation/delegation.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
     MyLeaveComponent,
     StaticModalComponent,
     DelegationComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +85,11 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
         component: DelegationComponent,
         pathMatch: 'full',
       },
+      {
+        path: 'about',
+        component: AboutComponent,
+        pathMatch: 'full',
+      }
     ]),
   ],
   providers: [ErrorResolverService],
