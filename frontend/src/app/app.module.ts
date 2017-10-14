@@ -27,6 +27,7 @@ import { StaticModalComponent } from './shared/components/static-modal/static-mo
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
