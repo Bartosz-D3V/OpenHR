@@ -1,11 +1,12 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 
 import { Observable } from 'rxjs/Observable';
+
 import { Delegation } from '../delegation/delegation';
 
 export class DelegationsDataSource extends DataSource<any> {
 
-  public dataSource: Array<Delegation>;
+  public dataSource: Array<Delegation> = [];
 
   constructor(dataSource: Array<Delegation>) {
     super();
@@ -17,5 +18,6 @@ export class DelegationsDataSource extends DataSource<any> {
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
+    this.dataSource = null;
   }
 }

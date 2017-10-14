@@ -19,5 +19,11 @@
 }
 
 .c-calendar {
-  padding: 14%;
+  display: inline-block;
+  overflow: visible;
+  width: 40%;
+}
+
+.c-button {
+  margin-top: 5%;
 }

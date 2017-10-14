@@ -20,12 +20,12 @@ import { DelegationsDataSource } from './domain/data-source/delegations-data-sou
 export class DelegationComponent implements OnInit {
 
   public applicationForm: FormGroup;
+  public countryCtrl: FormControl;
+  public dataSource: DelegationsDataSource;
   public delegationApplication: DelegationApplication;
   public filteredCountries: Observable<Array<string>>;
   public readonly countries: Array<string>;
   public readonly displayedColumns: Array<string> = ['country', 'city', 'budget'];
-  public dataSource: DelegationsDataSource;
-  public countryCtrl: FormControl;
 
   constructor(private _fb: FormBuilder) {
   }
@@ -67,7 +67,7 @@ export class DelegationComponent implements OnInit {
 
   public filterCountries(countries: Array<string>, name: string): Array<string> {
     return countries.filter(country =>
-    country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<string>): Observable<Array<string>> {
@@ -81,7 +81,7 @@ export class DelegationComponent implements OnInit {
     const destination: Destination = new Destination(country, city);
     const delegation: Delegation = new Delegation(destination, dateRange, budget);
 
-    this.delegationApplication.delegations.push(delegation);
+    this.delegationApplication.addDelegation(delegation);
     this.clearForm();
   }
 

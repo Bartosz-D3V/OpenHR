@@ -12,8 +12,8 @@
 
         <md-form-field class="c-form__element">
           <label for="delegation-first-name"></label>
-          <input mdInput required="required" placeholder="Subject ID" id="delegation-first-name"
-                 name="firstName" value="{{delegationApplication.firstName}}">
+          <input mdInput id="delegation-first-name" placeholder="First name" name="firstName"
+                 value="{{delegationApplication.firstName}}" formControlName="first">
         </md-form-field>
 
         <md-form-field class="c-form__element">
@@ -77,17 +77,17 @@
         <div class="c-drawer__table">
           <md-table [dataSource]="dataSource">
             <ng-container mdColumnDef="country">
-              <md-header-cell *mdHeaderCellDef> Country</md-header-cell>
+              <md-header-cell *mdHeaderCellDef>Country</md-header-cell>
               <md-cell *mdCellDef="let delegation"> {{delegation.destination.country}}</md-cell>
             </ng-container>
 
             <ng-container mdColumnDef="city">
-              <md-header-cell *mdHeaderCellDef> City</md-header-cell>
+              <md-header-cell *mdHeaderCellDef>City</md-header-cell>
               <md-cell *mdCellDef="let delegation"> {{delegation.destination.city}}</md-cell>
             </ng-container>
 
             <ng-container mdColumnDef="budget">
-              <md-header-cell *mdHeaderCellDef> City</md-header-cell>
+              <md-header-cell *mdHeaderCellDef>Budget</md-header-cell>
               <md-cell *mdCellDef="let delegation"> {{delegation.budget}}</md-cell>
             </ng-container>
 
@@ -95,6 +95,9 @@
             <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
           </md-table>
         </div>
+      </div>
+      <div class="c-button">
+        <button md-raised-button color="primary">Submit</button>
       </div>
     </form>
   </md-card>
