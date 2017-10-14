@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -27,6 +26,7 @@ import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { DelegationComponent } from './pages/delegation/delegation.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -67,23 +67,7 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
     CalendarModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      {
-        path: 'my-details',
-        component: MyDetailsComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'my-leave',
-        component: MyLeaveComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'delegation',
-        component: DelegationComponent,
-        pathMatch: 'full',
-      },
-    ]),
+    AppRoutingModule,
   ],
   providers: [ErrorResolverService],
   bootstrap: [AppComponent],
