@@ -8,9 +8,6 @@ import 'rxjs/add/operator/map';
 
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
 import { DelegationApplication } from './domain/application/delegation-application';
-import { Delegation } from './domain/delegation/delegation';
-import { Destination } from './domain/destination/destination';
-import { DelegationsDataSource } from './domain/data-source/delegations-data-source';
 
 @Component({
   selector: 'app-delegation',
@@ -21,18 +18,15 @@ export class DelegationComponent implements OnInit {
 
   public applicationForm: FormGroup;
   public countryCtrl: FormControl;
-  public dataSource: DelegationsDataSource;
   public delegationApplication: DelegationApplication;
   public filteredCountries: Observable<Array<string>>;
   public readonly countries: Array<string>;
-  public readonly displayedColumns: Array<string> = ['country', 'city', 'budget'];
 
   constructor(private _fb: FormBuilder) {
   }
 
   ngOnInit() {
     this.delegationApplication = new DelegationApplication();
-    this.dataSource = new DelegationsDataSource(this.delegationApplication.delegations);
     this.constructForm();
   }
 
@@ -54,8 +48,9 @@ export class DelegationComponent implements OnInit {
       }),
       delegation: this._fb.group({
         city: [''],
-        dateRange: [''],
+        objective: ['', Validators.required],
         budget: ['0', Validators.min(0)],
+        dateRange: [''],
       })
     });
 
@@ -75,14 +70,6 @@ export class DelegationComponent implements OnInit {
       .valueChanges
       .startWith(null)
       .map(country => country ? this.filterCountries(countries, country) : countries.slice());
-  }
-
-  public addNewDelegation(country: string, city: string, dateRange: Array<Date>, budget: number): void {
-    const destination: Destination = new Destination(country, city);
-    const delegation: Delegation = new Delegation(destination, dateRange, budget);
-
-    this.delegationApplication.addDelegation(delegation);
-    this.clearForm();
   }
 
   public clearForm(): void {

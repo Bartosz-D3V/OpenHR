@@ -43,57 +43,36 @@
         </md-form-field>
       </div>
 
-      <div>
-        <div formGroupName="delegation">
-          <md-form-field class="c-form__element">
-            <input #country mdInput placeholder="Country" aria-label="Country" [mdAutocomplete]="'auto'"
-                   [formControl]="countryCtrl">
-            <md-autocomplete #auto="mdAutocomplete">
-            </md-autocomplete>
-          </md-form-field>
+      <div formGroupName="delegation">
+        <md-form-field class="c-form__element">
+          <input #country mdInput placeholder="Country" aria-label="Country" [mdAutocomplete]="'auto'"
+                 [formControl]="countryCtrl">
+          <md-autocomplete #auto="mdAutocomplete">
+          </md-autocomplete>
+        </md-form-field>
 
-          <md-form-field class="c-form__element">
-            <label for="delegation-city"></label>
-            <input #city mdInput placeholder="City" id="delegation-city" name="city" formControlName="city">
-          </md-form-field>
+        <md-form-field class="c-form__element">
+          <label for="delegation-city"></label>
+          <input #city mdInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+        </md-form-field>
 
-          <span class="c-form__element">
-            <p-calendar #dateRange class="c-calendar" [inline]="false" [selectionMode]="'range'" [showIcon]="true"
-                        [readonlyInput]="true" [selectOtherMonths]="true" [dateFormat]="'dd/mm/yy'"
-                        [showButtonBar]="true" formControlName="dateRange">
-            </p-calendar>
-          </span>
+        <md-form-field class="c-form__element">
+          <label for="delegation-objective"></label>
+          <input #objective mdInput placeholder="Objective" id="delegation-objective" name="objective"
+                 formControlName="objective">
+        </md-form-field>
 
-          <md-form-field class="c-form__element">
-            <label for="delegation-budget"></label>
-            <input #budget mdInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
-          </md-form-field>
+        <md-form-field class="c-form__element">
+          <label for="delegation-budget"></label>
+          <input #budget mdInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
+        </md-form-field>
 
-          <button class="c-form__element--right" md-raised-button color="accent"
-                  (click)="addNewDelegation(country.value, city.value, dateRange.value, budget.value)">Add
-          </button>
-        </div>
-
-        <div class="c-drawer__table">
-          <md-table [dataSource]="dataSource">
-            <ng-container mdColumnDef="country">
-              <md-header-cell *mdHeaderCellDef>Country</md-header-cell>
-              <md-cell *mdCellDef="let delegation"> {{delegation.destination.country}}</md-cell>
-            </ng-container>
-
-            <ng-container mdColumnDef="city">
-              <md-header-cell *mdHeaderCellDef>City</md-header-cell>
-              <md-cell *mdCellDef="let delegation"> {{delegation.destination.city}}</md-cell>
-            </ng-container>
-
-            <ng-container mdColumnDef="budget">
-              <md-header-cell *mdHeaderCellDef>Budget</md-header-cell>
-              <md-cell *mdCellDef="let delegation"> {{delegation.budget}}</md-cell>
-            </ng-container>
-
-            <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-            <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-          </md-table>
+        <div class="c-form__element">
+          <h3>Select days</h3>
+          <p-calendar #dateRange class="c-calendar" [inline]="false" [selectionMode]="'range'" [showIcon]="true"
+                      [readonlyInput]="true" [selectOtherMonths]="true" [dateFormat]="'dd/mm/yy'"
+                      [showButtonBar]="true" formControlName="dateRange">
+          </p-calendar>
         </div>
       </div>
       <div class="c-button">
