@@ -103,20 +103,6 @@ describe('DelegationComponent', () => {
 
   });
 
-  it('addNewDelegation method should push new Delegation object to Delegation application', () => {
-    spyOn(component, 'clearForm');
-    component.addNewDelegation('South Korea', 'Seul', [new Date(2020, 9, 3), new Date(2020, 9, 7)], 5000);
-
-    const mockDestination: Destination = new Destination('South Korea', 'Seul');
-    const mockDelegation: Delegation = new Delegation(mockDestination,
-      [new Date(2020, 9, 3), new Date(2020, 9, 7)], 5000);
-
-    expect(component.delegationApplication.delegations.length).toEqual(1);
-    expect(component.delegationApplication.delegations[0]).toBeDefined();
-    expect(component.delegationApplication.delegations[0]).toEqual(mockDelegation);
-    expect(component.clearForm).toHaveBeenCalled();
-  });
-
   it('clearForm should clear all fields within delegation form group', () => {
     const formGroup: AbstractControl = component.applicationForm.get('delegation');
     component.countryCtrl.setValue('Belgium');
@@ -139,7 +125,9 @@ describe('DelegationComponent', () => {
     });
 
     it('should return true if form does not have any errors', () => {
-      component.applicationForm.markAsPristine();
+      component.applicationForm.get('delegation')
+        .get('objective')
+        .setValue('Example value');
 
       expect(component.isValid()).toBeTruthy();
     });
