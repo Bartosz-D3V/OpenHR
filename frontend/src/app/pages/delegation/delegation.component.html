@@ -6,27 +6,77 @@
       <div formGroupName="name">
         <md-form-field class="c-form__element">
           <label for="delegation-subject-id"></label>
-          <input mdInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
-                 [(ngModel)]="delegationApplication.subjectId" formControlName="subjectId">
+          <input mdInput required="required" placeholder="Subject ID" id="delegation-subject-id"
+                 name="subjectId" value="{{delegationApplication.subjectId}}" formControlName="subjectId">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-first-name"></label>
-          <input mdInput required="required" placeholder="Subject ID" id="delegation-first-name" name="firstName"
-                 [(ngModel)]="delegationApplication.firstName" formControlName="first">
+          <input mdInput id="delegation-first-name" placeholder="First name" name="firstName"
+                 value="{{delegationApplication.firstName}}" formControlName="first">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-middle-name"></label>
           <input mdInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
-                 [(ngModel)]="delegationApplication.middleName" formControlName="middle">
+                 value="{{delegationApplication.middleName}}" formControlName="middle">
         </md-form-field>
 
         <md-form-field class="c-form__element">
           <label for="delegation-last-name"></label>
           <input mdInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
-                 [(ngModel)]="delegationApplication.lastName" formControlName="last">
+                 value="{{delegationApplication.lastName}}" formControlName="last">
         </md-form-field>
+      </div>
+
+      <div formGroupName="organisation">
+        <md-form-field class="c-form__element">
+          <label for="delegation-position"></label>
+          <input mdInput required="required" placeholder="Position" id="delegation-position" name="position"
+                 value="{{delegationApplication.position}}" formControlName="position">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-last-name"></label>
+          <input mdInput required="required" placeholder="Department" id="delegation-department" name="department"
+                 value="{{delegationApplication.department}}" formControlName="department">
+        </md-form-field>
+      </div>
+
+      <div formGroupName="delegation">
+        <md-form-field class="c-form__element">
+          <input #country mdInput placeholder="Country" aria-label="Country" [mdAutocomplete]="'auto'"
+                 [formControl]="countryCtrl">
+          <md-autocomplete #auto="mdAutocomplete">
+          </md-autocomplete>
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-city"></label>
+          <input #city mdInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-objective"></label>
+          <input #objective mdInput placeholder="Objective" id="delegation-objective" name="objective"
+                 formControlName="objective">
+        </md-form-field>
+
+        <md-form-field class="c-form__element">
+          <label for="delegation-budget"></label>
+          <input #budget mdInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
+        </md-form-field>
+
+        <div class="c-form__element">
+          <h3>Select days</h3>
+          <p-calendar #dateRange class="c-calendar" [inline]="false" [selectionMode]="'range'" [showIcon]="true"
+                      [readonlyInput]="true" [selectOtherMonths]="true" [dateFormat]="'dd/mm/yy'"
+                      [showButtonBar]="true" formControlName="dateRange">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="c-button">
+        <button md-raised-button color="primary">Submit</button>
       </div>
     </form>
   </md-card>
