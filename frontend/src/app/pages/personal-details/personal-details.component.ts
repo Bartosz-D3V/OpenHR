@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
-import { Subject } from './domain/subject';
+import { Subject } from '../../shared/domain/subject/subject';
 
 import { PersonalDetailsService } from './service/personal-details.service';
 import { RegularExpressions } from '../../shared/constants/regular-expressions';

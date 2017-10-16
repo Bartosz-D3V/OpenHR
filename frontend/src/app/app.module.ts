@@ -28,6 +28,8 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AboutComponent } from './pages/about/about.component';
+import { AvatarComponent } from './shared/components/avatar/avatar.component';
+import { InitialsPipe } from './shared/pipes/initials/initials.pipe';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { AboutComponent } from './pages/about/about.component';
     StaticModalComponent,
     DelegationComponent,
     AboutComponent,
+    AvatarComponent,
+    InitialsPipe,
   ],
   imports: [
     BrowserModule,

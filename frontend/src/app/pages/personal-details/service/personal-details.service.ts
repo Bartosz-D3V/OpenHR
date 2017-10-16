@@ -7,7 +7,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { Subject } from '../domain/subject';
+import { Subject } from '../../../shared/domain/subject/subject';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
