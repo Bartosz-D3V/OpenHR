@@ -1,17 +1,20 @@
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import {
   BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions,
-  ResponseOptions
+  ResponseOptions, Response
 } from '@angular/http';
 
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 
+import { Subject } from '../domain/subject';
+import { Address } from '../domain/address';
+import { PersonalDetailsService } from './personal-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
-import { MyLeaveService } from './my-leave.service';
 
-describe('MyLeaveService', () => {
-  const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
+describe('PersonalDetailsService', () => {
+  const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
+    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
   @Injectable()
   class FakeErrorResolverService {
@@ -19,19 +22,19 @@ describe('MyLeaveService', () => {
     }
   }
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpModule,
       ],
       providers: [
-        MyLeaveService,
+        PersonalDetailsService,
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
       ],
     });
-  });
+  }));
 
   beforeEach(() => {
     this.injector = ReflectiveInjector.resolveAndCreate([
@@ -45,31 +48,31 @@ describe('MyLeaveService', () => {
         provide: ErrorResolverService, useClass: FakeErrorResolverService,
       },
       Http,
-      MyLeaveService,
+      PersonalDetailsService,
     ]);
-    this.myLeaveService = this.injector.get(MyLeaveService);
+    this.PersonalDetailsService = this.injector.get(PersonalDetailsService);
     this.backend = this.injector.get(ConnectionBackend) as MockBackend;
     this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
 
     spyOn(console, 'log');
   });
 
-  it('should be created', inject([MyLeaveService], (service: MyLeaveService) => {
+  it('should be created', inject([PersonalDetailsService], (service: PersonalDetailsService) => {
     expect(service).toBeTruthy();
   }));
 
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', inject([MyLeaveService], (service: MyLeaveService) => {
+    it('should log actual error', inject([PersonalDetailsService], (service: PersonalDetailsService) => {
       service['handleError'](mockError);
 
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
     }));
 
-    it('should trigger createAlert method', inject([MyLeaveService, ErrorResolverService],
-      (service: MyLeaveService, errorResolver: ErrorResolverService) => {
+    it('should trigger createAlert method', inject([PersonalDetailsService, ErrorResolverService],
+      (service: PersonalDetailsService, errorResolver: ErrorResolverService) => {
         spyOn(errorResolver, 'createAlert');
         service['handleError'](mockError);
 
@@ -79,37 +82,38 @@ describe('MyLeaveService', () => {
 
   });
 
-  describe('API access methods', () => {
+  describe('API access method', () => {
 
     it('should query current service URL', fakeAsync(() => {
-      this.myLeaveService.getLeaveTypes();
+      this.PersonalDetailsService.getCurrentSubject();
 
-      expect(this.lastConnection.request.url).toMatch(/app\/my-leave/);
+      expect(this.lastConnection.request.url).toMatch(/app\/my-details/);
     }));
 
-    describe('getLeaveTypes', () => {
+    describe('getCurrentSubject', () => {
 
-      it('should return an Observable of type Array of type string', fakeAsync(() => {
-        let result: any;
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
         let error: any;
-        this.myLeaveService.getLeaveTypes()
+        this.PersonalDetailsService.getCurrentSubject()
           .subscribe(
-            (res: Array<string>) => result = res,
+            (res: Object) => result = res,
             (err: any) => error = err);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
-          body: JSON.stringify(mockLeaveTypes),
+          body: JSON.stringify(mockSubject),
         })));
         tick();
-        /**
-         * tests goes here
-         */
+
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
       }));
 
       it('should resolve error if server is down', fakeAsync(() => {
-        spyOn(this.myLeaveService, 'handleError');
+        spyOn(this.PersonalDetailsService, 'handleError');
         let result: Object;
         let error: any;
-        this.myLeaveService.getLeaveTypes()
+        this.PersonalDetailsService.getCurrentSubject()
           .subscribe(
             (res: Object) => result = res,
             (err: any) => error = err);
@@ -118,9 +122,8 @@ describe('MyLeaveService', () => {
           statusText: 'URL not found',
         })));
         tick();
-        /**
-         * tests goes here
-         */
+
+        expect(this.PersonalDetailsService['handleError']).toHaveBeenCalled();
       }));
 
     });

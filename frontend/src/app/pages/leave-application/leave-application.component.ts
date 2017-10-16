@@ -2,16 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ISubscription } from 'rxjs/Subscription';
 
-import { MyLeaveService } from './service/my-leave.service';
+import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplication } from './domain/leave-application';
 
 @Component({
-  selector: 'app-my-leave',
-  templateUrl: './my-leave.component.html',
-  styleUrls: ['./my-leave.component.scss'],
-  providers: [MyLeaveService],
+  selector: 'app-leave-application',
+  templateUrl: './leave-application.component.html',
+  styleUrls: ['./leave-application.component.scss'],
+  providers: [LeaveApplicationService],
 })
-export class MyLeaveComponent implements OnInit, OnDestroy {
+export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   public leaveTypes: Array<String>;
   public $leaveTypes: ISubscription;
@@ -21,7 +21,7 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
   public selectorType = 'range';
   public leaveApplication: LeaveApplication = new LeaveApplication();
 
-  constructor(private _myLeaveService: MyLeaveService) {
+  constructor(private _leaveApplicationService: LeaveApplicationService) {
   }
 
   ngOnInit() {
@@ -53,7 +53,7 @@ export class MyLeaveComponent implements OnInit, OnDestroy {
   }
 
   public getLeaveTypes(): void {
-    this.$leaveTypes = this._myLeaveService.getLeaveTypes()
+    this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
       });

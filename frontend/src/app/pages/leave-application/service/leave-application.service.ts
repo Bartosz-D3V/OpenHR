@@ -6,9 +6,9 @@ import { Observable } from 'rxjs/Observable';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
-export class MyLeaveService {
+export class LeaveApplicationService {
 
-  private url = 'app/my-leave';
+  private url = 'app/leave-application';
   private headers: Headers = new Headers({
     'Content-Type': 'application/json',
   });

@@ -1,20 +1,17 @@
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import {
   BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions,
-  ResponseOptions, Response
+  ResponseOptions
 } from '@angular/http';
 
-import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 
-import { Subject } from '../domain/subject';
-import { Address } from '../domain/address';
-import { MyDetailsService } from './my-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
+import { LeaveApplicationService } from './leave-application.service';
 
-describe('MyDetailsService', () => {
-  const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+describe('LeaveApplicationService', () => {
+  const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
 
   @Injectable()
   class FakeErrorResolverService {
@@ -22,19 +19,19 @@ describe('MyDetailsService', () => {
     }
   }
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpModule,
       ],
       providers: [
-        MyDetailsService,
+        LeaveApplicationService,
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
       ],
     });
-  }));
+  });
 
   beforeEach(() => {
     this.injector = ReflectiveInjector.resolveAndCreate([
@@ -48,31 +45,31 @@ describe('MyDetailsService', () => {
         provide: ErrorResolverService, useClass: FakeErrorResolverService,
       },
       Http,
-      MyDetailsService,
+      LeaveApplicationService,
     ]);
-    this.myDetailsService = this.injector.get(MyDetailsService);
+    this.LeaveApplicationService = this.injector.get(LeaveApplicationService);
     this.backend = this.injector.get(ConnectionBackend) as MockBackend;
     this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
 
     spyOn(console, 'log');
   });
 
-  it('should be created', inject([MyDetailsService], (service: MyDetailsService) => {
+  it('should be created', inject([LeaveApplicationService], (service: LeaveApplicationService) => {
     expect(service).toBeTruthy();
   }));
 
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', inject([MyDetailsService], (service: MyDetailsService) => {
+    it('should log actual error', inject([LeaveApplicationService], (service: LeaveApplicationService) => {
       service['handleError'](mockError);
 
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
     }));
 
-    it('should trigger createAlert method', inject([MyDetailsService, ErrorResolverService],
-      (service: MyDetailsService, errorResolver: ErrorResolverService) => {
+    it('should trigger createAlert method', inject([LeaveApplicationService, ErrorResolverService],
+      (service: LeaveApplicationService, errorResolver: ErrorResolverService) => {
         spyOn(errorResolver, 'createAlert');
         service['handleError'](mockError);
 
@@ -82,38 +79,37 @@ describe('MyDetailsService', () => {
 
   });
 
-  describe('API access method', () => {
+  describe('API access methods', () => {
 
     it('should query current service URL', fakeAsync(() => {
-      this.myDetailsService.getCurrentSubject();
+      this.LeaveApplicationService.getLeaveTypes();
 
-      expect(this.lastConnection.request.url).toMatch(/app\/my-details/);
+      expect(this.lastConnection.request.url).toMatch(/app\/leave-application/);
     }));
 
-    describe('getCurrentSubject', () => {
+    describe('getLeaveTypes', () => {
 
-      it('should return an Observable of type Subject', fakeAsync(() => {
-        let result: Object;
+      it('should return an Observable of type Array of type string', fakeAsync(() => {
+        let result: any;
         let error: any;
-        this.myDetailsService.getCurrentSubject()
+        this.LeaveApplicationService.getLeaveTypes()
           .subscribe(
-            (res: Object) => result = res,
+            (res: Array<string>) => result = res,
             (err: any) => error = err);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
-          body: JSON.stringify(mockSubject),
+          body: JSON.stringify(mockLeaveTypes),
         })));
         tick();
-
-        expect(error).toBeUndefined();
-        expect(typeof result).toBe('object');
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+        /**
+         * tests goes here
+         */
       }));
 
       it('should resolve error if server is down', fakeAsync(() => {
-        spyOn(this.myDetailsService, 'handleError');
+        spyOn(this.LeaveApplicationService, 'handleError');
         let result: Object;
         let error: any;
-        this.myDetailsService.getCurrentSubject()
+        this.LeaveApplicationService.getLeaveTypes()
           .subscribe(
             (res: Object) => result = res,
             (err: any) => error = err);
@@ -122,8 +118,9 @@ describe('MyDetailsService', () => {
           statusText: 'URL not found',
         })));
         tick();
-
-        expect(this.myDetailsService['handleError']).toHaveBeenCalled();
+        /**
+         * tests goes here
+         */
       }));
 
     });
