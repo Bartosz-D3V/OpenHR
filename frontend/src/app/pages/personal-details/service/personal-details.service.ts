@@ -11,7 +11,7 @@ import { Subject } from '../domain/subject';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
-export class MyDetailsService {
+export class PersonalDetailsService {
 
   private url = 'app/my-details';
   private headers: Headers = new Headers({

@@ -12,18 +12,18 @@ import 'rxjs/add/observable/of';
 
 import { Subject } from './domain/subject';
 import { Address } from './domain/address';
-import { MyDetailsComponent } from './my-details.component';
+import { PersonalDetailsComponent } from './personal-details.component';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
-import { MyDetailsService } from './service/my-details.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 import Spy = jasmine.Spy;
 
-describe('MyDetailsComponent', () => {
-  let component: MyDetailsComponent;
-  let fixture: ComponentFixture<MyDetailsComponent>;
+describe('PersonalDetailsComponent', () => {
+  let component: PersonalDetailsComponent;
+  let fixture: ComponentFixture<PersonalDetailsComponent>;
   const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
@@ -43,7 +43,7 @@ describe('MyDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MyDetailsComponent,
+        PersonalDetailsComponent,
         PageHeaderComponent,
         StaticModalComponent,
         CapitalizePipe,
@@ -61,7 +61,7 @@ describe('MyDetailsComponent', () => {
       ],
       providers: [
         {
-          provide: MyDetailsService, useClass: FakeSubjectService,
+          provide: PersonalDetailsService, useClass: FakeSubjectService,
         },
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
@@ -72,7 +72,7 @@ describe('MyDetailsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyDetailsComponent);
+    fixture = TestBed.createComponent(PersonalDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 

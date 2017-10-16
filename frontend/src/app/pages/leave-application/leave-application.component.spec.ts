@@ -11,15 +11,15 @@ import { CalendarModule } from 'primeng/primeng';
 
 import { Observable } from 'rxjs/Observable';
 
-import { MyLeaveComponent } from './my-leave.component';
+import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
 
-describe('MyLeaveComponent', () => {
-  let component: MyLeaveComponent;
-  let fixture: ComponentFixture<MyLeaveComponent>;
+describe('LeaveApplicationComponent', () => {
+  let component: LeaveApplicationComponent;
+  let fixture: ComponentFixture<LeaveApplicationComponent>;
   const appliedDays = [
     new Date('03/05/2017')
   ];
@@ -29,7 +29,7 @@ describe('MyLeaveComponent', () => {
   mockLeave.message = '';
 
   @Injectable()
-  class FakeMyLeaveComponent {
+  class FakeLeaveApplicationComponent {
     public getLeaveTypes(): any {
       return Observable.of(null);
     }
@@ -44,7 +44,7 @@ describe('MyLeaveComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MyLeaveComponent,
+        LeaveApplicationComponent,
         PageHeaderComponent,
         CapitalizePipe,
       ],
@@ -62,7 +62,7 @@ describe('MyLeaveComponent', () => {
       ],
       providers: [
         {
-          provide: MyLeaveComponent, useClass: FakeMyLeaveComponent,
+          provide: LeaveApplicationComponent, useClass: FakeLeaveApplicationComponent,
         },
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
@@ -73,7 +73,7 @@ describe('MyLeaveComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyLeaveComponent);
+    fixture = TestBed.createComponent(LeaveApplicationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.leaveApplication = mockLeave;

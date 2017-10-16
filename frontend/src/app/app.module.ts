@@ -5,11 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MdAutocompleteModule,
-  MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdDatepickerModule, MdDialogModule,
-  MdExpansionModule,
-  MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule, MdRadioModule, MdSelectModule,
-  MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule, MdTableModule, MdToolbarModule
+  MdAutocompleteModule, MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdDatepickerModule,
+  MdDialogModule, MdExpansionModule, MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule,
+  MdRadioModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule, MdTableModule,
+  MdToolbarModule
 } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
@@ -19,11 +18,11 @@ import { SidenavComponent } from './shared/components/sidenav/sidenav.component'
 import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 
-import { MyDetailsComponent } from './pages/my-details/my-details.component';
+import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
 import { NamePipe } from './shared/pipes/name/name.pipe';
-import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
+import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { DelegationComponent } from './pages/delegation/delegation.component';
@@ -36,11 +35,11 @@ import { AboutComponent } from './pages/about/about.component';
     SidenavComponent,
     SidenavItemComponent,
     SidenavItemListComponent,
-    MyDetailsComponent,
+    PersonalDetailsComponent,
     PageHeaderComponent,
     CapitalizePipe,
     NamePipe,
-    MyLeaveComponent,
+    LeaveApplicationComponent,
     StaticModalComponent,
     DelegationComponent,
     AboutComponent,

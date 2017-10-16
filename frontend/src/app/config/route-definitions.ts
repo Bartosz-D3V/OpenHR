@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
 
-import { MyDetailsComponent } from '../pages/my-details/my-details.component';
-import { MyLeaveComponent } from '../pages/my-leave/my-leave.component';
+import { PersonalDetailsComponent } from '../pages/personal-details/personal-details.component';
+import { LeaveApplicationComponent } from '../pages/leave-application/leave-application.component';
 import { DelegationComponent } from '../pages/delegation/delegation.component';
 import { AboutComponent } from '../pages/about/about.component';
 
 export const routeDefinitions: Routes = [
   {
     path: 'my-details',
-    component: MyDetailsComponent,
+    component: PersonalDetailsComponent,
     pathMatch: 'full',
   },
   {
-    path: 'my-leave',
-    component: MyLeaveComponent,
+    path: 'leave-application',
+    component: LeaveApplicationComponent,
     pathMatch: 'full',
   },
   {
