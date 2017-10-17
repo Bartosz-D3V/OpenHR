@@ -2,25 +2,44 @@ package org.openhr.domain.subject;
 
 import org.openhr.domain.address.Address;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 public class Subject {
 
   @Id
+  @NotNull
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long subjectId;
+
+  @NotNull
+  @Column(name = "first_name")
   private String firstName;
+
+  @Column(name = "middle_name")
   private String middleName;
+
+  @NotNull
+  @Column(name = "last_name")
   private String lastName;
+
+  @NotNull
+  @Column(name = "date_of_birth")
   private LocalDate dateOfBirth;
+
   private String position;
   private String telephone;
+
+  @NotNull
   private String email;
+
+  @NotNull
   private Address address;
 
   public Subject() {

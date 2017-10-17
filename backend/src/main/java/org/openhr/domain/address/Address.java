@@ -1,9 +1,20 @@
 package org.openhr.domain.address;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Address {
+
+  @Column(name = "first_line_address")
   private String firstLineAddress;
+
+  @Column(name = "second_line_address")
   private String secondLineAddress;
+
+  @Column(name = "third_line_address")
   private String thirdLineAddress;
+
   private String postcode;
   private String city;
   private String country;

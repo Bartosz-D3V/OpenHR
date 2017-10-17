@@ -3,7 +3,9 @@ package org.openhr.service.myDetails.impl;
 import org.openhr.dao.subject.SubjectDAO;
 import org.openhr.domain.subject.Subject;
 import org.openhr.service.myDetails.MyDetailsService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MyDetailsServiceImpl implements MyDetailsService {
 
   private final SubjectDAO subjectDAO;
@@ -14,6 +16,6 @@ public class MyDetailsServiceImpl implements MyDetailsService {
 
   @Override
   public Subject getSubjectDetails(final long subjectId) {
-    return null;
+    return this.subjectDAO.getSubjectDetails(subjectId);
   }
 }
