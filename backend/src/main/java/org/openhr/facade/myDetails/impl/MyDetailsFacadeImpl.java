@@ -3,7 +3,9 @@ package org.openhr.facade.myDetails.impl;
 import org.openhr.domain.subject.Subject;
 import org.openhr.facade.myDetails.MyDetailsFacade;
 import org.openhr.service.myDetails.MyDetailsService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MyDetailsFacadeImpl implements MyDetailsFacade {
 
   private final MyDetailsService myDetailsService;

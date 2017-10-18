@@ -1,4 +1,4 @@
-package org.openhr.controller.MyDetails;
+package org.openhr.controller.myDetails;
 
 import org.openhr.domain.subject.Subject;
 import org.openhr.facade.myDetails.MyDetailsFacade;
