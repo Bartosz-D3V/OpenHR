@@ -6,9 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdAutocompleteModule, MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdDatepickerModule,
-  MdDialogModule, MdExpansionModule, MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule,
-  MdRadioModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule, MdTableModule,
-  MdToolbarModule
+  MdDialogModule, MdExpansionModule, MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
+  MdNativeDateModule, MdRadioModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule,
+  MdStepperModule, MdTableModule, MdToolbarModule
 } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
@@ -52,6 +52,7 @@ import { InitialsPipe } from './shared/pipes/initials/initials.pipe';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    MdMenuModule,
     MdButtonModule,
     MdRadioModule,
     MdButtonToggleModule,

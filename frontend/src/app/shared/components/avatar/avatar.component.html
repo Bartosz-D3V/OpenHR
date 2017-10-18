@@ -1,1 +1,7 @@
-<button class="c-avatar" md-fab color="accent" id="shared-avatar">{{subject.fullName | initials}}</button>
+<button class="c-avatar" md-mini-fab color="accent" id="shared-avatar" [mdMenuTriggerFor]="avatarMenu">
+  {{subject.fullName | initials}}</button>
+<md-menu #avatarMenu="mdMenu">
+  <button md-menu-item>Your account</button>
+  <button md-menu-item>Settings</button>
+  <button md-menu-item>Log out</button>
+</md-menu>

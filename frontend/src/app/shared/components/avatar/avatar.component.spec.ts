@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MdButtonModule, MdMenuModule } from '@angular/material';
+
 import { AvatarComponent } from './avatar.component';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { Subject } from '../../domain/subject/subject';
@@ -16,6 +18,10 @@ describe('AvatarComponent', () => {
       declarations: [
         InitialsPipe,
         AvatarComponent
+      ],
+      imports: [
+        MdMenuModule,
+        MdButtonModule
       ]
     })
       .compileComponents();
@@ -32,7 +38,7 @@ describe('AvatarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should display initials of the subject inside the button', () => {
+  it('should display initials of the subject inside the button', () => {
     const actualInitials: string = fixture.nativeElement.querySelector('#shared-avatar').innerText;
 
     expect(actualInitials).toEqual('JT');

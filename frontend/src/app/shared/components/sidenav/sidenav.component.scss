@@ -9,6 +9,16 @@
     background-color: $navbar-background-color;
   }
 
+  &__toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__flex-spacer {
+    flex-grow: 1;
+  }
+
   &__list {
     margin-top: 10%;
   }
