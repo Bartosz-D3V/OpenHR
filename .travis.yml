@@ -25,7 +25,6 @@ before_script:
   - export DISPLAY=:99.0
   - sleep 3
   - mysql -u root -e 'CREATE DATABASE openhr;'
-  - mysql -u root -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';"
   - mysql -u root -e "GRANT ALL ON openhr.* TO 'root'@'localhost';"
 
 before_install:
