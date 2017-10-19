@@ -40,7 +40,7 @@ install:
   - cd frontend/
   - npm install
   - cd ../backend/
-  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD -DskipTests -e
+  - mvn install -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}} -DskipTests -e
 
 script:
   - cd ../frontend/
@@ -48,8 +48,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
-  - mvn package -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
-  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn package -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}}
+  - mvn test -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}}
 
 #after_success:
 # - codecov
