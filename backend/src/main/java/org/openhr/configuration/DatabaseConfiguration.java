@@ -57,7 +57,7 @@ public class DatabaseConfiguration {
     Properties hibernateProperties = new Properties();
     hibernateProperties.put("hibernate.dialect", HIBERNATE_DIALECT);
     hibernateProperties.put("hibernate.show_sql", HIBERNATE_SHOW_SQL);
-    hibernateProperties.put("HBM2DDL_AUTO", HIBERNATE_HBM2DDL_AUTO);
+    hibernateProperties.put("hibernate.hbm2ddl.auto", HIBERNATE_HBM2DDL_AUTO);
     sessionFactoryBean.setHibernateProperties(hibernateProperties);
 
     return sessionFactoryBean;

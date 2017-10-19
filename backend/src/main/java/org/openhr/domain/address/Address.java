@@ -1,5 +1,8 @@
 package org.openhr.domain.address;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Address {
   private String firstLineAddress;
   private String secondLineAddress;

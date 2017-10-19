@@ -1,7 +1,7 @@
-package org.openhr.facade.myDetails;
+package org.openhr.facade.personaldetails;
 
 import org.openhr.domain.subject.Subject;
 
-public interface MyDetailsFacade {
+public interface PersonalDetailsFacade {
   Subject getSubjectDetails(long subjectId);
 }
