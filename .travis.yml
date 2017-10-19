@@ -34,6 +34,7 @@ before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - mysql -u root -e 'CREATE DATABASE openhr;'
+  - mysql -e 'GRANT ALL ON openhr.* TO 'root'@'localhost';'
 
 install:
   - cd frontend/
