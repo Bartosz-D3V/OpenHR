@@ -1,4 +1,4 @@
-dist: trusty
+dist: precise
 sudo: required
 
 language: java
@@ -39,7 +39,7 @@ install:
   - cd frontend/
   - npm install
   - cd ../backend/
-  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD -DskipTests -e
 
 script:
   - cd ../frontend/
