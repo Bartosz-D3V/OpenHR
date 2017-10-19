@@ -25,7 +25,6 @@ before_script:
   - export DISPLAY=:99.0
   - sleep 3
   - mysql -u root -e 'CREATE DATABASE openhr;'
-  - mysql -u root -e "GRANT ALL ON openhr.* TO 'root'@'localhost';"
 
 before_install:
   - node --version
@@ -40,7 +39,7 @@ install:
   - cd frontend/
   - npm install
   - cd ../backend/
-  - mvn install -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}} -DskipTests -e
+  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 script:
   - cd ../frontend/
@@ -48,8 +47,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
-  - mvn package -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}}
-  - mvn test -B -D USERNAME={{USERNAME}} -D PASSWORD={{PASSWORD}}
+  - mvn package -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
 
 #after_success:
 # - codecov
