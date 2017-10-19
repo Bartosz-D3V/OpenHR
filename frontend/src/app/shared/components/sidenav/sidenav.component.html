@@ -7,10 +7,12 @@
       <app-sidenav-item-list></app-sidenav-item-list>
     </div>
   </md-sidenav>
-  <md-toolbar color="primary">
+  <md-toolbar [color]="'primary'" class="c-sidenav__toolbar">
     <button md-icon-button (click)="sidenav.toggle()">
       <md-icon class="md-24">menu</md-icon>
     </button>
+    <div class="c-sidenav__flex-spacer"></div>
+    <app-avatar [subject]="subject"></app-avatar>
   </md-toolbar>
   <router-outlet></router-outlet>
 </md-sidenav-container>
