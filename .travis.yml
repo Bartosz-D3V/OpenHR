@@ -1,4 +1,4 @@
-dist: trusty
+dist: precise
 sudo: required
 
 language: java
@@ -24,6 +24,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - export DISPLAY=:99.0
   - sleep 3
+  - mysql -u root -e 'CREATE DATABASE openhr;'
 
 before_install:
   - node --version
@@ -33,7 +34,6 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
   - cd frontend/
