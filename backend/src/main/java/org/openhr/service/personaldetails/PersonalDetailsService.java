@@ -1,7 +1,7 @@
-package org.openhr.service.myDetails;
+package org.openhr.service.personaldetails;
 
 import org.openhr.domain.subject.Subject;
 
-public interface MyDetailsService {
+public interface PersonalDetailsService {
   Subject getSubjectDetails(long subjectId);
 }
