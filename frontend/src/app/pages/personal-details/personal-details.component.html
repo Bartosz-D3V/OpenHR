@@ -1,4 +1,4 @@
-<app-page-header [header]="'My details'"></app-page-header>
+<app-page-header [header]="'Personal details'"></app-page-header>
 <section class="c-drawer">
   <md-toolbar [color]="'primary'">My details</md-toolbar>
   <md-accordion>
@@ -14,33 +14,33 @@
       </md-expansion-panel-header>
       <form class="c-form">
         <md-form-field class="c-form__element">
-          <label for="my-details-first-name"></label>
+          <label for="personal-details-first-name"></label>
           <input mdInput required="required" placeholder="First name" [formControl]="firstNameFormControl"
-                 id="my-details-first-name" name="firstName" [ngModel]="subject?.firstName">
+                 id="personal-details-first-name" name="firstName" [ngModel]="subject?.firstName">
           <md-error *ngIf="firstNameFormControl.hasError('required')">
             First name is required
           </md-error>
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-middle-name"></label>
-          <input mdInput placeholder="Middle name" id="my-details-middle-name"
+          <label for="personal-details-middle-name"></label>
+          <input mdInput placeholder="Middle name" id="personal-details-middle-name"
                  name="middleName" [ngModel]="subject?.middleName">
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-last-name"></label>
+          <label for="personal-details-last-name"></label>
           <input mdInput required="required" placeholder="Last name" [formControl]="lastNameFormControl"
-                 id="my-details-last-name" name="lastName" [ngModel]="subject?.lastName">
+                 id="personal-details-last-name" name="lastName" [ngModel]="subject?.lastName">
           <md-error *ngIf="lastNameFormControl.hasError('required')">
             Last name is required
           </md-error>
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-date-of-birth"></label>
+          <label for="personal-details-date-of-birth"></label>
           <input mdInput [mdDatepicker]="picker" placeholder="Date of birth" [formControl]="dobFormControl"
-                 id="my-details-date-of-birth" name="dateOfBirth" [ngModel]="subject?.dateOfBirth">
+                 id="personal-details-date-of-birth" name="dateOfBirth" [ngModel]="subject?.dateOfBirth">
           <md-error *ngIf="dobFormControl.hasError('required')">
             Date of birth is required
           </md-error>
@@ -49,8 +49,8 @@
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-position"></label>
-          <input mdInput required="required" disabled placeholder="Position" id="my-details-position"
+          <label for="personal-details-position"></label>
+          <input mdInput required="required" disabled placeholder="Position" id="personal-details-position"
                  name="position" [ngModel]="subject?.position">
         </md-form-field>
       </form>
@@ -71,9 +71,9 @@
       <form class="c-form">
         <md-form-field class="c-form__element">
           <span mdPrefix>+44 (0) &nbsp;</span>
-          <label for="my-details-telephone"></label>
+          <label for="personal-details-telephone"></label>
           <input type="tel" mdInput placeholder="Telephone" [formControl]="telephoneFormControl"
-                 id="my-details-telephone" name="telephone" [ngModel]="subject?.telephone">
+                 id="personal-details-telephone" name="telephone" [ngModel]="subject?.telephone">
           <md-error *ngIf="telephoneFormControl.hasError('minlength')">
             Telephone number must contains at least 7 digits
           </md-error>
@@ -90,8 +90,8 @@
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-email"></label>
-          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="my-details-email"
+          <label for="personal-details-email"></label>
+          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="personal-details-email"
                  name="email" [ngModel]="subject?.email">
           <md-error *ngIf="emailFormControl.hasError('pattern')">
             Please enter a valid email address
@@ -102,27 +102,27 @@
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-1st-line-address"></label>
-          <input type="text" mdInput placeholder="First line address" id="my-details-1st-line-address"
+          <label for="personal-details-1st-line-address"></label>
+          <input type="text" mdInput placeholder="First line address" id="personal-details-1st-line-address"
                  name="firstLineAddress" [ngModel]="subject?.address?.firstLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-2nd-line-address"></label>
-          <input type="text" mdInput placeholder="Second line address" id="my-details-2nd-line-address"
+          <label for="personal-details-2nd-line-address"></label>
+          <input type="text" mdInput placeholder="Second line address" id="personal-details-2nd-line-address"
                  name="secondLineAddress" [ngModel]="subject?.address?.secondLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-3rd-line-address"></label>
-          <input type="text" mdInput placeholder="Third line address" id="my-details-3rd-line-address"
+          <label for="personal-details-3rd-line-address"></label>
+          <input type="text" mdInput placeholder="Third line address" id="personal-details-3rd-line-address"
                  name="thirdLineAddress" [ngModel]="subject?.address?.thirdLineAddress">
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-postcode"></label>
+          <label for="personal-details-postcode"></label>
           <input type="text" mdInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
-                 id="my-details-postcode" name="postcode" [ngModel]="subject?.address?.postcode">
+                 id="personal-details-postcode" name="postcode" [ngModel]="subject?.address?.postcode">
           <md-error *ngIf="postcodeFormControl.hasError('pattern')">
             Please enter a valid postcode
           </md-error>
@@ -132,14 +132,14 @@
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-city"></label>
-          <input type="text" mdInput placeholder="City" id="my-details-city" name="city"
+          <label for="personal-details-city"></label>
+          <input type="text" mdInput placeholder="City" id="personal-details-city" name="city"
                  [ngModel]="subject?.address?.city">
         </md-form-field>
 
         <md-form-field class="c-form__element">
-          <label for="my-details-country"></label>
-          <input type="text" mdInput placeholder="Country" id="my-details-country"
+          <label for="personal-details-country"></label>
+          <input type="text" mdInput placeholder="Country" id="personal-details-country"
                  name="country" [ngModel]="subject?.address?.country">
         </md-form-field>
       </form>

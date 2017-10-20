@@ -3,16 +3,16 @@ import { FormControl, Validators } from '@angular/forms';
 
 import { Subject } from './domain/subject';
 
-import { MyDetailsService } from './service/my-details.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 import { RegularExpressions } from '../../shared/constants/regular-expressions';
 
 @Component({
-  selector: 'app-my-details',
-  templateUrl: './my-details.component.html',
-  styleUrls: ['./my-details.component.scss'],
-  providers: [MyDetailsService],
+  selector: 'app-personal-details',
+  templateUrl: './personal-details.component.html',
+  styleUrls: ['./personal-details.component.scss'],
+  providers: [PersonalDetailsService],
 })
-export class MyDetailsComponent implements OnInit {
+export class PersonalDetailsComponent implements OnInit {
 
   firstNameFormControl: FormControl = new FormControl('', [
     Validators.required,
@@ -46,7 +46,7 @@ export class MyDetailsComponent implements OnInit {
   public step = 0;
   public subject: Subject;
 
-  constructor(private _myDetailsService: MyDetailsService) {
+  constructor(private _personalDetailsService: PersonalDetailsService) {
   }
 
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class MyDetailsComponent implements OnInit {
   }
 
   getCurrentSubject(): void {
-    this._myDetailsService
+    this._personalDetailsService
       .getCurrentSubject()
       .subscribe((response: Subject) => {
         this.subject = response;
