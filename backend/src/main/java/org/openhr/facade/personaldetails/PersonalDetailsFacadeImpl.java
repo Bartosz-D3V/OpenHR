@@ -1,16 +1,15 @@
-package org.openhr.facade.personaldetails.impl;
+package org.openhr.facade.personaldetails;
 
 import org.openhr.domain.subject.Subject;
-import org.openhr.facade.personaldetails.PersonalDetailsFacade;
 import org.openhr.service.personaldetails.PersonalDetailsService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyDetailsFacadeImpl implements PersonalDetailsFacade {
+public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
 
   private final PersonalDetailsService personalDetailsService;
 
-  public MyDetailsFacadeImpl(final PersonalDetailsService myDetailsService) {
+  public PersonalDetailsFacadeImpl(final PersonalDetailsService myDetailsService) {
     this.personalDetailsService = myDetailsService;
   }
 
