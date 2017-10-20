@@ -1,11 +1,16 @@
 package org.openhr.domain.address;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class Address {
 
+  @NotNull
+  @NotEmpty
   @Column(name = "first_line_address")
   private String firstLineAddress;
 
@@ -15,7 +20,10 @@ public class Address {
   @Column(name = "third_line_address")
   private String thirdLineAddress;
 
+  @NotNull
+  @NotEmpty
   private String postcode;
+
   private String city;
   private String country;
 

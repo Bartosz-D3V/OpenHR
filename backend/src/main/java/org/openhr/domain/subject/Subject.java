@@ -1,5 +1,6 @@
 package org.openhr.domain.subject;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.openhr.domain.address.Address;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ public class Subject {
 
   @Id
   @NotNull
+  @NotEmpty
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long subjectId;
 
@@ -33,7 +35,9 @@ public class Subject {
   @Column(name = "date_of_birth")
   private LocalDate dateOfBirth;
 
+  @NotNull
   private String position;
+
   private String telephone;
 
   @NotNull
