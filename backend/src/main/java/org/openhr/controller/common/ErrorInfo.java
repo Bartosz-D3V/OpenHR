@@ -1,4 +1,4 @@
-package org.openhr.domain.error;
+package org.openhr.controller.common;
 
 public class ErrorInfo {
 
@@ -10,4 +10,11 @@ public class ErrorInfo {
     this.message = ex.getLocalizedMessage();
   }
 
+  public String getUrl() {
+    return url;
+  }
+
+  public String getMessage() {
+    return message;
+  }
 }

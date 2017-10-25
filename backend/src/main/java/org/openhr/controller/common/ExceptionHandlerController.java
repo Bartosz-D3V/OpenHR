@@ -1,7 +1,6 @@
 package org.openhr.controller.common;
 
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
-import org.openhr.domain.error.ErrorInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

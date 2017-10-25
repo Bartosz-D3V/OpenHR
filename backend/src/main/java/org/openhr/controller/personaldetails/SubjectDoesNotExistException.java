@@ -18,5 +18,4 @@ public class SubjectDoesNotExistException extends Exception {
   public SubjectDoesNotExistException(String message) {
     super(message);
   }
-
 }

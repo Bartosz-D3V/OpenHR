@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class SubjectDAOImpl implements SubjectDAO {
 
   @Override
-  public Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException{
-    throw new SubjectDoesNotExistException("User not found");
+  public Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException {
+    return null;
   }
 }
