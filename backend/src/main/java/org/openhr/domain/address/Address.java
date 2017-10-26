@@ -30,7 +30,8 @@ public class Address {
   public Address() {
   }
 
-  public Address(String firstLineAddress, String secondLineAddress, String thirdLineAddress, String postcode, String city, String country) {
+  public Address(String firstLineAddress, String secondLineAddress, String thirdLineAddress, String postcode,
+                 String city, String country) {
     this.firstLineAddress = firstLineAddress;
     this.secondLineAddress = secondLineAddress;
     this.thirdLineAddress = thirdLineAddress;
