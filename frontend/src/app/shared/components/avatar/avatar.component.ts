@@ -17,4 +17,8 @@ export class AvatarComponent implements OnInit {
   ngOnInit() {
   }
 
+  public logout(): void {
+    window.localStorage.removeItem('openHRAuth');
+  }
+
 }
