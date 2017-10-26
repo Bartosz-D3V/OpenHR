@@ -1,29 +1,24 @@
 package org.openhr.controller.personaldetails;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openhr.controller.common.ErrorInfo;
 import org.openhr.dao.subject.SubjectDAO;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @WebMvcTest(PersonalDetailsController.class)
 public class PersonalDetailsControllerTest {
@@ -39,14 +34,13 @@ public class PersonalDetailsControllerTest {
   @Mock
   private HttpServletRequest httpServletRequest;
 
-  @BeforeEach
+  @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(PersonalDetailsController.class).build();
   }
 
   @Test
-  @DisplayName("getSubjectDetails should return Error as a domain object with appropriate headers set")
   public void getSubjectDetailsShouldHandleError() throws Exception {
     when(this.subjectDAO.getSubjectDetails(1L)).thenThrow(mockException);
 
