@@ -1,5 +1,6 @@
 package org.openhr.dao.subject;
 
+import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
 import org.openhr.domain.subject.Subject;
 import org.springframework.stereotype.Repository;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class SubjectDAOImpl implements SubjectDAO {
 
   @Override
-  public Subject getSubjectDetails(long subjectId) {
+  public Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException {
     return null;
   }
 }

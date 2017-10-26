@@ -1,5 +1,6 @@
 package org.openhr.facade.personaldetails;
 
+import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
 import org.openhr.domain.subject.Subject;
 import org.openhr.service.personaldetails.PersonalDetailsService;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
   }
 
   @Override
-  public Subject getSubjectDetails(final long subjectId) {
+  public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return this.personalDetailsService.getSubjectDetails(subjectId);
   }
 }

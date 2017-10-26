@@ -41,7 +41,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -55,6 +54,12 @@
     <dependency>
       <groupId>org.springframework.restdocs</groupId>
       <artifactId>spring-restdocs-mockmvc</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -87,7 +92,7 @@
             <format>html</format>
             <format>xml</format>
           </formats>
-          <check />
+          <check/>
         </configuration>
       </plugin>
     </plugins>
@@ -102,6 +107,5 @@
       </resource>
     </resources>
   </build>
-
 
 </project>
