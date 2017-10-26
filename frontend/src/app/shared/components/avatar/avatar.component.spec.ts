@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { MdButtonModule, MdMenuModule } from '@angular/material';
 
@@ -21,7 +22,8 @@ describe('AvatarComponent', () => {
       ],
       imports: [
         MdMenuModule,
-        MdButtonModule
+        MdButtonModule,
+        RouterTestingModule,
       ]
     })
       .compileComponents();
@@ -42,5 +44,12 @@ describe('AvatarComponent', () => {
     const actualInitials: string = fixture.nativeElement.querySelector('#shared-avatar').innerText;
 
     expect(actualInitials).toEqual('JT');
+  });
+
+  it('logout method should remove token from localStorage', () => {
+    window.localStorage.setItem('openHRAuth', 't0k3n');
+    component.logout();
+
+    expect(window.localStorage.getItem('openHRAuth')).toBeNull();
   });
 });
