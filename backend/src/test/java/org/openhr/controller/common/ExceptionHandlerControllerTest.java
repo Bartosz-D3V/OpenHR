@@ -1,5 +1,6 @@
 package org.openhr.controller.common;
 
+import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,17 @@ public class ExceptionHandlerControllerTest {
   public void handleBadRequestShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final SubjectDoesNotExistException mockError = new SubjectDoesNotExistException("Subject not found");
     final ErrorInfo returnedInfo = this.exceptionHandlerController.handleBadRequest(this.httpServletRequest, mockError);
+    final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
+
+    assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
+    assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
+  }
+
+  @Test
+  public void handleHibernateExceptionShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
+    final HibernateException mockError = new HibernateException("DB error");
+    final ErrorInfo returnedInfo = this.exceptionHandlerController.handleHibernateException(this.httpServletRequest,
+            mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());

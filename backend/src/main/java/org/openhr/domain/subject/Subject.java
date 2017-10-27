@@ -31,7 +31,6 @@ public class Subject {
   @Column(name = "last_name")
   private String lastName;
 
-  @NotNull
   @Column(name = "date_of_birth")
   private LocalDate dateOfBirth;
 
