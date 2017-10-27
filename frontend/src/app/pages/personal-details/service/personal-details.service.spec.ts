@@ -7,13 +7,13 @@ import {
 import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 
-import { Subject } from '../domain/subject';
-import { Address } from '../domain/address';
+import { Subject } from '../../../shared/domain/subject/subject';
+import { Address } from '../../../shared/domain/subject/address';
 import { PersonalDetailsService } from './personal-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 describe('PersonalDetailsService', () => {
-  const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
+  const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
   @Injectable()

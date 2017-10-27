@@ -10,8 +10,8 @@ import { MdDatepickerModule, MdExpansionModule, MdNativeDateModule, MdToolbarMod
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { Subject } from './domain/subject';
-import { Address } from './domain/address';
+import { Subject } from '../../shared/domain/subject/subject';
+import { Address } from '../../shared/domain/subject/address';
 import { PersonalDetailsComponent } from './personal-details.component';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
@@ -24,7 +24,7 @@ import Spy = jasmine.Spy;
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
   let fixture: ComponentFixture<PersonalDetailsComponent>;
-  const mockSubject = new Subject('John', null, 'Test', new Date(1, 2, 1950),
+  const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
 
   @Injectable()
