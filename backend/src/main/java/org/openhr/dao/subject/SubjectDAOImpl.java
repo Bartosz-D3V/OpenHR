@@ -41,5 +41,4 @@ public class SubjectDAOImpl implements SubjectDAO {
       throw hibernateException;
     }
   }
-
 }

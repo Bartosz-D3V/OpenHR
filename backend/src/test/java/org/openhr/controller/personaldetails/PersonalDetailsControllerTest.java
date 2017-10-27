@@ -88,5 +88,4 @@ public class PersonalDetailsControllerTest {
             .andReturn();
     assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
   }
-
 }
