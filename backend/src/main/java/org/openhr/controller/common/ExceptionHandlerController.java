@@ -17,14 +17,14 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ResponseBody
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(SubjectDoesNotExistException.class)
-  public ErrorInfo handleBadRequest(HttpServletRequest req, Exception ex) {
+  public ErrorInfo handleBadRequest(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 
   @ResponseBody
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(HibernateException.class)
-  public ErrorInfo handleHibernateException(HttpServletRequest req, Exception ex) {
+  public ErrorInfo handleHibernateException(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 
