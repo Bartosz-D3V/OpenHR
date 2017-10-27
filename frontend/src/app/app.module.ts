@@ -6,9 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdAutocompleteModule, MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdDatepickerModule,
-  MdDialogModule, MdExpansionModule, MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule,
-  MdRadioModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule, MdTableModule,
-  MdToolbarModule
+  MdDialogModule, MdExpansionModule, MdGridListModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
+  MdNativeDateModule, MdRadioModule, MdSelectModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule,
+  MdStepperModule, MdTableModule, MdToolbarModule
 } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
@@ -28,6 +28,8 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AboutComponent } from './pages/about/about.component';
+import { AvatarComponent } from './shared/components/avatar/avatar.component';
+import { InitialsPipe } from './shared/pipes/initials/initials.pipe';
 
 @NgModule({
   declarations: [
@@ -43,11 +45,14 @@ import { AboutComponent } from './pages/about/about.component';
     StaticModalComponent,
     DelegationComponent,
     AboutComponent,
+    AvatarComponent,
+    InitialsPipe,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    MdMenuModule,
     MdButtonModule,
     MdRadioModule,
     MdButtonToggleModule,
