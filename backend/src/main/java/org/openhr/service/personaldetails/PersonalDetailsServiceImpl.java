@@ -27,5 +27,4 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
   public void addSubject(Subject subject) throws HibernateException {
     this.subjectDAO.addSubject(subject);
   }
-
 }

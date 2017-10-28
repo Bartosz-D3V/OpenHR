@@ -27,5 +27,4 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   public ErrorInfo handleHibernateException(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
-
 }

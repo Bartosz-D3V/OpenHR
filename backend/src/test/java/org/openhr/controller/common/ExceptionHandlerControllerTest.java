@@ -51,5 +51,4 @@ public class ExceptionHandlerControllerTest {
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
     assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
   }
-
 }
