@@ -18,13 +18,13 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
   @Override
   @Transactional(readOnly = true)
-  public Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException {
+  public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return this.subjectDAO.getSubjectDetails(subjectId);
   }
 
   @Override
   @Transactional
-  public void addSubject(Subject subject) throws HibernateException {
+  public void addSubject(final Subject subject) throws HibernateException {
     this.subjectDAO.addSubject(subject);
   }
 }

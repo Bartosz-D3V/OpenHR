@@ -24,7 +24,7 @@ public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
 
   @Override
   @Transactional
-  public void addSubject(Subject subject) throws HibernateException {
+  public void addSubject(final Subject subject) throws HibernateException {
     this.personalDetailsService.addSubject(subject);
   }
 }
