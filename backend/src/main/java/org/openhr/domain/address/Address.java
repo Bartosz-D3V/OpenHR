@@ -30,8 +30,8 @@ public class Address {
   public Address() {
   }
 
-  public Address(String firstLineAddress, String secondLineAddress, String thirdLineAddress, String postcode,
-                 String city, String country) {
+  public Address(final String firstLineAddress, final String secondLineAddress, final String thirdLineAddress,
+                 final String postcode, final String city, String country) {
     this.firstLineAddress = firstLineAddress;
     this.secondLineAddress = secondLineAddress;
     this.thirdLineAddress = thirdLineAddress;
@@ -44,7 +44,7 @@ public class Address {
     return firstLineAddress;
   }
 
-  public void setFirstLineAddress(String firstLineAddress) {
+  public void setFirstLineAddress(final String firstLineAddress) {
     this.firstLineAddress = firstLineAddress;
   }
 
@@ -52,7 +52,7 @@ public class Address {
     return secondLineAddress;
   }
 
-  public void setSecondLineAddress(String secondLineAddress) {
+  public void setSecondLineAddress(final String secondLineAddress) {
     this.secondLineAddress = secondLineAddress;
   }
 
@@ -60,7 +60,7 @@ public class Address {
     return thirdLineAddress;
   }
 
-  public void setThirdLineAddress(String thirdLineAddress) {
+  public void setThirdLineAddress(final String thirdLineAddress) {
     this.thirdLineAddress = thirdLineAddress;
   }
 
@@ -68,7 +68,7 @@ public class Address {
     return postcode;
   }
 
-  public void setPostcode(String postcode) {
+  public void setPostcode(final String postcode) {
     this.postcode = postcode;
   }
 
@@ -76,7 +76,7 @@ public class Address {
     return city;
   }
 
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -84,7 +84,7 @@ public class Address {
     return country;
   }
 
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 }

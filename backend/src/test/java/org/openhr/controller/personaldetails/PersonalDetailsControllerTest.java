@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -53,11 +55,14 @@ public class PersonalDetailsControllerTest {
   public void getSubjectDetailsShouldHandleError() throws Exception {
     when(this.personalDetailsFacade.getSubjectDetails(1)).thenThrow(mockException);
 
-    this.mockMvc
+    MvcResult result = this.mockMvc
             .perform(get("/personal-details")
                     .param("subjectId", "1"))
             .andDo(print())
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(mockException, result.getResolvedException());
   }
 
   @Test
@@ -71,6 +76,7 @@ public class PersonalDetailsControllerTest {
             .andDo(print())
             .andExpect(status().isOk())
             .andReturn();
+    assertNull(result.getResolvedException());
     assertEquals(subjectAsJson, result.getResponse().getContentAsString());
   }
 
@@ -86,6 +92,7 @@ public class PersonalDetailsControllerTest {
             .andDo(print())
             .andExpect(status().isInternalServerError())
             .andReturn();
+    assertNotNull(result.getResolvedException());
     assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
   }
 }
