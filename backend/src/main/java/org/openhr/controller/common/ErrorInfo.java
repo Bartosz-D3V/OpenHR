@@ -5,7 +5,7 @@ public class ErrorInfo {
   private final String url;
   private final String message;
 
-  public ErrorInfo(String url, Exception ex) {
+  public ErrorInfo(final String url, final Exception ex) {
     this.url = url;
     this.message = ex.getLocalizedMessage();
   }

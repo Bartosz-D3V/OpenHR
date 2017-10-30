@@ -15,7 +15,7 @@ public class SubjectDoesNotExistException extends Exception {
    *
    * @param message: message to be thrown and logged
    */
-  public SubjectDoesNotExistException(String message) {
+  public SubjectDoesNotExistException(final String message) {
     super(message);
   }
 }
