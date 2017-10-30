@@ -1,60 +1,63 @@
-package org.openhr.dao.subject;
+package org.openhr.dao.address;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
-import org.openhr.domain.subject.Subject;
+import org.openhr.domain.address.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class SubjectDAOImpl implements SubjectDAO {
+public class AddressDAOImpl implements AddressDAO {
 
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public SubjectDAOImpl(final SessionFactory sessionFactory) {
+  public AddressDAOImpl(final SessionFactory sessionFactory) {
     this.sessionFactory = sessionFactory;
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException, HibernateException {
-    Subject subject;
+  @Transactional
+  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException {
     try {
       Session session = this.sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
-      subject = session.get(Subject.class, subjectId);
+      final Address oldAddress = this.getSubjectAddress(subjectId);
+      oldAddress.setFirstLineAddress(address.getFirstLineAddress());
+      oldAddress.setSecondLineAddress(address.getSecondLineAddress());
+      oldAddress.setThirdLineAddress(address.getThirdLineAddress());
+      oldAddress.setPostcode(address.getPostcode());
+      oldAddress.setCity(address.getCity());
+      oldAddress.setCountry(address.getCountry());
+      session.merge(oldAddress);
       transaction.commit();
       session.close();
     } catch (HibernateException hibernateException) {
       this.log.error(hibernateException.getMessage());
       throw hibernateException;
     }
-    if (subject == null) {
-      this.log.error("Subject could not be found, although it must exists at this point");
-      throw new SubjectDoesNotExistException("Subject could not be found");
-    }
-
-    return subject;
   }
 
   @Override
-  @Transactional
-  public void addSubject(final Subject subject) throws HibernateException {
+  @Transactional(readOnly = true)
+  public Address getSubjectAddress(final long subjectId) throws HibernateException {
+    Address address;
     try {
       Session session = this.sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
-      session.save(subject);
+      address = session.get(Address.class, subjectId);
       transaction.commit();
       session.close();
     } catch (HibernateException hibernateException) {
-      this.log.error(hibernateException.getMessage());
+      log.error(hibernateException.getMessage());
       throw hibernateException;
     }
+
+    return address;
   }
+
 }
