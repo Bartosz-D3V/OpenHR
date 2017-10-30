@@ -31,7 +31,6 @@ public class Subject {
   @Column(name = "last_name")
   private String lastName;
 
-  @NotNull
   @Column(name = "date_of_birth")
   private LocalDate dateOfBirth;
 
@@ -49,8 +48,9 @@ public class Subject {
   public Subject() {
   }
 
-  public Subject(long subjectId, String firstName, String middleName, String lastName, LocalDate dateOfBirth,
-                 String position, String telephone, String email, Address address) {
+  public Subject(final long subjectId, final String firstName, final String middleName, final String lastName,
+                 final LocalDate dateOfBirth, final String position, final String telephone, final String email,
+                 final Address address) {
     this.subjectId = subjectId;
     this.firstName = firstName;
     this.middleName = middleName;
@@ -66,7 +66,7 @@ public class Subject {
     return subjectId;
   }
 
-  public void setSubjectId(long subjectId) {
+  public void setSubjectId(final long subjectId) {
     this.subjectId = subjectId;
   }
 
@@ -74,7 +74,7 @@ public class Subject {
     return firstName;
   }
 
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
@@ -82,7 +82,7 @@ public class Subject {
     return middleName;
   }
 
-  public void setMiddleName(String middleName) {
+  public void setMiddleName(final String middleName) {
     this.middleName = middleName;
   }
 
@@ -90,7 +90,7 @@ public class Subject {
     return lastName;
   }
 
-  public void setLastName(String lastName) {
+  public void setLastName(final String lastName) {
     this.lastName = lastName;
   }
 
@@ -98,7 +98,7 @@ public class Subject {
     return dateOfBirth;
   }
 
-  public void setDateOfBirth(LocalDate dateOfBirth) {
+  public void setDateOfBirth(final LocalDate dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
   }
 
@@ -106,7 +106,7 @@ public class Subject {
     return position;
   }
 
-  public void setPosition(String position) {
+  public void setPosition(final String position) {
     this.position = position;
   }
 
@@ -114,7 +114,7 @@ public class Subject {
     return telephone;
   }
 
-  public void setTelephone(String telephone) {
+  public void setTelephone(final String telephone) {
     this.telephone = telephone;
   }
 
@@ -122,7 +122,7 @@ public class Subject {
     return email;
   }
 
-  public void setEmail(String email) {
+  public void setEmail(final String email) {
     this.email = email;
   }
 
@@ -130,7 +130,7 @@ public class Subject {
     return address;
   }
 
-  public void setAddress(Address address) {
+  public void setAddress(final Address address) {
     this.address = address;
   }
 }

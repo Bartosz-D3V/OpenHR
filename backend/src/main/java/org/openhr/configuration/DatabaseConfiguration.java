@@ -69,5 +69,4 @@ public class DatabaseConfiguration {
     transactionManager.setSessionFactory(sessionFactory().getObject());
     return transactionManager;
   }
-
 }
