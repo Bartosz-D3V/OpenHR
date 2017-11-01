@@ -8,10 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-public class Subject {
+public class Subject implements Serializable {
 
   @Id
   @NotNull
@@ -47,9 +48,8 @@ public class Subject {
   public Subject() {
   }
 
-  public Subject(final String firstName, final String middleName, final String lastName,
-                 final LocalDate dateOfBirth, final String position, final String telephone, final String email,
-                 final Address address) {
+  public Subject(final String firstName, final String middleName, final String lastName, final LocalDate dateOfBirth,
+                 final String position, final String telephone, final String email, final Address address) {
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
@@ -127,4 +127,5 @@ public class Subject {
   public void setAddress(final Address address) {
     this.address = address;
   }
+
 }
