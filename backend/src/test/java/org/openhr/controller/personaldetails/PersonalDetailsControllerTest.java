@@ -42,7 +42,7 @@ public class PersonalDetailsControllerTest {
   private final static ErrorInfo mockError = new ErrorInfo(MOCK_URL, mockException);
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL",
           "London", "UK");
-  private final static Subject mockSubject = new Subject(1L, "John", null, "White",
+  private final static Subject mockSubject = new Subject("John", null, "White",
           null, "Manager", "123456789", "john.white@cor.com", mockAddress);
 
   @Autowired
