@@ -5,7 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdButtonModule, MdMenuModule, MdSelectModule, MdStepperModule, MdToolbarModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
 
@@ -52,11 +52,11 @@ describe('LeaveApplicationComponent', () => {
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
-        MdStepperModule,
-        MdButtonModule,
-        MdMenuModule,
-        MdToolbarModule,
-        MdSelectModule,
+        MatStepperModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatSelectModule,
         CalendarModule,
         NoopAnimationsModule,
       ],

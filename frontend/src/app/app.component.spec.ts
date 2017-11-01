@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TestBed, async } from '@angular/core/testing';
 
-import { MdButtonModule, MdIconModule, MdMenuModule, MdSidenavModule, MdToolbarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
@@ -31,11 +31,11 @@ describe('AppComponent', () => {
       ],
       imports: [
         BrowserAnimationsModule,
-        MdSidenavModule,
-        MdToolbarModule,
-        MdIconModule,
-        MdMenuModule,
-        MdButtonModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatMenuModule,
+        MatButtonModule,
         RouterTestingModule,
       ],
     }).compileComponents();

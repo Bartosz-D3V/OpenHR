@@ -1,154 +1,154 @@
 <app-page-header [header]="'Personal details'"></app-page-header>
 <section class="c-drawer">
-  <md-toolbar [color]="'primary'">My details</md-toolbar>
-  <md-accordion>
+  <mat-toolbar [color]="'primary'">My details</mat-toolbar>
+  <mat-accordion>
 
-    <md-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
-      <md-expansion-panel-header>
-        <md-panel-title>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
           Personal information
-        </md-panel-title>
-        <md-panel-description>
-          <md-icon>account_circle</md-icon>
-        </md-panel-description>
-      </md-expansion-panel-header>
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
       <form class="c-form">
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-first-name"></label>
-          <input mdInput required="required" placeholder="First name" [formControl]="firstNameFormControl"
+          <input matInput required="required" placeholder="First name" [formControl]="firstNameFormControl"
                  id="personal-details-first-name" name="firstName" [ngModel]="subject?.firstName">
-          <md-error *ngIf="firstNameFormControl.hasError('required')">
+          <mat-error *ngIf="firstNameFormControl.hasError('required')">
             First name is required
-          </md-error>
-        </md-form-field>
+          </mat-error>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-middle-name"></label>
-          <input mdInput placeholder="Middle name" id="personal-details-middle-name"
+          <input matInput placeholder="Middle name" id="personal-details-middle-name"
                  name="middleName" [ngModel]="subject?.middleName">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-last-name"></label>
-          <input mdInput required="required" placeholder="Last name" [formControl]="lastNameFormControl"
+          <input matInput required="required" placeholder="Last name" [formControl]="lastNameFormControl"
                  id="personal-details-last-name" name="lastName" [ngModel]="subject?.lastName">
-          <md-error *ngIf="lastNameFormControl.hasError('required')">
+          <mat-error *ngIf="lastNameFormControl.hasError('required')">
             Last name is required
-          </md-error>
-        </md-form-field>
+          </mat-error>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-date-of-birth"></label>
-          <input mdInput [mdDatepicker]="picker" placeholder="Date of birth" [formControl]="dobFormControl"
+          <input matInput [matDatepicker]="picker" placeholder="Date of birth" [formControl]="dobFormControl"
                  id="personal-details-date-of-birth" name="dateOfBirth" [ngModel]="subject?.dateOfBirth">
-          <md-error *ngIf="dobFormControl.hasError('required')">
+          <mat-error *ngIf="dobFormControl.hasError('required')">
             Date of birth is required
-          </md-error>
-          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
-          <md-datepicker #picker></md-datepicker>
-        </md-form-field>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-position"></label>
-          <input mdInput required="required" disabled placeholder="Position" id="personal-details-position"
+          <input matInput required="required" disabled placeholder="Position" id="personal-details-position"
                  name="position" [ngModel]="subject?.position">
-        </md-form-field>
+        </mat-form-field>
       </form>
-      <md-action-row>
-        <button md-button color="primary" (click)="nextStep()">Next</button>
-      </md-action-row>
-    </md-expansion-panel>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-    <md-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
-      <md-expansion-panel-header>
-        <md-panel-title>
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
           Contact information
-        </md-panel-title>
-        <md-panel-description>
-          <md-icon>phone</md-icon>
-        </md-panel-description>
-      </md-expansion-panel-header>
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>phone</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
       <form class="c-form">
-        <md-form-field class="c-form__element">
-          <span mdPrefix>+44 (0) &nbsp;</span>
+        <mat-form-field class="c-form__element">
+          <span matPrefix>+44 (0) &nbsp;</span>
           <label for="personal-details-telephone"></label>
-          <input type="tel" mdInput placeholder="Telephone" [formControl]="telephoneFormControl"
+          <input type="tel" matInput placeholder="Telephone" [formControl]="telephoneFormControl"
                  id="personal-details-telephone" name="telephone" [ngModel]="subject?.telephone">
-          <md-error *ngIf="telephoneFormControl.hasError('minlength')">
+          <mat-error *ngIf="telephoneFormControl.hasError('minlength')">
             Telephone number must contains at least 7 digits
-          </md-error>
-          <md-error *ngIf="telephoneFormControl.hasError('maxlength')">
+          </mat-error>
+          <mat-error *ngIf="telephoneFormControl.hasError('maxlength')">
             Telephone number must contains maximum 11 digits
-          </md-error>
-          <md-error *ngIf="telephoneFormControl.hasError('required')">
+          </mat-error>
+          <mat-error *ngIf="telephoneFormControl.hasError('required')">
             Telephone is required
-          </md-error>
-          <md-error *ngIf="telephoneFormControl.hasError('pattern')">
+          </mat-error>
+          <mat-error *ngIf="telephoneFormControl.hasError('pattern')">
             Please enter a valid telephone
-          </md-error>
-          <md-icon mdSuffix>mode_edit</md-icon>
-        </md-form-field>
+          </mat-error>
+          <mat-icon matSuffix>mode_edit</mat-icon>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-email"></label>
-          <input type="email" mdInput placeholder="Email" [formControl]="emailFormControl" id="personal-details-email"
+          <input type="email" matInput placeholder="Email" [formControl]="emailFormControl" id="personal-details-email"
                  name="email" [ngModel]="subject?.email">
-          <md-error *ngIf="emailFormControl.hasError('pattern')">
+          <mat-error *ngIf="emailFormControl.hasError('pattern')">
             Please enter a valid email address
-          </md-error>
-          <md-error *ngIf="emailFormControl.hasError('required')">
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
             Email is required
-          </md-error>
-        </md-form-field>
+          </mat-error>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-1st-line-address"></label>
-          <input type="text" mdInput placeholder="First line address" id="personal-details-1st-line-address"
+          <input type="text" matInput placeholder="First line address" id="personal-details-1st-line-address"
                  name="firstLineAddress" [ngModel]="subject?.address?.firstLineAddress">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-2nd-line-address"></label>
-          <input type="text" mdInput placeholder="Second line address" id="personal-details-2nd-line-address"
+          <input type="text" matInput placeholder="Second line address" id="personal-details-2nd-line-address"
                  name="secondLineAddress" [ngModel]="subject?.address?.secondLineAddress">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-3rd-line-address"></label>
-          <input type="text" mdInput placeholder="Third line address" id="personal-details-3rd-line-address"
+          <input type="text" matInput placeholder="Third line address" id="personal-details-3rd-line-address"
                  name="thirdLineAddress" [ngModel]="subject?.address?.thirdLineAddress">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-postcode"></label>
-          <input type="text" mdInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
+          <input type="text" matInput required="required" placeholder="Postcode" [formControl]="postcodeFormControl"
                  id="personal-details-postcode" name="postcode" [ngModel]="subject?.address?.postcode">
-          <md-error *ngIf="postcodeFormControl.hasError('pattern')">
+          <mat-error *ngIf="postcodeFormControl.hasError('pattern')">
             Please enter a valid postcode
-          </md-error>
-          <md-error *ngIf="postcodeFormControl.hasError('required')">
+          </mat-error>
+          <mat-error *ngIf="postcodeFormControl.hasError('required')">
             Postcode is required
-          </md-error>
-        </md-form-field>
+          </mat-error>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-city"></label>
-          <input type="text" mdInput placeholder="City" id="personal-details-city" name="city"
+          <input type="text" matInput placeholder="City" id="personal-details-city" name="city"
                  [ngModel]="subject?.address?.city">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="personal-details-country"></label>
-          <input type="text" mdInput placeholder="Country" id="personal-details-country"
+          <input type="text" matInput placeholder="Country" id="personal-details-country"
                  name="country" [ngModel]="subject?.address?.country">
-        </md-form-field>
+        </mat-form-field>
       </form>
-      <md-action-row>
-        <button md-button color="warn" (click)="prevStep()">Previous</button>
-        <button md-button color="primary" (click)="nextStep()">End</button>
-      </md-action-row>
-    </md-expansion-panel>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">End</button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-  </md-accordion>
-  <button type="submit" md-raised-button color="accent" [disabled]="!isValid()">Save</button>
+  </mat-accordion>
+  <button type="submit" mat-raised-button color="accent" [disabled]="!isValid()">Save</button>
 </section>
