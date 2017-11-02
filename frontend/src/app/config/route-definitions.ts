@@ -7,7 +7,7 @@ import { AboutComponent } from '../pages/about/about.component';
 
 export const routeDefinitions: Routes = [
   {
-    path: 'my-details',
+    path: 'personal-details',
     component: PersonalDetailsComponent,
     pathMatch: 'full',
   },

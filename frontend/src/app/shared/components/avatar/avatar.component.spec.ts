@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MdButtonModule, MdMenuModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 import { AvatarComponent } from './avatar.component';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
@@ -21,8 +21,8 @@ describe('AvatarComponent', () => {
         AvatarComponent
       ],
       imports: [
-        MdMenuModule,
-        MdButtonModule,
+        MatMenuModule,
+        MatButtonModule,
         RouterTestingModule,
       ]
     })

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 import { StaticModalComponent } from './static-modal.component';
@@ -21,7 +21,7 @@ describe('StaticModalComponent', () => {
       ],
       providers: [
         {
-          provide: MdDialogRef,
+          provide: MatDialogRef,
         },
         {
           provide: OverlayContainer, useFactory: () => {
