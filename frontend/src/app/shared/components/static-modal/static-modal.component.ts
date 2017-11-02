@@ -1,5 +1,5 @@
 import { Component, Inject, Optional } from '@angular/core';
-import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-static-modal',
@@ -8,8 +8,8 @@ import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 })
 export class StaticModalComponent {
 
-  constructor(public dialogRef: MdDialogRef<StaticModalComponent>,
-              @Optional() @Inject(MD_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<StaticModalComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   public close(): void {

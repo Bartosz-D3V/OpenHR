@@ -1,71 +1,71 @@
 <app-page-header [header]="'Delegation'"></app-page-header>
 <section class="c-drawer">
-  <md-toolbar [color]="'primary'">Apply for a delegation</md-toolbar>
-  <md-card>
+  <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
+  <mat-card>
     <form class="c-form" [formGroup]="applicationForm">
       <div formGroupName="name">
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-subject-id"></label>
-          <input mdInput required="required" placeholder="Subject ID" id="delegation-subject-id"
+          <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id"
                  name="subjectId" value="{{delegationApplication.subjectId}}" formControlName="subjectId">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-first-name"></label>
-          <input mdInput id="delegation-first-name" placeholder="First name" name="firstName"
+          <input matInput id="delegation-first-name" placeholder="First name" name="firstName"
                  value="{{delegationApplication.firstName}}" formControlName="first">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-middle-name"></label>
-          <input mdInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
+          <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
                  value="{{delegationApplication.middleName}}" formControlName="middle">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-last-name"></label>
-          <input mdInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
+          <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
                  value="{{delegationApplication.lastName}}" formControlName="last">
-        </md-form-field>
+        </mat-form-field>
       </div>
 
       <div formGroupName="organisation">
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-position"></label>
-          <input mdInput required="required" placeholder="Position" id="delegation-position" name="position"
+          <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
                  value="{{delegationApplication.position}}" formControlName="position">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-last-name"></label>
-          <input mdInput required="required" placeholder="Department" id="delegation-department" name="department"
+          <input matInput required="required" placeholder="Department" id="delegation-department" name="department"
                  value="{{delegationApplication.department}}" formControlName="department">
-        </md-form-field>
+        </mat-form-field>
       </div>
 
       <div formGroupName="delegation">
-        <md-form-field class="c-form__element">
-          <input #country mdInput placeholder="Country" aria-label="Country" [mdAutocomplete]="'auto'"
+        <mat-form-field class="c-form__element">
+          <input #country matInput placeholder="Country" aria-label="Country" [matAutocomplete]="'auto'"
                  [formControl]="countryCtrl">
-          <md-autocomplete #auto="mdAutocomplete">
-          </md-autocomplete>
-        </md-form-field>
+          <mat-autocomplete #auto="matAutocomplete">
+          </mat-autocomplete>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-city"></label>
-          <input #city mdInput placeholder="City" id="delegation-city" name="city" formControlName="city">
-        </md-form-field>
+          <input #city matInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-objective"></label>
-          <input #objective mdInput placeholder="Objective" id="delegation-objective" name="objective"
+          <input #objective matInput placeholder="Objective" id="delegation-objective" name="objective"
                  formControlName="objective">
-        </md-form-field>
+        </mat-form-field>
 
-        <md-form-field class="c-form__element">
+        <mat-form-field class="c-form__element">
           <label for="delegation-budget"></label>
-          <input #budget mdInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
-        </md-form-field>
+          <input #budget matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
+        </mat-form-field>
 
         <div class="c-form__element">
           <h3>Select days</h3>
@@ -76,8 +76,8 @@
         </div>
       </div>
       <div class="c-button">
-        <button md-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="primary">Submit</button>
       </div>
     </form>
-  </md-card>
+  </mat-card>
 </section>

@@ -1,6 +1,6 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 
-import { MdDialog, MdDialogModule } from '@angular/material';
+import { MatDialog, MatDialogModule } from '@angular/material';
 
 import { ErrorResolverService } from './error-resolver.service';
 import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
@@ -12,10 +12,10 @@ describe('ErrorResolverService', () => {
         StaticModalComponent,
       ],
       imports: [
-        MdDialogModule,
+        MatDialogModule,
       ],
       providers: [
-        MdDialog,
+        MatDialog,
         ErrorResolverService,
       ]
     });

@@ -3,7 +3,7 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdAutocompleteModule, MdTableModule, MdToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
 
@@ -28,9 +28,9 @@ describe('DelegationComponent', () => {
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
-        MdToolbarModule,
-        MdTableModule,
-        MdAutocompleteModule,
+        MatToolbarModule,
+        MatTableModule,
+        MatAutocompleteModule,
         NoopAnimationsModule,
         CalendarModule,
       ]
