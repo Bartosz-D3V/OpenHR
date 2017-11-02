@@ -40,7 +40,7 @@ public class PersonalDetailsController {
   @Transactional
   @RequestMapping(value = "address", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   public void updateSubjectAddress(@RequestParam final long subjectId, @RequestBody final Address address)
-          throws HibernateException {
+          throws HibernateException, SubjectDoesNotExistException {
     this.personalDetailsFacade.updateSubjectAddress(subjectId, address);
   }
 }

@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class SubjectDAOImpl implements SubjectDAO {
       subject = session.get(Subject.class, subjectId);
       transaction.commit();
       session.close();
-    } catch (HibernateException hibernateException) {
+    } catch (final HibernateException hibernateException) {
       this.log.error(hibernateException.getMessage());
       throw hibernateException;
     }
@@ -52,7 +53,33 @@ public class SubjectDAOImpl implements SubjectDAO {
       session.save(subject);
       transaction.commit();
       session.close();
-    } catch (HibernateException hibernateException) {
+    } catch (final HibernateException hibernateException) {
+      this.log.error(hibernateException.getMessage());
+      throw hibernateException;
+    }
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
+          SubjectDoesNotExistException {
+    final Subject subject = this.getSubjectDetails(subjectId);
+    final Address updatedAddress = subject.getAddress();
+    updatedAddress.setFirstLineAddress(address.getFirstLineAddress());
+    updatedAddress.setSecondLineAddress(address.getSecondLineAddress());
+    updatedAddress.setThirdLineAddress(address.getThirdLineAddress());
+    updatedAddress.setPostcode(address.getPostcode());
+    updatedAddress.setCity(address.getCity());
+    updatedAddress.setCountry(address.getCountry());
+    subject.setAddress(updatedAddress);
+    try {
+      Session session = this.sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      session.merge(subject);
+      transaction.commit();
+      session.close();
+    } catch (final HibernateException hibernateException) {
+      this.log.error("Issue occurred during the update of the subject's address");
       this.log.error(hibernateException.getMessage());
       throw hibernateException;
     }
