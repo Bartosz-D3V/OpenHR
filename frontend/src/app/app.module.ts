@@ -8,7 +8,7 @@ import {
   MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatDialogModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule,
-  MatStepperModule, MatTableModule, MatToolbarModule
+  MatStepperModule, MatTableModule, MatFormFieldModule, MatToolbarModule
 } from '@angular/material';
 
 import { CalendarModule } from 'primeng/primeng';
@@ -66,6 +66,7 @@ import { InitialsPipe } from './shared/pipes/initials/initials.pipe';
     MatSliderModule,
     MatSlideToggleModule,
     MatToolbarModule,
+    MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
