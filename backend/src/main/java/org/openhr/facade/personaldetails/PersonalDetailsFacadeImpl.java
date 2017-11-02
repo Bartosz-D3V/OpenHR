@@ -31,7 +31,8 @@ public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
 
   @Override
   @Transactional
-  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException {
+  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
+          SubjectDoesNotExistException {
     this.personalDetailsService.updateSubjectAddress(subjectId, address);
   }
 }

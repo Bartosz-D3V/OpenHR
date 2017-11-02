@@ -10,5 +10,5 @@ public interface PersonalDetailsService {
 
   void addSubject(Subject subject) throws HibernateException;
 
-  void updateSubjectAddress(long subjectId, Address address) throws HibernateException;
+  void updateSubjectAddress(long subjectId, Address address) throws HibernateException, SubjectDoesNotExistException;
 }
