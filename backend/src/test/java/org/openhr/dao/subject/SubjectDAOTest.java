@@ -64,6 +64,7 @@ public class SubjectDAOTest {
     subjectDAO.addSubject(mockSubject);
     Session session = sessionFactory.openSession();
     Subject actualSubject = session.get(Subject.class, 1L);
+    session.close();
 
     assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
     assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
