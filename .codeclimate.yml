@@ -6,12 +6,19 @@ engines:
     enabled: false
     channel: beta
     config: frontend/tslint.json
+  nodesecurity:
+    enabled: false
+  sonar-java:
+    enabled: true
+    channel: beta
+  pmd:
+    enabled: true
   fixme:
     enabled: true
   git-legal:
       enabled: true
   stylelint:
-    enabled: true
+    enabled: false
   markdownlint:
       enabled: true
 
