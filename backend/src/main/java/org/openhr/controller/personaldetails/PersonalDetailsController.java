@@ -1,6 +1,7 @@
 package org.openhr.controller.personaldetails;
 
 import org.hibernate.HibernateException;
+import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.Subject;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
 import org.springframework.http.MediaType;
@@ -34,5 +35,12 @@ public class PersonalDetailsController {
           produces = {MediaType.APPLICATION_JSON_VALUE})
   public void createSubject(@RequestBody final Subject subject) throws HibernateException {
     this.personalDetailsFacade.addSubject(subject);
+  }
+
+  @Transactional
+  @RequestMapping(value = "address", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void updateSubjectAddress(@RequestParam final long subjectId, @RequestBody final Address address)
+          throws HibernateException, SubjectDoesNotExistException {
+    this.personalDetailsFacade.updateSubjectAddress(subjectId, address);
   }
 }

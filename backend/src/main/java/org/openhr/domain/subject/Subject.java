@@ -1,6 +1,5 @@
 package org.openhr.domain.subject;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.openhr.domain.address.Address;
 
 import javax.persistence.Column;
@@ -9,15 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-public class Subject {
+public class Subject implements Serializable {
 
   @Id
   @NotNull
-  @NotEmpty
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "subject_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long subjectId;
 
   @NotNull
@@ -48,10 +48,8 @@ public class Subject {
   public Subject() {
   }
 
-  public Subject(final long subjectId, final String firstName, final String middleName, final String lastName,
-                 final LocalDate dateOfBirth, final String position, final String telephone, final String email,
-                 final Address address) {
-    this.subjectId = subjectId;
+  public Subject(final String firstName, final String middleName, final String lastName, final LocalDate dateOfBirth,
+                 final String position, final String telephone, final String email, final Address address) {
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
@@ -64,10 +62,6 @@ public class Subject {
 
   public long getSubjectId() {
     return subjectId;
-  }
-
-  public void setSubjectId(final long subjectId) {
-    this.subjectId = subjectId;
   }
 
   public String getFirstName() {
@@ -133,4 +127,5 @@ public class Subject {
   public void setAddress(final Address address) {
     this.address = address;
   }
+
 }

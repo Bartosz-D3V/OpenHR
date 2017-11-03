@@ -22,10 +22,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,8 +40,10 @@ public class PersonalDetailsControllerTest {
   private final static String MOCK_URL = "localhost:8080/api/personal-details";
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
   private final static ErrorInfo mockError = new ErrorInfo(MOCK_URL, mockException);
-  private final static Subject subject = new Subject(1L, "John", null, "White",
-          null, "Manager", "123456789", "john.white@cor.com", new Address());
+  private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL",
+          "London", "UK");
+  private final static Subject mockSubject = new Subject("John", null, "White",
+          null, "Manager", "123456789", "john.white@cor.com", mockAddress);
 
   @Autowired
   private MockMvc mockMvc;
@@ -67,8 +72,8 @@ public class PersonalDetailsControllerTest {
 
   @Test
   public void getSubjectDetailsShouldReturnSubject() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(subject);
-    when(this.personalDetailsFacade.getSubjectDetails(1)).thenReturn(subject);
+    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
+    when(this.personalDetailsFacade.getSubjectDetails(1)).thenReturn(mockSubject);
 
     MvcResult result = this.mockMvc
             .perform(get("/personal-details")
@@ -82,13 +87,45 @@ public class PersonalDetailsControllerTest {
 
   @Test
   public void createSubjectShouldHandleError() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(subject);
+    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     doThrow(new HibernateException("DB Error")).when(this.personalDetailsFacade).addSubject(any());
 
     MvcResult result = this.mockMvc
             .perform(post("/personal-details")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(subjectAsJson))
+            .andDo(print())
+            .andExpect(status().isInternalServerError())
+            .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
+  }
+
+  @Test
+  public void updateSubjectAddressShouldUpdateAddress() throws Exception {
+    final String addressAsJson = objectMapper.writeValueAsString(mockAddress);
+
+    MvcResult result = this.mockMvc
+            .perform(put("/personal-details/address")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .param("subjectId", "1")
+                    .content(addressAsJson))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andReturn();
+    assertNull(result.getResolvedException());
+  }
+
+  @Test
+  public void updateSubjectAddressShouldHandleError() throws Exception {
+    final String addressAsJson = objectMapper.writeValueAsString(mockAddress);
+    doThrow(new HibernateException("DB Error")).when(this.personalDetailsFacade).updateSubjectAddress(anyLong(), anyObject());
+
+    MvcResult result = this.mockMvc
+            .perform(put("/personal-details/address")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .param("subjectId", "1")
+                    .content(addressAsJson))
             .andDo(print())
             .andExpect(status().isInternalServerError())
             .andReturn();
