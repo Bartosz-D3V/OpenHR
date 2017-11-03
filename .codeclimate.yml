@@ -2,12 +2,12 @@ engines:
   pmd:
     enabled: true
     channel: "beta"
-#  tslint:
-#    enabled: true
-#    channel: beta
-#    config: frontend/tslint.json
+  tslint:
+    enabled: false
+    channel: beta
+    config: frontend/tslint.json
   nodesecurity:
-    enabled: true
+    enabled: false
   sonar-java:
     enabled: true
     channel: beta
