@@ -18,7 +18,7 @@ engines:
   git-legal:
       enabled: true
   stylelint:
-    enabled: true
+    enabled: false
   markdownlint:
       enabled: true
 
