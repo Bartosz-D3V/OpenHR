@@ -51,7 +51,7 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
-  public void getSubjectDetailsShouldThrowExceptionInSubjectDoesNotExist() throws SubjectDoesNotExistException {
+  public void getSubjectDetailsShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
     subjectDAO.getSubjectDetails(123L);
   }
 
@@ -75,6 +75,35 @@ public class SubjectDAOTest {
     assertEquals(mockSubject.getAddress().getCity(), actualSubject.getAddress().getCity());
     assertEquals(mockSubject.getAddress().getPostcode(), actualSubject.getAddress().getPostcode());
     assertEquals(mockSubject.getAddress().getCountry(), actualSubject.getAddress().getCountry());
+  }
+
+  @Test(expected = SubjectDoesNotExistException.class)
+  public void updateSubjectAddressShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
+    subjectDAO.updateSubjectAddress(123L, mockAddress);
+  }
+
+  @Test
+  public void updateSubjectAddressShouldUpdateAddressBySubjectIdAndNewAddress() throws SubjectDoesNotExistException {
+    mockAddress.setFirstLineAddress("Sample street");
+    mockAddress.setSecondLineAddress("Sample street 2nd line");
+    mockAddress.setThirdLineAddress("Sample street 3rd line");
+    mockAddress.setPostcode("89-123");
+    mockAddress.setCity("Warsaw");
+    mockAddress.setCountry("Poland");
+
+    Session session = sessionFactory.openSession();
+    final long subjectReference = (long) session.save(mockSubject);
+    Subject subject = session.get(Subject.class, subjectReference);
+    session.close();
+
+    subjectDAO.updateSubjectAddress(subjectReference, mockAddress);
+
+    assertEquals(mockSubject.getAddress().getFirstLineAddress(), subject.getAddress().getFirstLineAddress());
+    assertEquals(mockSubject.getAddress().getSecondLineAddress(), subject.getAddress().getSecondLineAddress());
+    assertEquals(mockSubject.getAddress().getThirdLineAddress(), subject.getAddress().getThirdLineAddress());
+    assertEquals(mockSubject.getAddress().getCity(), subject.getAddress().getCity());
+    assertEquals(mockSubject.getAddress().getPostcode(), subject.getAddress().getPostcode());
+    assertEquals(mockSubject.getAddress().getCountry(), subject.getAddress().getCountry());
   }
 
 }
