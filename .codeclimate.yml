@@ -3,7 +3,7 @@ engines:
     enabled: true
     channel: "beta"
   tslint:
-    enabled: true
+    enabled: false
     channel: beta
     config: frontend/tslint.json
   fixme:
