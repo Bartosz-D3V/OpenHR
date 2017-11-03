@@ -49,6 +49,9 @@ script:
   - cd ../backend/
   - mvn package -B -D skipTests -e
   - mvn test -B -e
+  
+after_script:
+  - mysql -u root -e 'DROP DATABASE openhr'
 
 #after_success:
 # - codecov
