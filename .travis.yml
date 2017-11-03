@@ -48,7 +48,7 @@ script:
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
   - mvn package -B -D skipTests -e
-  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD -e
+  - mvn test -B -e
   
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'

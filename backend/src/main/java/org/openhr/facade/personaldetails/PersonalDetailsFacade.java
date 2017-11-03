@@ -10,5 +10,7 @@ public interface PersonalDetailsFacade {
 
   void addSubject(Subject subject) throws HibernateException;
 
+  void updateSubject(Subject subject) throws HibernateException;
+
   void updateSubjectAddress(long subjectId, Address address) throws HibernateException, SubjectDoesNotExistException;
 }
