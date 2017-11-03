@@ -102,6 +102,36 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  public void updateSubjectShouldHandleError() throws Exception {
+    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
+    doThrow(new HibernateException("DB Error")).when(this.personalDetailsFacade).updateSubject(any());
+
+    MvcResult result = this.mockMvc
+            .perform(put("/personal-details")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(subjectAsJson))
+            .andDo(print())
+            .andExpect(status().isInternalServerError())
+            .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
+  }
+
+  @Test
+  public void updateSubjectShouldUpdateSubject() throws Exception {
+    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
+
+    MvcResult result = this.mockMvc
+            .perform(put("/personal-details")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(subjectAsJson))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andReturn();
+    assertNull(result.getResolvedException());
+  }
+
+  @Test
   public void updateSubjectAddressShouldUpdateAddress() throws Exception {
     final String addressAsJson = objectMapper.writeValueAsString(mockAddress);
 
