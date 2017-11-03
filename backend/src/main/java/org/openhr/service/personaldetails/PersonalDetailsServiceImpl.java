@@ -31,6 +31,12 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
   @Override
   @Transactional
+  public void updateSubject(final Subject subject) throws HibernateException {
+    this.subjectDAO.updateSubject(subject);
+  }
+
+  @Override
+  @Transactional
   public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
           SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectAddress(subjectId, address);
