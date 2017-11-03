@@ -38,6 +38,13 @@ public class PersonalDetailsController {
   }
 
   @Transactional
+  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
+          produces = {MediaType.APPLICATION_JSON_VALUE})
+  public void updateSubject(@RequestBody final Subject subject) throws HibernateException {
+    this.personalDetailsFacade.updateSubject(subject);
+  }
+
+  @Transactional
   @RequestMapping(value = "address", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   public void updateSubjectAddress(@RequestParam final long subjectId, @RequestBody final Address address)
           throws HibernateException, SubjectDoesNotExistException {

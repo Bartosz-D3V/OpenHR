@@ -50,7 +50,7 @@ script:
   - nsp check
   - cd ../backend/
   - mvn package -B -D skipTests -e
-  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD -e
+  - mvn test -B -e
 
 #after_success:
 # - codecov
