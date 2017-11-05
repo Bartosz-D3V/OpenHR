@@ -33,11 +33,12 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
+  - npm install -g yarn nsp
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
   - cd frontend/
-  - npm install
+  - yarn install
   - cd ../backend/
   - mvn install -B -D skipTests -e
 
@@ -46,6 +47,7 @@ script:
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
+  - nsp check
   - cd ../backend/
   - mvn package -B -D skipTests -e
   - mvn test -B -e
