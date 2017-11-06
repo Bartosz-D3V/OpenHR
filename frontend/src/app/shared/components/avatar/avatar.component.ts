@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from '../../domain/subject/subject';
+
+import { User } from '../../domain/user/user';
 
 @Component({
   selector: 'app-avatar',
@@ -9,7 +10,7 @@ import { Subject } from '../../domain/subject/subject';
 export class AvatarComponent implements OnInit {
 
   @Input()
-  public subject: Subject;
+  public user: User;
 
   constructor() {
   }

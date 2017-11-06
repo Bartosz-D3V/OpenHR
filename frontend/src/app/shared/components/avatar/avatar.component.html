@@ -1,5 +1,5 @@
 <button class="c-avatar" mat-mini-fab color="accent" id="shared-avatar" [matMenuTriggerFor]="avatarMenu">
-  {{subject.fullName | initials}}
+  {{user.fullName | initials}}
 </button>
 <mat-menu #avatarMenu="matMenu">
   <button [routerLink]="'/account'" mat-menu-item>Your account</button>

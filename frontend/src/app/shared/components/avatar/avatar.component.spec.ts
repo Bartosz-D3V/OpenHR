@@ -5,14 +5,12 @@ import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 import { AvatarComponent } from './avatar.component';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
-import { Subject } from '../../domain/subject/subject';
-import { Address } from '../../domain/subject/address';
+import { User } from '../../domain/user/user';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
-  const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  const mockUser = new User(2199, 'john.test', 'John Test');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,7 +30,7 @@ describe('AvatarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarComponent);
     component = fixture.componentInstance;
-    component.subject = mockSubject;
+    component.user = mockUser;
     fixture.detectChanges();
   });
 

@@ -10,14 +10,12 @@ import { AppComponent } from './app.component';
 import { SidenavComponent } from '../shared/components/sidenav/sidenav.component';
 import { SidenavItemComponent } from '../shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from '../shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
-import { Address } from '../shared/domain/subject/address';
-import { Subject } from '../shared/domain/subject/subject';
 import { AvatarComponent } from '../shared/components/avatar/avatar.component';
 import { InitialsPipe } from '../shared/pipes/initials/initials.pipe';
+import { User } from '../shared/domain/user/user';
 
 describe('AppComponent', () => {
-  const mockSubject: Subject = new Subject('John', 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  const mockUser: User = new User(2199, 'john.test', 'John Test');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -44,7 +42,7 @@ describe('AppComponent', () => {
   it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    app.subject = mockSubject;
+    app.subject = mockUser;
     expect(app).toBeTruthy();
   }));
 });

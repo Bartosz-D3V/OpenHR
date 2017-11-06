@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Subject } from '../shared/domain/subject/subject';
-import { Address } from '../shared/domain/subject/address';
+import { User } from '../shared/domain/user/user';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +9,7 @@ import { Address } from '../shared/domain/subject/address';
 })
 export class AppComponent implements OnInit {
 
-  public mockSubject: Subject = new Subject('John', 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  public mockUser: User = new User(1299, 'john.test', 'John Test');
 
   ngOnInit(): void {
   }
