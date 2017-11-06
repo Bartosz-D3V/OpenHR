@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Subject } from './shared/domain/subject/subject';
-import { Address } from './shared/domain/subject/address';
+import { Subject } from '../shared/domain/subject/subject';
+import { Address } from '../shared/domain/subject/address';
 
 @Component({
   selector: 'app-root',
