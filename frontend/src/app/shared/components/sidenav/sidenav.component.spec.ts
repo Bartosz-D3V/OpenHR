@@ -8,13 +8,11 @@ import { SidenavComponent } from './sidenav.component';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { Subject } from '../../domain/subject/subject';
-import { Address } from '../../domain/subject/address';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
+import { User } from '../../domain/user/user';
 
 describe('SidenavComponent', () => {
-  const mockSubject: Subject = new Subject('John', 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  const mockUser: User = new User(2199, 'john.test', 'John Test');
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
@@ -41,7 +39,7 @@ describe('SidenavComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SidenavComponent);
     component = fixture.componentInstance;
-    component.subject = mockSubject;
+    component.user = mockUser;
     fixture.detectChanges();
   });
 
