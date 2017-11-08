@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class LeaveApplicationService {
 
   private url = 'app/leave-application';
-  private headers: Headers = new Headers({
+  private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-  });
-  private options: RequestOptions = new RequestOptions({
-    headers: this.headers,
   });
 
   private handleError(error: any): void {
@@ -21,14 +18,13 @@ export class LeaveApplicationService {
     this._errorResolver.createAlert(error);
   }
 
-  constructor(private _http: Http,
+  constructor(private _http: HttpClient,
               private _errorResolver: ErrorResolverService) {
   }
 
   public getLeaveTypes(): Observable<Array<string>> {
     return this._http
-      .get(this.url)
-      .map((response: Response) => <Array<string>> response.json())
+      .get<Array<string>>(this.url)
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of([]);

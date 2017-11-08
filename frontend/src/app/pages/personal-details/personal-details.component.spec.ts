@@ -20,6 +20,7 @@ import { ErrorResolverService } from '../../shared/services/error-resolver/error
 import { PersonalDetailsService } from './service/personal-details.service';
 
 import Spy = jasmine.Spy;
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -49,7 +50,7 @@ describe('PersonalDetailsComponent', () => {
         CapitalizePipe,
       ],
       imports: [
-        HttpModule,
+        HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,

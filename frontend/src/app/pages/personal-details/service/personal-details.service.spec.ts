@@ -1,20 +1,20 @@
-import { Injectable, ReflectiveInjector } from '@angular/core';
-import {
-  BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions,
-  ResponseOptions, Response
-} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
 
 import { Subject } from '../../../shared/domain/subject/subject';
 import { Address } from '../../../shared/domain/subject/address';
 import { PersonalDetailsService } from './personal-details.service';
 import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
+import { LeaveApplicationService } from '../../leave-application/service/leave-application.service';
 
 describe('PersonalDetailsService', () => {
   const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  let http: HttpTestingController;
+  let personalDetailsService;
+  let errorResolverService: ErrorResolverService;
 
   @Injectable()
   class FakeErrorResolverService {
@@ -25,7 +25,7 @@ describe('PersonalDetailsService', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpModule,
+        HttpClientTestingModule,
       ],
       providers: [
         PersonalDetailsService,
@@ -34,60 +34,43 @@ describe('PersonalDetailsService', () => {
         },
       ],
     });
-  }));
 
-  beforeEach(() => {
-    this.injector = ReflectiveInjector.resolveAndCreate([
-      {
-        provide: ConnectionBackend, useClass: MockBackend
-      },
-      {
-        provide: RequestOptions, useClass: BaseRequestOptions
-      },
-      {
-        provide: ErrorResolverService, useClass: FakeErrorResolverService,
-      },
-      Http,
-      PersonalDetailsService,
-    ]);
-    this.PersonalDetailsService = this.injector.get(PersonalDetailsService);
-    this.backend = this.injector.get(ConnectionBackend) as MockBackend;
-    this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
-
+    http = TestBed.get(HttpTestingController);
+    personalDetailsService = TestBed.get(PersonalDetailsService);
+    errorResolverService = TestBed.get(ErrorResolverService);
     spyOn(console, 'log');
-  });
-
-  it('should be created', inject([PersonalDetailsService], (service: PersonalDetailsService) => {
-    expect(service).toBeTruthy();
   }));
+
+  it('should be created', () => {
+    expect(personalDetailsService).toBeTruthy();
+  });
 
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', inject([PersonalDetailsService], (service: PersonalDetailsService) => {
-      service['handleError'](mockError);
+    it('should log actual error', () => {
+      personalDetailsService['handleError'](mockError);
 
       expect(console.log).toHaveBeenCalledTimes(1);
       expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
-    }));
+    });
 
-    it('should trigger createAlert method', inject([PersonalDetailsService, ErrorResolverService],
-      (service: PersonalDetailsService, errorResolver: ErrorResolverService) => {
-        spyOn(errorResolver, 'createAlert');
-        service['handleError'](mockError);
+    it('should trigger createAlert method', () => {
+      spyOn(errorResolverService, 'createAlert');
+      personalDetailsService['handleError'](mockError);
 
-        expect(errorResolver.createAlert).toHaveBeenCalledTimes(1);
-        expect(errorResolver.createAlert).toHaveBeenCalledWith(mockError);
-      }));
+      expect(errorResolverService.createAlert).toHaveBeenCalledTimes(1);
+      expect(errorResolverService.createAlert).toHaveBeenCalledWith(mockError);
+    });
 
   });
 
   describe('API access method', () => {
 
     it('should query current service URL', fakeAsync(() => {
-      this.PersonalDetailsService.getCurrentSubject();
+      personalDetailsService.getCurrentSubject().subscribe();
 
-      expect(this.lastConnection.request.url).toMatch(/app\/my-details/);
+      http.expectOne('app/my-details');
     }));
 
     describe('getCurrentSubject', () => {
@@ -95,13 +78,14 @@ describe('PersonalDetailsService', () => {
       it('should return an Observable of type Subject', fakeAsync(() => {
         let result: Object;
         let error: any;
-        this.PersonalDetailsService.getCurrentSubject()
+        personalDetailsService.getCurrentSubject()
           .subscribe(
             (res: Object) => result = res,
             (err: any) => error = err);
-        this.lastConnection.mockRespond(new Response(new ResponseOptions({
-          body: JSON.stringify(mockSubject),
-        })));
+        http.expectOne({
+          url: 'app/my-details',
+          method: 'GET',
+        }).flush(mockSubject);
         tick();
 
         expect(error).toBeUndefined();
@@ -110,20 +94,20 @@ describe('PersonalDetailsService', () => {
       }));
 
       it('should resolve error if server is down', fakeAsync(() => {
-        spyOn(this.PersonalDetailsService, 'handleError');
+        spyOn(personalDetailsService, 'handleError');
         let result: Object;
         let error: any;
-        this.PersonalDetailsService.getCurrentSubject()
+        personalDetailsService.getCurrentSubject()
           .subscribe(
             (res: Object) => result = res,
             (err: any) => error = err);
-        this.lastConnection.mockError(new Response(new ResponseOptions({
-          status: 404,
-          statusText: 'URL not found',
-        })));
+        http.expectOne({
+          url: 'app/my-details',
+          method: 'GET',
+        }).error(new ErrorEvent('404'));
         tick();
 
-        expect(this.PersonalDetailsService['handleError']).toHaveBeenCalled();
+        expect(personalDetailsService['handleError']).toHaveBeenCalled();
       }));
 
     });
