@@ -1,7 +1,7 @@
-import { HttpModule } from '@angular/http';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angular/material';
 
@@ -10,8 +10,6 @@ import { CalendarModule } from 'primeng/primeng';
 import { DelegationComponent } from './delegation.component';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { Destination } from './domain/destination/destination';
-import { Delegation } from './domain/delegation/delegation';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -25,7 +23,7 @@ describe('DelegationComponent', () => {
         CapitalizePipe,
       ],
       imports: [
-        HttpModule,
+        HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,

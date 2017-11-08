@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
