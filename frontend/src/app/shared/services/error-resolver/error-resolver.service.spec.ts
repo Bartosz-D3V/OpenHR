@@ -26,17 +26,18 @@ describe('ErrorResolverService', () => {
   }));
 
   it('should open an alert', inject([ErrorResolverService], (service: ErrorResolverService) => {
-    const mockError = 'Example error message';
-    const mockTitle = 'Error';
+    const error: Object = {
+      message: 'Example error message',
+    };
     const data: Object = {
       width: '250px',
       data: {
-        text: mockError,
-        header: mockTitle,
+        text: 'Example error message',
+        header: 'Error',
       }
     };
     spyOn(service.dialog, 'open');
-    service.createAlert(mockError);
+    service.createAlert(error);
 
     expect(service.dialog.open).toHaveBeenCalledTimes(1);
     expect(service.dialog.open).toHaveBeenCalledWith(StaticModalComponent, data);
