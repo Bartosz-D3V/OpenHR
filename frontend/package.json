@@ -14,7 +14,7 @@
     "precommit": "npm test",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist ./coverage",
-    "dist": "ng build --prod --aot --no-sourcemap --extract-licenses=false"
+    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
   },
   "commitplease": {
     "nohook": true,
