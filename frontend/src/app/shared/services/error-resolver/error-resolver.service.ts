@@ -15,7 +15,7 @@ export class ErrorResolverService {
     const dialogRef = this.dialog.open(StaticModalComponent, {
       width: '250px',
       data: {
-        text: error,
+        text: error.message,
         header: this.header,
       },
     });
