@@ -1,0 +1,83 @@
+<app-page-header [header]="'Delegation'"></app-page-header>
+<section class="c-drawer">
+  <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
+  <mat-card>
+    <form class="c-form" [formGroup]="applicationForm">
+      <div formGroupName="name">
+        <mat-form-field class="c-form__element">
+          <label for="delegation-subject-id"></label>
+          <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id"
+                 name="subjectId" value="{{delegationApplication.subjectId}}" formControlName="subjectId">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-first-name"></label>
+          <input matInput id="delegation-first-name" placeholder="First name" name="firstName"
+                 value="{{delegationApplication.firstName}}" formControlName="first">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-middle-name"></label>
+          <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
+                 value="{{delegationApplication.middleName}}" formControlName="middle">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-last-name"></label>
+          <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
+                 value="{{delegationApplication.lastName}}" formControlName="last">
+        </mat-form-field>
+      </div>
+
+      <div formGroupName="organisation">
+        <mat-form-field class="c-form__element">
+          <label for="delegation-position"></label>
+          <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
+                 value="{{delegationApplication.position}}" formControlName="position">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-last-name"></label>
+          <input matInput required="required" placeholder="Department" id="delegation-department" name="department"
+                 value="{{delegationApplication.department}}" formControlName="department">
+        </mat-form-field>
+      </div>
+
+      <div formGroupName="delegation">
+        <mat-form-field class="c-form__element">
+          <input #country matInput placeholder="Country" aria-label="Country" [matAutocomplete]="'auto'"
+                 [formControl]="countryCtrl">
+          <mat-autocomplete #auto="matAutocomplete">
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-city"></label>
+          <input #city matInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-objective"></label>
+          <input #objective matInput placeholder="Objective" id="delegation-objective" name="objective"
+                 formControlName="objective">
+        </mat-form-field>
+
+        <mat-form-field class="c-form__element">
+          <label for="delegation-budget"></label>
+          <input #budget matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
+        </mat-form-field>
+
+        <div class="c-form__element">
+          <h3>Select days</h3>
+          <p-calendar #dateRange class="c-calendar" [inline]="false" [selectionMode]="'range'" [showIcon]="true"
+                      [readonlyInput]="true" [selectOtherMonths]="true" [dateFormat]="'dd/mm/yy'"
+                      [showButtonBar]="true" formControlName="dateRange">
+          </p-calendar>
+        </div>
+      </div>
+      <div class="c-button">
+        <button mat-raised-button color="primary">Submit</button>
+      </div>
+    </form>
+  </mat-card>
+</section>

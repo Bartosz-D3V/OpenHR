@@ -1,6 +1,8 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material';
+
+import { User } from '../../domain/user/user';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,8 +11,10 @@ import { MdSidenav } from '@angular/material';
 })
 export class SidenavComponent implements OnInit {
 
+  @Input()
+  public user: User;
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
-  private sidenav: MdSidenav;
+  private sidenav: MatSidenav;
 
   constructor(private _router: Router,
               private zone: NgZone) {

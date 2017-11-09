@@ -13,6 +13,7 @@ env:
   - NODE_VERSION=node
 
 cache:
+  yarn: true
   directories:
      - ./frontend/node_modules
      - $HOME/.m2
@@ -33,22 +34,27 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
+  - npm install -g nsp
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
   - cd frontend/
-  - npm install
+  - yarn install
   - cd ../backend/
-  - mvn install -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn install -B -D skipTests -e
 
 script:
   - cd ../frontend/
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
+  - nsp check
   - cd ../backend/
-  - mvn package -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
-  - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
+  - mvn package -B -D skipTests -e
+  - mvn test -B -e
+  
+after_script:
+  - mysql -u root -e 'DROP DATABASE openhr'
 
 #after_success:
 # - codecov

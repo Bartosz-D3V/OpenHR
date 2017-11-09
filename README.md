@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
+
 # Frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.1.

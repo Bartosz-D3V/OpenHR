@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavItemComponent } from './sidenav-item.component';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { SidenavItem } from './sidenav-item';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -16,7 +16,7 @@ describe('SidenavItemComponent', () => {
         SidenavItemComponent
       ],
       imports: [
-        MdIconModule,
+        MatIconModule,
         RouterTestingModule,
       ]
     })

@@ -1,32 +1,35 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MdButtonModule, MdButtonToggleModule, MdCardModule, MdDatepickerModule, MdDialogModule, MdExpansionModule,
-  MdGridListModule,
-  MdIconModule,
-  MdInputModule, MdNativeDateModule, MdSidenavModule, MdSliderModule, MdSlideToggleModule, MdStepperModule,
-  MdToolbarModule
+MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+MatDialogModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+MatNativeDateModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule,
+MatStepperModule, MatTableModule, MatFormFieldModule, MatToolbarModule
 } from '@angular/material';
 
-import { AppComponent } from './app.component';
+import { CalendarModule } from 'primeng/primeng';
+
+import { AppComponent } from './boot/app.component';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
 import { SidenavItemComponent } from './shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { SidenavItemListComponent } from './shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 
-import { MyDetailsComponent } from './pages/my-details/my-details.component';
+import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
 import { CapitalizePipe } from './shared/pipes/capitalize/capitalize.pipe';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NamePipe } from './shared/pipes/name/name.pipe';
-import { MyLeaveComponent } from './pages/my-leave/my-leave.component';
-import { DateRangePickerComponent } from './pages/my-leave/date-range-picker/date-range-picker.component';
+import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
-import { MyDetailsService } from './pages/my-details/service/my-details.service';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
+import { DelegationComponent } from './pages/delegation/delegation.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AboutComponent } from './pages/about/about.component';
+import { AvatarComponent } from './shared/components/avatar/avatar.component';
+import { InitialsPipe } from './shared/pipes/initials/initials.pipe';
 
 @NgModule({
   declarations: [
@@ -34,49 +37,50 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
     SidenavComponent,
     SidenavItemComponent,
     SidenavItemListComponent,
-    MyDetailsComponent,
+    PersonalDetailsComponent,
     PageHeaderComponent,
     CapitalizePipe,
     NamePipe,
-    MyLeaveComponent,
-    DateRangePickerComponent,
+    LeaveApplicationComponent,
     StaticModalComponent,
+    DelegationComponent,
+    AboutComponent,
+    AvatarComponent,
+    InitialsPipe,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
-    MdButtonModule,
-    MdButtonToggleModule,
-    MdCardModule,
-    MdDialogModule,
-    MdGridListModule,
-    MdIconModule,
-    MdInputModule,
-    MdSidenavModule,
-    MdSliderModule,
-    MdSlideToggleModule,
-    MdToolbarModule,
-    MdDatepickerModule,
-    MdNativeDateModule,
-    MdExpansionModule,
-    MdStepperModule,
+    HttpClientModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatRadioModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatExpansionModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatTableModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    CalendarModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      {
-        path: 'my-details',
-        component: MyDetailsComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'my-leave',
-        component: MyLeaveComponent,
-        pathMatch: 'full',
-      }
-    ]),
+    AppRoutingModule,
   ],
-  providers: [MyDetailsService, ErrorResolverService],
+  providers: [ErrorResolverService],
   bootstrap: [AppComponent],
   entryComponents: [StaticModalComponent],
 })
