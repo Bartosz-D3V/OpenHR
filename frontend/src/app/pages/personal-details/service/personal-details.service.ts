@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -14,11 +14,8 @@ import { ErrorResolverService } from '../../../shared/services/error-resolver/er
 export class PersonalDetailsService {
 
   private url = 'app/my-details';
-  private headers: Headers = new Headers({
+  private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-  });
-  private options: RequestOptions = new RequestOptions({
-    headers: this.headers,
   });
 
   private handleError(error: any): void {
@@ -26,14 +23,13 @@ export class PersonalDetailsService {
     this._errorResolver.createAlert(error);
   }
 
-  constructor(private _http: Http,
+  constructor(private _http: HttpClient,
               private _errorResolver: ErrorResolverService) {
   }
 
   public getCurrentSubject(): Observable<Subject> {
     return this._http
-      .get(this.url)
-      .map((response: Response) => <Subject> response.json())
+      .get<Subject>(this.url)
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of(error);

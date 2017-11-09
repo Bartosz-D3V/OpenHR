@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
@@ -19,6 +17,7 @@ import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -52,7 +51,7 @@ describe('LeaveApplicationComponent', () => {
         CapitalizePipe,
       ],
       imports: [
-        HttpModule,
+        HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
         MatStepperModule,
