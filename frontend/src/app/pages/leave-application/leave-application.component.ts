@@ -18,10 +18,10 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   public dateRange: Date[];
   public startDate: Date;
   public endDate: Date;
-  public selectorType = 'range';
+  public readonly selectorType = 'range';
   public leaveApplication: LeaveApplication = new LeaveApplication();
 
-  constructor(private _leaveApplicationService: LeaveApplicationService) {
+  constructor(private leaveApplicationService: LeaveApplicationService) {
   }
 
   ngOnInit() {
@@ -52,8 +52,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.leaveApplication.selectedDays = this.dateRange;
   }
 
-  public getLeaveTypes(): void {
-    this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
+  getLeaveTypes(): void {
+    this.$leaveTypes = this.leaveApplicationService.getLeaveTypes()
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
       });

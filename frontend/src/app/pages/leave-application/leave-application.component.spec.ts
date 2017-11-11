@@ -1,6 +1,7 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
@@ -17,7 +18,7 @@ import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LeaveApplicationService } from './service/leave-application.service';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -31,9 +32,9 @@ describe('LeaveApplicationComponent', () => {
   mockLeave.message = '';
 
   @Injectable()
-  class FakeLeaveApplicationComponent {
-    public getLeaveTypes(): any {
-      return Observable.of(null);
+  class FakeLeaveApplicationService {
+    public getLeaveTypes(): Observable<Array<string>> {
+      return Observable.of(['Holiday']);
     }
   }
 
@@ -65,7 +66,7 @@ describe('LeaveApplicationComponent', () => {
       ],
       providers: [
         {
-          provide: LeaveApplicationComponent, useClass: FakeLeaveApplicationComponent,
+          provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
         },
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
@@ -131,6 +132,13 @@ describe('LeaveApplicationComponent', () => {
     component.setLeaveDates();
 
     expect(component.leaveApplication.selectedDays).toEqual(component.dateRange);
+  });
+
+  it('getLeaveTypes should assign leave types to the local variable', () => {
+    component.leaveTypes = null;
+    component.getLeaveTypes();
+
+    expect(component.leaveTypes).not.toBeNull();
   });
 
 });
