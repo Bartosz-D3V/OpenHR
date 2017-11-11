@@ -15,18 +15,22 @@ export const routeDefinitions: Routes = [
       {
         path: 'personal-details',
         component: PersonalDetailsComponent,
+        outlet: 'core',
       },
       {
         path: 'leave-application',
         component: LeaveApplicationComponent,
+        outlet: 'core',
       },
       {
         path: 'delegation',
         component: DelegationComponent,
+        outlet: 'core',
       },
       {
         path: 'about',
         component: AboutComponent,
+        outlet: 'core',
       },
     ]
   },
