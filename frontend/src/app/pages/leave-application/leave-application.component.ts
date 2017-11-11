@@ -18,7 +18,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   public dateRange: Date[];
   public startDate: Date;
   public endDate: Date;
-  public readonly selectorType = 'range';
+  public selectorType = 'range';
   public leaveApplication: LeaveApplication = new LeaveApplication();
 
   constructor(private leaveApplicationService: LeaveApplicationService) {

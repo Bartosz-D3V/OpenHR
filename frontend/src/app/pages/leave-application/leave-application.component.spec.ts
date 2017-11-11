@@ -134,11 +134,4 @@ describe('LeaveApplicationComponent', () => {
     expect(component.leaveApplication.selectedDays).toEqual(component.dateRange);
   });
 
-  it('getLeaveTypes should assign leave types to the local variable', () => {
-    component.leaveTypes = null;
-    component.getLeaveTypes();
-
-    expect(component.leaveTypes).not.toBeNull();
-  });
-
 });
