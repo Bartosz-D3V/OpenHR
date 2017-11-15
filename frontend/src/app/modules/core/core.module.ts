@@ -42,9 +42,9 @@ import { SidenavItemListComponent } from '../../shared/components/sidenav/sidena
 import { SidenavItemComponent } from '../../shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
-import { CoreComponent } from './core-wrapper/core.component';
 import { AboutComponent } from './pages/about/about.component';
 import { DelegationComponent } from './pages/delegation/delegation.component';
+import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AppRoutingModule } from '../../app-routing.module';
 
 @NgModule({
@@ -93,7 +93,7 @@ import { AppRoutingModule } from '../../app-routing.module';
     AboutComponent,
     AvatarComponent,
     InitialsPipe,
-    CoreComponent,
+    CoreWrapperComponent,
   ],
 })
 export class CoreModule {
