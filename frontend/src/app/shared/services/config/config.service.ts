@@ -3,12 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { ErrorResolverService } from '../error-resolver/error-resolver.service';
 
 @Injectable()
-export class LeaveApplicationService {
+export class ConfigService {
 
-  private url = 'app/leave-application';
+  private url = '/api/config/';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -23,14 +23,25 @@ export class LeaveApplicationService {
               private _errorResolver: ErrorResolverService) {
   }
 
-  public getLeaveTypes(): Observable<Array<string>> {
+  public getContractTypes(): Observable<Array<string>> {
     return this._http
-      .get<Array<string>>(this.url, {
+      .get<Array<string>>(this.url + 'contractTypes', {
         headers: this.headers,
       })
       .catch((error: any) => {
         this.handleError(error);
-        return Observable.of([]);
+        return Observable.of(error);
+      });
+  }
+
+  public getLeaveTypes(): Observable<Array<string>> {
+    return this._http
+      .get<Array<string>>(this.url + 'leaveTypes', {
+        headers: this.headers,
+      })
+      .catch((error: any) => {
+        this.handleError(error);
+        return Observable.of(error);
       });
   }
 

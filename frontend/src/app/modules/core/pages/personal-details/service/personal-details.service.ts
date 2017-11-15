@@ -14,7 +14,7 @@ import { ErrorResolverService } from '../../../../../shared/services/error-resol
 export class PersonalDetailsService {
 
   private url = 'app/my-details';
-  private headers: HttpHeaders = new HttpHeaders({
+  private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   });
@@ -30,7 +30,9 @@ export class PersonalDetailsService {
 
   public getCurrentSubject(): Observable<Subject> {
     return this._http
-      .get<Subject>(this.url)
+      .get<Subject>(this.url, {
+        headers: this.headers,
+      })
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of(error);
