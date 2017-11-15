@@ -9,13 +9,13 @@ import { MatDatepickerModule, MatExpansionModule, MatNativeDateModule, MatToolba
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { Subject } from '../../shared/domain/subject/subject';
-import { Address } from '../../shared/domain/subject/address';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { Address } from '../../../../shared/domain/subject/address';
 import { PersonalDetailsComponent } from './personal-details.component';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
-import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { PersonalDetailsService } from './service/personal-details.service';
 
 import Spy = jasmine.Spy;

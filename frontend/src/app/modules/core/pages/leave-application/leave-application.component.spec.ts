@@ -15,9 +15,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 
 describe('LeaveApplicationComponent', () => {
