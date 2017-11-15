@@ -43,6 +43,14 @@ export class PersonalDetailsComponent implements OnInit {
     Validators.maxLength(11),
   ]);
 
+  ninFormControl: FormControl = new FormControl('', [
+    Validators.required,
+  ]);
+
+  employeeIdFormControl: FormControl = new FormControl('', [
+    Validators.required,
+  ]);
+
   public step = 0;
   public subject: Subject;
 
@@ -75,7 +83,9 @@ export class PersonalDetailsComponent implements OnInit {
       this.dobFormControl.valid &&
       this.postcodeFormControl.valid &&
       this.emailFormControl.valid &&
-      this.telephoneFormControl.valid;
+      this.telephoneFormControl.valid &&
+      this.ninFormControl.valid &&
+      this.employeeIdFormControl.valid;
   }
 
   getCurrentSubject(): void {

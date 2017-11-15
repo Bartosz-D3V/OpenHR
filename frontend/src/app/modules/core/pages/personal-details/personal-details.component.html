@@ -145,6 +145,52 @@
       </form>
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Employee details
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>perm_identity</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="c-form__element">
+        <label for="personal-details-nin"></label>
+        <input type="text" matInput placeholder="National Insurance Number" [formControl]="ninFormControl"
+               id="personal-details-nin" name="nin" [ngModel]="subject?.email">
+        <mat-error *ngIf="ninFormControl.hasError('required')">
+          NIN is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="c-form__element">
+        <label for="personal-details-employeeId"></label>
+        <input type="text" matInput placeholder="Employee ID" [formControl]="employeeIdFormControl"
+               id="personal-details-employeeId" name="employeeId" [ngModel]="subject?.email">
+        <mat-error *ngIf="employeeIdFormControl.hasError('required')">
+          Employee ID is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="c-form__element">
+        <input matInput [matDatepicker]="startDatePicker" placeholder="Start date">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="c-form__element">
+        <input matInput [matDatepicker]="endDatePicker" placeholder="End date">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
         <button mat-button color="primary" (click)="nextStep()">End</button>
       </mat-action-row>
     </mat-expansion-panel>
