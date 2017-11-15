@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LeaveApplicationService } from './leave-application.service';
-import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
+import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];

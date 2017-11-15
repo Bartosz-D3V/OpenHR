@@ -8,8 +8,8 @@ import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angula
 import { CalendarModule } from 'primeng/primeng';
 
 import { DelegationComponent } from './delegation.component';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -31,7 +31,7 @@ describe('DelegationComponent', () => {
         MatAutocompleteModule,
         NoopAnimationsModule,
         CalendarModule,
-      ]
+      ],
     })
       .compileComponents();
   }));
@@ -54,7 +54,7 @@ describe('DelegationComponent', () => {
       'Germany',
       'Poland',
       'Portugal',
-      'Zanzibar'
+      'Zanzibar',
     ];
 
     afterEach(() => {

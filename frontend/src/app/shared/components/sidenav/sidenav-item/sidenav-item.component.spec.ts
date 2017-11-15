@@ -13,12 +13,12 @@ describe('SidenavItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        SidenavItemComponent
+        SidenavItemComponent,
       ],
       imports: [
         MatIconModule,
         RouterTestingModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

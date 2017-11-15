@@ -16,7 +16,7 @@ describe('SidenavItemListComponent', () => {
       ],
       imports: [
         RouterTestingModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

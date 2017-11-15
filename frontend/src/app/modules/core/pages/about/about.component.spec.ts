@@ -5,8 +5,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatToolbarModule } from '@angular/material';
 
 import { AboutComponent } from './about.component';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -23,7 +23,7 @@ describe('AboutComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

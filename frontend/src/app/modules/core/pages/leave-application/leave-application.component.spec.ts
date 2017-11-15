@@ -1,6 +1,7 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
@@ -14,16 +15,16 @@ import { Observable } from 'rxjs/Observable';
 
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
-import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { ErrorResolverService } from '../../shared/services/error-resolver/error-resolver.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { LeaveApplicationService } from './service/leave-application.service';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
   let fixture: ComponentFixture<LeaveApplicationComponent>;
   const appliedDays = [
-    new Date('03/05/2017')
+    new Date('03/05/2017'),
   ];
   const mockLeave = new LeaveApplication();
   mockLeave.selectedDays = appliedDays;
@@ -31,9 +32,9 @@ describe('LeaveApplicationComponent', () => {
   mockLeave.message = '';
 
   @Injectable()
-  class FakeLeaveApplicationComponent {
-    public getLeaveTypes(): any {
-      return Observable.of(null);
+  class FakeLeaveApplicationService {
+    public getLeaveTypes(): Observable<Array<string>> {
+      return Observable.of(['Holiday']);
     }
   }
 
@@ -65,12 +66,12 @@ describe('LeaveApplicationComponent', () => {
       ],
       providers: [
         {
-          provide: LeaveApplicationComponent, useClass: FakeLeaveApplicationComponent,
+          provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
         },
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
-      ]
+      ],
     })
       .compileComponents();
   }));

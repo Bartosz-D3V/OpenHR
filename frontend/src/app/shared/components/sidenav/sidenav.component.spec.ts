@@ -31,7 +31,7 @@ describe('SidenavComponent', () => {
         MatSidenavModule,
         MatMenuModule,
         MatToolbarModule,
-        MatButtonModule
+        MatButtonModule,
       ],
     }).compileComponents();
   }));
@@ -51,7 +51,7 @@ describe('SidenavComponent', () => {
 
     it('should return true if max-width is less or equal than 840px', () => {
       spyOn(window, 'matchMedia').and.returnValue({
-        matches: true
+        matches: true,
       });
       fixture.detectChanges();
       expect(component.isScreenSmall()).toBeTruthy();

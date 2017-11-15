@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
-import { Subject } from '../../shared/domain/subject/subject';
+import { Subject } from '../../../../shared/domain/subject/subject';
 
 import { PersonalDetailsService } from './service/personal-details.service';
-import { RegularExpressions } from '../../shared/constants/regular-expressions';
+import { RegularExpressions } from '../../../../shared/constants/regular-expressions';
 
 @Component({
   selector: 'app-personal-details',
