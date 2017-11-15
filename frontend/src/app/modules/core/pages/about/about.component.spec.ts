@@ -23,7 +23,7 @@ describe('AboutComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

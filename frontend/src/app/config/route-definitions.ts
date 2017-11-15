@@ -5,12 +5,12 @@ import { LeaveApplicationComponent } from '../modules/core/pages/leave-applicati
 import { DelegationComponent } from '../modules/core/pages/delegation/delegation.component';
 import { AboutComponent } from '../modules/core/pages/about/about.component';
 import { LandingComponent } from '../modules/landing/pages/landing/landing.component';
-import { CoreComponent } from '../modules/core/core/core.component';
+import { CoreWrapperComponent } from '../modules/core/core-wrapper/core-wrapper.component';
 
 export const routeDefinitions: Routes = [
   {
     path: 'app',
-    component: CoreComponent,
+    component: CoreWrapperComponent,
     children: [
       {
         path: 'personal-details',
@@ -32,16 +32,16 @@ export const routeDefinitions: Routes = [
         component: AboutComponent,
         outlet: 'core',
       },
-    ]
+    ],
   },
   {
     path: '',
     redirectTo: 'welcome',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'welcome',
     component: LandingComponent,
     pathMatch: 'full',
-  }
+  },
 ];

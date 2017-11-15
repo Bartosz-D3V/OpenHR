@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 @Component({
   selector: 'app-static-modal',
   templateUrl: './static-modal.component.html',
-  styleUrls: ['./static-modal.component.scss']
+  styleUrls: ['./static-modal.component.scss'],
 })
 export class StaticModalComponent {
 

@@ -5,11 +5,11 @@ import { LandingComponent } from './pages/landing/landing.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   declarations: [
-    LandingComponent
-  ]
+    LandingComponent,
+  ],
 })
 export class LandingModule {
 }

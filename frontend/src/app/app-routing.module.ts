@@ -11,7 +11,7 @@ import { routeDefinitions } from './config/route-definitions';
   ],
   exports: [
     RouterModule,
-  ]
+  ],
 })
 export class AppRoutingModule {
 }

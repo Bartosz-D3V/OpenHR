@@ -22,7 +22,7 @@ import { LandingModule } from './modules/landing/landing.module';
     RouterModule,
     CoreModule,
     LandingModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [ErrorResolverService],
   bootstrap: [AppComponent],

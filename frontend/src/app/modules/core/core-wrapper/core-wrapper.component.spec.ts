@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
-import { CoreComponent } from './core.component';
+import { CoreWrapperComponent } from './core-wrapper.component';
 import { AppComponent } from '../../../boot/app.component';
 import { SidenavComponent } from '../../../shared/components/sidenav/sidenav.component';
 import { SidenavItemComponent } from '../../../shared/components/sidenav/sidenav-item/sidenav-item.component';
@@ -13,13 +13,13 @@ import { AvatarComponent } from '../../../shared/components/avatar/avatar.compon
 import { InitialsPipe } from '../../../shared/pipes/initials/initials.pipe';
 
 describe('CoreComponent', () => {
-  let component: CoreComponent;
-  let fixture: ComponentFixture<CoreComponent>;
+  let component: CoreWrapperComponent;
+  let fixture: ComponentFixture<CoreWrapperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        CoreComponent,
+        CoreWrapperComponent,
         AppComponent,
         AvatarComponent,
         SidenavComponent,
@@ -33,13 +33,13 @@ describe('CoreComponent', () => {
         MatSidenavModule,
         MatToolbarModule,
         MatMenuModule,
-      ]
+      ],
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CoreComponent);
+    fixture = TestBed.createComponent(CoreWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

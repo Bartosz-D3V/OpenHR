@@ -5,7 +5,7 @@ import { SidenavItem } from '../sidenav-item/sidenav-item';
 @Component({
   selector: 'app-sidenav-item-list',
   templateUrl: './sidenav-item-list.component.html',
-  styleUrls: ['./sidenav-item-list.component.scss']
+  styleUrls: ['./sidenav-item-list.component.scss'],
 })
 export class SidenavItemListComponent {
 
