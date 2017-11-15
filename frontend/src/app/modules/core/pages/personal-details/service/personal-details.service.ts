@@ -16,6 +16,7 @@ export class PersonalDetailsService {
   private url = 'app/my-details';
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   });
 
   private handleError(error: any): void {

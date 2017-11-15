@@ -11,6 +11,7 @@ export class LeaveApplicationService {
   private url = 'app/leave-application';
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   });
 
   private handleError(error: any): void {
