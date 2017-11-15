@@ -1,4 +1,4 @@
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatDialogRef } from '@angular/material';
@@ -14,10 +14,10 @@ describe('StaticModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StaticModalComponent
+        StaticModalComponent,
       ],
       imports: [
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
       providers: [
         {
@@ -27,7 +27,7 @@ describe('StaticModalComponent', () => {
           provide: OverlayContainer, useFactory: () => {
           overlayContainerElement = document.createElement('div');
           return {getContainerElement: () => overlayContainerElement};
-        }
+        },
         },
       ],
     })

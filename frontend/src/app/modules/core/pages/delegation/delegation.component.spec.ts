@@ -31,7 +31,7 @@ describe('DelegationComponent', () => {
         MatAutocompleteModule,
         NoopAnimationsModule,
         CalendarModule,
-      ]
+      ],
     })
       .compileComponents();
   }));
@@ -54,7 +54,7 @@ describe('DelegationComponent', () => {
       'Germany',
       'Poland',
       'Portugal',
-      'Zanzibar'
+      'Zanzibar',
     ];
 
     afterEach(() => {

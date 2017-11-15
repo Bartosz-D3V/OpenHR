@@ -24,7 +24,7 @@ describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
   let fixture: ComponentFixture<LeaveApplicationComponent>;
   const appliedDays = [
-    new Date('03/05/2017')
+    new Date('03/05/2017'),
   ];
   const mockLeave = new LeaveApplication();
   mockLeave.selectedDays = appliedDays;
@@ -71,7 +71,7 @@ describe('LeaveApplicationComponent', () => {
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
-      ]
+      ],
     })
       .compileComponents();
   }));

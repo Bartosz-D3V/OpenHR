@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 import { AvatarComponent } from './avatar.component';
-import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { User } from '../../domain/user/user';
+import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -16,13 +16,13 @@ describe('AvatarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         InitialsPipe,
-        AvatarComponent
+        AvatarComponent,
       ],
       imports: [
         MatMenuModule,
         MatButtonModule,
         RouterTestingModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

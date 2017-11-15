@@ -44,14 +44,14 @@ export class DelegationComponent implements OnInit {
       }),
       organisation: this._fb.group({
         position: ['', Validators.required],
-        department: ['']
+        department: [''],
       }),
       delegation: this._fb.group({
         city: [''],
         objective: ['', Validators.required],
         budget: ['0', Validators.min(0)],
         dateRange: [''],
-      })
+      }),
     });
 
     this.filteredCountries = this.reduceCountries(this.countries);
