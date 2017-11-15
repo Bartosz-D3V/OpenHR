@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '../../shared/domain/user/user';
+import { User } from '../../../shared/domain/user/user';
 
 @Component({
   selector: 'app-core',

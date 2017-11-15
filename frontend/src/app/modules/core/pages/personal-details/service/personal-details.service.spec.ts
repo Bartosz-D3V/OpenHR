@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { Subject } from '../../../shared/domain/subject/subject';
-import { Address } from '../../../shared/domain/subject/address';
+import { Subject } from '../../../../../shared/domain/subject/subject';
+import { Address } from '../../../../../shared/domain/subject/address';
+import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { PersonalDetailsService } from './personal-details.service';
-import { ErrorResolverService } from '../../../shared/services/error-resolver/error-resolver.service';
 
 describe('PersonalDetailsService', () => {
   const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
