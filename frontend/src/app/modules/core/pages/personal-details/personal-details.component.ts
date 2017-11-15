@@ -5,12 +5,13 @@ import { Subject } from '../../../../shared/domain/subject/subject';
 
 import { PersonalDetailsService } from './service/personal-details.service';
 import { RegularExpressions } from '../../../../shared/constants/regular-expressions';
+import { ConfigService } from '../../../../shared/services/config/config.service';
 
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.scss'],
-  providers: [PersonalDetailsService],
+  providers: [PersonalDetailsService, ConfigService],
 })
 export class PersonalDetailsComponent implements OnInit {
 
@@ -54,7 +55,8 @@ export class PersonalDetailsComponent implements OnInit {
   public step = 0;
   public subject: Subject;
 
-  constructor(private _personalDetailsService: PersonalDetailsService) {
+  constructor(private _personalDetailsService: PersonalDetailsService,
+              private _configService: ConfigService) {
   }
 
   ngOnInit(): void {

@@ -20,12 +20,21 @@ import { PersonalDetailsService } from './service/personal-details.service';
 
 import Spy = jasmine.Spy;
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ConfigService } from '../../../../shared/services/config/config.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
   let fixture: ComponentFixture<PersonalDetailsComponent>;
-  const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
+  const mockSubject: Subject = new Subject('John', 'Test', new Date(1, 2, 1950),
     'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  const mockContractTypes: Array<string> = ['Full time', 'Part time'];
+
+  @Injectable()
+  class FakeConfigService {
+    public getContractTypes(): any {
+      return Observable.of(mockContractTypes);
+    }
+  }
 
   @Injectable()
   class FakeSubjectService {
@@ -60,6 +69,9 @@ describe('PersonalDetailsComponent', () => {
         NoopAnimationsModule,
       ],
       providers: [
+        {
+          provide: ConfigService, useClass: FakeConfigService,
+        },
         {
           provide: PersonalDetailsService, useClass: FakeSubjectService,
         },
