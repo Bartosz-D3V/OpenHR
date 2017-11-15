@@ -7,7 +7,7 @@ import { routeDefinitions } from './config/route-definitions';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routeDefinitions, { enableTracing: true }),
+    RouterModule.forRoot(routeDefinitions),
   ],
   exports: [
     RouterModule,
