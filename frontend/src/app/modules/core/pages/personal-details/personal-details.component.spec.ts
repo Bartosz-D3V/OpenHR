@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,6 +10,8 @@ import { MatDatepickerModule, MatExpansionModule, MatNativeDateModule, MatToolba
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+import Spy = jasmine.Spy;
+
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { Address } from '../../../../shared/domain/subject/address';
 import { PersonalDetailsComponent } from './personal-details.component';
@@ -16,11 +19,8 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.p
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { PersonalDetailsService } from './service/personal-details.service';
-
-import Spy = jasmine.Spy;
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '../../../../shared/services/config/config.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -104,16 +104,16 @@ describe('PersonalDetailsComponent', () => {
 
     it('should mark form as valid if input is not empty', () => {
       const name: String = 'Test';
-      component.firstNameFormControl.setValue(name);
+      component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
 
-      expect(component.firstNameFormControl.valid).toBeTruthy();
+      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText: String = '';
-      component.firstNameFormControl.setValue(emptyText);
+      component.personalInformationFormGroup.get('firstNameFormControl').setValue(emptyText);
 
-      expect(component.firstNameFormControl.valid).toBeFalsy();
+      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
     });
 
   });
@@ -122,16 +122,16 @@ describe('PersonalDetailsComponent', () => {
 
     it('should mark form as valid if input is not empty', () => {
       const name: String = 'Test';
-      component.lastNameFormControl.setValue(name);
+      component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
 
-      expect(component.lastNameFormControl.valid).toBeTruthy();
+      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText: String = '';
-      component.lastNameFormControl.setValue(emptyText);
+      component.personalInformationFormGroup.get('lastNameFormControl').setValue(emptyText);
 
-      expect(component.lastNameFormControl.valid).toBeFalsy();
+      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
     });
 
   });
@@ -140,90 +140,96 @@ describe('PersonalDetailsComponent', () => {
 
     it('should mark form as valid if input is not empty', () => {
       const dob: Date = new Date('11 October 1960 15:00 UTC');
-      component.dobFormControl.setValue(dob);
+      component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
 
-      expect(component.dobFormControl.valid).toBeTruthy();
+      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText: String = '';
-      component.dobFormControl.setValue(emptyText);
+      component.personalInformationFormGroup.get('dobFormControl').setValue(emptyText);
 
-      expect(component.dobFormControl.valid).toBeFalsy();
+      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
     });
 
   });
 
   describe('Postcode validator', () => {
+    let postcodeFormControl: AbstractControl;
 
     beforeEach(() => {
-      component.postcodeFormControl.reset();
+      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
+      postcodeFormControl.reset();
     });
 
     it('should mark form as invalid if input is empty or postcode is invalid', () => {
       const invalidPostcode: String = '11 HG2';
 
-      expect(component.postcodeFormControl.valid).toBeFalsy();
-      component.postcodeFormControl.reset();
-      component.postcodeFormControl.setValue(invalidPostcode);
-      expect(component.postcodeFormControl.valid).toBeFalsy();
+      expect(postcodeFormControl.valid).toBeFalsy();
+      postcodeFormControl.reset();
+      postcodeFormControl.setValue(invalidPostcode);
+      expect(postcodeFormControl.valid).toBeFalsy();
     });
 
     it('should mark form as valid if input is filled and postcode is valid', () => {
       const validPostcode: String = 'SW9 1HZ';
-      component.postcodeFormControl.setValue(validPostcode);
+      postcodeFormControl.setValue(validPostcode);
 
-      expect(component.postcodeFormControl.valid).toBeTruthy();
+      expect(postcodeFormControl.valid).toBeTruthy();
     });
 
   });
 
   describe('Email validator', () => {
+    let emailFormControl: AbstractControl;
 
     beforeEach(() => {
-      component.emailFormControl.reset();
+      emailFormControl = component.contactInformationFormGroup.controls['emailFormControl'];
+      emailFormControl.reset();
     });
 
     it('should mark form as invalid if input is empty or email is invalid', () => {
       const invalidEmail: String = 'test@.com';
 
-      expect(component.emailFormControl.valid).toBeFalsy();
-      component.emailFormControl.reset();
-      component.emailFormControl.setValue(invalidEmail);
-      expect(component.emailFormControl.valid).toBeFalsy();
+      expect(emailFormControl.valid).toBeFalsy();
+      emailFormControl.reset();
+      emailFormControl.setValue(invalidEmail);
+      expect(emailFormControl.valid).toBeFalsy();
     });
 
     it('should mark form as valid if input is filled and email is valid', () => {
       const validEmail: String = 'test@test.com';
-      component.emailFormControl.setValue(validEmail);
+      emailFormControl.setValue(validEmail);
 
-      expect(component.emailFormControl.valid).toBeTruthy();
+      expect(emailFormControl.valid).toBeTruthy();
     });
 
   });
 
   describe('Telephone validator', () => {
+    let telephoneFormControl: AbstractControl;
 
     beforeEach(() => {
-      component.telephoneFormControl.reset();
+      telephoneFormControl = component.contactInformationFormGroup.controls['telephoneFormControl'];
+      telephoneFormControl.reset();
     });
 
     it('should mark form as invalid if input is empty', () => {
-      expect(component.telephoneFormControl.valid).toBeFalsy();
+      expect(telephoneFormControl.valid).toBeFalsy();
     });
 
     it('should mark form as invalid if input is less than 7 digits', () => {
       const invalidTelephone: String = '123456';
-      component.telephoneFormControl.setValue(invalidTelephone);
+      telephoneFormControl.setValue(invalidTelephone);
 
-      expect(component.telephoneFormControl.valid).toBeFalsy();
+      expect(telephoneFormControl.valid).toBeFalsy();
     });
 
     it('should mark form as invalid if input is greater than 11 digits', () => {
       const invalidTelephone: String = '123456789101112';
-      component.telephoneFormControl.setValue(invalidTelephone);
+      telephoneFormControl.setValue(invalidTelephone);
 
-      expect(component.telephoneFormControl.valid).toBeFalsy();
+      expect(telephoneFormControl.valid).toBeFalsy();
     });
 
     it('should mark form as valid if input is between 7 and 11 digits', () => {
@@ -231,96 +237,72 @@ describe('PersonalDetailsComponent', () => {
       const validTelephone2: String = '12345678911';
       const validTelephone3: String = '12345678';
 
-      component.telephoneFormControl.setValue(validTelephone1);
-      expect(component.telephoneFormControl.valid).toBeTruthy();
-      component.telephoneFormControl.reset();
+      telephoneFormControl.setValue(validTelephone1);
+      expect(telephoneFormControl.valid).toBeTruthy();
+      telephoneFormControl.reset();
 
-      component.telephoneFormControl.setValue(validTelephone2);
-      expect(component.telephoneFormControl.valid).toBeTruthy();
-      component.telephoneFormControl.reset();
+      telephoneFormControl.setValue(validTelephone2);
+      expect(telephoneFormControl.valid).toBeTruthy();
+      telephoneFormControl.reset();
 
-      component.telephoneFormControl.setValue(validTelephone3);
-      expect(component.telephoneFormControl.valid).toBeTruthy();
+      telephoneFormControl.setValue(validTelephone3);
+      expect(telephoneFormControl.valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input contains letters', () => {
       const invalidTelephone1: String = '1234567abc';
 
-      component.telephoneFormControl.setValue(invalidTelephone1);
-      expect(component.telephoneFormControl.valid).toBeFalsy();
+      telephoneFormControl.setValue(invalidTelephone1);
+      expect(telephoneFormControl.valid).toBeFalsy();
     });
 
   });
 
   describe('isValid method', () => {
-
     let spy1: Spy;
     let spy2: Spy;
     let spy3: Spy;
-    let spy4: Spy;
-    let spy5: Spy;
-    let spy6: Spy;
 
-    beforeEach(() => {
-      component.postcodeFormControl.reset();
-      component.emailFormControl.reset();
-      component.telephoneFormControl.reset();
-
-      spy1 = spyOnProperty(component.postcodeFormControl, 'valid', 'get');
-      spy2 = spyOnProperty(component.emailFormControl, 'valid', 'get');
-      spy3 = spyOnProperty(component.telephoneFormControl, 'valid', 'get');
-      spy4 = spyOnProperty(component.firstNameFormControl, 'valid', 'get');
-      spy5 = spyOnProperty(component.lastNameFormControl, 'valid', 'get');
-      spy6 = spyOnProperty(component.dobFormControl, 'valid', 'get');
-    });
-
-    const preparePropertySpies = function (logicTable: Array<boolean>): void {
-      spy1.and.returnValue(logicTable[0]);
-      spy2.and.returnValue(logicTable[1]);
-      spy3.and.returnValue(logicTable[2]);
-      spy4.and.returnValue(logicTable[3]);
-      spy5.and.returnValue(logicTable[4]);
-      spy6.and.returnValue(logicTable[5]);
+    const setFormGroupSpies = function (firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
+      spy1.and.returnValue(firstGroupFlag);
+      spy2.and.returnValue(secondGroupFlag);
+      spy3.and.returnValue(thirdGroupFlag);
     };
 
-    it('should return true if all formsControls are valid', () => {
-      preparePropertySpies([true, true, true, true, true, true]);
+    beforeEach(() => {
+      spy1 = spyOnProperty(component.personalInformationFormGroup, 'valid', 'get');
+      spy2 = spyOnProperty(component.contactInformationFormGroup, 'valid', 'get');
+      spy3 = spyOnProperty(component.employeeDetailsFormGroup, 'valid', 'get');
+    });
+
+    it('should return true if all formGroups are valid', () => {
+      setFormGroupSpies(true, true, true);
 
       expect(component.isValid()).toBeTruthy();
     });
 
-    it('should return false if any of the formControl is invalid', () => {
-      preparePropertySpies([true, false, true, true, true, true]);
+    it('should return false if at least one formGroup is invalid', () => {
+      setFormGroupSpies(false, true, true);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([true, true, false, true, true, true]);
+      setFormGroupSpies(true, false, true);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, true, true, true, true, true]);
+      setFormGroupSpies(true, true, false);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, false, true, true, true, true]);
+      setFormGroupSpies(false, false, true);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([true, false, false, true, true, true]);
+      setFormGroupSpies(true, false, false);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, true, false, true, true, true]);
+      setFormGroupSpies(false, true, false);
       expect(component.isValid()).toBeFalsy();
 
-      preparePropertySpies([false, false, false, true, true, true]);
-      expect(component.isValid()).toBeFalsy();
-
-      preparePropertySpies([true, true, true, false, true, true]);
-      expect(component.isValid()).toBeFalsy();
-
-      preparePropertySpies([true, true, true, true, false, true]);
-      expect(component.isValid()).toBeFalsy();
-
-      preparePropertySpies([true, true, true, true, true, false]);
+      setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
-
   });
 
   describe('methods for expansion panel', () => {
