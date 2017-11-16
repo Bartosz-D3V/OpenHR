@@ -91,4 +91,26 @@ describe('RegularExpressions', () => {
     expect(RegularExpressions.LETTERS_ONLY.test(exampleText3)).toBeFalsy();
   });
 
+  describe('NIN', () => {
+    it('should accept correct National Insurance Number', () => {
+      const exampleNin1 = 'WR 41 45 55 C';
+      const exampleNin2 = 'AX 60 93 31 B';
+      const exampleNin3 = 'RH 68 67 00 A';
+
+      expect(RegularExpressions.NIN.test(exampleNin1)).toBeTruthy();
+      expect(RegularExpressions.NIN.test(exampleNin2)).toBeTruthy();
+      expect(RegularExpressions.NIN.test(exampleNin3)).toBeTruthy();
+    });
+
+    it('should reject incorrect National Insurance Number', () => {
+      const exampleIncorrectNin1 = 'WR 49 45 55 X';
+      const exampleIncorrectNin2 = 'AAX 61 93 31 B';
+      const exampleIncorrectNin3 = 'ZZ 68 67 00';
+
+      expect(RegularExpressions.NIN.test(exampleIncorrectNin1)).toBeFalsy();
+      expect(RegularExpressions.NIN.test(exampleIncorrectNin2)).toBeFalsy();
+      expect(RegularExpressions.NIN.test(exampleIncorrectNin3)).toBeFalsy();
+    });
+  });
+
 });

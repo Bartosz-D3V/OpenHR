@@ -69,6 +69,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   public employeeDetailsFormGroup: FormGroup = new FormGroup({
     ninFormControl: new FormControl('', [
       Validators.required,
+      Validators.pattern(RegularExpressions.NIN),
     ]),
 
     employeeIdFormControl: new FormControl('', [

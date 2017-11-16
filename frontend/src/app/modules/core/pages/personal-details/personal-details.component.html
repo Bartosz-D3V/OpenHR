@@ -170,6 +170,9 @@
           <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
             NIN is required
           </mat-error>
+          <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('pattern')">
+            NIN is not correct
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
