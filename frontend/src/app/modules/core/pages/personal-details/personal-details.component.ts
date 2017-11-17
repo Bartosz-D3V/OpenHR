@@ -3,17 +3,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISubscription } from 'rxjs/Subscription';
 
-import { Subject } from '../../../../shared/domain/subject/subject';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regular-expressions';
 
-import { PersonalDetailsService } from './service/personal-details.service';
+import { SubjectDetailsService } from './service/subject-details.service';
+import { SubjectDetails } from './domain/subject-details';
 
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.scss'],
-  providers: [PersonalDetailsService, ConfigService],
+  providers: [SubjectDetailsService, ConfigService],
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
@@ -82,9 +82,9 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   });
 
   public step = 0;
-  public subject: Subject;
+  public subjectDetails: SubjectDetails;
 
-  constructor(private _personalDetailsService: PersonalDetailsService,
+  constructor(private _subjectDetailsService: SubjectDetailsService,
               private _configService: ConfigService) {
   }
 
@@ -119,10 +119,10 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCurrentSubject(): void {
-    this.$currentSubject = this._personalDetailsService
+    this.$currentSubject = this._subjectDetailsService
       .getCurrentSubject()
-      .subscribe((response: Subject) => {
-        this.subject = response;
+      .subscribe((response: SubjectDetails) => {
+        this.subjectDetails = response;
       });
   }
 
