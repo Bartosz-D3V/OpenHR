@@ -7,11 +7,11 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { Subject } from '../../../../../shared/domain/subject/subject';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { SubjectDetails } from '../domain/subject-details';
 
 @Injectable()
-export class PersonalDetailsService {
+export class SubjectDetailsService {
 
   private url = 'app/my-details';
   private readonly headers: HttpHeaders = new HttpHeaders({
@@ -28,9 +28,9 @@ export class PersonalDetailsService {
               private _errorResolver: ErrorResolverService) {
   }
 
-  public getCurrentSubject(): Observable<Subject> {
+  public getCurrentSubject(): Observable<SubjectDetails> {
     return this._http
-      .get<Subject>(this.url, {
+      .get<SubjectDetails>(this.url, {
         headers: this.headers,
       })
       .catch((error: any) => {
