@@ -16,7 +16,8 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-first-name"></label>
           <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
-                 id="personal-details-first-name" name="firstName" [ngModel]="subject?.firstName">
+                 id="personal-details-first-name" name="firstName"
+                 [ngModel]="subjectDetails?.personalInformation?.firstName">
           <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
             First name is required
           </mat-error>
@@ -25,13 +26,15 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-middle-name"></label>
           <input matInput placeholder="Middle name" id="personal-details-middle-name"
-                 formControlName="middleNameFormControl" name="middleName" [ngModel]="subject?.middleName">
+                 formControlName="middleNameFormControl" name="middleName"
+                 [ngModel]="subjectDetails?.personalInformation?.middleName">
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
           <label for="personal-details-last-name"></label>
           <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
-                 id="personal-details-last-name" name="lastName" [ngModel]="subject?.lastName">
+                 id="personal-details-last-name" name="lastName"
+                 [ngModel]="subjectDetails?.personalInformation?.lastName">
           <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
             Last name is required
           </mat-error>
@@ -40,7 +43,8 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-date-of-birth"></label>
           <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dobFormControl"
-                 id="personal-details-date-of-birth" name="dateOfBirth" [ngModel]="subject?.dateOfBirth">
+                 id="personal-details-date-of-birth" name="dateOfBirth"
+                 [ngModel]="subjectDetails?.personalInformation?.dateOfBirth">
           <mat-error *ngIf="personalInformationFormGroup.controls['dobFormControl'].hasError('required')">
             Date of birth is required
           </mat-error>
@@ -51,7 +55,8 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-position"></label>
           <input matInput required="required" placeholder="Position" formControlName="positionFormControl"
-                 id="personal-details-position" name="position" [ngModel]="subject?.position">
+                 id="personal-details-position" name="position"
+                 [ngModel]="subjectDetails?.personalInformation?.position">
         </mat-form-field>
       </form>
       <mat-action-row>
@@ -73,7 +78,8 @@
           <span matPrefix>+44 (0) &nbsp;</span>
           <label for="personal-details-telephone"></label>
           <input type="tel" matInput placeholder="Telephone" formControlName="telephoneFormControl"
-                 id="personal-details-telephone" name="telephone" [ngModel]="subject?.telephone">
+                 id="personal-details-telephone" name="telephone"
+                 [ngModel]="subjectDetails?.contactInformation?.telephone">
           <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('minlength')">
             Telephone number must contains at least 7 digits
           </mat-error>
@@ -92,7 +98,7 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-email"></label>
           <input type="email" matInput placeholder="Email" formControlName="emailFormControl"
-                 id="personal-details-email" name="email" [ngModel]="subject?.email">
+                 id="personal-details-email" name="email" [ngModel]="subjectDetails?.contactInformation?.email">
           <mat-error *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('pattern')">
             Please enter a valid email address
           </mat-error>
@@ -105,27 +111,28 @@
           <label for="personal-details-1st-line-address"></label>
           <input type="text" matInput placeholder="First line address" formControlName="firstLineAddressFormControl"
                  id="personal-details-1st-line-address" name="firstLineAddress"
-                 [ngModel]="subject?.address?.firstLineAddress">
+                 [ngModel]="subjectDetails?.contactInformation?.address?.firstLineAddress">
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
           <label for="personal-details-2nd-line-address"></label>
           <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddressFormControl"
                  id="personal-details-2nd-line-address" name="secondLineAddress"
-                 [ngModel]="subject?.address?.secondLineAddress">
+                 [ngModel]="subjectDetails?.contactInformation?.address?.secondLineAddress">
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
           <label for="personal-details-3rd-line-address"></label>
           <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddressFormControl"
                  id="personal-details-3rd-line-address" name="thirdLineAddress"
-                 [ngModel]="subject?.address?.thirdLineAddress">
+                 [ngModel]="subjectDetails?.contactInformation?.address?.thirdLineAddress">
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
           <label for="personal-details-postcode"></label>
           <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcodeFormControl"
-                 id="personal-details-postcode" name="postcode" [ngModel]="subject?.address?.postcode">
+                 id="personal-details-postcode" name="postcode"
+                 [ngModel]="subjectDetails?.contactInformation?.address?.postcode">
           <mat-error *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('pattern')">
             Please enter a valid postcode
           </mat-error>
@@ -137,13 +144,14 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-city"></label>
           <input type="text" matInput placeholder="City" formControlName="cityFormControl"
-                 id="personal-details-city" name="city" [ngModel]="subject?.address?.city">
+                 id="personal-details-city" name="city" [ngModel]="subjectDetails?.contactInformation?.address?.city">
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
           <label for="personal-details-country"></label>
           <input type="text" matInput placeholder="Country" formControlName="countryFormControl"
-                 id="personal-details-country" name="country" [ngModel]="subject?.address?.country">
+                 id="personal-details-country" name="country"
+                 [ngModel]="subjectDetails?.contactInformation?.address?.country">
         </mat-form-field>
       </form>
       <mat-action-row>
@@ -166,7 +174,7 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-nin"></label>
           <input type="text" matInput placeholder="National Insurance Number" formControlName="ninFormControl"
-                 id="personal-details-nin" name="nin" [ngModel]="subject?.email">
+                 id="personal-details-nin" name="nin" [ngModel]="subjectDetails?.contactInformation?.email">
           <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
             NIN is required
           </mat-error>
@@ -178,7 +186,8 @@
         <mat-form-field class="c-form__element">
           <label for="personal-details-employeeId"></label>
           <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
-                 id="personal-details-employeeId" name="employeeId" [ngModel]="subject?.email">
+                 id="personal-details-employeeId" name="employeeId"
+                 [ngModel]="subjectDetails?.employeeInformation?.employeeId">
           <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
             Employee ID is required
           </mat-error>
@@ -186,13 +195,15 @@
 
         <mat-form-field class="c-form__element">
           <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
-                 formControlName="startDateFormControl">
+                 formControlName="startDateFormControl" name="startDate"
+                 [ngModel]="subjectDetails?.employeeInformation?.startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #startDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="c-form__element">
-          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDateFormControl">
+          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDateFormControl"
+                 name="endDate" [ngModel]="subjectDetails?.employeeInformation?.endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #endDatePicker></mat-datepicker>
         </mat-form-field>
