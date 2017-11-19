@@ -1,63 +1,60 @@
 package org.openhr.domain.subject;
 
-import org.openhr.domain.address.Address;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.openhr.enumeration.Role;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Entity
 public class Subject implements Serializable {
 
   @Id
   @NotNull
-  @Column(name = "subject_id")
+  @Column(name = "SUBJECT_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long subjectId;
 
   @NotNull
-  @Column(name = "first_name")
+  @NotEmpty
+  @Column(name = "FIRST_NAME")
   private String firstName;
 
-  @Column(name = "middle_name")
-  private String middleName;
-
   @NotNull
-  @Column(name = "last_name")
+  @NotEmpty
+  @Column(name = "LAST_NAME")
   private String lastName;
 
-  @Column(name = "date_of_birth")
-  private LocalDate dateOfBirth;
-
   @NotNull
-  private String position;
+  @NotEmpty
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
-  private String telephone;
+  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  private PersonalInformation personalInformation;
 
-  @NotNull
-  private String email;
+  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  private ContactInformation contactInformation;
 
-  @NotNull
-  private Address address;
+  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  private EmployeeInformation employeeInformation;
 
   public Subject() {
   }
 
-  public Subject(final String firstName, final String middleName, final String lastName, final LocalDate dateOfBirth,
-                 final String position, final String telephone, final String email, final Address address) {
+  public Subject(final String firstName, final String lastName, final Role role) {
     this.firstName = firstName;
-    this.middleName = middleName;
     this.lastName = lastName;
-    this.dateOfBirth = dateOfBirth;
-    this.position = position;
-    this.telephone = telephone;
-    this.email = email;
-    this.address = address;
+    this.role = role;
   }
 
   public long getSubjectId() {
@@ -72,14 +69,6 @@ public class Subject implements Serializable {
     this.firstName = firstName;
   }
 
-  public String getMiddleName() {
-    return middleName;
-  }
-
-  public void setMiddleName(final String middleName) {
-    this.middleName = middleName;
-  }
-
   public String getLastName() {
     return lastName;
   }
@@ -88,44 +77,35 @@ public class Subject implements Serializable {
     this.lastName = lastName;
   }
 
-  public LocalDate getDateOfBirth() {
-    return dateOfBirth;
+  public Role getRole() {
+    return role;
   }
 
-  public void setDateOfBirth(final LocalDate dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
+  public void setRole(final Role role) {
+    this.role = role;
   }
 
-  public String getPosition() {
-    return position;
+  public PersonalInformation getPersonalInformation() {
+    return personalInformation;
   }
 
-  public void setPosition(final String position) {
-    this.position = position;
+  public void setPersonalInformation(final PersonalInformation personalInformation) {
+    this.personalInformation = personalInformation;
   }
 
-  public String getTelephone() {
-    return telephone;
+  public ContactInformation getContactInformation() {
+    return contactInformation;
   }
 
-  public void setTelephone(final String telephone) {
-    this.telephone = telephone;
+  public void setContactInformation(final ContactInformation contactInformation) {
+    this.contactInformation = contactInformation;
   }
 
-  public String getEmail() {
-    return email;
+  public EmployeeInformation getEmployeeInformation() {
+    return employeeInformation;
   }
 
-  public void setEmail(final String email) {
-    this.email = email;
+  public void setEmployeeInformation(final EmployeeInformation employeeInformation) {
+    this.employeeInformation = employeeInformation;
   }
-
-  public Address getAddress() {
-    return address;
-  }
-
-  public void setAddress(final Address address) {
-    this.address = address;
-  }
-
 }
