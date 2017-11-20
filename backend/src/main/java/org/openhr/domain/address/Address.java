@@ -9,26 +9,21 @@ import java.io.Serializable;
 
 @Embeddable
 public class Address implements Serializable {
-
-  @NotNull
-  @NotEmpty
-  @Column(name = "first_line_address")
+  @Column(name = "FIRST_LINE_ADDRESS")
   private String firstLineAddress;
 
-  @Column(name = "second_line_address")
+  @Column(name = "SECOND_LINE_ADDRESS")
   private String secondLineAddress;
 
-  @Column(name = "third_line_address")
+  @Column(name = "THIRD_LINE_ADDRESS")
   private String thirdLineAddress;
-
-  @NotNull
-  @NotEmpty
   private String postcode;
 
   private String city;
   private String country;
 
   public Address() {
+    super();
   }
 
   public Address(final String firstLineAddress, final String secondLineAddress, final String thirdLineAddress,

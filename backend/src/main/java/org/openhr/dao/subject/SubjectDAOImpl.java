@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
-import org.openhr.domain.address.Address;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,17 +73,14 @@ public class SubjectDAOImpl implements SubjectDAO {
 
   @Override
   @Transactional
-  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
-          SubjectDoesNotExistException {
+  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
+    throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
-    final Address updatedAddress = subject.getAddress();
-    updatedAddress.setFirstLineAddress(address.getFirstLineAddress());
-    updatedAddress.setSecondLineAddress(address.getSecondLineAddress());
-    updatedAddress.setThirdLineAddress(address.getThirdLineAddress());
-    updatedAddress.setPostcode(address.getPostcode());
-    updatedAddress.setCity(address.getCity());
-    updatedAddress.setCountry(address.getCountry());
-    subject.setAddress(updatedAddress);
+    final PersonalInformation legacyPersonalInformation = subject.getPersonalInformation();
+    legacyPersonalInformation.setMiddleName(personalInformation.getMiddleName());
+    legacyPersonalInformation.setDateOfBirth(personalInformation.getDateOfBirth());
+    legacyPersonalInformation.setPosition(personalInformation.getPosition());
+    subject.setPersonalInformation(legacyPersonalInformation);
     try {
       this.mergeSubject(subject);
     } catch (final HibernateException hibernateException) {
