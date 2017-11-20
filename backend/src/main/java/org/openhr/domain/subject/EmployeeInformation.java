@@ -1,6 +1,12 @@
 package org.openhr.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -8,10 +14,13 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
 @Table(name = "EMPLOYEE_INFORMATION")
 public class EmployeeInformation implements Serializable {
+  @Id
   @NotNull
   @OneToOne
+  @JsonIgnore
   @JoinColumn(name = "SUBJECT_ID")
   private Subject subject;
 
@@ -28,11 +37,11 @@ public class EmployeeInformation implements Serializable {
   private LocalDate endDate;
 
   public EmployeeInformation() {
+    super();
   }
 
-  public EmployeeInformation(final Subject subject, final String nationalInsuranceNumber, final String employeeId,
-                             final LocalDate startDate, final LocalDate endDate) {
-    this.subject = subject;
+  public EmployeeInformation(final String nationalInsuranceNumber, final String employeeId, final LocalDate startDate,
+                             final LocalDate endDate) {
     this.nationalInsuranceNumber = nationalInsuranceNumber;
     this.employeeId = employeeId;
     this.startDate = startDate;

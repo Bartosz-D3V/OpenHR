@@ -1,6 +1,10 @@
 package org.openhr.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -8,10 +12,13 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Entity
 @Table(name = "PERSONAL_INFORMATION")
 public class PersonalInformation implements Serializable {
+  @Id
   @NotNull
   @OneToOne
+  @JsonIgnore
   @JoinColumn(name = "SUBJECT_ID")
   private Subject subject;
 
@@ -23,11 +30,10 @@ public class PersonalInformation implements Serializable {
   private String position;
 
   public PersonalInformation() {
+    super();
   }
 
-  public PersonalInformation(final Subject subject, final String middleName, final LocalDate dateOfBirth,
-                             final String position) {
-    this.subject = subject;
+  public PersonalInformation(final String middleName, final LocalDate dateOfBirth, final String position) {
     this.middleName = middleName;
     this.dateOfBirth = dateOfBirth;
     this.position = position;

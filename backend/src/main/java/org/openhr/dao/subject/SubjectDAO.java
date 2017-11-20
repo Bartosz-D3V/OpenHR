@@ -3,6 +3,7 @@ package org.openhr.dao.subject;
 import org.hibernate.HibernateException;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
 import org.openhr.domain.address.Address;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 
 public interface SubjectDAO {
@@ -12,5 +13,6 @@ public interface SubjectDAO {
 
   void updateSubject(Subject subject) throws HibernateException;
 
-  void updateSubjectAddress(long subjectId, Address address) throws HibernateException, SubjectDoesNotExistException;
+  void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
+    throws HibernateException, SubjectDoesNotExistException;
 }

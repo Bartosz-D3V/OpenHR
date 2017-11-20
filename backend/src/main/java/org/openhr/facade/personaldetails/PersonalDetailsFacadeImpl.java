@@ -3,6 +3,7 @@ package org.openhr.facade.personaldetails;
 import org.hibernate.HibernateException;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
 import org.openhr.domain.address.Address;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.service.personaldetails.PersonalDetailsService;
 import org.springframework.stereotype.Component;
@@ -37,8 +38,8 @@ public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
 
   @Override
   @Transactional
-  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
-          SubjectDoesNotExistException {
-    this.personalDetailsService.updateSubjectAddress(subjectId, address);
+  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    this.personalDetailsService.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 }

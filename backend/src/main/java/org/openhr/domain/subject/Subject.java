@@ -3,6 +3,7 @@ package org.openhr.domain.subject;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.openhr.enumeration.Role;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,13 +12,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 public class Subject implements Serializable {
-
   @Id
   @NotNull
   @Column(name = "SUBJECT_ID")
@@ -35,26 +36,37 @@ public class Subject implements Serializable {
   private String lastName;
 
   @NotNull
-  @NotEmpty
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
   private PersonalInformation personalInformation;
 
-  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
   private ContactInformation contactInformation;
 
-  @OneToOne(mappedBy = "Subject", fetch = FetchType.LAZY, optional = false)
+  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
   private EmployeeInformation employeeInformation;
 
   public Subject() {
+    super();
   }
 
   public Subject(final String firstName, final String lastName, final Role role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.role = role;
+  }
+
+  public Subject(final String firstName, final String lastName, final Role role,
+                 final PersonalInformation personalInformation, final ContactInformation contactInformation,
+                 final EmployeeInformation employeeInformation) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.role = role;
+    this.personalInformation = personalInformation;
+    this.contactInformation = contactInformation;
+    this.employeeInformation = employeeInformation;
   }
 
   public long getSubjectId() {

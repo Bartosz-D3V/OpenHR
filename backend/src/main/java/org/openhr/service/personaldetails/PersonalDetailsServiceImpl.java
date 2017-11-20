@@ -4,6 +4,7 @@ import org.hibernate.HibernateException;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
 import org.openhr.dao.subject.SubjectDAO;
 import org.openhr.domain.address.Address;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +38,8 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
   @Override
   @Transactional
-  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
-          SubjectDoesNotExistException {
-    this.subjectDAO.updateSubjectAddress(subjectId, address);
+  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    this.subjectDAO.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 }
