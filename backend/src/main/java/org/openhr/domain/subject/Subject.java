@@ -1,6 +1,5 @@
 package org.openhr.domain.subject;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.openhr.enumeration.Role;
 
 import javax.persistence.CascadeType;
@@ -20,18 +19,15 @@ import java.io.Serializable;
 @Entity
 public class Subject implements Serializable {
   @Id
-  @NotNull
   @Column(name = "SUBJECT_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long subjectId;
 
   @NotNull
-  @NotEmpty
   @Column(name = "FIRST_NAME")
   private String firstName;
 
   @NotNull
-  @NotEmpty
   @Column(name = "LAST_NAME")
   private String lastName;
 
@@ -39,13 +35,16 @@ public class Subject implements Serializable {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private PersonalInformation personalInformation;
 
-  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(unique = true, name = "CONTACT_INFORMATION_ID")
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private ContactInformation contactInformation;
 
-  @OneToOne(mappedBy = "subject", fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
 
   public Subject() {

@@ -1,10 +1,7 @@
 package org.openhr.domain.address;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Embeddable
@@ -17,7 +14,7 @@ public class Address implements Serializable {
 
   @Column(name = "THIRD_LINE_ADDRESS")
   private String thirdLineAddress;
-  private String postcode;
+    private String postcode;
 
   private String city;
   private String country;
