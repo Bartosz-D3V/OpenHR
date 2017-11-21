@@ -61,13 +61,24 @@ public class SubjectDAOImpl implements SubjectDAO {
 
   @Override
   @Transactional
-  public void updateSubject(final Subject subject) throws HibernateException {
+  public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
+    SubjectDoesNotExistException {
     try {
-      this.mergeSubject(subject);
+      Session session = this.sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      final Subject legacySubject = this.getSubjectDetails(subjectId);
+      legacySubject.setFirstName(subject.getFirstName());
+      legacySubject.setLastName(subject.getLastName());
+      session.update(legacySubject);
+      transaction.commit();
+      session.close();
     } catch (HibernateException hibernateException) {
       this.log.error("Issue occurred during the update of the subject");
       this.log.error(hibernateException.getMessage());
       throw hibernateException;
+    } catch (SubjectDoesNotExistException subjectDoesNotExistException) {
+      this.log.error(subjectDoesNotExistException.getMessage());
+      throw subjectDoesNotExistException;
     }
   }
 

@@ -1,7 +1,6 @@
 package org.openhr.controller.personaldetails;
 
 import org.hibernate.HibernateException;
-import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
@@ -41,8 +40,9 @@ public class PersonalDetailsController {
   @Transactional
   @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
-  public void updateSubject(@RequestBody final Subject subject) throws HibernateException {
-    this.personalDetailsFacade.updateSubject(subject);
+  public void updateSubject(@RequestParam final long subjectId, @RequestBody final Subject subject)
+    throws HibernateException, SubjectDoesNotExistException {
+    this.personalDetailsFacade.updateSubject(subjectId, subject);
   }
 
   @Transactional

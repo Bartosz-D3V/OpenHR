@@ -1,6 +1,5 @@
 package org.openhr.domain.subject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openhr.domain.address.Address;
 
 import javax.persistence.Column;
@@ -9,22 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "CONTACT_INFORMATION")
 public class ContactInformation implements Serializable {
   @Id
-  @NotNull
-  @OneToOne
-  @JsonIgnore
-  @JoinColumn(name = "SUBJECT_ID")
-  private Subject subject;
-
+  @Column(name = "CONTACT_INFORMATION_ID")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long contactInformationId;
   private String telephone;
   private String email;
 
@@ -39,14 +32,6 @@ public class ContactInformation implements Serializable {
     this.telephone = telephone;
     this.email = email;
     this.address = address;
-  }
-
-  public Subject getSubject() {
-    return subject;
-  }
-
-  public void setSubject(final Subject subject) {
-    this.subject = subject;
   }
 
   public String getTelephone() {

@@ -1,14 +1,11 @@
 package org.openhr.domain.subject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -16,11 +13,9 @@ import java.time.LocalDate;
 @Table(name = "PERSONAL_INFORMATION")
 public class PersonalInformation implements Serializable {
   @Id
-  @NotNull
-  @OneToOne
-  @JsonIgnore
-  @JoinColumn(name = "SUBJECT_ID")
-  private Subject subject;
+  @Column(name = "PERSONAL_INFORMATION_ID")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long personalInformationId;
 
   @Column(name = "MIDDLE_NAME")
   private String middleName;
@@ -37,14 +32,6 @@ public class PersonalInformation implements Serializable {
     this.middleName = middleName;
     this.dateOfBirth = dateOfBirth;
     this.position = position;
-  }
-
-  public Subject getSubject() {
-    return subject;
-  }
-
-  public void setSubject(final Subject subject) {
-    this.subject = subject;
   }
 
   public String getMiddleName() {

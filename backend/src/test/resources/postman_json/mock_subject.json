@@ -1,0 +1,28 @@
+{
+  "firstName": "John",
+  "lastName": "Kendell",
+  "role": "EMPLOYEE",
+  "personalInformation": {
+    "middleName": "Xavier",
+    "dateOfBirth": null,
+    "position": "Junior Software Tester"
+  },
+  "contactInformation": {
+    "telephone": "123456789",
+    "email": "j.kendell@mail.com",
+    "address": {
+      "firstLineAddress": "Test street 1",
+      "secondLineAddress": null,
+      "thirdLineAddress": "131/321",
+      "postcode": "T5 5T",
+      "city": "NYC",
+      "country": "USA"
+    }
+  },
+  "employeeInformation": {
+    "nationalInsuranceNumber": "LKJH 1312",
+    "employeeId": "123S",
+    "startDate": null,
+    "endDate": null
+  }
+}

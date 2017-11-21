@@ -22,8 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.LocalDate;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -113,7 +111,7 @@ public class PersonalDetailsControllerTest {
   @Test
   public void updateSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-    doThrow(new HibernateException("DB Error")).when(this.personalDetailsFacade).updateSubject(any());
+    doThrow(new HibernateException("DB Error")).when(this.personalDetailsFacade).updateSubject(anyLong(), any());
 
     MvcResult result = this.mockMvc
       .perform(put("/personal-details")
