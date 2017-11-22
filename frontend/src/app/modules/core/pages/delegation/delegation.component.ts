@@ -6,7 +6,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
-import { RegularExpressions } from '../../../../shared/constants/regular-expressions';
+import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { DelegationApplication } from './domain/application/delegation-application';
 
 @Component({

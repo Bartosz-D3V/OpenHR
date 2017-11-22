@@ -1,15 +1,9 @@
 export class PersonalInformation {
-  public firstName: string;
   public middleName: string;
-  public lastName: string;
   public dateOfBirth: Date;
-  public position: string;
 
-  constructor(firstName: string, lastName: string, dateOfBirth: Date, position: string, middleName?: string) {
-    this.firstName = firstName;
-    this.middleName = middleName ? middleName : null;
-    this.lastName = lastName;
+  constructor(middleName: string, dateOfBirth: Date) {
+    this.middleName = middleName;
     this.dateOfBirth = dateOfBirth;
-    this.position = position;
   }
 }
