@@ -28,13 +28,13 @@ public class ExceptionHandlerControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    when(this.httpServletRequest.getRequestURL()).thenReturn(new StringBuffer(MOCK_URL));
+    when(httpServletRequest.getRequestURL()).thenReturn(new StringBuffer(MOCK_URL));
   }
 
   @Test
   public void handleBadRequestShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final SubjectDoesNotExistException mockError = new SubjectDoesNotExistException("Subject not found");
-    final ErrorInfo returnedInfo = this.exceptionHandlerController.handleBadRequest(this.httpServletRequest, mockError);
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleBadRequest(httpServletRequest, mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
@@ -44,8 +44,7 @@ public class ExceptionHandlerControllerTest {
   @Test
   public void handleHibernateExceptionShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final HibernateException mockError = new HibernateException("DB error");
-    final ErrorInfo returnedInfo = this.exceptionHandlerController.handleHibernateException(this.httpServletRequest,
-            mockError);
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleHibernateException(httpServletRequest, mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());

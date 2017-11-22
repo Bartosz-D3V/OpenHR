@@ -129,25 +129,61 @@ public class SubjectDAOTest {
       actualSubject.getEmployeeInformation().getEndDate());
   }
 
+  @Test(expected = SubjectDoesNotExistException.class)
+  public void updateSubjectShouldThrowExceptionIfSubjectDoesNotExist()
+    throws SubjectDoesNotExistException {
+    subjectDAO.updateSubject(123L, mockSubject);
+  }
+
   @Test
-  public void updateSubjectPersonalInformationShouldAlterExistingPersonalInformationInDatabase()
+  public void updateSubjectShouldAlterExistingSubject()
     throws SubjectDoesNotExistException {
     Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
     session.close();
 
+    mockSubject.setFirstName("John");
+    mockSubject.setLastName("Blacksmith");
+    mockSubject.setRole(Role.HRTEAMMEMBER);
     mockSubject.getPersonalInformation().setMiddleName("Michel");
     mockSubject.getPersonalInformation().setDateOfBirth(null);
-    subjectDAO.updateSubjectPersonalInformation(mockSubject.getSubjectId(), mockSubject.getPersonalInformation());
+    mockSubject.getContactInformation().setEmail("k@s.com");
+    mockSubject.getContactInformation().setTelephone("987654321");
+    mockSubject.getContactInformation().setAddress(null);
+    mockSubject.getEmployeeInformation().setEmployeeId("LKP");
+    mockSubject.getEmployeeInformation().setNationalInsuranceNumber("682HG JK 8");
+    mockSubject.getEmployeeInformation().setPosition("SQL Developer");
+    mockSubject.getEmployeeInformation().setStartDate(null);
+    mockSubject.getEmployeeInformation().setEndDate(null);
+    subjectDAO.updateSubject(mockSubject.getSubjectId(), mockSubject);
 
     session = sessionFactory.openSession();
-    final Subject subject = session.get(Subject.class, mockSubject.getSubjectId());
+    final Subject actualSubject = session.get(Subject.class, mockSubject.getSubjectId());
     session.close();
 
+    assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
+    assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
+    assertEquals(mockSubject.getLastName(), actualSubject.getLastName());
+    assertEquals(mockSubject.getRole(), actualSubject.getRole());
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
-      subject.getPersonalInformation().getMiddleName());
+      actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
-      subject.getPersonalInformation().getDateOfBirth());
+      actualSubject.getPersonalInformation().getDateOfBirth());
+    assertEquals(mockSubject.getContactInformation().getTelephone(),
+      actualSubject.getContactInformation().getTelephone());
+    assertEquals(mockSubject.getContactInformation().getEmail(),
+      actualSubject.getContactInformation().getEmail());
+    assertNull(actualSubject.getContactInformation().getAddress());
+    assertEquals(mockSubject.getEmployeeInformation().getEmployeeId(),
+      actualSubject.getEmployeeInformation().getEmployeeId());
+    assertEquals(mockSubject.getEmployeeInformation().getNationalInsuranceNumber(),
+      actualSubject.getEmployeeInformation().getNationalInsuranceNumber());
+    assertEquals(mockSubject.getEmployeeInformation().getPosition(),
+      actualSubject.getEmployeeInformation().getPosition());
+    assertEquals(mockSubject.getEmployeeInformation().getStartDate(),
+      actualSubject.getEmployeeInformation().getStartDate());
+    assertEquals(mockSubject.getEmployeeInformation().getEndDate(),
+      actualSubject.getEmployeeInformation().getEndDate());
   }
 
   @Test(expected = SubjectDoesNotExistException.class)

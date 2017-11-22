@@ -23,7 +23,7 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
-    return this.subjectDAO.getSubjectDetails(subjectId);
+    return subjectDAO.getSubjectDetails(subjectId);
   }
 
   @Override
