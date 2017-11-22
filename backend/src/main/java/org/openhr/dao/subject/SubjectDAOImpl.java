@@ -69,6 +69,10 @@ public class SubjectDAOImpl implements SubjectDAO {
       final Subject legacySubject = this.getSubjectDetails(subjectId);
       legacySubject.setFirstName(subject.getFirstName());
       legacySubject.setLastName(subject.getLastName());
+      legacySubject.setRole(subject.getRole());
+      legacySubject.setPersonalInformation(subject.getPersonalInformation());
+      legacySubject.setContactInformation(subject.getContactInformation());
+      legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
       session.update(legacySubject);
       transaction.commit();
       session.close();

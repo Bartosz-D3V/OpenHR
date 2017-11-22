@@ -115,6 +115,7 @@ public class PersonalDetailsControllerTest {
 
     MvcResult result = this.mockMvc
       .perform(put("/personal-details")
+        .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andDo(print())
@@ -130,6 +131,7 @@ public class PersonalDetailsControllerTest {
 
     MvcResult result = this.mockMvc
       .perform(put("/personal-details")
+        .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andDo(print())

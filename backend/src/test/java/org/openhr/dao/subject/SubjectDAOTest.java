@@ -2,6 +2,7 @@ package org.openhr.dao.subject;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
@@ -25,9 +26,9 @@ public class SubjectDAOTest {
 
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL",
     "London", "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null, "Tester");
+  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com", mockAddress);
-  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "12A", null, null);
+  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE, mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
 
@@ -36,6 +37,13 @@ public class SubjectDAOTest {
 
   @Autowired
   private SubjectDAO subjectDAO;
+
+  @Before
+  public void tearDown() {
+    Session session = sessionFactory.openSession();
+    session.createSQLQuery("TRUNCATE TABLE subject").executeUpdate();
+    session.close();
+  }
 
   @Test(expected = SubjectDoesNotExistException.class)
   public void getSubjectDetailsShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
@@ -58,8 +66,6 @@ public class SubjectDAOTest {
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
       actualSubject.getPersonalInformation().getDateOfBirth());
-    assertEquals(mockSubject.getPersonalInformation().getPosition(),
-      actualSubject.getPersonalInformation().getPosition());
     assertEquals(mockSubject.getContactInformation().getTelephone(),
       actualSubject.getContactInformation().getTelephone());
     assertEquals(mockSubject.getContactInformation().getEmail(),
@@ -80,6 +86,8 @@ public class SubjectDAOTest {
       actualSubject.getEmployeeInformation().getEmployeeId());
     assertEquals(mockSubject.getEmployeeInformation().getNationalInsuranceNumber(),
       actualSubject.getEmployeeInformation().getNationalInsuranceNumber());
+    assertEquals(mockSubject.getEmployeeInformation().getPosition(),
+      actualSubject.getEmployeeInformation().getPosition());
     assertEquals(mockSubject.getEmployeeInformation().getStartDate(),
       actualSubject.getEmployeeInformation().getStartDate());
     assertEquals(mockSubject.getEmployeeInformation().getEndDate(),
@@ -101,8 +109,6 @@ public class SubjectDAOTest {
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
       actualSubject.getPersonalInformation().getDateOfBirth());
-    assertEquals(mockSubject.getPersonalInformation().getPosition(),
-      actualSubject.getPersonalInformation().getPosition());
     assertEquals(mockSubject.getContactInformation().getTelephone(),
       actualSubject.getContactInformation().getTelephone());
     assertEquals(mockSubject.getContactInformation().getEmail(),
@@ -123,6 +129,8 @@ public class SubjectDAOTest {
       actualSubject.getEmployeeInformation().getEmployeeId());
     assertEquals(mockSubject.getEmployeeInformation().getNationalInsuranceNumber(),
       actualSubject.getEmployeeInformation().getNationalInsuranceNumber());
+    assertEquals(mockSubject.getEmployeeInformation().getPosition(),
+      actualSubject.getEmployeeInformation().getPosition());
     assertEquals(mockSubject.getEmployeeInformation().getStartDate(),
       actualSubject.getEmployeeInformation().getStartDate());
     assertEquals(mockSubject.getEmployeeInformation().getEndDate(),
@@ -141,7 +149,7 @@ public class SubjectDAOTest {
 
     mockSubject.getPersonalInformation().setMiddleName("Michel");
     mockSubject.getPersonalInformation().setDateOfBirth(null);
-    mockSubject.getPersonalInformation().setPosition("Senior Java Developer");
+    mockSubject.getEmployeeInformation().setPosition("Senior Java Developer");
     this.subjectDAO.updateSubject(subjectReference, mockSubject);
 
     Session sessionGet = sessionFactory.openSession();
@@ -152,8 +160,8 @@ public class SubjectDAOTest {
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
       actualSubject.getPersonalInformation().getDateOfBirth());
-    assertEquals(mockSubject.getPersonalInformation().getPosition(),
-      actualSubject.getPersonalInformation().getPosition());
+    assertEquals(mockSubject.getEmployeeInformation().getPosition(),
+      actualSubject.getEmployeeInformation().getPosition());
   }
 
   @Test(expected = SubjectDoesNotExistException.class)

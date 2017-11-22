@@ -22,16 +22,14 @@ public class PersonalInformation implements Serializable {
 
   @Column(name = "DATE_OF_BIRTH")
   private LocalDate dateOfBirth;
-  private String position;
 
   public PersonalInformation() {
     super();
   }
 
-  public PersonalInformation(final String middleName, final LocalDate dateOfBirth, final String position) {
+  public PersonalInformation(final String middleName, final LocalDate dateOfBirth) {
     this.middleName = middleName;
     this.dateOfBirth = dateOfBirth;
-    this.position = position;
   }
 
   public String getMiddleName() {
@@ -48,13 +46,5 @@ public class PersonalInformation implements Serializable {
 
   public void setDateOfBirth(final LocalDate dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
-  }
-
-  public String getPosition() {
-    return position;
-  }
-
-  public void setPosition(final String position) {
-    this.position = position;
   }
 }
