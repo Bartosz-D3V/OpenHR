@@ -94,8 +94,7 @@ public class SubjectDAOImpl implements SubjectDAO {
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
-    subject.getPersonalInformation().setMiddleName(personalInformation.getMiddleName());
-    subject.getPersonalInformation().setDateOfBirth(personalInformation.getDateOfBirth());
+    subject.setPersonalInformation(personalInformation);
     this.mergeSubject(subject);
   }
 
@@ -113,11 +112,7 @@ public class SubjectDAOImpl implements SubjectDAO {
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
-    subject.getEmployeeInformation().setEmployeeId(employeeInformation.getEmployeeId());
-    subject.getEmployeeInformation().setNationalInsuranceNumber(employeeInformation.getNationalInsuranceNumber());
-    subject.getEmployeeInformation().setPosition(employeeInformation.getPosition());
-    subject.getEmployeeInformation().setStartDate(employeeInformation.getStartDate());
-    subject.getEmployeeInformation().setEndDate(employeeInformation.getEndDate());
+    subject.setEmployeeInformation(employeeInformation);
     this.mergeSubject(subject);
   }
 

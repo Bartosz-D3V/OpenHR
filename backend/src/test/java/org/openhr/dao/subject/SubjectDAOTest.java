@@ -132,22 +132,22 @@ public class SubjectDAOTest {
   @Test
   public void updateSubjectPersonalInformationShouldAlterExistingPersonalInformationInDatabase()
     throws SubjectDoesNotExistException {
-
-    final Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
-    subjectDAO.updateSubject(mockSubject.getSubjectId(), mockSubject);
-    final Subject subject = session.get(Subject.class, mockSubject.getSubjectId());
     session.close();
 
     mockSubject.getPersonalInformation().setMiddleName("Michel");
     mockSubject.getPersonalInformation().setDateOfBirth(null);
-    mockSubject.getEmployeeInformation().setPosition("Senior Java Developer");
+    subjectDAO.updateSubjectPersonalInformation(mockSubject.getSubjectId(), mockSubject.getPersonalInformation());
+
+    session = sessionFactory.openSession();
+    final Subject subject = session.get(Subject.class, mockSubject.getSubjectId());
+    session.close();
 
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
       subject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
       subject.getPersonalInformation().getDateOfBirth());
-    assertEquals(mockSubject.getEmployeeInformation().getPosition(), subject.getEmployeeInformation().getPosition());
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
@@ -157,7 +157,7 @@ public class SubjectDAOTest {
   }
 
   @Test
-  public void updateSubjectPersonalInformationShouldUpdateContactInformationBySubjectIdAndContactInformation()
+  public void updateSubjectPersonalInformationShouldUpdatePersonalInformationBySubjectIdAndPersonalInformation()
     throws SubjectDoesNotExistException {
     mockPersonalInformation.setDateOfBirth(null);
     mockPersonalInformation.setMiddleName("Bill");
@@ -219,22 +219,24 @@ public class SubjectDAOTest {
   }
 
   @Test
-  public void updateSubjectEmployeeInformationShouldUpdateContactInformationBySubjectIdAndContactInformation()
+  public void updateSubjectEmployeeInformationShouldUpdateEmployeeInformationBySubjectIdAndEmployeeInformation()
     throws SubjectDoesNotExistException {
-    mockEmployeeInformation.setEmployeeId("12SK");
-    mockEmployeeInformation.setNationalInsuranceNumber("HJGS723 B 12");
-    mockEmployeeInformation.setPosition("Developer");
-    mockEmployeeInformation.setEndDate(null);
-    mockEmployeeInformation.setStartDate(null);
-    mockSubject.setEmployeeInformation(mockEmployeeInformation);
-
-    final Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
-    subjectDAO.updateSubjectEmployeeInformation(mockSubject.getSubjectId(), mockEmployeeInformation);
+    session.close();
+
+    mockSubject.getEmployeeInformation().setNationalInsuranceNumber("HJGS723 B 12");
+    mockSubject.getEmployeeInformation().setPosition("Developer");
+    mockSubject.getEmployeeInformation().setStartDate(null);
+    mockSubject.getEmployeeInformation().setEndDate(null);
+    subjectDAO.updateSubjectEmployeeInformation(mockSubject.getSubjectId(), mockSubject.getEmployeeInformation());
+
+    session = sessionFactory.openSession();
     final Subject subject = session.get(Subject.class, mockSubject.getSubjectId());
     session.close();
 
-    assertEquals(mockSubject.getEmployeeInformation().getEmployeeId(), subject.getEmployeeInformation().getEmployeeId());
+    assertEquals(mockSubject.getEmployeeInformation().getEmployeeId(),
+      subject.getEmployeeInformation().getEmployeeId());
     assertEquals(mockSubject.getEmployeeInformation().getNationalInsuranceNumber(),
       subject.getEmployeeInformation().getNationalInsuranceNumber());
     assertEquals(mockSubject.getEmployeeInformation().getPosition(), subject.getEmployeeInformation().getPosition());
@@ -242,11 +244,19 @@ public class SubjectDAOTest {
     assertEquals(mockSubject.getEmployeeInformation().getEndDate(), subject.getEmployeeInformation().getEndDate());
   }
 
+  @Test(expected = SubjectDoesNotExistException.class)
+  public void deleteSubjectShouldShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
+    subjectDAO.deleteSubject(678L);
+  }
+
   @Test
   public void deleteSubjectShouldDeleteSubject() throws SubjectDoesNotExistException {
-    final Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
+    session.close();
+
     subjectDAO.deleteSubject(mockSubject.getSubjectId());
+    session = sessionFactory.openSession();
     final Subject subject = session.get(Subject.class, mockSubject.getSubjectId());
     session.close();
 
