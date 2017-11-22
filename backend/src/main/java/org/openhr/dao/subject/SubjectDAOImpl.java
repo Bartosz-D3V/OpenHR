@@ -69,6 +69,10 @@ public class SubjectDAOImpl implements SubjectDAO {
       final Subject legacySubject = this.getSubjectDetails(subjectId);
       legacySubject.setFirstName(subject.getFirstName());
       legacySubject.setLastName(subject.getLastName());
+      legacySubject.setRole(subject.getRole());
+      legacySubject.setPersonalInformation(subject.getPersonalInformation());
+      legacySubject.setContactInformation(subject.getContactInformation());
+      legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
       session.update(legacySubject);
       transaction.commit();
       session.close();
@@ -90,7 +94,6 @@ public class SubjectDAOImpl implements SubjectDAO {
     final PersonalInformation legacyPersonalInformation = subject.getPersonalInformation();
     legacyPersonalInformation.setMiddleName(personalInformation.getMiddleName());
     legacyPersonalInformation.setDateOfBirth(personalInformation.getDateOfBirth());
-    legacyPersonalInformation.setPosition(personalInformation.getPosition());
     subject.setPersonalInformation(legacyPersonalInformation);
     try {
       this.mergeSubject(subject);
