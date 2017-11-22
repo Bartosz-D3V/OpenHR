@@ -94,7 +94,6 @@ public class SubjectDAOImpl implements SubjectDAO {
     final PersonalInformation legacyPersonalInformation = subject.getPersonalInformation();
     legacyPersonalInformation.setMiddleName(personalInformation.getMiddleName());
     legacyPersonalInformation.setDateOfBirth(personalInformation.getDateOfBirth());
-    legacyPersonalInformation.setPosition(personalInformation.getPosition());
     subject.setPersonalInformation(legacyPersonalInformation);
     try {
       this.mergeSubject(subject);
