@@ -2,6 +2,8 @@ package org.openhr.service.personaldetails;
 
 import org.hibernate.HibernateException;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.domain.subject.ContactInformation;
+import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 
@@ -14,4 +16,12 @@ public interface PersonalDetailsService {
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException;
+
+  void updateSubjectContactInformation(long subjectId, ContactInformation contactInformation)
+    throws HibernateException, SubjectDoesNotExistException;
+
+  void updateSubjectEmployeeInformation(long subjectId, EmployeeInformation employeeInformation)
+    throws HibernateException, SubjectDoesNotExistException;
+
+  void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 }
