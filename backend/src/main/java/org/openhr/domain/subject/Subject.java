@@ -36,15 +36,15 @@ public class Subject implements Serializable {
   private Role role;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private PersonalInformation personalInformation;
 
   @JoinColumn(unique = true, name = "CONTACT_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private ContactInformation contactInformation;
 
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
 
   public Subject() {

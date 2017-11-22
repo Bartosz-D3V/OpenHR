@@ -2,10 +2,13 @@ package org.openhr.facade.personaldetails;
 
 import org.hibernate.HibernateException;
 import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.domain.subject.ContactInformation;
+import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.service.personaldetails.PersonalDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
@@ -18,28 +21,48 @@ public class PersonalDetailsFacadeImpl implements PersonalDetailsFacade {
   }
 
   @Override
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
-    return this.personalDetailsService.getSubjectDetails(subjectId);
+    return personalDetailsService.getSubjectDetails(subjectId);
   }
 
   @Override
   @Transactional
   public void addSubject(final Subject subject) throws HibernateException {
-    this.personalDetailsService.addSubject(subject);
+    personalDetailsService.addSubject(subject);
   }
 
   @Override
   @Transactional
   public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
     SubjectDoesNotExistException {
-    this.personalDetailsService.updateSubject(subjectId, subject);
+    personalDetailsService.updateSubject(subjectId, subject);
   }
 
   @Override
   @Transactional
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    this.personalDetailsService.updateSubjectPersonalInformation(subjectId, personalInformation);
+    personalDetailsService.updateSubjectPersonalInformation(subjectId, personalInformation);
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    personalDetailsService.updateSubjectContactInformation(subjectId, contactInformation);
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    personalDetailsService.updateSubjectEmployeeInformation(subjectId, employeeInformation);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
+    personalDetailsService.deleteSubject(subjectId);
   }
 }

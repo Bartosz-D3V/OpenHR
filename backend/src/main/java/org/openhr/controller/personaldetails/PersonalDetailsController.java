@@ -1,6 +1,8 @@
 package org.openhr.controller.personaldetails;
 
 import org.hibernate.HibernateException;
+import org.openhr.domain.subject.ContactInformation;
+import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
@@ -27,7 +29,7 @@ public class PersonalDetailsController {
   @ResponseBody
   @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   public Subject getSubjectDetails(@RequestParam final long subjectId) throws SubjectDoesNotExistException {
-    return this.personalDetailsFacade.getSubjectDetails(subjectId);
+    return personalDetailsFacade.getSubjectDetails(subjectId);
   }
 
   @Transactional
@@ -42,15 +44,40 @@ public class PersonalDetailsController {
     produces = {MediaType.APPLICATION_JSON_VALUE})
   public void updateSubject(@RequestParam final long subjectId, @RequestBody final Subject subject)
     throws HibernateException, SubjectDoesNotExistException {
-    this.personalDetailsFacade.updateSubject(subjectId, subject);
+    personalDetailsFacade.updateSubject(subjectId, subject);
   }
 
   @Transactional
   @RequestMapping(value = "personal-information", method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void updateSubjectAddress(@RequestParam final long subjectId,
-                                   @RequestBody final PersonalInformation personalInformation)
+  public void updateSubjectPersonalInformation(@RequestParam final long subjectId,
+                                               @RequestBody final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    this.personalDetailsFacade.updateSubjectPersonalInformation(subjectId, personalInformation);
+    personalDetailsFacade.updateSubjectPersonalInformation(subjectId, personalInformation);
+  }
+
+  @Transactional
+  @RequestMapping(value = "contact-information", method = RequestMethod.PUT,
+    consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void updateSubjectContactInformation(@RequestParam final long subjectId,
+                                              @RequestBody final ContactInformation contactInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    personalDetailsFacade.updateSubjectContactInformation(subjectId, contactInformation);
+  }
+
+  @Transactional
+  @RequestMapping(value = "employee-information", method = RequestMethod.PUT,
+    consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void updateSubjectEmployeeInformation(@RequestParam final long subjectId,
+                                               @RequestBody final EmployeeInformation employeeInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    personalDetailsFacade.updateSubjectEmployeeInformation(subjectId, employeeInformation);
+  }
+
+  @Transactional
+  @RequestMapping(method = RequestMethod.DELETE)
+  public void deleteSubject(@RequestParam final long subjectId) throws HibernateException,
+    SubjectDoesNotExistException {
+    personalDetailsFacade.deleteSubject(subjectId);
   }
 }
