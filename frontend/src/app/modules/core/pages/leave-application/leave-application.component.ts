@@ -13,8 +13,8 @@ import { LeaveApplication } from './domain/leave-application';
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
+  private $leaveTypes: ISubscription;
   public leaveTypes: Array<String>;
-  public $leaveTypes: ISubscription;
   public dateRange: Date[];
   public startDate: Date;
   public endDate: Date;

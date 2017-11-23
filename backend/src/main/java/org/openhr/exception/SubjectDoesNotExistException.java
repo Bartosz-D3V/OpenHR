@@ -1,5 +1,9 @@
-package org.openhr.controller.personaldetails;
+package org.openhr.exception;
 
+/**
+ * Exception thrown when required subject was not found in the
+ * database, although it must exist at that point.
+ */
 public class SubjectDoesNotExistException extends Exception {
 
   /**

@@ -1,7 +1,7 @@
 package org.openhr.controller.common;
 
 import org.hibernate.HibernateException;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

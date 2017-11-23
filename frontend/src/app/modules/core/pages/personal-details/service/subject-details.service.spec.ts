@@ -2,14 +2,23 @@ import { Injectable } from '@angular/core';
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { Subject } from '../../../../../shared/domain/subject/subject';
-import { Address } from '../../../../../shared/domain/subject/address';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { PersonalDetailsService } from './personal-details.service';
+import { Role } from '../../../../../shared/constants/enumeration/role';
+
+import { Subject } from '../domain/subject';
+import { Address } from '../domain/address';
+import { PersonalInformation } from '../domain/personal-information';
+import { ContactInformation } from '../domain/contact-information';
+import { EmployeeInformation } from '../domain/employee-information';
+import { SubjectDetailsService } from './subject-details.service';
 
 describe('PersonalDetailsService', () => {
-  const mockSubject = new Subject('John', 'Test', new Date(1, 2, 1950),
-    'Mentor', '12345678', 'test@test.com', new Address('', '', '', '', '', ''));
+  const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
+  const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
+  const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '123AS', new Date(), new Date());
+  const mockSubject: Subject = new Subject('John', 'Xavier', Role.EMPLOYEE, mockPersonalInformation, mockContactInformation,
+    mockEmployeeInformation);
   let http: HttpTestingController;
   let personalDetailsService;
   let errorResolverService: ErrorResolverService;
@@ -26,7 +35,7 @@ describe('PersonalDetailsService', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        PersonalDetailsService,
+        SubjectDetailsService,
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
@@ -34,7 +43,7 @@ describe('PersonalDetailsService', () => {
     });
 
     http = TestBed.get(HttpTestingController);
-    personalDetailsService = TestBed.get(PersonalDetailsService);
+    personalDetailsService = TestBed.get(SubjectDetailsService);
     errorResolverService = TestBed.get(ErrorResolverService);
     spyOn(console, 'log');
   }));
