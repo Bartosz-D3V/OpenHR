@@ -1,7 +1,9 @@
+@import 'variables';
+
 .c-drawer {
-  margin-left: 10%;
-  margin-top: 2%;
-  width: 80%;
+  margin-left: $drawer-margin;
+  margin-top: $workspace-margin-top;
+  width: $drawer-width;
 }
 
 .c-form {

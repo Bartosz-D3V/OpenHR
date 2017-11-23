@@ -46,6 +46,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AppRoutingModule } from '../../app-routing.module';
+import { AccountComponent } from './pages/account/account.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 @NgModule({
   imports: [
@@ -94,6 +96,8 @@ import { AppRoutingModule } from '../../app-routing.module';
     AvatarComponent,
     InitialsPipe,
     CoreWrapperComponent,
+    AccountComponent,
+    SettingsComponent,
   ],
 })
 export class CoreModule {
