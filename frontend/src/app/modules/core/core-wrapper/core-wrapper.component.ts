@@ -9,7 +9,7 @@ import { User } from '../../../shared/domain/user/user';
 })
 export class CoreWrapperComponent implements OnInit {
 
-  public mockUser: User = new User(1299, 'john.test', 'John Test');
+  public mockUser: User = new User(1299, 'john.test', 'John Test', null);
 
   constructor() {
   }

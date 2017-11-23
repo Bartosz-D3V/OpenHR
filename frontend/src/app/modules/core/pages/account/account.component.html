@@ -2,5 +2,23 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Your account</mat-toolbar>
   <mat-card>
+    <form [formGroup]="accountFormGroup">
+      <mat-form-field>
+        <input type="password" #currentPassword matInput placeholder="Current password"
+               formControlName="currentPasswordController">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="password" #newPassword matInput placeholder="New password" formControlName="newPasswordController">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="password" #repeatPassword matInput placeholder="Repeat new password"
+               formControlName="newPasswordController">
+      </mat-form-field>
+      <mat-error *ngIf="!passwordsAreIdentical(newPassword.value, repeatPassword.value)">
+        Passwords do not match
+      </mat-error>
+    </form>
   </mat-card>
 </section>
