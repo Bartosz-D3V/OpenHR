@@ -24,11 +24,13 @@ import static org.junit.Assert.assertNull;
 @Transactional
 public class SubjectDAOTest {
 
-  private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL",
-    "London", "UK");
+  private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
+    "UK");
   private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
-  private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com", mockAddress);
-  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester", "12A", null, null);
+  private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
+    mockAddress);
+  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
+    "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE, mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
 
