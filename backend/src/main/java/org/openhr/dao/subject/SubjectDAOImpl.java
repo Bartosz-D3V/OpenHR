@@ -4,7 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
@@ -79,11 +79,11 @@ public class SubjectDAOImpl implements SubjectDAO {
       session.update(legacySubject);
       transaction.commit();
       session.close();
-    } catch (HibernateException hibernateException) {
+    } catch (final HibernateException hibernateException) {
       log.error("Issue occurred during the update of the subject");
       log.error(hibernateException.getMessage());
       throw hibernateException;
-    } catch (SubjectDoesNotExistException subjectDoesNotExistException) {
+    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
       log.error(subjectDoesNotExistException.getMessage());
       throw subjectDoesNotExistException;
     }
@@ -95,7 +95,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setPersonalInformation(personalInformation);
-    this.mergeSubject(subject);
+    mergeSubject(subject);
   }
 
   @Override
@@ -104,7 +104,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setContactInformation(contactInformation);
-    this.mergeSubject(subject);
+    mergeSubject(subject);
   }
 
   @Override
@@ -113,7 +113,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setEmployeeInformation(employeeInformation);
-    this.mergeSubject(subject);
+    mergeSubject(subject);
   }
 
   @Override
@@ -125,11 +125,11 @@ public class SubjectDAOImpl implements SubjectDAO {
       session.delete(this.getSubjectDetails(subjectId));
       transaction.commit();
       session.close();
-    } catch (HibernateException hibernateException) {
+    } catch (final HibernateException hibernateException) {
       log.error("Issue occurred during the deletion of the subject");
       log.error(hibernateException.getMessage());
       throw hibernateException;
-    } catch (SubjectDoesNotExistException subjectDoesNotExistException) {
+    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
       log.error(subjectDoesNotExistException.getMessage());
       throw subjectDoesNotExistException;
     }

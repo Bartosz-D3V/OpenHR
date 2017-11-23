@@ -32,6 +32,10 @@ public class PersonalInformation implements Serializable {
     this.dateOfBirth = dateOfBirth;
   }
 
+  public long getPersonalInformationId() {
+    return personalInformationId;
+  }
+
   public String getMiddleName() {
     return middleName;
   }

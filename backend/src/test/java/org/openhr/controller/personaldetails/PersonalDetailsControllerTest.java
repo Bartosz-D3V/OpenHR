@@ -13,6 +13,7 @@ import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

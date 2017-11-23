@@ -43,6 +43,10 @@ public class EmployeeInformation implements Serializable {
     this.endDate = endDate;
   }
 
+  public long getEmployeeInformationId() {
+    return employeeInformationId;
+  }
+
   public String getNationalInsuranceNumber() {
     return nationalInsuranceNumber;
   }
