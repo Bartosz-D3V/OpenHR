@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
+
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
@@ -18,11 +20,16 @@ export class AccountComponent {
     repeatPasswordController: new FormControl('', [
       Validators.required,
     ]),
+    emailController: new FormControl('', [
+      Validators.required,
+      Validators.pattern(RegularExpressions.EMAIL),
+    ]),
   });
 
   public passwordsAreIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
-      this.accountFormGroup.setErrors({passwordDoNotMatch: true});
+      this.accountFormGroup.controls['repeatPasswordController']
+        .setErrors({'passwordDoNotMatch': true});
       return false;
     }
     return true;

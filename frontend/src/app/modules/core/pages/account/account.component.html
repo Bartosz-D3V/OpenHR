@@ -2,23 +2,39 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Your account</mat-toolbar>
   <mat-card>
-    <form [formGroup]="accountFormGroup">
-      <mat-form-field>
-        <input type="password" #currentPassword matInput placeholder="Current password"
-               formControlName="currentPasswordController">
-      </mat-form-field>
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.sm="100">
+        <mat-form-field>
+          <input type="password" #currentPassword matInput placeholder="Current password"
+                 formControlName="currentPasswordController">
+        </mat-form-field>
 
-      <mat-form-field>
-        <input type="password" #newPassword matInput placeholder="New password" formControlName="newPasswordController">
-      </mat-form-field>
+        <mat-form-field>
+          <input type="password" #newPassword matInput placeholder="New password"
+                 formControlName="newPasswordController">
+        </mat-form-field>
 
-      <mat-form-field>
-        <input type="password" #repeatPassword matInput placeholder="Repeat new password"
-               formControlName="newPasswordController">
-      </mat-form-field>
-      <mat-error *ngIf="!passwordsAreIdentical(newPassword.value, repeatPassword.value)">
-        Passwords do not match
-      </mat-error>
-    </form>
+        <mat-form-field>
+          <input type="password" #repeatPassword matInput placeholder="Repeat new password"
+                 formControlName="newPasswordController">
+        </mat-form-field>
+        <mat-error *ngIf="!passwordsAreIdentical(newPassword.value, repeatPassword.value)">
+          Passwords do not match
+        </mat-error>
+      </form>
+      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.sm="100">
+        <mat-form-field>
+          <input type="email" #currentEmail matInput placeholder="Email"
+                 formControlName="emailController">
+        </mat-form-field>
+        <mat-error *ngIf="accountFormGroup.controls['emailController'].hasError('pattern')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="accountFormGroup.controls['emailController'].hasError('required')">
+          Email is required
+        </mat-error>
+      </form>
+    </div>
+    <button mat-raised-button color="primary">Save</button>
   </mat-card>
 </section>

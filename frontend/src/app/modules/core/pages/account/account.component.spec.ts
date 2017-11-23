@@ -39,11 +39,13 @@ describe('AccountComponent', () => {
 
   it('passwordsAreIdentical should return true if passwords are the same', () => {
     expect(component.passwordsAreIdentical('password1', 'password1')).toBeTruthy();
-    expect(component.accountFormGroup.hasError('passwordDoNotMatch')).toBeTruthy();
+    expect(component.accountFormGroup.controls['repeatPasswordController']
+      .hasError('passwordDoNotMatch')).toBeFalsy();
   });
 
   it('passwordsAreIdentical should return false if passwords are not the same and mark the form as dirty', () => {
     expect(component.passwordsAreIdentical('password1', 'password222')).toBeFalsy();
-    expect(component.accountFormGroup.hasError('passwordDoNotMatch')).toBeFalsy();
+    expect(component.accountFormGroup.controls['repeatPasswordController']
+      .hasError('passwordDoNotMatch')).toBeTruthy();
   });
 });
