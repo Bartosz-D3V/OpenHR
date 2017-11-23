@@ -5,6 +5,7 @@ import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;

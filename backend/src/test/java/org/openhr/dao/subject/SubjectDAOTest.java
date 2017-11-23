@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;

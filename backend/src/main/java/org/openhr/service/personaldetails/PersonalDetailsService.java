@@ -1,7 +1,7 @@
 package org.openhr.service.personaldetails;
 
 import org.hibernate.HibernateException;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;

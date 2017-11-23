@@ -34,6 +34,10 @@ public class ContactInformation implements Serializable {
     this.address = address;
   }
 
+  public long getContactInformationId() {
+    return contactInformationId;
+  }
+
   public String getTelephone() {
     return telephone;
   }
