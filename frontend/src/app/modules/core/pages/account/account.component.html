@@ -2,8 +2,8 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Your account</mat-toolbar>
   <mat-card>
-    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
-      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.sm="100">
+    <div fxLayout="row" fxLayout.md="row" fxLayout.sm="row" fxLayout.xs="column">
+      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.xs="100">
         <mat-form-field>
           <input type="password" #currentPassword matInput placeholder="Current password"
                  formControlName="currentPasswordController">
@@ -22,7 +22,7 @@
           Passwords do not match
         </mat-error>
       </form>
-      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.sm="100">
+      <form [formGroup]="accountFormGroup" fxLayout="column" fxFlex="50" fxFlex.xs="100">
         <mat-form-field>
           <input type="email" #currentEmail matInput placeholder="Email"
                  formControlName="emailController">
@@ -35,6 +35,6 @@
         </mat-error>
       </form>
     </div>
-    <button mat-raised-button color="primary">Save</button>
+    <button type="submit" mat-raised-button color="accent" [disabled]="!accountFormGroup.valid">Save</button>
   </mat-card>
 </section>
