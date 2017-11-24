@@ -37,15 +37,86 @@ describe('AccountComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('passwordsAreIdentical should return true if passwords are the same', () => {
-    expect(component.passwordsAreIdentical('password1', 'password1')).toBeTruthy();
-    expect(component.accountFormGroup.controls['repeatPasswordController']
-      .hasError('passwordDoNotMatch')).toBeFalsy();
+  describe('currentPasswordController', () => {
+    it('should be valid if the field is not empty', () => {
+      component.accountFormGroup.controls['currentPasswordController'].setValue('j.j@mail.com');
+
+      expect(component.accountFormGroup.controls['currentPasswordController'].valid).toBeTruthy();
+    });
+
+    it('should be invalid if the field is empty', () => {
+      component.accountFormGroup.controls['currentPasswordController'].setValue(null);
+
+      expect(component.accountFormGroup.controls['currentPasswordController'].valid).toBeFalsy();
+    });
   });
 
-  it('passwordsAreIdentical should return false if passwords are not the same and mark the form as dirty', () => {
-    expect(component.passwordsAreIdentical('password1', 'password222')).toBeFalsy();
-    expect(component.accountFormGroup.controls['repeatPasswordController']
-      .hasError('passwordDoNotMatch')).toBeTruthy();
+  describe('newPasswordController', () => {
+    it('should be valid if the field is not empty', () => {
+      component.accountFormGroup.controls['newPasswordController'].setValue('j.j@mail.com');
+
+      expect(component.accountFormGroup.controls['newPasswordController'].valid).toBeTruthy();
+    });
+
+    it('should be invalid if the field is empty', () => {
+      component.accountFormGroup.controls['newPasswordController'].setValue(null);
+
+      expect(component.accountFormGroup.controls['newPasswordController'].valid).toBeFalsy();
+    });
+  });
+
+  describe('repeatPasswordController', () => {
+    it('should be valid if the field is not empty', () => {
+      component.accountFormGroup.controls['repeatPasswordController'].setValue('j.j@mail.com');
+
+      expect(component.accountFormGroup.controls['repeatPasswordController'].valid).toBeTruthy();
+    });
+
+    it('should be invalid if the field is empty', () => {
+      component.accountFormGroup.controls['repeatPasswordController'].setValue(null);
+
+      expect(component.accountFormGroup.controls['repeatPasswordController'].valid).toBeFalsy();
+    });
+  });
+
+  describe('emailController', () => {
+    it('should be valid if the field is not empty', () => {
+      component.accountFormGroup.controls['emailController'].setValue('j.j@mail.com');
+
+      expect(component.accountFormGroup.controls['emailController'].valid).toBeTruthy();
+    });
+
+    it('should be invalid if the field is empty', () => {
+      component.accountFormGroup.controls['emailController'].setValue(null);
+
+      expect(component.accountFormGroup.controls['emailController'].valid).toBeFalsy();
+    });
+
+    it('should be valid if the value matches the email pattern', () => {
+      component.accountFormGroup.controls['emailController'].setValue('j.j@mail.com');
+
+      expect(component.accountFormGroup.controls['emailController'].valid).toBeTruthy();
+    });
+
+    it('should be invalid if the value does not match the email pattern', () => {
+      component.accountFormGroup.controls['emailController'].setValue('j.jmail.com');
+
+      expect(component.accountFormGroup.controls['emailController'].valid).toBeFalsy();
+    });
+  });
+
+
+  describe('passwordsAreIdentical', () => {
+    it('passwordsAreIdentical should return true if passwords are the same', () => {
+      expect(component.passwordsAreIdentical('password1', 'password1')).toBeTruthy();
+      expect(component.accountFormGroup.controls['repeatPasswordController']
+        .hasError('passwordDoNotMatch')).toBeFalsy();
+    });
+
+    it('passwordsAreIdentical should return false if passwords are not the same and mark the form as dirty', () => {
+      expect(component.passwordsAreIdentical('password1', 'password222')).toBeFalsy();
+      expect(component.accountFormGroup.controls['repeatPasswordController']
+        .hasError('passwordDoNotMatch')).toBeTruthy();
+    });
   });
 });
