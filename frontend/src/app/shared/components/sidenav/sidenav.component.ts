@@ -14,7 +14,7 @@ export class SidenavComponent implements OnInit {
   @Input()
   public user: User;
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
-  private sidenav: MatSidenav;
+  public sidenav: MatSidenav;
 
   constructor(private _router: Router,
               private zone: NgZone) {
@@ -23,9 +23,8 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit() {
     this._router.events.subscribe(() => {
-      if (this.isScreenSmall()) {
-        this.sidenav.close()
-          .catch((error) => console.error(error));
+      if (this.isScreenSmall() && this.sidenav.opened) {
+        this.sidenav.close();
       }
     });
   }
