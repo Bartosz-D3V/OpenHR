@@ -12,7 +12,7 @@ import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { User } from '../../domain/user/user';
 
 describe('SidenavComponent', () => {
-  const mockUser: User = new User(2199, 'john.test', 'John Test');
+  const mockUser: User = new User(2199, 'john.test', 'John Test', null);
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 

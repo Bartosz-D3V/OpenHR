@@ -28,6 +28,7 @@ import {
   MatTableModule,
   MatCheckboxModule,
 } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CalendarModule } from 'primeng/primeng';
 
@@ -52,6 +53,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 @NgModule({
   imports: [
     CommonModule,
+    FlexLayoutModule,
     MatMenuModule,
     MatButtonModule,
     MatRadioModule,
