@@ -17,13 +17,13 @@ export class SidenavComponent implements OnInit {
   public sidenav: MatSidenav;
 
   constructor(private _router: Router,
-              private zone: NgZone) {
-    this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
+              private _zone: NgZone) {
+    this.mediaMatcher.addListener(mql => _zone.run(() => this.mediaMatcher = mql));
   }
 
   ngOnInit() {
     this._router.events.subscribe(() => {
-      if (this.isScreenSmall() && this.sidenav.opened) {
+      if (this.isScreenSmall() && this.sidenav) {
         this.sidenav.close();
       }
     });
