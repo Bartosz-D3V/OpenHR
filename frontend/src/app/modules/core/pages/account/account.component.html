@@ -16,7 +16,7 @@
 
         <mat-form-field>
           <input type="password" #repeatPassword matInput placeholder="Repeat new password"
-                 formControlName="newPasswordController">
+                 formControlName="repeatPasswordController">
         </mat-form-field>
         <mat-error *ngIf="!passwordsAreIdentical(newPassword.value, repeatPassword.value)">
           Passwords do not match
@@ -30,7 +30,8 @@
         <mat-error *ngIf="accountFormGroup.controls['emailController'].hasError('pattern')">
           Please enter a valid email address
         </mat-error>
-        <mat-error *ngIf="accountFormGroup.controls['emailController'].hasError('required')">
+        <mat-error *ngIf="accountFormGroup.controls['emailController'].hasError('required') &&
+        accountFormGroup.controls['emailController'].touched">
           Email is required
         </mat-error>
       </form>
