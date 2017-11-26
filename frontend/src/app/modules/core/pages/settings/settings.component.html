@@ -2,5 +2,11 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Settings</mat-toolbar>
   <mat-card>
+    <div fxLayout="row" fxLayout.md="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="space-around"
+         fxLayoutAlign.xs="center center">
+      <mat-slide-toggle #darkModeOn [ngModel]="darkModeOn" (click)="turnDarkMode(darkModeOn.value)">Dark mode
+      </mat-slide-toggle>
+      <mat-slide-toggle #notifications [ngModel]="notificationsOn">Notifications</mat-slide-toggle>
+    </div>
   </mat-card>
 </section>

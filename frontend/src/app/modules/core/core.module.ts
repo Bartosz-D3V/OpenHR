@@ -30,6 +30,8 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import 'hammerjs/hammer';
+
 import { CalendarModule } from 'primeng/primeng';
 
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
