@@ -6,15 +6,15 @@ import { ErrorResolverService } from '../../../../../shared/services/error-resol
 import { SettingsService } from './settings.service';
 
 describe('SettingsService', () => {
+  let http: HttpTestingController;
+  let settingsService: SettingsService;
+  let errorResolverService: ErrorResolverService;
+
   @Injectable()
   class FakeErrorResolverService {
     public createAlert(error: any): void {
     }
   }
-
-  let http: HttpTestingController;
-  let settingsService: SettingsService;
-  let errorResolverService: ErrorResolverService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

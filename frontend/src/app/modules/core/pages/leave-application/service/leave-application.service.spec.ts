@@ -32,8 +32,6 @@ describe('LeaveApplicationService', () => {
     http = TestBed.get(HttpTestingController);
     leaveApplicationService = TestBed.get(LeaveApplicationService);
     errorResolverService = TestBed.get(ErrorResolverService);
-
-    spyOn(console, 'log');
   });
 
   it('should be created', () => {
@@ -44,9 +42,10 @@ describe('LeaveApplicationService', () => {
     const mockError = 'Mock Error';
 
     it('should log actual error', () => {
+      spyOn(console, 'log');
       leaveApplicationService['handleError'](mockError);
 
-      expect(console.log).toHaveBeenCalledTimes(1);
+      expect(console.log).toHaveBeenCalled();
       expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
     });
 
@@ -54,7 +53,7 @@ describe('LeaveApplicationService', () => {
       spyOn(errorResolverService, 'createAlert');
       leaveApplicationService['handleError'](mockError);
 
-      expect(errorResolverService.createAlert).toHaveBeenCalledTimes(1);
+      expect(errorResolverService.createAlert).toHaveBeenCalled();
       expect(errorResolverService.createAlert).toHaveBeenCalledWith(mockError);
     });
 
