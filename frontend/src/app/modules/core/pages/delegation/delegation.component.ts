@@ -59,7 +59,6 @@ export class DelegationComponent implements OnInit {
     this.applicationForm.get('organisation').disable();
   }
 
-
   public filterCountries(countries: Array<string>, name: string): Array<string> {
     return countries.filter(country =>
       country.toLowerCase().indexOf(name.toLowerCase()) === 0);

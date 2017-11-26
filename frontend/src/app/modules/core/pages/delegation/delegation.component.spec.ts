@@ -7,9 +7,9 @@ import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angula
 
 import { CalendarModule } from 'primeng/primeng';
 
-import { DelegationComponent } from './delegation.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -44,6 +44,22 @@ describe('DelegationComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('constructForm', () => {
+    beforeEach(() => {
+      component.constructForm();
+    });
+
+    it('should instantiate application form', () => {
+      expect(component.applicationForm).toBeDefined();
+      expect(component.countryCtrl).toBeDefined();
+    });
+
+    it('should disable appropriate groups', () => {
+      expect(component.applicationForm.get('name').disabled).toBeTruthy();
+      expect(component.applicationForm.get('organisation').disabled).toBeTruthy();
+    });
   });
 
   describe('autocomplete', () => {
