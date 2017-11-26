@@ -1,15 +1,39 @@
+import { Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { MatSlideToggleModule, MatToolbarModule } from '@angular/material';
 
+import { Observable } from 'rxjs/Observable';
+
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { SettingsComponent } from './settings.component';
+import { SettingsService } from './service/settings.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
+  let settingsService: any;
+
+  @Injectable()
+  class FakeSettingsService {
+    public setNotificationsSetting(subjectId: number, notificationsTurn: string): Observable<boolean> {
+      return null;
+    }
+
+    public getNotificationsSetting(subjectId: number): Observable<boolean> {
+      return Observable.of(false);
+    }
+  }
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public createAlert(error: any): void {
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,8 +45,17 @@ describe('SettingsComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        HttpClientTestingModule,
         MatToolbarModule,
         MatSlideToggleModule,
+      ],
+      providers: [
+        {
+          provide: SettingsService, useClass: FakeSettingsService,
+        },
+        {
+          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+        },
       ],
     })
       .compileComponents();
@@ -31,6 +64,7 @@ describe('SettingsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;
+    settingsService = new FakeSettingsService();
     fixture.detectChanges();
   });
 
@@ -40,9 +74,11 @@ describe('SettingsComponent', () => {
 
   it('should load settings on init', () => {
     spyOn(component, 'loadThemeSetting');
+    spyOn(component, 'loadNotificationSettings');
     component.ngOnInit();
 
     expect(component.loadThemeSetting).toHaveBeenCalled();
+    expect(component.loadNotificationSettings).toHaveBeenCalled();
   });
 
   describe('booleanToFlag method', () => {
@@ -99,5 +135,12 @@ describe('SettingsComponent', () => {
 
       expect(component['darkModeOn']).toBeTruthy();
     });
+  });
+
+  xit('turnNotification should invoke service with boolean switch as a flag', () => {
+    spyOn(component['_settingsService'], 'setNotificationsSetting');
+    component.turnNotification(true);
+
+    expect(component['_settingsService'].setNotificationsSetting).toHaveBeenCalledWith(123, 'Y');
   });
 });
