@@ -1,4 +1,4 @@
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -59,6 +59,39 @@ describe('DelegationComponent', () => {
     it('should disable appropriate groups', () => {
       expect(component.applicationForm.get('name').disabled).toBeTruthy();
       expect(component.applicationForm.get('organisation').disabled).toBeTruthy();
+    });
+  });
+
+  // FIXME
+  describe('subjectId controller', () => {
+    let nameValidator: AbstractControl;
+
+    beforeEach(() => {
+      component.constructForm();
+      nameValidator = component.applicationForm.get('name');
+    });
+
+    xit('should mark input as invalid if it is empty', () => {
+      nameValidator.patchValue({
+        subjectId: '',
+      });
+
+      expect(nameValidator.valid).toBeFalsy();
+    });
+
+    xit('should mark input as invalid if it is not numerical', () => {
+      nameValidator.patchValue({
+        subjectId: 'Test Subject ID',
+      });
+
+      expect(nameValidator.valid).toBeFalsy();
+    });
+
+    xit('should mark input as valid if it is not empty and it is numerical', () => {
+      component.applicationForm.get('name.subjectId').setValue('123');
+
+      expect(component.applicationForm.get('name').errors).toEqual('');
+      // expect(component.applicationForm.controls['subjectId'].valid).toBeTruthy();
     });
   });
 

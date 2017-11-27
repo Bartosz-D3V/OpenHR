@@ -59,12 +59,14 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleNumber2)).toBeTruthy();
     });
 
-    it('should not accept letters only', () => {
+    it('should not accept letters', () => {
       const exampleInNumber1 = '1sda233322';
       const exampleInNumber2 = '21556abv';
+      const exampleInNumber3 = 'test';
 
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber1)).toBeFalsy();
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber2)).toBeFalsy();
+      expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber3)).toBeFalsy();
     });
 
   });
