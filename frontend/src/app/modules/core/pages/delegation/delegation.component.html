@@ -7,26 +7,24 @@
            fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-subject-id"></label>
-          <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id"
-                 name="subjectId" value="{{delegationApplication.subjectId}}" formControlName="subjectId">
+          <input matInput placeholder="Subject ID" id="delegation-subject-id"
+                 name="subjectId" formControlName="subjectId">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-first-name"></label>
-          <input matInput id="delegation-first-name" placeholder="First name" name="firstName"
-                 value="{{delegationApplication.firstName}}" formControlName="first">
+          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-middle-name"></label>
           <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
-                 value="{{delegationApplication.middleName}}" formControlName="middle">
+                 formControlName="middle">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
-          <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
-                 value="{{delegationApplication.lastName}}" formControlName="last">
+          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last">
         </mat-form-field>
       </div>
 
@@ -34,14 +32,13 @@
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-position"></label>
-          <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
-                 value="{{delegationApplication.position}}" formControlName="position">
+          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
-          <input matInput required="required" placeholder="Department" id="delegation-department" name="department"
-                 value="{{delegationApplication.department}}" formControlName="department">
+          <input matInput placeholder="Department" id="delegation-department" name="department"
+                 formControlName="department">
         </mat-form-field>
       </div>
 
