@@ -1,5 +1,5 @@
-import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -62,36 +62,187 @@ describe('DelegationComponent', () => {
     });
   });
 
-  // FIXME
-  describe('subjectId controller', () => {
+  describe('name form group', () => {
     let nameValidator: AbstractControl;
 
     beforeEach(() => {
       component.constructForm();
-      nameValidator = component.applicationForm.get('name');
     });
 
-    xit('should mark input as invalid if it is empty', () => {
-      nameValidator.patchValue({
-        subjectId: '',
+    describe('subjectId controller', () => {
+      beforeEach(() => {
+        nameValidator = component.applicationForm.get('name.subjectId');
+        nameValidator.enable();
       });
 
-      expect(nameValidator.valid).toBeFalsy();
-    });
-
-    xit('should mark input as invalid if it is not numerical', () => {
-      nameValidator.patchValue({
-        subjectId: 'Test Subject ID',
+      afterEach(() => {
+        nameValidator.reset();
       });
 
-      expect(nameValidator.valid).toBeFalsy();
+      it('should mark input as invalid if it is empty', () => {
+        nameValidator.setValue('');
+
+        expect(nameValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as invalid if it is not numerical', () => {
+        nameValidator.setValue('Test Subject ID');
+
+        expect(nameValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as valid if it is not empty and it is numerical', () => {
+        nameValidator.setValue('123');
+
+        expect(nameValidator.valid).toBeTruthy();
+      });
     });
 
-    xit('should mark input as valid if it is not empty and it is numerical', () => {
-      component.applicationForm.get('name.subjectId').setValue('123');
+    describe('first (name) controller', () => {
+      beforeEach(() => {
+        nameValidator = component.applicationForm.get('name.first');
+        nameValidator.enable();
+      });
 
-      expect(component.applicationForm.get('name').errors).toEqual('');
-      // expect(component.applicationForm.controls['subjectId'].valid).toBeTruthy();
+      afterEach(() => {
+        nameValidator.reset();
+      });
+
+      it('should mark input as invalid if it is empty', () => {
+        nameValidator.setValue('');
+
+        expect(nameValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as valid if it is not empty', () => {
+        nameValidator.setValue('Xavier');
+
+        expect(nameValidator.valid).toBeTruthy();
+      });
+    });
+
+    describe('last (name) controller', () => {
+      beforeEach(() => {
+        nameValidator = component.applicationForm.get('name.last');
+        nameValidator.enable();
+      });
+
+      afterEach(() => {
+        nameValidator.reset();
+      });
+
+      it('should mark input as invalid if it is empty', () => {
+        nameValidator.setValue('');
+
+        expect(nameValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as valid if it is not empty', () => {
+        nameValidator.setValue('Blackwell');
+
+        expect(nameValidator.valid).toBeTruthy();
+      });
+    });
+
+  });
+
+  describe('organisation form group', () => {
+    let positionValidator: AbstractControl;
+
+    beforeEach(() => {
+      component.constructForm();
+    });
+
+    describe('position controller', () => {
+      beforeEach(() => {
+        positionValidator = component.applicationForm.get('organisation.position');
+        positionValidator.enable();
+      });
+
+      afterEach(() => {
+        positionValidator.reset();
+      });
+
+      it('should mark input as invalid if it is empty', () => {
+        positionValidator.setValue('');
+
+        expect(positionValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as valid if it is not empty', () => {
+        positionValidator.setValue('Senior Automation Tester');
+
+        expect(positionValidator.valid).toBeTruthy();
+      });
+    });
+  });
+
+  describe('delegation form group', () => {
+    let delegationValidator: AbstractControl;
+
+    beforeEach(() => {
+      component.constructForm();
+    });
+
+    describe('objective controller', () => {
+      beforeEach(() => {
+        delegationValidator = component.applicationForm.get('delegation.objective');
+      });
+
+      afterEach(() => {
+        delegationValidator.reset();
+      });
+
+      it('should mark input as invalid if it is empty', () => {
+        delegationValidator.setValue('');
+
+        expect(delegationValidator.valid).toBeFalsy();
+      });
+
+      it('should mark input as valid if it is not empty', () => {
+        delegationValidator.setValue('Training new team abroad');
+
+        expect(delegationValidator.valid).toBeTruthy();
+      });
+    });
+
+    describe('budget controller', () => {
+      beforeEach(() => {
+        delegationValidator = component.applicationForm.get('delegation.budget');
+        delegationValidator.enable();
+      });
+
+      afterEach(() => {
+        delegationValidator.reset();
+      });
+
+      it('should be zero by default', () => {
+        expect(delegationValidator.value).toEqual('0');
+      });
+
+      it('should mark input as invalid if it is empty', () => {
+        delegationValidator.setValue('');
+
+        expect(delegationValidator.valid).toBeFalsy();
+      });
+
+      it('should mark as invalid if the value is less than zero', () => {
+        delegationValidator.setValue('-100');
+
+        expect(delegationValidator.valid).toBeFalsy();
+      });
+
+      it('should mark as valid if the value is equal to 0', () => {
+        delegationValidator.setValue('0');
+
+        expect(delegationValidator.valid).toBeTruthy();
+      });
+
+      it('should mark as valid if the value is greater than 0', () => {
+        delegationValidator.setValue('2000');
+
+        expect(delegationValidator.valid).toBeTruthy();
+      });
     });
   });
 

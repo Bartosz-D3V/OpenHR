@@ -34,10 +34,10 @@ export class DelegationComponent implements OnInit {
     this.countryCtrl = new FormControl();
     this.applicationForm = this._fb.group({
       name: this._fb.group({
-        subjectId: ['',
+        subjectId: [this.delegationApplication.subjectId, [
           Validators.required,
           Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-        ],
+        ]],
         first: ['', Validators.required],
         middle: [''],
         last: ['', Validators.required],
@@ -49,7 +49,10 @@ export class DelegationComponent implements OnInit {
       delegation: this._fb.group({
         city: [''],
         objective: ['', Validators.required],
-        budget: ['0', Validators.min(0)],
+        budget: ['0', [
+          Validators.required,
+          Validators.min(0),
+        ]],
         dateRange: [''],
       }),
     });
