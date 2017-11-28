@@ -6,38 +6,8 @@
   width: $drawer-width;
 }
 
-.c-calendar {
-  margin-right: 5%;
-  padding: 0;
-  position: relative;
-}
-
 .c-textarea,
 .c-dropdown {
   margin-top: 2%;
   width: 60%;
-}
-
-.c-radio {
-  margin-top: 2%;
-  width: 60%;
-
-  &__option {
-    margin-left: 3%;
-  }
-}
-
-.c-form {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-
-  &--column {
-    align-items: flex-start;
-    display: inherit;
-    flex-direction: column;
-    margin: 0;
-    width: 100%;
-  }
 }
