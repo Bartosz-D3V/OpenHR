@@ -2,13 +2,14 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
   <mat-card>
-    <form class="c-form">
-      <div class="c-form--column">
+    <form fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxFlex.gt-md="50" fxFlex.lt-sm="100">
         <mat-radio-group class="c-radio" [required]="true" [(ngModel)]="selectorType"
-                         [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl>
-          <mat-radio-button class="c-radio__option" value="single">Single day</mat-radio-button>
-          <mat-radio-button class="c-radio__option" value="range">Range</mat-radio-button>
-          <mat-radio-button class="c-radio__option" value="multiple">Multiple days</mat-radio-button>
+                         [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl fxLayout="row"
+                         fxLayout.lt-md="column">
+          <mat-radio-button class="c-radio__option" value="single" fxFlex="33">Single day</mat-radio-button>
+          <mat-radio-button class="c-radio__option" value="range" fxFlex="33">Range</mat-radio-button>
+          <mat-radio-button class="c-radio__option" value="multiple" fxFlex="33">Multiple days</mat-radio-button>
         </mat-radio-group>
         <mat-select placeholder="Leave type">
           <mat-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leaveApplication.leaveType" name="leaveType">
@@ -21,11 +22,13 @@
           <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
         </mat-form-field>
       </div>
-      <p-calendar class="c-calendar" [selectionMode]="selectorType" [showIcon]="true" [inline]="true"
-                  [dateFormat]="'dd/mm/yy'" [readonlyInput]="true" [selectOtherMonths]="true" [(ngModel)]="dateRange"
-                  [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="setEntryDates()"
-                  (onClearClick)="clearEntryDates()" (onTodayClick)="clearEndDate()"
-                  (blur)="setLeaveDates()" name="selectedDays"></p-calendar>
+      <div fxLayout="column" fxFlex.gt-md="50" fxFlex.lt-sm="100">
+        <p-calendar class="c-calendar" [selectionMode]="selectorType" [showIcon]="true" [inline]="true"
+                    [dateFormat]="'dd/mm/yy'" [readonlyInput]="true" [selectOtherMonths]="true" [(ngModel)]="dateRange"
+                    [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="setEntryDates()"
+                    (onClearClick)="clearEntryDates()" (onTodayClick)="clearEndDate()"
+                    (blur)="setLeaveDates()" name="selectedDays"></p-calendar>
+      </div>
     </form>
   </mat-card>
 </section>
