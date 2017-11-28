@@ -23,11 +23,7 @@
         </mat-form-field>
       </div>
       <div fxLayout="column" fxFlex.gt-md="50" fxFlex.lt-sm="100">
-        <p-calendar class="c-calendar" [selectionMode]="selectorType" [showIcon]="true" [inline]="true"
-                    [dateFormat]="'dd/mm/yy'" [readonlyInput]="true" [selectOtherMonths]="true" [(ngModel)]="dateRange"
-                    [ngModelOptions]="{standalone: true}" [showButtonBar]="true" (onSelect)="setEntryDates()"
-                    (onClearClick)="clearEntryDates()" (onTodayClick)="clearEndDate()"
-                    (blur)="setLeaveDates()" name="selectedDays"></p-calendar>
+
       </div>
     </form>
   </mat-card>

@@ -5,8 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angular/material';
 
-import { CalendarModule } from 'primeng/primeng';
-
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { DelegationComponent } from './delegation.component';
@@ -30,7 +28,6 @@ describe('DelegationComponent', () => {
         MatTableModule,
         MatAutocompleteModule,
         NoopAnimationsModule,
-        CalendarModule,
       ],
     })
       .compileComponents();

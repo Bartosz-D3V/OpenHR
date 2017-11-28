@@ -30,8 +30,6 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { CalendarModule } from 'primeng/primeng';
-
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
 import { NamePipe } from '../../shared/pipes/name/name.pipe';
 import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
@@ -47,6 +45,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AppRoutingModule } from '../../app-routing.module';
+import { DateRangeComponent } from '../../shared/components/date-range/date-range.component';
 
 @NgModule({
   imports: [
@@ -75,7 +74,6 @@ import { AppRoutingModule } from '../../app-routing.module';
     MatTableModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    CalendarModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -92,6 +90,7 @@ import { AppRoutingModule } from '../../app-routing.module';
     LeaveApplicationComponent,
     StaticModalComponent,
     DelegationComponent,
+    DateRangeComponent,
     AboutComponent,
     AvatarComponent,
     InitialsPipe,

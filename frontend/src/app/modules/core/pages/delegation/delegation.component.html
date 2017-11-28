@@ -62,18 +62,12 @@
                  formControlName="objective">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-budget"></label>
           <input #budget matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
         </mat-form-field>
 
-        <div fxFlex.gt-sm="50" fxFlex.sm="50" fxFlex.xs="100">
-          <h3>Select days</h3>
-          <p-calendar #dateRange [inline]="false" [selectionMode]="'range'" [showIcon]="true"
-                      [readonlyInput]="true" [selectOtherMonths]="true" [dateFormat]="'dd/mm/yy'"
-                      [showButtonBar]="true" formControlName="dateRange">
-          </p-calendar>
-        </div>
+        <app-date-range fxFlex="100" [mainFlexProperty]="50" [mobileFlexProperty]="100"></app-date-range>
       </div>
       <button mat-raised-button color="primary" class="c-btn" [disabled]="isValid()">Submit</button>
     </form>

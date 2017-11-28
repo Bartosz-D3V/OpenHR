@@ -1,0 +1,17 @@
+<form [formGroup]="dateRangeGroup" fxLayout="row wrap" fxLayout.xs="column">
+  <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
+    <input matInput [matDatepicker]="dateFrom" placeholder="Choose a start date" name="startDate"
+           formControlName="startDate">
+    <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+    <mat-datepicker #dateFrom></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
+    <input matInput [matDatepicker]="dateTo" placeholder="Choose an end date" name="endDate" formControlName="endDate">
+    <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+    <mat-datepicker #dateTo></mat-datepicker>
+    <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('endDateInvalid')">
+      First name is required
+    </mat-error>
+  </mat-form-field>
+</form>
