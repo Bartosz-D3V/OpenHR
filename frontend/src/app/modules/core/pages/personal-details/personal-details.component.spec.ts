@@ -96,8 +96,6 @@ describe('PersonalDetailsComponent', () => {
     fixture = TestBed.createComponent(PersonalDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    spyOn(console, 'log');
   });
 
   it('should be created', () => {

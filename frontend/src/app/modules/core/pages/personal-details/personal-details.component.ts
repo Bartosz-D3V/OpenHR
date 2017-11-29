@@ -5,7 +5,6 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-
 import { SubjectDetailsService } from './service/subject-details.service';
 import { Subject } from './domain/subject';
 

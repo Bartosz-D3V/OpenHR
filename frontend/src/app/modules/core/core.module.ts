@@ -30,6 +30,8 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import 'hammerjs/hammer';
+
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
 import { NamePipe } from '../../shared/pipes/name/name.pipe';
 import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
@@ -46,6 +48,8 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AppRoutingModule } from '../../app-routing.module';
 import { DateRangeComponent } from '../../shared/components/date-range/date-range.component';
+import { AccountComponent } from './pages/account/account.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 @NgModule({
   imports: [
@@ -95,6 +99,8 @@ import { DateRangeComponent } from '../../shared/components/date-range/date-rang
     AvatarComponent,
     InitialsPipe,
     CoreWrapperComponent,
+    AccountComponent,
+    SettingsComponent,
   ],
 })
 export class CoreModule {

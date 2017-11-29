@@ -3,17 +3,18 @@
 .c-page-header {
   margin-left: 20px;
   margin-top: 20px;
-  width: 10%;
+  width: 100%;
 
   &__paragraph {
     font-size: 1.5em;
     text-align: center;
+    width: inherit;
   }
 
   &__line {
     background-color: $light-grey;
     border: 0;
     height: 2px;
-    width: 80%;
+    width: inherit;
   }
 }
