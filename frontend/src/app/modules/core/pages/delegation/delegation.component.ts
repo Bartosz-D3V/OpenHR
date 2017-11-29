@@ -53,7 +53,6 @@ export class DelegationComponent implements OnInit {
           Validators.required,
           Validators.min(0),
         ]],
-        dateRange: [''],
       }),
     });
 
