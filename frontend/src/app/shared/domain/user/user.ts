@@ -1,11 +1,13 @@
 export class User {
   public subjectId: number;
-  public userName: string;
+  public email: string;
   public fullName: string;
+  public token: string = null;
 
-  constructor(subjectId: number, userName: string, fullName: string) {
+  constructor(subjectId: number, email: string, fullName: string, token: string) {
     this.subjectId = subjectId;
-    this.userName = userName;
+    this.email = email;
     this.fullName = fullName;
+    this.token = token;
   }
 }
