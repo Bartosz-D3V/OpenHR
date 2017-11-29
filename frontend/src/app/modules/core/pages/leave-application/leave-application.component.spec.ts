@@ -9,8 +9,6 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
-import { CalendarModule } from 'primeng/primeng';
-
 import { Observable } from 'rxjs/Observable';
 
 import { LeaveApplicationComponent } from './leave-application.component';
@@ -61,7 +59,6 @@ describe('LeaveApplicationComponent', () => {
         MatToolbarModule,
         MatSelectModule,
         MatInputModule,
-        CalendarModule,
         NoopAnimationsModule,
       ],
       providers: [
