@@ -4,7 +4,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
-import { Moment } from 'moment';
+import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
 @Component({
@@ -26,11 +26,11 @@ export class DateRangeComponent implements OnInit {
 
   @Output()
   @Input()
-  public startDate?: Moment;
+  public startDate?: MomentInput;
 
   @Output()
   @Input()
-  public endDate?: Moment;
+  public endDate?: MomentInput;
 
   @Input()
   public includeEndDate?: boolean;
@@ -39,41 +39,39 @@ export class DateRangeComponent implements OnInit {
   public numberOfDays;
 
   public dateRangeGroup: FormGroup = new FormGroup({
-    startDate: new FormControl('', [
+    startDate: new FormControl(this.startDate, [
       Validators.required,
     ]),
-    endDate: new FormControl('', [
+    endDate: new FormControl(this.endDate, [
       Validators.required,
     ]),
   });
 
   ngOnInit(): void {
-    this.validateStartDateField(this.dateRangeGroup.controls['startDate'], this.endDate);
-    this.validateEndDateField(this.dateRangeGroup.controls['endDate'], this.startDate);
+    this.validateStartDateField();
+    this.validateEndDateField();
   }
 
-  public validateStartDateField(startDateCtrl: AbstractControl, endDate: Moment): void {
+  public validateStartDateField(): void {
+    const startDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
     startDateCtrl.valueChanges.subscribe((value: Moment) => {
-      if (moment(value).isAfter(endDate)) {
+      if (moment(value).isAfter(this.endDate)) {
         startDateCtrl.setErrors({'startDateInvalid': true});
-      } else {
-        this.recalculateNumOfDays(moment(value), endDate, this.includeEndDate);
       }
     });
   }
 
-  public validateEndDateField(endDateCtrl: AbstractControl, startDate: Moment): void {
-    endDateCtrl.valueChanges.subscribe((value: Moment) => {
-      if (moment(value).isBefore(startDate)) {
+  public validateEndDateField(): void {
+    const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
+    endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
+      if (moment(value).isBefore(this.startDate)) {
         endDateCtrl.setErrors({'endDateInvalid': true});
-      } else {
-        this.recalculateNumOfDays(moment(value), startDate, this.includeEndDate);
       }
     });
   }
 
-  public recalculateNumOfDays(startDate: Moment, endDate: Moment, includeEndDate: boolean): void {
-    this.numberOfDays = startDate.diff(endDate) + (includeEndDate ? 1 : 0);
+  public recalculateNumOfDays(startDate: MomentInput, endDate: Moment, includeEndDate: boolean): void {
+    this.numberOfDays = moment(startDate).diff(moment(endDate)) + (includeEndDate ? 1 : 0);
   }
 
 }

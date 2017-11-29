@@ -1,17 +1,21 @@
 <form [formGroup]="dateRangeGroup" fxLayout="row wrap" fxLayout.xs="column">
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
     <input matInput [matDatepicker]="dateFrom" placeholder="Choose a start date" name="startDate"
-           formControlName="startDate">
+           formControlName="startDate" [(ngModel)]="startDate">
     <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
     <mat-datepicker #dateFrom></mat-datepicker>
+    <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('startDateInvalid')">
+      Start date cannot be later than end date
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
-    <input matInput [matDatepicker]="dateTo" placeholder="Choose an end date" name="endDate" formControlName="endDate">
+    <input matInput [matDatepicker]="dateTo" placeholder="Choose an end date" name="endDate" formControlName="endDate"
+           [(ngModel)]="endDate">
     <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
     <mat-datepicker #dateTo></mat-datepicker>
     <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('endDateInvalid')">
-      First name is required
+      End date cannot be earlier than start date
     </mat-error>
   </mat-form-field>
 </form>
