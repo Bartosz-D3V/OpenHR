@@ -7,6 +7,9 @@
     <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('startDateInvalid')">
       Start date cannot be later than end date
     </mat-error>
+    <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('required')">
+      Start date is required
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
@@ -17,5 +20,13 @@
     <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('endDateInvalid')">
       End date cannot be earlier than start date
     </mat-error>
+    <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('required')">
+      End date is required
+    </mat-error>
   </mat-form-field>
+
+  <section fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
+    <h3 *ngIf="dateRangeGroup.valid" class="mat-typography c-date-range__description">Number of days taken:
+      {{numberOfDays}}</h3>
+  </section>
 </form>
