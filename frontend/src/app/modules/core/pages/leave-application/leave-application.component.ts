@@ -18,6 +18,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   private $leaveTypes: ISubscription;
   public leaveTypes: Array<string>;
   public leaveApplication: LeaveApplication;
+  public selectorType = 'range';
 
   constructor(private _leaveApplicationService: LeaveApplicationService) {
   }
