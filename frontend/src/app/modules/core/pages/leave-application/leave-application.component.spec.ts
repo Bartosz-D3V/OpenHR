@@ -5,17 +5,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
-  MatToolbarModule
+  MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule
 } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
 
-import { LeaveApplicationComponent } from './leave-application.component';
-import { LeaveApplication } from './domain/leave-application';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { LeaveApplicationComponent } from './leave-application.component';
+import { LeaveApplication } from './domain/leave-application';
 import { LeaveApplicationService } from './service/leave-application.service';
 
 describe('LeaveApplicationComponent', () => {
@@ -78,8 +77,6 @@ describe('LeaveApplicationComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.leaveApplication = mockLeave;
-
-    spyOn(console, 'log');
   });
 
   it('should be created', () => {
