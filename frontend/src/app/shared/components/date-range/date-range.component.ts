@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
@@ -26,16 +26,22 @@ export class DateRangeComponent implements OnInit {
   @Input()
   public mobileFlexProperty?: number;
 
-  @Output()
   @Input()
   public startDate?: MomentInput;
 
-  @Output()
   @Input()
   public endDate?: MomentInput;
 
+  public numberOfDays: number;
+
   @Output()
-  public numberOfDays;
+  public startDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+
+  @Output()
+  public endDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+
+  @Output()
+  public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [
@@ -74,7 +80,21 @@ export class DateRangeComponent implements OnInit {
   }
 
   public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
-    this.numberOfDays = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
+    const numberOfDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
+    this.numberOfDays = numberOfDays;
+    this.updateNumberOfDays(numberOfDays);
+  }
+
+  public updateStartDate(startDate: MomentInput): void {
+    this.startDateChange.emit(startDate);
+  }
+
+  public updateEndDate(endDate: MomentInput): void {
+    this.endDateChange.emit(endDate);
+  }
+
+  public updateNumberOfDays(numberOfDays: number): void {
+    this.numberOfDaysChange.emit(numberOfDays);
   }
 
 }
