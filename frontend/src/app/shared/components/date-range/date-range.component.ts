@@ -2,10 +2,12 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
-import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
+
+import { NAMED_DATE } from '../../../config/datepicker-format';
 
 @Component({
   selector: 'app-date-range',
@@ -13,7 +15,7 @@ import * as moment from 'moment';
   styleUrls: ['./date-range.component.scss'],
   providers: [
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
   ],
 })
 export class DateRangeComponent implements OnInit {
@@ -31,9 +33,6 @@ export class DateRangeComponent implements OnInit {
   @Output()
   @Input()
   public endDate?: MomentInput;
-
-  @Input()
-  public includeEndDate?: boolean;
 
   @Output()
   public numberOfDays;
@@ -57,21 +56,25 @@ export class DateRangeComponent implements OnInit {
     startDateCtrl.valueChanges.subscribe((value: Moment) => {
       if (moment(value).isAfter(this.endDate)) {
         startDateCtrl.setErrors({'startDateInvalid': true});
+      } else {
+        this.recalculateNumOfDays(this.startDate, this.endDate);
       }
     });
   }
 
   public validateEndDateField(): void {
-    const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
+    const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['endDate'];
     endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
-      if (moment(value).isBefore(this.startDate)) {
+      if (this.startDate && moment(value).isBefore(this.startDate)) {
         endDateCtrl.setErrors({'endDateInvalid': true});
+      } else {
+        this.recalculateNumOfDays(this.startDate, this.endDate);
       }
     });
   }
 
-  public recalculateNumOfDays(startDate: MomentInput, endDate: Moment, includeEndDate: boolean): void {
-    this.numberOfDays = moment(startDate).diff(moment(endDate)) + (includeEndDate ? 1 : 0);
+  public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
+    this.numberOfDays = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
   }
 
 }
