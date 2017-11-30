@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, NgZone, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
@@ -31,7 +31,6 @@ export class DateRangeComponent implements OnInit {
 
   @Input()
   public endDate?: MomentInput;
-
   public numberOfDays: number;
 
   @Output()
@@ -42,6 +41,7 @@ export class DateRangeComponent implements OnInit {
 
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
+  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 600px)`);
 
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [
@@ -51,6 +51,10 @@ export class DateRangeComponent implements OnInit {
       Validators.required,
     ]),
   });
+
+  constructor(private _zone: NgZone) {
+    this.mediaMatcher.addListener(mql => _zone.run(() => this.mediaMatcher = mql));
+  }
 
   ngOnInit(): void {
     this.validateStartDateField();
@@ -98,6 +102,10 @@ export class DateRangeComponent implements OnInit {
   public updateNumberOfDays(numberOfDays: number): void {
     this.numberOfDays = numberOfDays;
     this.numberOfDaysChange.emit(numberOfDays);
+  }
+
+  public isMobile(): boolean {
+    return this.mediaMatcher.matches;
   }
 
 }
