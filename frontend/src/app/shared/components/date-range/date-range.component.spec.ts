@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DateRangeComponent } from './date-range.component';
 import moment = require('moment');
+import { MomentInput } from 'moment';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -161,5 +162,51 @@ describe('DateRangeComponent', () => {
       expect(component.numberOfDays).toBeDefined();
       expect(component.numberOfDays).toEqual(10);
     });
+
+    it('should emmit new value through EventEmmiter', () => {
+      let result: number;
+      spyOn(component, 'updateNumberOfDays').and.callThrough();
+      component.numberOfDaysChange.subscribe((newNumberOfDays: number) => {
+        result = newNumberOfDays;
+      });
+      component.recalculateNumOfDays('2019-05-10', '2019-05-20', true);
+
+      expect(result).toBeDefined();
+      expect(result).toEqual(10);
+      expect(component.updateNumberOfDays).toHaveBeenCalledWith(10);
+    });
+  });
+
+  it('updateStartDate should emmit new value', () => {
+    let result: MomentInput;
+    component.startDateChange.subscribe((newStartDate: MomentInput) => {
+      result = newStartDate;
+    });
+    component.updateStartDate('2019-05-10');
+
+    expect(result).toBeDefined();
+    expect(result).toEqual('2019-05-10');
+  });
+
+  it('updateEndDate should emmit new value', () => {
+    let result: MomentInput;
+    component.endDateChange.subscribe((newEndDate: MomentInput) => {
+      result = newEndDate;
+    });
+    component.updateEndDate('2019-05-10');
+
+    expect(result).toBeDefined();
+    expect(result).toEqual('2019-05-10');
+  });
+
+  it('numberOfDaysChange should emmit new value', () => {
+    let result: number;
+    component.numberOfDaysChange.subscribe((newNumberOfDays: number) => {
+      result = newNumberOfDays;
+    });
+    component.updateNumberOfDays(20);
+
+    expect(result).toBeDefined();
+    expect(result).toEqual(20);
   });
 });
