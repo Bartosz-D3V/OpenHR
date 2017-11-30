@@ -2,29 +2,25 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
   <mat-card>
-    <form fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxLayout="column" fxFlex.gt-md="50" fxFlex.lt-sm="100">
-        <mat-radio-group class="c-radio" [required]="true" [(ngModel)]="selectorType"
-                         [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl fxLayout="row"
-                         fxLayout.lt-md="column">
-          <mat-radio-button class="c-radio__option" value="single" fxFlex="33">Single day</mat-radio-button>
-          <mat-radio-button class="c-radio__option" value="range" fxFlex="33">Range</mat-radio-button>
-          <mat-radio-button class="c-radio__option" value="multiple" fxFlex="33">Multiple days</mat-radio-button>
-        </mat-radio-group>
-        <mat-select placeholder="Leave type">
-          <mat-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leaveApplication.leaveType" name="leaveType">
-            {{ leaveType }}
-          </mat-option>
-        </mat-select>
-        <mat-form-field class="c-textarea">
+    <form fxLayout.gt-sm="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
+          fxLayoutAlign.lt-sm="center center">
+      <mat-radio-group [required]="true" [(ngModel)]="selectorType"
+                       [ngModelOptions]="{standalone: true}" name="selectorType" ngDefaultControl>
+        <mat-radio-button class="c-radio__option" value="single" fxFlex="33">Single day</mat-radio-button>
+        <mat-radio-button class="c-radio__option" value="range" fxFlex="33">Range</mat-radio-button>
+      </mat-radio-group>
+      <mat-select placeholder="Leave type">
+        <mat-option *ngFor="let leaveType of leaveTypes" [(ngModel)]="leaveApplication.leaveType" name="leaveType">
+          {{ leaveType }}
+        </mat-option>
+      </mat-select>
+      <mat-form-field class="c-textarea">
           <textarea matInput #message maxlength="500" placeholder="Message (optional)"
                     [(ngModel)]="leaveApplication.message" name="message"></textarea>
-          <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
-        </mat-form-field>
-      </div>
-      <div fxLayout="column" fxFlex.gt-md="50" fxFlex.lt-sm="100">
-
-      </div>
+        <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+      </mat-form-field>
+      <app-date-range fxFlex="100" [mainFlexProperty]="50" [mobileFlexProperty]="100"
+                      (updateStartDate)="setStartDate($event)" (updateEndDate)="setEndDate($event)"></app-date-range>
     </form>
   </mat-card>
 </section>
