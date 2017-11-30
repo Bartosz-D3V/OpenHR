@@ -1,4 +1,4 @@
-import { Delegation } from '../delegation/delegation';
+import { MomentInput } from 'moment';
 
 export class DelegationApplication {
   public readonly subjectId: number;
@@ -7,15 +7,12 @@ export class DelegationApplication {
   public readonly lastName: string;
   public readonly position: string;
   public readonly department: string;
-  public delegations: Array<Delegation> = [];
+  public startDate: MomentInput;
+  public endDate: MomentInput;
   public readonly canExceedExpenses = false;
   public readonly approvedByManager = false;
   public readonly approvedByHR = false;
 
   constructor() {
-  }
-
-  addDelegation(delegation: Delegation): void {
-    this.delegations.push(delegation);
   }
 }

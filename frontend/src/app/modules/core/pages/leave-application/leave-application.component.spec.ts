@@ -5,26 +5,28 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule
+  MatButtonModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule
 } from '@angular/material';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 
 import { Observable } from 'rxjs/Observable';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveApplicationService } from './service/leave-application.service';
+import { MomentInput } from 'moment';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
   let fixture: ComponentFixture<LeaveApplicationComponent>;
-  const appliedDays = [
-    new Date('03/05/2017'),
-  ];
+  const mockStartDate: MomentInput = '2020-05-05';
+  const mockEndDate: MomentInput = '2020-05-10';
   const mockLeave = new LeaveApplication();
-  mockLeave.selectedDays = appliedDays;
   mockLeave.leaveType = 'Holiday';
   mockLeave.message = '';
 
@@ -45,13 +47,17 @@ describe('LeaveApplicationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         LeaveApplicationComponent,
+        DateRangeComponent,
         PageHeaderComponent,
         CapitalizePipe,
       ],
       imports: [
         HttpClientTestingModule,
         FormsModule,
+        FlexLayoutModule,
+        MatDatepickerModule,
         ReactiveFormsModule,
+        MomentDateModule,
         MatStepperModule,
         MatButtonModule,
         MatMenuModule,
@@ -83,49 +89,26 @@ describe('LeaveApplicationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('setEntryDates method', () => {
+  it('ngOnInit method should trigger service and instantiate domain object', () => {
+    spyOn(component, 'getLeaveTypes');
+    component.ngOnInit();
 
-    it('should set the start day and leave the end date empty if start day is selected and end date is empty', () => {
-      component.dateRange = [new Date('06/12/2019')];
-      component.setEntryDates();
-
-      expect(component.startDate).toEqual(new Date('06/12/2019'));
-      expect(component.endDate).toBeUndefined();
-    });
-
-    it('should set the start day and end date if start and end date are selected', () => {
-      component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-      component.setEntryDates();
-
-      expect(component.startDate).toEqual(new Date('06/12/2019'));
-      expect(component.endDate).toEqual(new Date('10/01/2020'));
-    });
-
+    expect(component.getLeaveTypes).toHaveBeenCalled();
+    expect(component.leaveApplication).toBeDefined();
   });
 
-  it('clearEntryDates method should set startDay and endDay to null', () => {
-    component.startDate = new Date('06/12/2019');
-    component.endDate = new Date('10/01/2020');
-    component.clearEntryDates();
+  it('setStartDate should set the start date in domain object and itself', () => {
+    component.setStartDate(mockStartDate);
 
-    expect(component.startDate).toBeNull();
-    expect(component.endDate).toBeNull();
+    expect(component.leaveApplication.startDate).toBeDefined();
+    expect(component.leaveApplication.startDate).toEqual(mockStartDate);
   });
 
-  it('clearEndDate should set endDate to null', () => {
-    component.startDate = new Date('06/12/2019');
-    component.endDate = new Date('10/01/2020');
-    component.clearEndDate();
+  it('setEndDate should set the end date in domain object and itself', () => {
+    component.setEndDate(mockEndDate);
 
-    expect(component.startDate).toEqual(new Date('06/12/2019'));
-    expect(component.endDate).toBeNull();
-  });
-
-  it('setLeaveDates should set the domain property to selected days', () => {
-    component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-    component.setLeaveDates();
-
-    expect(component.leaveApplication.selectedDays).toEqual(component.dateRange);
+    expect(component.leaveApplication.endDate).toBeDefined();
+    expect(component.leaveApplication.endDate).toEqual(mockEndDate);
   });
 
 });

@@ -333,4 +333,18 @@ describe('DelegationComponent', () => {
     });
   });
 
+  it('setStartDate should set the application property', () => {
+    component.setStartDate('2020-05-05');
+
+    expect(component.delegationApplication.startDate).toBeDefined();
+    expect(component.delegationApplication.startDate).toEqual('2020-05-05');
+  });
+
+  it('setEndDate should set the application property', () => {
+    component.setEndDate('2020-05-05');
+
+    expect(component.delegationApplication.endDate).toBeDefined();
+    expect(component.delegationApplication.endDate).toEqual('2020-05-05');
+  });
+
 });

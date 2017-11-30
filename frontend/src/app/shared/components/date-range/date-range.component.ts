@@ -86,14 +86,17 @@ export class DateRangeComponent implements OnInit {
   }
 
   public updateStartDate(startDate: MomentInput): void {
+    this.startDate = startDate;
     this.startDateChange.emit(startDate);
   }
 
   public updateEndDate(endDate: MomentInput): void {
+    this.endDate = endDate;
     this.endDateChange.emit(endDate);
   }
 
   public updateNumberOfDays(numberOfDays: number): void {
+    this.numberOfDays = numberOfDays;
     this.numberOfDaysChange.emit(numberOfDays);
   }
 

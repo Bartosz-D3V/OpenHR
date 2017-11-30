@@ -109,11 +109,13 @@ describe('DateRangeComponent', () => {
     });
 
     it('should set control as valid if passed date is before than date in controller', () => {
+      spyOn(component, 'recalculateNumOfDays');
       component.endDate = '2040-02-12';
       startDateCtrl.setValue('2020-02-08');
       component.validateStartDateField();
 
       expect(startDateCtrl.valid).toBeTruthy();
+      expect(component.recalculateNumOfDays).toHaveBeenCalled();
     });
   });
 
@@ -133,11 +135,13 @@ describe('DateRangeComponent', () => {
     });
 
     it('should set control as valid if passed date is later than date in controller', () => {
+      spyOn(component, 'recalculateNumOfDays');
       component.startDate = '2020-02-08';
       endDateCtrl.setValue('2040-02-12');
       component.validateEndDateField();
 
       expect(endDateCtrl.valid).toBeTruthy();
+      expect(component.recalculateNumOfDays).toHaveBeenCalled();
     });
   });
 
@@ -177,35 +181,41 @@ describe('DateRangeComponent', () => {
     });
   });
 
-  it('updateStartDate should emmit new value', () => {
+  it('updateStartDate should emmit and update new value', () => {
     let result: MomentInput;
     component.startDateChange.subscribe((newStartDate: MomentInput) => {
       result = newStartDate;
     });
     component.updateStartDate('2019-05-10');
 
+    expect(component.startDate).toBeDefined();
+    expect(component.startDate).toEqual('2019-05-10');
     expect(result).toBeDefined();
     expect(result).toEqual('2019-05-10');
   });
 
-  it('updateEndDate should emmit new value', () => {
+  it('updateEndDate should emmit and update new value', () => {
     let result: MomentInput;
     component.endDateChange.subscribe((newEndDate: MomentInput) => {
       result = newEndDate;
     });
     component.updateEndDate('2019-05-10');
 
+    expect(component.endDate).toBeDefined();
+    expect(component.endDate).toEqual('2019-05-10');
     expect(result).toBeDefined();
     expect(result).toEqual('2019-05-10');
   });
 
-  it('numberOfDaysChange should emmit new value', () => {
+  it('numberOfDaysChange should emmit and update new value', () => {
     let result: number;
     component.numberOfDaysChange.subscribe((newNumberOfDays: number) => {
       result = newNumberOfDays;
     });
     component.updateNumberOfDays(20);
 
+    expect(component.numberOfDays).toBeDefined();
+    expect(component.numberOfDays).toEqual(20);
     expect(result).toBeDefined();
     expect(result).toEqual(20);
   });
