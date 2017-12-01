@@ -105,7 +105,6 @@ describe('AccountComponent', () => {
     });
   });
 
-
   describe('arePasswordsIdentical', () => {
     it('arePasswordsIdentical should return true if passwords are the same', () => {
       expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();

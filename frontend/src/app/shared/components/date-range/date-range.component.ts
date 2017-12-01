@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgZone, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
@@ -8,6 +8,7 @@ import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
 import { NAMED_DATE } from '../../../config/datepicker-format';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 
 @Component({
   selector: 'app-date-range',
@@ -16,6 +17,7 @@ import { NAMED_DATE } from '../../../config/datepicker-format';
   providers: [
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    ResponsiveHelperService,
   ],
 })
 export class DateRangeComponent implements OnInit {
@@ -41,7 +43,6 @@ export class DateRangeComponent implements OnInit {
 
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
-  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 480px)`);
 
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [
@@ -52,8 +53,7 @@ export class DateRangeComponent implements OnInit {
     ]),
   });
 
-  constructor(private _zone: NgZone) {
-    this.mediaMatcher.addListener(mql => _zone.run(() => this.mediaMatcher = mql));
+  constructor(private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit(): void {
@@ -105,7 +105,7 @@ export class DateRangeComponent implements OnInit {
   }
 
   public isMobile(): boolean {
-    return this.mediaMatcher.matches;
+    return this._responsiveHelper.isMobile();
   }
 
 }

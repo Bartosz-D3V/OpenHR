@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -6,9 +6,11 @@ import { MatDatepickerModule, MatInputModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { DateRangeComponent } from './date-range.component';
 import moment = require('moment');
 import { MomentInput } from 'moment';
+
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { DateRangeComponent } from './date-range.component';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -27,6 +29,9 @@ describe('DateRangeComponent', () => {
         MatDatepickerModule,
         MatInputModule,
         NoopAnimationsModule,
+      ],
+      providers: [
+        ResponsiveHelperService,
       ],
     })
       .compileComponents();
@@ -220,15 +225,19 @@ describe('DateRangeComponent', () => {
     expect(result).toEqual(20);
   });
 
-  it('isMobile should return true if screen is less than 480px', () => {
-    spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(true);
+  it('isMobile should return true if screen is less than 480px', inject([ResponsiveHelperService],
+    (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-    expect(component.isMobile()).toBeTruthy();
-  });
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-  it('isMobile should return false if screen is greater than 480px', () => {
-    spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(false);
+  it('isMobile should return false if screen is greater than 480px', inject([ResponsiveHelperService],
+    (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-    expect(component.isMobile()).toBeFalsy();
-  });
+      expect(component.isMobile()).toBeFalsy();
+    }));
 });
