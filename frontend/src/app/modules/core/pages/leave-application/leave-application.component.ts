@@ -4,6 +4,7 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { MomentInput } from 'moment';
 
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplication } from './domain/leave-application';
 
@@ -11,7 +12,10 @@ import { LeaveApplication } from './domain/leave-application';
   selector: 'app-leave-application',
   templateUrl: './leave-application.component.html',
   styleUrls: ['./leave-application.component.scss'],
-  providers: [LeaveApplicationService],
+  providers: [
+    LeaveApplicationService,
+    ResponsiveHelperService,
+  ],
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
@@ -20,7 +24,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   public leaveApplication: LeaveApplication;
   public selectorType = 'range';
 
-  constructor(private _leaveApplicationService: LeaveApplicationService) {
+  constructor(private _leaveApplicationService: LeaveApplicationService,
+              private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit() {
@@ -45,6 +50,10 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   public setEndDate(endDate: MomentInput): void {
     this.leaveApplication.endDate = endDate;
+  }
+
+  public isMobile(): boolean {
+    return this._responsiveHelper.isMobile();
   }
 
 }
