@@ -26,7 +26,7 @@ export class AccountComponent {
     ]),
   });
 
-  public passwordsAreIdentical(password1: string, password2: string): boolean {
+  public arePasswordsIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
       this.accountFormGroup.controls['repeatPasswordController']
         .setErrors({'passwordDoNotMatch': true});
