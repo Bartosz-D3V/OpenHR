@@ -12,9 +12,10 @@ import { User } from '../../domain/user/user';
 })
 export class SidenavComponent implements OnInit {
 
+  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
+
   @Input()
   public user: User;
-  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
   public sidenav: MatSidenav;
 
   constructor(private _router: Router,
@@ -30,7 +31,7 @@ export class SidenavComponent implements OnInit {
     });
   }
 
-  isScreenSmall(): boolean {
+  public isScreenSmall(): boolean {
     return this.mediaMatcher.matches;
   }
 
