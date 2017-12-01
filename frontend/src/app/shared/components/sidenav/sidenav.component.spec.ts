@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MatButtonModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatSidenav, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
 import { SidenavComponent } from './sidenav.component';
 import { SidenavItemComponent } from './sidenav-item/sidenav-item.component';
@@ -47,16 +47,17 @@ describe('SidenavComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('isScreenSmall method', () => {
-
+  describe('isScreenSmall method', () => {
     it('should return true if max-width is less or equal than 840px', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true,
-      });
-      fixture.detectChanges();
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(true);
+
       expect(component.isScreenSmall()).toBeTruthy();
     });
 
-  });
+    it('should return false if max-width is greater than 840px', () => {
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(false);
 
+      expect(component.isScreenSmall()).toBeFalsy();
+    });
+  });
 });

@@ -1,5 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { MatSidenav } from '@angular/material';
 
 import { User } from '../../domain/user/user';

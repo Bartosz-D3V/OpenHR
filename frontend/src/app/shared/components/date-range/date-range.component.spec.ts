@@ -219,4 +219,16 @@ describe('DateRangeComponent', () => {
     expect(result).toBeDefined();
     expect(result).toEqual(20);
   });
+
+  it('isMobile should return true if screen is less than 480px', () => {
+    spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(true);
+
+    expect(component.isMobile()).toBeTruthy();
+  });
+
+  it('isMobile should return false if screen is greater than 480px', () => {
+    spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(false);
+
+    expect(component.isMobile()).toBeFalsy();
+  });
 });
