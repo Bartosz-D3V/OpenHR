@@ -41,7 +41,7 @@ export class DateRangeComponent implements OnInit {
 
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
-  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 600px)`);
+  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 480px)`);
 
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [

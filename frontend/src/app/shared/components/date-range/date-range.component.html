@@ -3,7 +3,7 @@
     <input matInput [matDatepicker]="dateFrom" placeholder="Choose a start date" name="startDate"
            formControlName="startDate" [(ngModel)]="startDate" (dateChange)="updateStartDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
-    <mat-datepicker #dateFrom touchUi="isMobile()"></mat-datepicker>
+    <mat-datepicker #dateFrom [touchUi]=isMobile()></mat-datepicker>
     <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('startDateInvalid')">
       Start date cannot be later than end date
     </mat-error>
@@ -16,7 +16,7 @@
     <input matInput [matDatepicker]="dateTo" placeholder="Choose an end date" name="endDate" formControlName="endDate"
            [(ngModel)]="endDate" (dateChange)="updateEndDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
-    <mat-datepicker #dateTo touchUi="isMobile()"></mat-datepicker>
+    <mat-datepicker #dateTo [touchUi]="isMobile()"></mat-datepicker>
     <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('endDateInvalid')">
       End date cannot be earlier than start date
     </mat-error>
