@@ -1,6 +1,6 @@
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -113,19 +113,63 @@ describe('LeaveApplicationComponent', () => {
     expect(component.leaveApplication.endDate).toEqual(mockEndDate);
   });
 
-  it('isMobile should return true if screen is less than 480px', inject([ResponsiveHelperService],
-    (service: ResponsiveHelperService) => {
-      component['_responsiveHelper'] = service;
-      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+  describe('leaveApplication Form Group', () => {
+    describe('leaveTypeSelectorController', () => {
+      let leaveTypeCtrl: AbstractControl;
 
-      expect(component.isMobile()).toBeTruthy();
-    }));
+      beforeEach(() => {
+        leaveTypeCtrl = component.leaveApplicationFormGroup.controls['leaveTypeSelectorController'];
+      });
 
-  it('isMobile should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-    (service: ResponsiveHelperService) => {
-      component['_responsiveHelper'] = service;
-      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+      it('should be marked invalid if it is empty', () => {
+        leaveTypeCtrl.setValue(null);
 
-      expect(component.isMobile()).toBeFalsy();
-    }));
+        expect(leaveTypeCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if it is not empty', () => {
+        leaveTypeCtrl.setValue('range');
+
+        expect(leaveTypeCtrl.valid).toBeTruthy();
+      });
+    });
+
+    describe('messageController', () => {
+      let messageCtrl: AbstractControl;
+
+      beforeEach(() => {
+        messageCtrl = component.leaveApplicationFormGroup.controls['messageController'];
+      });
+
+      it('should be marked invalid if it exceed 500 characters', () => {
+        messageCtrl.setValue('m'.repeat(501));
+
+        expect(messageCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if it is not exceeding 500 chars', () => {
+        messageCtrl.setValue('Some message');
+
+        expect(messageCtrl.valid).toBeTruthy();
+      });
+    });
+  });
+
+  describe('isMobile method', () => {
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+
+        expect(component.isMobile()).toBeTruthy();
+      }));
+
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+
+        expect(component.isMobile()).toBeFalsy();
+      }));
+  });
 });
