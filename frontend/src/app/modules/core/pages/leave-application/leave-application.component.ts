@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -20,9 +21,22 @@ import { LeaveApplication } from './domain/leave-application';
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   private $leaveTypes: ISubscription;
-  public leaveTypes: Array<string>;
+  public leaveTypes: Array<string> = [];
   public leaveApplication: LeaveApplication;
   public selectorType = 'range';
+
+  public leaveApplicationFormGroup: FormGroup = new FormGroup({
+    leaveTypeSelectorController: new FormControl(this.leaveTypes[0], [
+      Validators.required,
+    ]),
+    messageController: new FormControl('', [
+      Validators.maxLength(500),
+    ]),
+    dateRangeController: new FormControl('', []),
+    singleDateController: new FormControl('', [
+      Validators.required,
+    ]),
+  });
 
   constructor(private _leaveApplicationService: LeaveApplicationService,
               private _responsiveHelper: ResponsiveHelperService) {
@@ -41,6 +55,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
       .subscribe((response: Array<string>) => {
         this.leaveTypes = response;
+      }, (error: any) => {
+        this.leaveTypes = [''];
       });
   }
 
@@ -50,6 +66,14 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   public setEndDate(endDate: MomentInput): void {
     this.leaveApplication.endDate = endDate;
+  }
+
+  public setSelector(selector: string): void {
+    this.selectorType = selector;
+  }
+
+  public setLeaveType(leaveType: string): void {
+    this.leaveApplication.leaveType = leaveType;
   }
 
   public isMobile(): boolean {

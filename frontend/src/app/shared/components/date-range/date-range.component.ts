@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { ISubscription } from 'rxjs/Subscription';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -20,7 +22,10 @@ import { ResponsiveHelperService } from '../../services/responsive-helper/respon
     ResponsiveHelperService,
   ],
 })
-export class DateRangeComponent implements OnInit {
+export class DateRangeComponent implements OnInit, OnDestroy {
+
+  private $startDateChange: ISubscription;
+  private $endDateChange: ISubscription;
 
   @Input()
   public mainFlexProperty?: number;
@@ -61,9 +66,14 @@ export class DateRangeComponent implements OnInit {
     this.validateEndDateField();
   }
 
+  ngOnDestroy(): void {
+    this.$startDateChange.unsubscribe();
+    this.$endDateChange.unsubscribe();
+  }
+
   public validateStartDateField(): void {
     const startDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
-    startDateCtrl.valueChanges.subscribe((value: Moment) => {
+    this.$startDateChange = startDateCtrl.valueChanges.subscribe((value: Moment) => {
       if (moment(value).isAfter(this.endDate)) {
         startDateCtrl.setErrors({'startDateInvalid': true});
       } else {
@@ -74,7 +84,7 @@ export class DateRangeComponent implements OnInit {
 
   public validateEndDateField(): void {
     const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['endDate'];
-    endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
+    this.$endDateChange = endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
       if (this.startDate && moment(value).isBefore(this.startDate)) {
         endDateCtrl.setErrors({'endDateInvalid': true});
       } else {

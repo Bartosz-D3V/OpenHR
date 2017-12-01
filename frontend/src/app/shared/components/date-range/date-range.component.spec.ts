@@ -225,19 +225,21 @@ describe('DateRangeComponent', () => {
     expect(result).toEqual(20);
   });
 
-  it('isMobile should return true if screen is less than 480px', inject([ResponsiveHelperService],
-    (service: ResponsiveHelperService) => {
-      component['_responsiveHelper'] = service;
-      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+  describe('isMobile', () => {
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-      expect(component.isMobile()).toBeTruthy();
-    }));
+        expect(component.isMobile()).toBeTruthy();
+      }));
 
-  it('isMobile should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-    (service: ResponsiveHelperService) => {
-      component['_responsiveHelper'] = service;
-      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-      expect(component.isMobile()).toBeFalsy();
-    }));
+        expect(component.isMobile()).toBeFalsy();
+      }));
+  });
 });
