@@ -4,25 +4,25 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 import { AvatarComponent } from './avatar.component';
-import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { User } from '../../domain/user/user';
+import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
-  const mockUser = new User(2199, 'john.test', 'John Test');
+  const mockUser = new User(2199, 'john.test', 'John Test', null);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         InitialsPipe,
-        AvatarComponent
+        AvatarComponent,
       ],
       imports: [
         MatMenuModule,
         MatButtonModule,
         RouterTestingModule,
-      ]
+      ],
     })
       .compileComponents();
   }));

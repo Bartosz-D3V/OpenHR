@@ -12,7 +12,7 @@ import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { User } from '../../domain/user/user';
 
 describe('SidenavComponent', () => {
-  const mockUser: User = new User(2199, 'john.test', 'John Test');
+  const mockUser: User = new User(2199, 'john.test', 'John Test', null);
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
@@ -31,7 +31,7 @@ describe('SidenavComponent', () => {
         MatSidenavModule,
         MatMenuModule,
         MatToolbarModule,
-        MatButtonModule
+        MatButtonModule,
       ],
     }).compileComponents();
   }));
@@ -47,16 +47,17 @@ describe('SidenavComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('isScreenSmall method', () => {
-
+  describe('isScreenSmall method', () => {
     it('should return true if max-width is less or equal than 840px', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true
-      });
-      fixture.detectChanges();
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(true);
+
       expect(component.isScreenSmall()).toBeTruthy();
     });
 
-  });
+    it('should return false if max-width is greater than 840px', () => {
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(false);
 
+      expect(component.isScreenSmall()).toBeFalsy();
+    });
+  });
 });

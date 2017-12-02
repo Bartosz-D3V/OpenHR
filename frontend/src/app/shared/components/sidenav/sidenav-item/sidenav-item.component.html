@@ -1,4 +1,4 @@
-<button mat-button class="c-sidenav__item" [routerLink]="[sidenavItem.link]">
+<button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: [sidenavItem.link] } }]">
   <i class="material-icons c-sidenav__icon">{{sidenavItem.icon}}</i>
   {{sidenavItem.text}}
 </button>

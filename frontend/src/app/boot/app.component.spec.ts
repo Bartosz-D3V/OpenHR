@@ -15,7 +15,7 @@ import { InitialsPipe } from '../shared/pipes/initials/initials.pipe';
 import { User } from '../shared/domain/user/user';
 
 describe('AppComponent', () => {
-  const mockUser: User = new User(2199, 'john.test', 'John Test');
+  const mockUser: User = new User(2199, 'john.test', 'John Test', null);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

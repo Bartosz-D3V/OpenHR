@@ -4,12 +4,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.openhr.controller.personaldetails.SubjectDoesNotExistException;
-import org.openhr.domain.address.Address;
+import org.openhr.exception.SubjectDoesNotExistException;
+import org.openhr.domain.subject.ContactInformation;
+import org.openhr.domain.subject.EmployeeInformation;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
@@ -23,21 +26,21 @@ public class SubjectDAOImpl implements SubjectDAO {
   }
 
   @Override
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException, HibernateException {
     Subject subject;
     try {
-      Session session = this.sessionFactory.openSession();
+      Session session = sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
       subject = session.get(Subject.class, subjectId);
       transaction.commit();
       session.close();
     } catch (final HibernateException hibernateException) {
-      this.log.error(hibernateException.getMessage());
+      log.error(hibernateException.getMessage());
       throw hibernateException;
     }
     if (subject == null) {
-      this.log.error("Subject could not be found, although it must exists at this point");
+      log.error("Subject could not be found, although it must exists at this point");
       throw new SubjectDoesNotExistException("Subject could not be found");
     }
 
@@ -48,56 +51,101 @@ public class SubjectDAOImpl implements SubjectDAO {
   @Transactional
   public void addSubject(final Subject subject) throws HibernateException {
     try {
-      Session session = this.sessionFactory.openSession();
+      Session session = sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
       session.save(subject);
       transaction.commit();
       session.close();
     } catch (final HibernateException hibernateException) {
-      this.log.error(hibernateException.getMessage());
+      log.error(hibernateException.getMessage());
       throw hibernateException;
     }
   }
 
   @Override
   @Transactional
-  public void updateSubject(final Subject subject) throws HibernateException {
+  public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
+    SubjectDoesNotExistException {
     try {
-      this.mergeSubject(subject);
-    } catch (HibernateException hibernateException) {
-      this.log.error("Issue occurred during the update of the subject");
-      this.log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
-  }
-
-  @Override
-  @Transactional
-  public void updateSubjectAddress(final long subjectId, final Address address) throws HibernateException,
-          SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
-    final Address updatedAddress = subject.getAddress();
-    updatedAddress.setFirstLineAddress(address.getFirstLineAddress());
-    updatedAddress.setSecondLineAddress(address.getSecondLineAddress());
-    updatedAddress.setThirdLineAddress(address.getThirdLineAddress());
-    updatedAddress.setPostcode(address.getPostcode());
-    updatedAddress.setCity(address.getCity());
-    updatedAddress.setCountry(address.getCountry());
-    subject.setAddress(updatedAddress);
-    try {
-      this.mergeSubject(subject);
+      Session session = sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      final Subject legacySubject = this.getSubjectDetails(subjectId);
+      legacySubject.setFirstName(subject.getFirstName());
+      legacySubject.setLastName(subject.getLastName());
+      legacySubject.setRole(subject.getRole());
+      legacySubject.setPersonalInformation(subject.getPersonalInformation());
+      legacySubject.setContactInformation(subject.getContactInformation());
+      legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
+      session.update(legacySubject);
+      transaction.commit();
+      session.close();
     } catch (final HibernateException hibernateException) {
-      this.log.error("Issue occurred during the update of the subject's address");
-      this.log.error(hibernateException.getMessage());
+      log.error("Issue occurred during the update of the subject");
+      log.error(hibernateException.getMessage());
       throw hibernateException;
+    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
+      log.error(subjectDoesNotExistException.getMessage());
+      throw subjectDoesNotExistException;
+    }
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    final Subject subject = this.getSubjectDetails(subjectId);
+    subject.setPersonalInformation(personalInformation);
+    mergeSubject(subject);
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    final Subject subject = this.getSubjectDetails(subjectId);
+    subject.setContactInformation(contactInformation);
+    mergeSubject(subject);
+  }
+
+  @Override
+  @Transactional
+  public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
+    throws HibernateException, SubjectDoesNotExistException {
+    final Subject subject = this.getSubjectDetails(subjectId);
+    subject.setEmployeeInformation(employeeInformation);
+    mergeSubject(subject);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
+    try {
+      Session session = sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      session.delete(this.getSubjectDetails(subjectId));
+      transaction.commit();
+      session.close();
+    } catch (final HibernateException hibernateException) {
+      log.error("Issue occurred during the deletion of the subject");
+      log.error(hibernateException.getMessage());
+      throw hibernateException;
+    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
+      log.error(subjectDoesNotExistException.getMessage());
+      throw subjectDoesNotExistException;
     }
   }
 
   private void mergeSubject(final Subject subject) throws HibernateException {
-    Session session = this.sessionFactory.openSession();
-    Transaction transaction = session.beginTransaction();
-    session.merge(subject);
-    transaction.commit();
-    session.close();
+    try {
+      Session session = sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      session.merge(subject);
+      transaction.commit();
+      session.close();
+    } catch (final HibernateException hibernateException) {
+      log.error("Issue occurred during the update of the subject");
+      log.error(hibernateException.getMessage());
+      throw hibernateException;
+    }
   }
 }

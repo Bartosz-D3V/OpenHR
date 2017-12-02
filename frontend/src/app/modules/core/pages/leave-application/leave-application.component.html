@@ -1,0 +1,37 @@
+<app-page-header [header]="'Leave application'"></app-page-header>
+<section class="c-drawer">
+  <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
+  <mat-card>
+    <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="column wrap"
+          fxLayoutAlign.lt-sm="center center">
+      <mat-radio-group fxFlex.gt-xs="50" fxFlex.xs="100" name="selectorType" (change)="setSelector($event)">
+        <mat-radio-button class="c-radio__option" value="single" fxFlex.gt-xs="50" fxFlex.xs="100">Single day
+        </mat-radio-button>
+        <mat-radio-button class="c-radio__option" value="range" fxFlex.gt-xs="50" fxFlex.xs="100">Range
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-select fxFlex.gt-xs="50" fxFlex.xs="100" placeholder="Leave type"
+                  formControlName="leaveTypeSelectorController">
+        <mat-option *ngFor="let leaveType of leaveTypes" (selectorChange)="setLeaveType($event)" name="leaveType">
+          {{leaveType}}
+        </mat-option>
+      </mat-select>
+      <app-date-range fxFlex="50" *ngIf="selectorType === 'range'; else single_date_template" [mainFlexProperty]="50"
+                      [mobileFlexProperty]="100" (updateStartDate)="setStartDate($event)"
+                      (updateEndDate)="setEndDate($event)"></app-date-range>
+      <ng-template #single_date_template>
+        <mat-form-field fxFlex="50">
+          <input matInput [matDatepicker]="singleDate" placeholder="Choose a date" name="singleDate"
+                 formControlName="singleDateController" (dateInput)="setStartDate($event)">
+          <mat-datepicker-toggle matSuffix [for]="singleDate"></mat-datepicker-toggle>
+          <mat-datepicker #singleDate [touchUi]="isMobile()"></mat-datepicker>
+        </mat-form-field>
+      </ng-template>
+      <mat-form-field fxFlex="60" class="c-textarea">
+        <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
+                  formControlName="messageController"></textarea>
+        <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+      </mat-form-field>
+    </form>
+  </mat-card>
+</section>

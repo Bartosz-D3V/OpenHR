@@ -1,0 +1,216 @@
+<app-page-header [header]="'Personal details'"></app-page-header>
+<section class="c-drawer">
+  <mat-toolbar [color]="'primary'">My details</mat-toolbar>
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Personal information
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="personalInformationFormGroup" fxLayout.gt-sm="row wrap"
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-first-name"></label>
+          <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
+                 id="personal-details-first-name" name="firstName" [ngModel]="subject?.firstName">
+          <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
+            First name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-middle-name"></label>
+          <input matInput placeholder="Middle name" id="personal-details-middle-name"
+                 formControlName="middleNameFormControl" name="middleName"
+                 [ngModel]="subject?.personalInformation?.middleName">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-last-name"></label>
+          <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
+                 id="personal-details-last-name" name="lastName" [ngModel]="subject?.lastName">
+          <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
+            Last name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-date-of-birth"></label>
+          <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dobFormControl"
+                 id="personal-details-date-of-birth" name="dateOfBirth"
+                 [ngModel]="subject?.personalInformation?.dateOfBirth">
+          <mat-error *ngIf="personalInformationFormGroup.controls['dobFormControl'].hasError('required')">
+            Date of birth is required
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-position"></label>
+          <input matInput required="required" placeholder="Position" formControlName="positionFormControl"
+                 id="personal-details-position" name="position" [ngModel]="subject?.employeeInformation?.position">
+        </mat-form-field>
+      </form>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Contact information
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>phone</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="contactInformationFormGroup" fxLayout.gt-sm="row wrap"
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <span matPrefix>+44 (0) &nbsp;</span>
+          <label for="personal-details-telephone"></label>
+          <input type="tel" matInput placeholder="Telephone" formControlName="telephoneFormControl"
+                 id="personal-details-telephone" name="telephone" [ngModel]="subject?.contactInformation?.telephone">
+          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('minlength')">
+            Telephone number must contains at least 7 digits
+          </mat-error>
+          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('maxlength')">
+            Telephone number must contains maximum 11 digits
+          </mat-error>
+          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('required')">
+            Telephone is required
+          </mat-error>
+          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('pattern')">
+            Please enter a valid telephone
+          </mat-error>
+          <mat-icon matSuffix>mode_edit</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-email"></label>
+          <input type="email" matInput placeholder="Email" formControlName="emailFormControl"
+                 id="personal-details-email" name="email" [ngModel]="subject?.contactInformation?.email">
+          <mat-error *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('pattern')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('required')">
+            Email is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-1st-line-address"></label>
+          <input type="text" matInput placeholder="First line address" formControlName="firstLineAddressFormControl"
+                 id="personal-details-1st-line-address" name="firstLineAddress"
+                 [ngModel]="subject?.contactInformation?.address?.firstLineAddress">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-2nd-line-address"></label>
+          <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddressFormControl"
+                 id="personal-details-2nd-line-address" name="secondLineAddress"
+                 [ngModel]="subject?.contactInformation?.address?.secondLineAddress">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-3rd-line-address"></label>
+          <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddressFormControl"
+                 id="personal-details-3rd-line-address" name="thirdLineAddress"
+                 [ngModel]="subject?.contactInformation?.address?.thirdLineAddress">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-postcode"></label>
+          <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcodeFormControl"
+                 id="personal-details-postcode" name="postcode"
+                 [ngModel]="subject?.contactInformation?.address?.postcode">
+          <mat-error *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('pattern')">
+            Please enter a valid postcode
+          </mat-error>
+          <mat-error *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('required')">
+            Postcode is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-city"></label>
+          <input type="text" matInput placeholder="City" formControlName="cityFormControl"
+                 id="personal-details-city" name="city" [ngModel]="subject?.contactInformation?.address?.city">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-country"></label>
+          <input type="text" matInput placeholder="Country" formControlName="countryFormControl"
+                 id="personal-details-country" name="country" [ngModel]="subject?.contactInformation?.address?.country">
+        </mat-form-field>
+      </form>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Employee details
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>perm_identity</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="employeeDetailsFormGroup" fxLayout.gt-sm="row wrap"
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-nin"></label>
+          <input type="text" matInput placeholder="National Insurance Number" formControlName="ninFormControl"
+                 id="personal-details-nin" name="nin" [ngModel]="subject?.contactInformation?.email">
+          <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
+            NIN is required
+          </mat-error>
+          <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('pattern')">
+            NIN is not correct
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="personal-details-employeeId"></label>
+          <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
+                 id="personal-details-employeeId" name="employeeId"
+                 [ngModel]="subject?.employeeInformation?.employeeId">
+          <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
+            Employee ID is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+                 formControlName="startDateFormControl" name="startDate"
+                 [ngModel]="subject?.employeeInformation?.startDate">
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDateFormControl"
+                 name="endDate" [ngModel]="subject?.employeeInformation?.endDate">
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </form>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">End</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()">Save</button>
+</section>

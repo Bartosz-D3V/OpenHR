@@ -17,7 +17,7 @@ describe('ErrorResolverService', () => {
       providers: [
         MatDialog,
         ErrorResolverService,
-      ]
+      ],
     });
   }));
 
@@ -34,7 +34,7 @@ describe('ErrorResolverService', () => {
       data: {
         text: 'Example error message',
         header: 'Error',
-      }
+      },
     };
     spyOn(service.dialog, 'open');
     service.createAlert(error);
