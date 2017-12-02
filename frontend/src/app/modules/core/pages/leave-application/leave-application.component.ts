@@ -8,6 +8,7 @@ import { MomentInput } from 'moment';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplication } from './domain/leave-application';
+import { MatRadioChange } from '@angular/material';
 
 @Component({
   selector: 'app-leave-application',
@@ -68,8 +69,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.leaveApplication.endDate = endDate;
   }
 
-  public setSelector(selector: string): void {
-    this.selectorType = selector;
+  public setSelector(selector: MatRadioChange): void {
+    this.selectorType = selector.value;
   }
 
   public setLeaveType(leaveType: string): void {
