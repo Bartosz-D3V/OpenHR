@@ -6,8 +6,10 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
+import { MomentInput } from 'moment';
+
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-import { DelegationApplication } from './domain/application/delegation-application';
+import { DelegationApplication } from './domain/delegation-application';
 
 @Component({
   selector: 'app-delegation',
@@ -53,7 +55,6 @@ export class DelegationComponent implements OnInit {
           Validators.required,
           Validators.min(0),
         ]],
-        dateRange: [''],
       }),
     });
 
@@ -64,7 +65,7 @@ export class DelegationComponent implements OnInit {
 
   public filterCountries(countries: Array<string>, name: string): Array<string> {
     return countries.filter(country =>
-      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<string>): Observable<Array<string>> {
@@ -81,6 +82,14 @@ export class DelegationComponent implements OnInit {
 
   public isValid(): boolean {
     return this.applicationForm.valid;
+  }
+
+  public setStartDate(startDate: MomentInput): void {
+    this.delegationApplication.startDate = startDate;
+  }
+
+  public setEndDate(endDate: MomentInput): void {
+    this.delegationApplication.endDate = endDate;
   }
 
 }

@@ -1,32 +1,35 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule
+  MatButtonModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
+  MatToolbarModule
 } from '@angular/material';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MomentInput } from 'moment';
 
-import { CalendarModule } from 'primeng/primeng';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { Observable } from 'rxjs/Observable';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
-import { LeaveApplicationService } from './service/leave-application.service';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
   let fixture: ComponentFixture<LeaveApplicationComponent>;
-  const appliedDays = [
-    new Date('03/05/2017'),
-  ];
+  const mockStartDate: MomentInput = '2020-05-05';
+  const mockEndDate: MomentInput = '2020-05-10';
   const mockLeave = new LeaveApplication();
-  mockLeave.selectedDays = appliedDays;
   mockLeave.leaveType = 'Holiday';
   mockLeave.message = '';
 
@@ -47,20 +50,23 @@ describe('LeaveApplicationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         LeaveApplicationComponent,
+        DateRangeComponent,
         PageHeaderComponent,
         CapitalizePipe,
       ],
       imports: [
         HttpClientTestingModule,
         FormsModule,
+        FlexLayoutModule,
+        MatDatepickerModule,
         ReactiveFormsModule,
+        MomentDateModule,
         MatStepperModule,
         MatButtonModule,
         MatMenuModule,
         MatToolbarModule,
         MatSelectModule,
         MatInputModule,
-        CalendarModule,
         NoopAnimationsModule,
       ],
       providers: [
@@ -70,6 +76,7 @@ describe('LeaveApplicationComponent', () => {
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
         },
+        ResponsiveHelperService,
       ],
     })
       .compileComponents();
@@ -86,49 +93,101 @@ describe('LeaveApplicationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('setEntryDates method', () => {
+  it('ngOnInit method should trigger service and instantiate domain object', () => {
+    spyOn(component, 'getLeaveTypes');
+    component.ngOnInit();
 
-    it('should set the start day and leave the end date empty if start day is selected and end date is empty', () => {
-      component.dateRange = [new Date('06/12/2019')];
-      component.setEntryDates();
+    expect(component.getLeaveTypes).toHaveBeenCalled();
+    expect(component.leaveApplication).toBeDefined();
+  });
 
-      expect(component.startDate).toEqual(new Date('06/12/2019'));
-      expect(component.endDate).toBeUndefined();
+  it('setStartDate should set the start date in domain object and itself', () => {
+    component.setStartDate(mockStartDate);
+
+    expect(component.leaveApplication.startDate).toBeDefined();
+    expect(component.leaveApplication.startDate).toEqual(mockStartDate);
+  });
+
+  it('setEndDate should set the end date in domain object and itself', () => {
+    component.setEndDate(mockEndDate);
+
+    expect(component.leaveApplication.endDate).toBeDefined();
+    expect(component.leaveApplication.endDate).toEqual(mockEndDate);
+  });
+
+  it('setSelector should update selector type', () => {
+    component.setSelector({source: null, value: 'range'});
+
+    expect(component.selectorType).toBeDefined();
+    expect(typeof component.selectorType).toBe('string');
+    expect(component.selectorType).toEqual('range');
+  });
+
+  it('setLeaveType should update selector type', () => {
+    component.setLeaveType('Holiday');
+
+    expect(component.leaveApplication.leaveType).toBeDefined();
+    expect(typeof component.leaveApplication.leaveType).toBe('string');
+    expect(component.leaveApplication.leaveType).toEqual('Holiday');
+  });
+
+  describe('leaveApplication Form Group', () => {
+    describe('leaveTypeSelectorController', () => {
+      let leaveTypeCtrl: AbstractControl;
+
+      beforeEach(() => {
+        leaveTypeCtrl = component.leaveApplicationFormGroup.controls['leaveTypeSelectorController'];
+      });
+
+      it('should be marked invalid if it is empty', () => {
+        leaveTypeCtrl.setValue(null);
+
+        expect(leaveTypeCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if it is not empty', () => {
+        leaveTypeCtrl.setValue('range');
+
+        expect(leaveTypeCtrl.valid).toBeTruthy();
+      });
     });
 
-    it('should set the start day and end date if start and end date are selected', () => {
-      component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-      component.setEntryDates();
+    describe('messageController', () => {
+      let messageCtrl: AbstractControl;
 
-      expect(component.startDate).toEqual(new Date('06/12/2019'));
-      expect(component.endDate).toEqual(new Date('10/01/2020'));
+      beforeEach(() => {
+        messageCtrl = component.leaveApplicationFormGroup.controls['messageController'];
+      });
+
+      it('should be marked invalid if it exceed 500 characters', () => {
+        messageCtrl.setValue('m'.repeat(501));
+
+        expect(messageCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if it is not exceeding 500 chars', () => {
+        messageCtrl.setValue('Some message');
+
+        expect(messageCtrl.valid).toBeTruthy();
+      });
     });
-
   });
 
-  it('clearEntryDates method should set startDay and endDay to null', () => {
-    component.startDate = new Date('06/12/2019');
-    component.endDate = new Date('10/01/2020');
-    component.clearEntryDates();
+  describe('isMobile method', () => {
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-    expect(component.startDate).toBeNull();
-    expect(component.endDate).toBeNull();
+        expect(component.isMobile()).toBeTruthy();
+      }));
+
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
+      (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+
+        expect(component.isMobile()).toBeFalsy();
+      }));
   });
-
-  it('clearEndDate should set endDate to null', () => {
-    component.startDate = new Date('06/12/2019');
-    component.endDate = new Date('10/01/2020');
-    component.clearEndDate();
-
-    expect(component.startDate).toEqual(new Date('06/12/2019'));
-    expect(component.endDate).toBeNull();
-  });
-
-  it('setLeaveDates should set the domain property to selected days', () => {
-    component.dateRange = [new Date('06/12/2019'), new Date('10/01/2020')];
-    component.setLeaveDates();
-
-    expect(component.leaveApplication.selectedDays).toEqual(component.dateRange);
-  });
-
 });

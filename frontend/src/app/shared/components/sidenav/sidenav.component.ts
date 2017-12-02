@@ -1,5 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { MatSidenav } from '@angular/material';
 
 import { User } from '../../domain/user/user';
@@ -11,9 +12,10 @@ import { User } from '../../domain/user/user';
 })
 export class SidenavComponent implements OnInit {
 
+  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
+
   @Input()
   public user: User;
-  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
   public sidenav: MatSidenav;
 
   constructor(private _router: Router,
@@ -29,7 +31,7 @@ export class SidenavComponent implements OnInit {
     });
   }
 
-  isScreenSmall(): boolean {
+  public isScreenSmall(): boolean {
     return this.mediaMatcher.matches;
   }
 

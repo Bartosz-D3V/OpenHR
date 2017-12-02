@@ -18,7 +18,7 @@
           <input type="password" #repeatPassword matInput placeholder="Repeat new password"
                  formControlName="repeatPasswordController">
         </mat-form-field>
-        <mat-error *ngIf="!passwordsAreIdentical(newPassword.value, repeatPassword.value)">
+        <mat-error *ngIf="!arePasswordsIdentical(newPassword.value, repeatPassword.value)">
           Passwords do not match
         </mat-error>
       </form>

@@ -47,16 +47,17 @@ describe('SidenavComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('isScreenSmall method', () => {
-
+  describe('isScreenSmall method', () => {
     it('should return true if max-width is less or equal than 840px', () => {
-      spyOn(window, 'matchMedia').and.returnValue({
-        matches: true,
-      });
-      fixture.detectChanges();
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(true);
+
       expect(component.isScreenSmall()).toBeTruthy();
     });
 
-  });
+    it('should return false if max-width is greater than 840px', () => {
+      spyOnProperty(component['mediaMatcher'], 'matches', 'get').and.returnValue(false);
 
+      expect(component.isScreenSmall()).toBeFalsy();
+    });
+  });
 });

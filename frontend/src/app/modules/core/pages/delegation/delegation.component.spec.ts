@@ -3,11 +3,12 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatAutocompleteModule, MatTableModule, MatToolbarModule } from '@angular/material';
-
-import { CalendarModule } from 'primeng/primeng';
+import { MatAutocompleteModule, MatDatepickerModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { DelegationComponent } from './delegation.component';
 
@@ -21,16 +22,19 @@ describe('DelegationComponent', () => {
         DelegationComponent,
         PageHeaderComponent,
         CapitalizePipe,
+        DateRangeComponent,
       ],
       imports: [
         HttpClientTestingModule,
         FormsModule,
+        FlexLayoutModule,
         ReactiveFormsModule,
         MatToolbarModule,
+        MatDatepickerModule,
         MatTableModule,
+        MomentDateModule,
         MatAutocompleteModule,
         NoopAnimationsModule,
-        CalendarModule,
       ],
     })
       .compileComponents();
@@ -305,13 +309,11 @@ describe('DelegationComponent', () => {
     const formGroup: AbstractControl = component.applicationForm.get('delegation');
     component.countryCtrl.setValue('Belgium');
     formGroup.get('city').setValue('Hamburg');
-    formGroup.get('dateRange').setValue(new Date(2020, 9, 3), new Date(2020, 9, 3));
     formGroup.get('budget').setValue('1000');
     component.clearForm();
 
     expect(component.countryCtrl.value).toBeNull();
     expect(formGroup.get('city').value).toBeNull();
-    expect(formGroup.get('dateRange').value).toBeNull();
     expect(formGroup.get('budget').value).toBeNull();
   });
 
@@ -329,6 +331,20 @@ describe('DelegationComponent', () => {
 
       expect(component.isValid()).toBeTruthy();
     });
+  });
+
+  it('setStartDate should set the application property', () => {
+    component.setStartDate('2020-05-05');
+
+    expect(component.delegationApplication.startDate).toBeDefined();
+    expect(component.delegationApplication.startDate).toEqual('2020-05-05');
+  });
+
+  it('setEndDate should set the application property', () => {
+    component.setEndDate('2020-05-05');
+
+    expect(component.delegationApplication.endDate).toBeDefined();
+    expect(component.delegationApplication.endDate).toEqual('2020-05-05');
   });
 
 });
