@@ -5,9 +5,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule, MatToolbarModule
+  MatButtonModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
+  MatToolbarModule
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MomentInput } from 'moment';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -15,12 +19,10 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.p
 import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
-import { LeaveApplicationService } from './service/leave-application.service';
-import { MomentInput } from 'moment';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -111,6 +113,22 @@ describe('LeaveApplicationComponent', () => {
 
     expect(component.leaveApplication.endDate).toBeDefined();
     expect(component.leaveApplication.endDate).toEqual(mockEndDate);
+  });
+
+  it('setSelector should update selector type', () => {
+    component.setSelector({source: null, value: 'range'});
+
+    expect(component.selectorType).toBeDefined();
+    expect(typeof component.selectorType).toBe('string');
+    expect(component.selectorType).toEqual('range');
+  });
+
+  it('setLeaveType should update selector type', () => {
+    component.setLeaveType('Holiday');
+
+    expect(component.leaveApplication.leaveType).toBeDefined();
+    expect(typeof component.leaveApplication.leaveType).toBe('string');
+    expect(component.leaveApplication.leaveType).toEqual('Holiday');
   });
 
   describe('leaveApplication Form Group', () => {

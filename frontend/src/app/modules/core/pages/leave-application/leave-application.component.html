@@ -16,18 +16,18 @@
           {{leaveType}}
         </mat-option>
       </mat-select>
-      <app-date-range fxFlex="100" *ngIf="selectorType === 'range'; else single_date_template" [mainFlexProperty]="50"
+      <app-date-range fxFlex="50" *ngIf="selectorType === 'range'; else single_date_template" [mainFlexProperty]="50"
                       [mobileFlexProperty]="100" (updateStartDate)="setStartDate($event)"
                       (updateEndDate)="setEndDate($event)"></app-date-range>
       <ng-template #single_date_template>
-        <mat-form-field fxFlex="100">
+        <mat-form-field fxFlex="50">
           <input matInput [matDatepicker]="singleDate" placeholder="Choose a date" name="singleDate"
                  formControlName="singleDateController" (dateInput)="setStartDate($event)">
           <mat-datepicker-toggle matSuffix [for]="singleDate"></mat-datepicker-toggle>
           <mat-datepicker #singleDate [touchUi]="isMobile()"></mat-datepicker>
         </mat-form-field>
       </ng-template>
-      <mat-form-field fxFlex="100" class="c-textarea">
+      <mat-form-field fxFlex="60" class="c-textarea">
         <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
                   formControlName="messageController"></textarea>
         <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
