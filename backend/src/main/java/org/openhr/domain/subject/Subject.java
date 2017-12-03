@@ -1,5 +1,6 @@
 package org.openhr.domain.subject;
 
+import org.openhr.domain.application.LeaveApplication;
 import org.openhr.enumeration.Role;
 
 import javax.persistence.CascadeType;
@@ -12,9 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Subject implements Serializable {
@@ -46,6 +49,9 @@ public class Subject implements Serializable {
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
   @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "subjectId", cascade = CascadeType.ALL)
+  private Set<LeaveApplication> leaveApplications;
 
   public Subject() {
     super();
@@ -118,5 +124,13 @@ public class Subject implements Serializable {
 
   public void setEmployeeInformation(final EmployeeInformation employeeInformation) {
     this.employeeInformation = employeeInformation;
+  }
+
+  public Set<LeaveApplication> getLeaveApplications() {
+    return leaveApplications;
+  }
+
+  public void setLeaveApplications(final Set<LeaveApplication> leaveApplications) {
+    this.leaveApplications = leaveApplications;
   }
 }

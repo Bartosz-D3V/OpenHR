@@ -1,12 +1,14 @@
 package org.openhr.domain.application;
 
-import org.openhr.enumeration.LeaveType;
+import org.openhr.domain.subject.Subject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -19,9 +21,6 @@ public class LeaveApplication implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long applicationId;
 
-  @Column(name = "SUBJECT_ID")
-  private long subjectId;
-
   @Column(name = "START_DATE")
   private LocalDate startDate;
 
@@ -30,7 +29,7 @@ public class LeaveApplication implements Serializable {
   private String message;
 
   @Column(name = "LEAVE_TYPE")
-  private LeaveType leaveType;
+  private String leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")
   private boolean approvedByManager;
@@ -38,17 +37,22 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
+  @ManyToOne(targetEntity = Subject.class)
+  @JoinColumn(name = "SUBJECT_ID", nullable = false)
+  private long subjectId;
+
   public LeaveApplication() {
+    super();
   }
 
-  public LeaveApplication(long subjectId, LocalDate startDate, LocalDate endDate) {
+  public LeaveApplication(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
     this.subjectId = subjectId;
     this.startDate = startDate;
     this.endDate = endDate;
   }
 
-  public LeaveApplication(long subjectId, LocalDate startDate, LocalDate endDate, String message,
-                          boolean approvedByManager, boolean approvedByHR) {
+  public LeaveApplication(final long subjectId, final LocalDate startDate, final LocalDate endDate,
+                          final String message) {
     this.subjectId = subjectId;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -61,12 +65,8 @@ public class LeaveApplication implements Serializable {
     return applicationId;
   }
 
-  public long getSubjectId() {
-    return subjectId;
-  }
-
-  public void setSubjectId(long subjectId) {
-    this.subjectId = subjectId;
+  public void setApplicationId(long applicationId) {
+    this.applicationId = applicationId;
   }
 
   public LocalDate getStartDate() {
@@ -93,6 +93,14 @@ public class LeaveApplication implements Serializable {
     this.message = message;
   }
 
+  public String getLeaveType() {
+    return leaveType;
+  }
+
+  public void setLeaveType(String leaveType) {
+    this.leaveType = leaveType;
+  }
+
   public boolean isApprovedByManager() {
     return approvedByManager;
   }
@@ -107,5 +115,13 @@ public class LeaveApplication implements Serializable {
 
   public void setApprovedByHR(boolean approvedByHR) {
     this.approvedByHR = approvedByHR;
+  }
+
+  public long getSubjectId() {
+    return subjectId;
+  }
+
+  public void setSubjectId(long subjectId) {
+    this.subjectId = subjectId;
   }
 }

@@ -1,9 +1,9 @@
-package org.openhr.service.leaveapplication;
+package org.openhr.facade.leaveapplication;
 
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.enumeration.Role;
 
-public interface LeaveApplicationService {
+public interface LeaveApplicationFacade {
 
   void createLeaveApplication(LeaveApplication leaveApplication);
 

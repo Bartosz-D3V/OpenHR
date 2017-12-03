@@ -1,5 +1,6 @@
 package org.openhr.service.leaveapplication;
 
+import org.openhr.dao.leaveapplication.LeaveApplicationDAO;
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.enumeration.Role;
 import org.springframework.stereotype.Service;
@@ -7,19 +8,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
-  @Override
-  public void createLeaveApplication(Role role, LeaveApplication leaveApplication) {
+  private final LeaveApplicationDAO leaveApplicationDAO;
 
+  public LeaveApplicationServiceImpl(final LeaveApplicationDAO leaveApplicationDAO) {
+    this.leaveApplicationDAO = leaveApplicationDAO;
   }
 
   @Override
-  public void rejectLeaveApplication(Role role, long userId, long applicationId) {
-
+  public void createLeaveApplication(final LeaveApplication leaveApplication) {
+    leaveApplicationDAO.createLeaveApplication(leaveApplication);
   }
 
   @Override
-  public void approveLeaveApplication(Role role, long userId, long applicationId) {
+  public void rejectLeaveApplication(final Role role, final long applicationId) {
+    leaveApplicationDAO.rejectLeaveApplication(role, applicationId);
+  }
 
+  @Override
+  public void approveLeaveApplication(final Role role, final long applicationId) {
+    leaveApplicationDAO.approveLeaveApplication(role, applicationId);
   }
 
 }

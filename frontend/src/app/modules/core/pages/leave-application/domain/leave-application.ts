@@ -1,13 +1,13 @@
 import { MomentInput } from 'moment';
 
-import { LeaveType } from './leavetype';
+import { Subject } from '../../personal-details/domain/subject';
 
 export class LeaveApplication {
-  public subjectId: number;
+  public subject: Subject;
   public startDate: MomentInput;
   public endDate: MomentInput;
   public message?: string;
-  public leaveType: LeaveType;
+  public leaveType: string;
   public approvedByManager = false;
   public approvedByHR = false;
 

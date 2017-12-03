@@ -18,7 +18,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="sid-0ACB8908-0EEC-4F3E-AF93-B2761B4972F0" name="Record a manager approval in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, userId, applicationId)}"/>
+    <serviceTask id="sid-0ACB8908-0EEC-4F3E-AF93-B2761B4972F0" name="Record a manager approval in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, applicationId)}"/>
     <userTask id="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC" name="HR Team Member approves the leave"/>
     <exclusiveGateway id="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602"/>
     <sequenceFlow id="sid-6934ED4C-6C3E-4B4D-99C3-747B528CF0E0" sourceRef="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602" targetRef="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC"/>
@@ -32,7 +32,7 @@
     <endEvent id="sid-1DD1897E-473D-4797-8676-327E7412A5CE" name="Rejected"/>
     <parallelGateway id="sid-D573A946-C0CA-4E33-B723-82045A180F6E"/>
     <sequenceFlow id="sid-5BAE721C-B575-4592-812B-E148B29B677F" sourceRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" targetRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E"/>
-    <serviceTask id="sid-2A0F287E-02EF-4BB1-925E-0F702FBE9199" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, subjectId, applicationId)}"/>
+    <serviceTask id="sid-2A0F287E-02EF-4BB1-925E-0F702FBE9199" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
     <sequenceFlow id="sid-45388483-8901-4D14-A01A-E30A6E55951F" sourceRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E" targetRef="sid-469F5D6B-3EB0-45ED-957B-CD460E63B544"/>
     <sequenceFlow id="sid-619405C5-0161-422C-A353-74ED7E55651A" sourceRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E" targetRef="sid-2A0F287E-02EF-4BB1-925E-0F702FBE9199"/>
     <parallelGateway id="sid-9A62C478-CFE9-48F9-849A-0303DB68933A"/>
@@ -61,7 +61,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" name="Update application in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, subjectId, applicationId)}"/>
+    <serviceTask id="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" name="Update application in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, applicationId)}"/>
     <parallelGateway id="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE"/>
     <sequenceFlow id="sid-76EA35E2-4B03-4422-AE64-72E86D40FA65" sourceRef="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC" targetRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE"/>
     <sequenceFlow id="sid-315E75E4-B832-40DD-BCD4-27EA1155639F" sourceRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE" targetRef="sid-B0A8C974-757E-4F82-B3D4-B1A8244D713B"/>
@@ -71,8 +71,8 @@
     <sequenceFlow id="sid-0F250D5E-2BAE-47B8-B463-D7E8BAA12CC4" sourceRef="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" targetRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
     <endEvent id="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
     <sequenceFlow id="sid-12C29A06-988B-4216-BD02-801BEAA06B06" sourceRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811" targetRef="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
-    <serviceTask id="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192" name="Record an application" activiti:expression="${leaveApplicationService.createLeaveApplication(role, leaveApplication)}"/>
-    <serviceTask id="sid-E4692C58-43A2-4666-B8A2-359947182B71" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, subjectId, applicationId)}"/>
+    <serviceTask id="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192" name="Record an application" activiti:expression="${leaveApplicationService.createLeaveApplication(leaveApplication)}"/>
+    <serviceTask id="sid-E4692C58-43A2-4666-B8A2-359947182B71" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
     <parallelGateway id="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950"/>
     <sequenceFlow id="sid-CD8CACB8-CA2F-4C4A-A357-29A5EC068807">
       <extensionElements>
