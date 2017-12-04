@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest
 public class LocalDatePersistenceConverterTest {
 
-  private static LocalDatePersistenceConverter localDatePersistenceConverter;
+  private LocalDatePersistenceConverter localDatePersistenceConverter;
 
   @Before
   public void setUp() {
