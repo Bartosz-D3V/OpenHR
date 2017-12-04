@@ -1,5 +1,7 @@
 package org.openhr.domain.subject;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,9 +27,11 @@ public class EmployeeInformation implements Serializable {
   private String employeeId;
 
   @Column(name = "START_DATE")
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate startDate;
 
   @Column(name = "END_DATE")
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate endDate;
 
   public EmployeeInformation() {
