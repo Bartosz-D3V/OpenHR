@@ -1,14 +1,9 @@
 package org.openhr.domain.application;
 
-import org.openhr.domain.subject.Subject;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,7 +13,7 @@ import java.time.LocalDate;
 public class LeaveApplication implements Serializable {
   @Id
   @Column(name = "APPLICATION_ID")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private long applicationId;
 
   @Column(name = "START_DATE")
@@ -37,28 +32,19 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
-  @ManyToOne(targetEntity = Subject.class)
-  @JoinColumn(name = "SUBJECT_ID", nullable = false)
-  private long subjectId;
-
   public LeaveApplication() {
     super();
   }
 
-  public LeaveApplication(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
-    this.subjectId = subjectId;
+  public LeaveApplication(final LocalDate startDate, final LocalDate endDate) {
     this.startDate = startDate;
     this.endDate = endDate;
   }
 
-  public LeaveApplication(final long subjectId, final LocalDate startDate, final LocalDate endDate,
-                          final String message) {
-    this.subjectId = subjectId;
+  public LeaveApplication(final LocalDate startDate, final LocalDate endDate, final String message) {
     this.startDate = startDate;
     this.endDate = endDate;
     this.message = message;
-    this.approvedByManager = approvedByManager;
-    this.approvedByHR = approvedByHR;
   }
 
   public long getApplicationId() {
@@ -115,13 +101,5 @@ public class LeaveApplication implements Serializable {
 
   public void setApprovedByHR(boolean approvedByHR) {
     this.approvedByHR = approvedByHR;
-  }
-
-  public long getSubjectId() {
-    return subjectId;
-  }
-
-  public void setSubjectId(long subjectId) {
-    this.subjectId = subjectId;
   }
 }

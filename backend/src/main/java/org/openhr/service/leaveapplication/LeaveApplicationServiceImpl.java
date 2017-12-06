@@ -2,6 +2,7 @@ package org.openhr.service.leaveapplication;
 
 import org.openhr.dao.leaveapplication.LeaveApplicationDAO;
 import org.openhr.domain.application.LeaveApplication;
+import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  public void createLeaveApplication(final LeaveApplication leaveApplication) {
-    leaveApplicationDAO.createLeaveApplication(leaveApplication);
+  public void createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+    leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
   @Override

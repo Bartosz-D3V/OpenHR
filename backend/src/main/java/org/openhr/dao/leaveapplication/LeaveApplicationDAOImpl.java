@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.openhr.domain.application.LeaveApplication;
+import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +25,13 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-  public void createLeaveApplication(final LeaveApplication leaveApplication) throws HibernateException {
+  public void createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
+    throws HibernateException {
+    subject.addLeaveApplication(leaveApplication);
     try {
       Session session = sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
-      session.save(leaveApplication);
+      session.save(subject);
       transaction.commit();
       session.close();
     } catch (final HibernateException hibernateException) {

@@ -50,7 +50,8 @@ public class Subject implements Serializable {
   @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "subjectId", cascade = CascadeType.ALL)
+  @JoinColumn(unique = true, name = "APPLICATION_ID")
+  @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<LeaveApplication> leaveApplications;
 
   public Subject() {
@@ -132,5 +133,9 @@ public class Subject implements Serializable {
 
   public void setLeaveApplications(final Set<LeaveApplication> leaveApplications) {
     this.leaveApplications = leaveApplications;
+  }
+
+  public void addLeaveApplication(final LeaveApplication leaveApplication) {
+    this.leaveApplications.add(leaveApplication);
   }
 }

@@ -34,7 +34,7 @@ public class LeaveApplicationDAOTest {
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE, mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
-  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(mockSubject, null, null);
+  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -49,7 +49,7 @@ public class LeaveApplicationDAOTest {
     final LeaveApplication actualLeaveApplication = session.get(LeaveApplication.class,
       mockLeaveApplication.getApplicationId());
     session.close();
-    leaveApplicationDAO.createLeaveApplication(mockLeaveApplication);
+    leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());

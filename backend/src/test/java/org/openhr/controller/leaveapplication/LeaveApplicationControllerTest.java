@@ -38,7 +38,7 @@ public class LeaveApplicationControllerTest {
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
   private final static ErrorInfo mockError = new ErrorInfo(MOCK_URL, mockException);
   private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE);
-  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(mockSubject, null, null);
+  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
 
   @Autowired
   private MockMvc mockMvc;
@@ -54,7 +54,7 @@ public class LeaveApplicationControllerTest {
   @Test
   public void createSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
-    doThrow(new HibernateException("DB Error")).when(leaveApplicationFacade).createLeaveApplication(any());
+    doThrow(new HibernateException("DB Error")).when(leaveApplicationFacade).createLeaveApplication(any(), any());
 
     MvcResult result = mockMvc
       .perform(post("/leave-application")
