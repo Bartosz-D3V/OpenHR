@@ -1,6 +1,7 @@
 package org.openhr.controller.common;
 
 import org.hibernate.HibernateException;
+import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,14 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ResponseBody
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(SubjectDoesNotExistException.class)
-  public ErrorInfo handleBadRequest(final HttpServletRequest req, final Exception ex) {
+  public ErrorInfo handleSubjectNotFound(final HttpServletRequest req, final Exception ex) {
+    return new ErrorInfo(req.getRequestURL().toString(), ex);
+  }
+
+  @ResponseBody
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(ApplicationDoesNotExistException.class)
+  public ErrorInfo handleApplicationNotFound(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 
