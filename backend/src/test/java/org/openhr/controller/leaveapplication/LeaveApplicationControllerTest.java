@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -52,12 +54,14 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  public void createSubjectShouldHandleError() throws Exception {
+  public void createLeaveApplicationShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
-    doThrow(new HibernateException("DB Error")).when(leaveApplicationFacade).createLeaveApplication(any(), any());
+    doThrow(new HibernateException("DB Error")).when(leaveApplicationFacade)
+      .createLeaveApplication(anyLong(), anyObject());
 
     MvcResult result = mockMvc
       .perform(post("/leave-application")
+        .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andDo(print())
@@ -73,6 +77,7 @@ public class LeaveApplicationControllerTest {
 
     MvcResult result = mockMvc
       .perform(post("/leave-application")
+        .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andDo(print())

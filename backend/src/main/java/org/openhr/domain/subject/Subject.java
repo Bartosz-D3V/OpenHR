@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -51,7 +52,7 @@ public class Subject implements Serializable {
   private EmployeeInformation employeeInformation;
 
   @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
-  private Set<LeaveApplication> leaveApplications;
+  private Set<LeaveApplication> leaveApplications = new HashSet<>();
 
   public Subject() {
     super();
