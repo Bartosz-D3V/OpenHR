@@ -34,7 +34,7 @@ public class ExceptionHandlerControllerTest {
   @Test
   public void handleBadRequestShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final SubjectDoesNotExistException mockError = new SubjectDoesNotExistException("Subject not found");
-    final ErrorInfo returnedInfo = exceptionHandlerController.handleBadRequest(httpServletRequest, mockError);
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleSubjectNotFound(httpServletRequest, mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());

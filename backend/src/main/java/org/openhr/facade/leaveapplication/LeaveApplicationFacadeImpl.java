@@ -3,6 +3,7 @@ package org.openhr.facade.leaveapplication;
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
+import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.service.leaveapplication.LeaveApplicationService;
 import org.openhr.service.personaldetails.PersonalDetailsService;
@@ -21,6 +22,11 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationService.getLeaveApplication(applicationId);
+  }
+
+  @Override
   public void createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException {
     final Subject subject = personalDetailsService.getSubjectDetails(subjectId);
@@ -28,12 +34,19 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final long applicationId) {
+  public void updateLeaveApplication(final LeaveApplication leaveApplication) throws ApplicationDoesNotExistException {
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  public void rejectLeaveApplication(final Role role, final long applicationId)
+    throws ApplicationDoesNotExistException {
     leaveApplicationService.rejectLeaveApplication(role, applicationId);
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final long applicationId) {
+  public void approveLeaveApplication(final Role role, final long applicationId)
+    throws ApplicationDoesNotExistException {
     leaveApplicationService.approveLeaveApplication(role, applicationId);
   }
 }
