@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,9 +33,19 @@ public class ExceptionHandlerControllerTest {
   }
 
   @Test
-  public void handleBadRequestShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
+  public void handleSubjectNotFoundShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final SubjectDoesNotExistException mockError = new SubjectDoesNotExistException("Subject not found");
-    final ErrorInfo returnedInfo = exceptionHandlerController.handleBadRequest(httpServletRequest, mockError);
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleSubjectNotFound(httpServletRequest, mockError);
+    final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
+
+    assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
+    assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
+  }
+
+  @Test
+  public void handleApplicationNotFoundShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
+    final ApplicationDoesNotExistException mockError = new ApplicationDoesNotExistException("Application not found");
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleApplicationNotFound(httpServletRequest, mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());

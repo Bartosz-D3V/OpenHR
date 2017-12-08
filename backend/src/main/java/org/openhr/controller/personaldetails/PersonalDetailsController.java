@@ -37,7 +37,7 @@ public class PersonalDetailsController {
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   public void createSubject(@RequestBody final Subject subject) throws HibernateException {
-    this.personalDetailsFacade.addSubject(subject);
+    personalDetailsFacade.addSubject(subject);
   }
 
   @Transactional
