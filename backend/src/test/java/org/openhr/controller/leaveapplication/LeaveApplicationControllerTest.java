@@ -10,7 +10,7 @@ import org.openhr.controller.common.ErrorInfo;
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
-import org.openhr.exception.SubjectDoesNotExistException;
+import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.facade.leaveapplication.LeaveApplicationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,10 +23,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,7 +38,7 @@ public class LeaveApplicationControllerTest {
 
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final static String MOCK_URL = "localhost:8080/api/leave-application";
-  private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
+  private final static ApplicationDoesNotExistException mockException = new ApplicationDoesNotExistException("Not found");
   private final static ErrorInfo mockError = new ErrorInfo(MOCK_URL, mockException);
   private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE);
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
@@ -51,6 +52,35 @@ public class LeaveApplicationControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+  }
+
+  @Test
+  public void getLeaveApplicationShouldReturnAnApplication() throws Exception {
+    final String leaveApplicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
+    when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenReturn(mockLeaveApplication);
+
+    MvcResult result = mockMvc
+      .perform(get("/leave-application")
+        .param("applicationId", "1"))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andReturn();
+    assertNull(result.getResolvedException());
+    assertEquals(leaveApplicationAsJson, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  public void getLeaveApplicationShouldHandle404Exception() throws Exception {
+    when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenThrow(mockException);
+
+    MvcResult result = mockMvc
+      .perform(get("/leave-application")
+        .param("applicationId", "1"))
+      .andDo(print())
+      .andExpect(status().isNotFound())
+      .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
   }
 
   @Test

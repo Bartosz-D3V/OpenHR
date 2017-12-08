@@ -24,10 +24,10 @@ public class LeaveApplicationController {
     this.leaveApplicationFacade = leaveApplicationFacade;
   }
 
-  @RequestMapping(method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void createLeaveApplication(@RequestParam final long applicationId) throws HibernateException,
+  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  public LeaveApplication getLeaveApplication(@RequestParam final long applicationId) throws HibernateException,
     ApplicationDoesNotExistException {
-    leaveApplicationFacade.getLeaveApplication(applicationId);
+    return leaveApplicationFacade.getLeaveApplication(applicationId);
   }
 
   @Transactional
