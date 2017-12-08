@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @Transactional
 public class LeaveApplicationDAOTest {
-
-  private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
   private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
@@ -44,12 +42,12 @@ public class LeaveApplicationDAOTest {
 
   @Test
   public void createLeaveApplicationShouldAddEntryToDB() {
+    LeaveApplication actualLeaveApplication;
+    leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Session session = sessionFactory.openSession();
     session.save(mockSubject);
-    final LeaveApplication actualLeaveApplication = session.get(LeaveApplication.class,
-      mockLeaveApplication.getApplicationId());
+    actualLeaveApplication = session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
     session.close();
-    leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
