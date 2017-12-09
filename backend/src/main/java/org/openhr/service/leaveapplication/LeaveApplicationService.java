@@ -11,7 +11,7 @@ public interface LeaveApplicationService {
 
   void createLeaveApplication(Subject subject, LeaveApplication leaveApplication);
 
-  void updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
+  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
   void rejectLeaveApplication(Role role, long applicationId) throws ApplicationDoesNotExistException;
 

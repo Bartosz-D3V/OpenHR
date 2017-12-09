@@ -25,7 +25,7 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException {
+  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication;
     try {
       Session session = sessionFactory.openSession();
@@ -37,6 +37,7 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
       log.error(hibernateException.getMessage());
       throw hibernateException;
     }
+
     if (leaveApplication == null) {
       log.error("Application could not be found");
       throw new ApplicationDoesNotExistException("Application could not be found");
@@ -64,7 +65,27 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
   }
 
   @Override
-  public void updateLeaveApplication(final LeaveApplication leaveApplication) {
+  @Transactional(propagation = Propagation.REQUIRED)
+  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException, HibernateException {
+    final LeaveApplication legacyLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());
+    legacyLeaveApplication.setStartDate(leaveApplication.getStartDate());
+    legacyLeaveApplication.setEndDate(leaveApplication.getEndDate());
+    legacyLeaveApplication.setMessage(leaveApplication.getMessage());
+    legacyLeaveApplication.setLeaveType(leaveApplication.getLeaveType());
+    legacyLeaveApplication.setApprovedByManager(leaveApplication.isApprovedByManager());
+    legacyLeaveApplication.setApprovedByHR(leaveApplication.isApprovedByHR());
+    try {
+      Session session = sessionFactory.openSession();
+      Transaction transaction = session.beginTransaction();
+      session.merge(legacyLeaveApplication);
+      transaction.commit();
+      session.close();
+    } catch (final HibernateException hibernateException) {
+      log.error(hibernateException.getMessage());
+      throw hibernateException;
+    }
 
+    return legacyLeaveApplication;
   }
 }

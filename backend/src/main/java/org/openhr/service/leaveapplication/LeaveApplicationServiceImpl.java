@@ -27,8 +27,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  public void updateLeaveApplication(final LeaveApplication leaveApplication) throws ApplicationDoesNotExistException {
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication) throws ApplicationDoesNotExistException {
+    return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
   @Override
