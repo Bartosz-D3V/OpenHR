@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -37,6 +38,7 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "SUBJECT_ID")
   private Subject subject;

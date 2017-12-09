@@ -39,10 +39,11 @@ public class LeaveApplicationController {
   }
 
   @Transactional
-  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void updateLeaveApplication(@RequestBody final LeaveApplication leaveApplication) throws HibernateException,
-    ApplicationDoesNotExistException {
-    leaveApplicationFacade.updateLeaveApplication(leaveApplication);
+  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  public LeaveApplication updateLeaveApplication(@RequestBody final LeaveApplication leaveApplication)
+    throws HibernateException, ApplicationDoesNotExistException {
+    return leaveApplicationFacade.updateLeaveApplication(leaveApplication);
   }
 
   @Transactional

@@ -34,8 +34,9 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void updateLeaveApplication(final LeaveApplication leaveApplication) throws ApplicationDoesNotExistException {
-    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException {
+    return leaveApplicationService.updateLeaveApplication(leaveApplication);
   }
 
   @Override

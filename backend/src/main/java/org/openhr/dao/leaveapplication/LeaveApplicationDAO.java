@@ -10,6 +10,6 @@ public interface LeaveApplicationDAO {
 
   void createLeaveApplication(Subject subject, LeaveApplication leaveApplication);
 
-  void updateLeaveApplication(LeaveApplication leaveApplication);
+  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
 }
