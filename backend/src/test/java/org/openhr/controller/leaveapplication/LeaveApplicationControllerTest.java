@@ -86,7 +86,7 @@ public class LeaveApplicationControllerTest {
   @Test
   public void createLeaveApplicationShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
-    doThrow(new HibernateException("DB Error")).when(leaveApplicationFacade)
+    doThrow(new HibernateException("Not found")).when(leaveApplicationFacade)
       .createLeaveApplication(anyLong(), anyObject());
 
     MvcResult result = mockMvc
