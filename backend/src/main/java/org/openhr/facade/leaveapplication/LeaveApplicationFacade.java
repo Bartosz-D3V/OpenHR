@@ -11,7 +11,7 @@ public interface LeaveApplicationFacade {
 
   void createLeaveApplication(long subjectId, LeaveApplication leaveApplication) throws SubjectDoesNotExistException;
 
-  void updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
+  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
   void rejectLeaveApplication(Role role, long applicationId) throws ApplicationDoesNotExistException;
 
