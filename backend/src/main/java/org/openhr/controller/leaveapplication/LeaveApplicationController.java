@@ -32,10 +32,11 @@ public class LeaveApplicationController {
 
   @Transactional
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void createLeaveApplication(@RequestParam final long subjectId,
-                                     @RequestBody final LeaveApplication leaveApplication) throws HibernateException,
+  public LeaveApplication createLeaveApplication(@RequestParam final long subjectId,
+                                                 @RequestBody final LeaveApplication leaveApplication)
+    throws HibernateException,
     SubjectDoesNotExistException {
-    leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
+    return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
   @Transactional

@@ -19,7 +19,11 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
 
   @Override
   public void startLeaveApplicationProcess(final Subject subject, final LeaveApplication leaveApplication) {
-    Map<String, Object> parameters = new HashMap<>();
-//    parameters.put();
+    final Map<String, Object> parameters = new HashMap<>();
+    parameters.put("email", subject.getContactInformation().getEmail());
+    parameters.put("applicantName", subject.getLastName());
+    parameters.put("subject", subject);
+    parameters.put("leaveApplication", leaveApplication);
+    runtimeService.startProcessInstanceByKey("leave-application", parameters);
   }
 }

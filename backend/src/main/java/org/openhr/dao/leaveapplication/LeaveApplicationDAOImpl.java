@@ -48,7 +48,7 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
+  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
     leaveApplication.setSubject(subject);
     subject.addLeaveApplication(leaveApplication);
@@ -62,6 +62,8 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
       log.error(hibernateException.getMessage());
       throw hibernateException;
     }
+
+    return leaveApplication;
   }
 
   @Override

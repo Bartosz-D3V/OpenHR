@@ -31,10 +31,11 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
+  public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException {
     final Subject subject = personalDetailsService.getSubjectDetails(subjectId);
     leaveApplicationCommand.startLeaveApplicationProcess(subject, leaveApplication);
+    return leaveApplicationService.createLeaveApplication(subject, leaveApplication);
   }
 
   @Override

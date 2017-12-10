@@ -22,8 +22,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  public void createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
-    leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
+  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+    return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
   @Override

@@ -9,7 +9,7 @@ public interface LeaveApplicationService {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
-  void createLeaveApplication(Subject subject, LeaveApplication leaveApplication);
+  LeaveApplication createLeaveApplication(Subject subject, LeaveApplication leaveApplication);
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 

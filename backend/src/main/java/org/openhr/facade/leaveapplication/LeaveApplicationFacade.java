@@ -9,7 +9,7 @@ public interface LeaveApplicationFacade {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
-  void createLeaveApplication(long subjectId, LeaveApplication leaveApplication) throws SubjectDoesNotExistException;
+  LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication) throws SubjectDoesNotExistException;
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 

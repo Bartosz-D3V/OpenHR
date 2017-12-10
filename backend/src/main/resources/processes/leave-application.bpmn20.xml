@@ -3,13 +3,10 @@
   <process id="leave-application" name="leave-application" isExecutable="true">
     <documentation>Business workflow process for a leave application.</documentation>
     <startEvent id="startEvent1"/>
-    <userTask id="sid-EB895F68-4E06-4BFC-8D89-94D814C205A5" name="Apply for a leave"/>
-    <sequenceFlow id="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" sourceRef="startEvent1" targetRef="sid-EB895F68-4E06-4BFC-8D89-94D814C205A5"/>
-    <sequenceFlow id="sid-6965CA84-E9CB-4F15-B8E4-D135595EE507" sourceRef="sid-EB895F68-4E06-4BFC-8D89-94D814C205A5" targetRef="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192"/>
+    <sequenceFlow id="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" sourceRef="startEvent1" targetRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
     <exclusiveGateway id="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
-    <sequenceFlow id="sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2" sourceRef="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192" targetRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
-    <userTask id="sid-CADC4F90-5594-4023-B027-F01EB3755500" name="Manager approves the leave"/>
-    <sequenceFlow id="sid-1A951E5E-0998-4170-888A-C62B9A39CC7B" sourceRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" targetRef="sid-CADC4F90-5594-4023-B027-F01EB3755500"/>
+    <userTask id="managerApprovesLeave" name="Manager approves the leave"/>
+    <sequenceFlow id="sid-1A951E5E-0998-4170-888A-C62B9A39CC7B" sourceRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" targetRef="managerApprovesLeave"/>
     <endEvent id="sid-97206B37-21A9-4600-8119-32987CB94815" name="Rejected"/>
     <serviceTask id="sendMailRejectedByManager" name="Send rejection email" activiti:type="mail">
       <extensionElements>
@@ -36,9 +33,9 @@ OpenHR Team]]></activiti:expression>
       </extensionElements>
     </serviceTask>
     <serviceTask id="leaveApplicationApproveByManager" name="Record a manager approval in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, applicationId)}"/>
-    <userTask id="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC" name="HR Team Member approves the leave"/>
+    <userTask id="hrApprovesALeave" name="HR Team Member approves the leave"/>
     <exclusiveGateway id="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602"/>
-    <sequenceFlow id="sid-6934ED4C-6C3E-4B4D-99C3-747B528CF0E0" sourceRef="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602" targetRef="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC"/>
+    <sequenceFlow id="sid-6934ED4C-6C3E-4B4D-99C3-747B528CF0E0" sourceRef="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602" targetRef="hrApprovesALeave"/>
     <serviceTask id="sendMailRejectedByHR" name="Send rejection email" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -66,16 +63,16 @@ OpenHR Team]]></activiti:expression>
     <endEvent id="sid-1DD1897E-473D-4797-8676-327E7412A5CE" name="Rejected"/>
     <parallelGateway id="sid-D573A946-C0CA-4E33-B723-82045A180F6E"/>
     <sequenceFlow id="sid-5BAE721C-B575-4592-812B-E148B29B677F" sourceRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" targetRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E"/>
-    <serviceTask id="updateLeaveApplication" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
+    <serviceTask id="updateLeaveApplicationRejectedByManager" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
     <sequenceFlow id="sid-45388483-8901-4D14-A01A-E30A6E55951F" sourceRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E" targetRef="sendMailRejectedByManager"/>
-    <sequenceFlow id="sid-619405C5-0161-422C-A353-74ED7E55651A" sourceRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E" targetRef="updateLeaveApplication"/>
+    <sequenceFlow id="sid-619405C5-0161-422C-A353-74ED7E55651A" sourceRef="sid-D573A946-C0CA-4E33-B723-82045A180F6E" targetRef="updateLeaveApplicationRejectedByManager"/>
     <parallelGateway id="sid-9A62C478-CFE9-48F9-849A-0303DB68933A"/>
     <sequenceFlow id="sid-62A4C3E7-87FB-4977-94FE-C694B58073D3" sourceRef="sendMailRejectedByManager" targetRef="sid-9A62C478-CFE9-48F9-849A-0303DB68933A"/>
-    <sequenceFlow id="sid-5F19A7E4-A623-4754-93C9-6E10C3CD20A7" sourceRef="updateLeaveApplication" targetRef="sid-9A62C478-CFE9-48F9-849A-0303DB68933A"/>
+    <sequenceFlow id="sid-5F19A7E4-A623-4754-93C9-6E10C3CD20A7" sourceRef="updateLeaveApplicationRejectedByManager" targetRef="sid-9A62C478-CFE9-48F9-849A-0303DB68933A"/>
     <sequenceFlow id="sid-53E09816-2920-40AF-A6C4-74221ED10745" sourceRef="sid-9A62C478-CFE9-48F9-849A-0303DB68933A" targetRef="sid-97206B37-21A9-4600-8119-32987CB94815"/>
     <parallelGateway id="sid-FEEB734F-0986-48CF-91DA-29D992496722"/>
     <parallelGateway id="sid-CB606B6E-7D98-44D8-B391-3D487D8CC76F"/>
-    <sequenceFlow id="sid-09DC9CF2-A0A6-43CE-A3DE-628927725130" sourceRef="sid-CADC4F90-5594-4023-B027-F01EB3755500" targetRef="sid-FEEB734F-0986-48CF-91DA-29D992496722"/>
+    <sequenceFlow id="sid-09DC9CF2-A0A6-43CE-A3DE-628927725130" sourceRef="managerApprovesLeave" targetRef="sid-FEEB734F-0986-48CF-91DA-29D992496722"/>
     <sequenceFlow id="sid-B9A6940E-0378-46D0-8B93-D303E04314BB" sourceRef="sid-FEEB734F-0986-48CF-91DA-29D992496722" targetRef="leaveApplicationApproveByManager"/>
     <sequenceFlow id="sid-C993955D-D80B-4CC4-A3E6-6F167C9E466E" sourceRef="leaveApplicationApproveByManager" targetRef="sid-CB606B6E-7D98-44D8-B391-3D487D8CC76F"/>
     <sequenceFlow id="sid-F53DE5D2-E34E-49D5-80D1-9CC653E003D0" sourceRef="sid-CB606B6E-7D98-44D8-B391-3D487D8CC76F" targetRef="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602"/>
@@ -124,39 +121,35 @@ OpenHR Team]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" name="Update application in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, applicationId)}"/>
+    <serviceTask id="updateLeaveApplicationFinal" name="Update application in DB" activiti:expression="${leaveApplicationService.approveLeaveApplication(role, applicationId)}"/>
     <parallelGateway id="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE"/>
-    <sequenceFlow id="sid-76EA35E2-4B03-4422-AE64-72E86D40FA65" sourceRef="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC" targetRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE"/>
+    <sequenceFlow id="sid-76EA35E2-4B03-4422-AE64-72E86D40FA65" sourceRef="hrApprovesALeave" targetRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE"/>
     <sequenceFlow id="sid-315E75E4-B832-40DD-BCD4-27EA1155639F" sourceRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE" targetRef="sendMailConfirmedByHR"/>
-    <sequenceFlow id="sid-4960193B-0E3E-4329-8287-E4F3B1C82DBC" sourceRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE" targetRef="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D"/>
+    <sequenceFlow id="sid-4960193B-0E3E-4329-8287-E4F3B1C82DBC" sourceRef="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE" targetRef="updateLeaveApplicationFinal"/>
     <parallelGateway id="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
     <sequenceFlow id="sid-BF432E4C-BA18-49FB-A685-177E862C1C6A" sourceRef="sendMailConfirmedByHR" targetRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
-    <sequenceFlow id="sid-0F250D5E-2BAE-47B8-B463-D7E8BAA12CC4" sourceRef="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" targetRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
+    <sequenceFlow id="sid-0F250D5E-2BAE-47B8-B463-D7E8BAA12CC4" sourceRef="updateLeaveApplicationFinal" targetRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
     <endEvent id="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
     <sequenceFlow id="sid-12C29A06-988B-4216-BD02-801BEAA06B06" sourceRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811" targetRef="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
-    <serviceTask id="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192" name="Record an application" activiti:expression="${leaveApplicationService.createLeaveApplication(leaveApplication)}"/>
-    <serviceTask id="sid-E4692C58-43A2-4666-B8A2-359947182B71" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
+    <serviceTask id="updateLeaveApplicationRejectedByHR" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
     <parallelGateway id="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950"/>
     <parallelGateway id="sid-13E9D8B0-33C9-4425-A871-65074E1166A2"/>
     <sequenceFlow id="sid-909A9D60-FB96-43AF-8402-25F4982DCDDD" sourceRef="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602" targetRef="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950"/>
-    <sequenceFlow id="sid-99B2CDE4-B8B7-47E5-ABD2-CE2E30B09FB7" sourceRef="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950" targetRef="sid-E4692C58-43A2-4666-B8A2-359947182B71"/>
+    <sequenceFlow id="sid-99B2CDE4-B8B7-47E5-ABD2-CE2E30B09FB7" sourceRef="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950" targetRef="updateLeaveApplicationRejectedByHR"/>
     <sequenceFlow id="sid-ABFD9CEA-7FC9-44E9-A078-AEA97422D6FD" sourceRef="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950" targetRef="sendMailRejectedByHR"/>
     <sequenceFlow id="sid-3FEEF9C1-2CA7-4B0D-9705-01A52052BB16" sourceRef="sendMailRejectedByHR" targetRef="sid-13E9D8B0-33C9-4425-A871-65074E1166A2"/>
-    <sequenceFlow id="sid-9168B642-2D42-4FF9-AE2B-C29E81CE59C0" sourceRef="sid-E4692C58-43A2-4666-B8A2-359947182B71" targetRef="sid-13E9D8B0-33C9-4425-A871-65074E1166A2"/>
+    <sequenceFlow id="sid-9168B642-2D42-4FF9-AE2B-C29E81CE59C0" sourceRef="updateLeaveApplicationRejectedByHR" targetRef="sid-13E9D8B0-33C9-4425-A871-65074E1166A2"/>
     <sequenceFlow id="sid-6D3A5AF7-6D21-4C8D-931F-E1F9229D22B6" sourceRef="sid-13E9D8B0-33C9-4425-A871-65074E1166A2" targetRef="sid-1DD1897E-473D-4797-8676-327E7412A5CE"/>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_leave-application">
     <bpmndi:BPMNPlane bpmnElement="leave-application" id="BPMNPlane_leave-application">
       <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
-        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-EB895F68-4E06-4BFC-8D89-94D814C205A5" id="BPMNShape_sid-EB895F68-4E06-4BFC-8D89-94D814C205A5">
-        <omgdc:Bounds height="80.0" width="100.0" x="199.5" y="138.0"/>
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.34414663155664"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" id="BPMNShape_sid-652298DD-EDB5-4EEB-B155-D54748AD355F">
         <omgdc:Bounds height="40.0" width="40.0" x="727.6354171550292" y="158.34414663155664"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-CADC4F90-5594-4023-B027-F01EB3755500" id="BPMNShape_sid-CADC4F90-5594-4023-B027-F01EB3755500">
+      <bpmndi:BPMNShape bpmnElement="managerApprovesLeave" id="BPMNShape_managerApprovesLeave">
         <omgdc:Bounds height="80.0" width="100.0" x="697.6354171550292" y="303.2243596968898"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-97206B37-21A9-4600-8119-32987CB94815" id="BPMNShape_sid-97206B37-21A9-4600-8119-32987CB94815">
@@ -168,7 +161,7 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="leaveApplicationApproveByManager" id="BPMNShape_leaveApplicationApproveByManager">
         <omgdc:Bounds height="79.99999999999997" width="100.0" x="489.7957029037873" y="224.0231588427823"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC" id="BPMNShape_sid-2DFFBAC8-BC24-42CE-879F-403F783FB9AC">
+      <bpmndi:BPMNShape bpmnElement="hrApprovesALeave" id="BPMNShape_hrApprovesALeave">
         <omgdc:Bounds height="80.0" width="100.0" x="329.7998328334605" y="423.2243596968898"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-0EB79F4D-D26B-4141-833A-5A1F5E578602" id="BPMNShape_sid-0EB79F4D-D26B-4141-833A-5A1F5E578602">
@@ -183,7 +176,7 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="sid-D573A946-C0CA-4E33-B723-82045A180F6E" id="BPMNShape_sid-D573A946-C0CA-4E33-B723-82045A180F6E">
         <omgdc:Bounds height="40.0" width="40.0" x="811.0025340193429" y="159.80093727465763"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="updateLeaveApplication" id="BPMNShape_updateLeaveApplication">
+      <bpmndi:BPMNShape bpmnElement="updateLeaveApplicationRejectedByManager" id="BPMNShape_updateLeaveApplicationRejectedByManager">
         <omgdc:Bounds height="79.99999999999991" width="100.0" x="901.9901881313826" y="220.63614157914898"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-9A62C478-CFE9-48F9-849A-0303DB68933A" id="BPMNShape_sid-9A62C478-CFE9-48F9-849A-0303DB68933A">
@@ -201,7 +194,7 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="sendMailConfirmedByHR" id="BPMNShape_sendMailConfirmedByHR">
         <omgdc:Bounds height="80.0" width="100.0" x="196.69580330625723" y="566.8355674285522"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D" id="BPMNShape_sid-A6FD6ADA-4AEC-40D4-A45E-F6CF562D2D3D">
+      <bpmndi:BPMNShape bpmnElement="updateLeaveApplicationFinal" id="BPMNShape_updateLeaveApplicationFinal">
         <omgdc:Bounds height="80.0" width="100.0" x="445.22175492391807" y="567.7476323802885"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE" id="BPMNShape_sid-F8F9CD92-56F2-4DD3-AB06-F2D942EC45FE">
@@ -213,10 +206,7 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC" id="BPMNShape_sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC">
         <omgdc:Bounds height="28.0" width="28.0" x="363.0584033553864" y="794.4818661089158"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192" id="BPMNShape_sid-5A1CE0A9-EA02-4523-9D5E-91C31C8FC192">
-        <omgdc:Bounds height="80.0" width="100.0" x="389.99999418854725" y="137.4320965249389"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-E4692C58-43A2-4666-B8A2-359947182B71" id="BPMNShape_sid-E4692C58-43A2-4666-B8A2-359947182B71">
+      <bpmndi:BPMNShape bpmnElement="updateLeaveApplicationRejectedByHR" id="BPMNShape_updateLeaveApplicationRejectedByHR">
         <omgdc:Bounds height="64.99999999999989" width="86.0" x="136.0521064727154" y="359.999994635582"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950" id="BPMNShape_sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950">
@@ -246,8 +236,8 @@ OpenHR Team]]></activiti:expression>
         <omgdi:waypoint x="103.2253772470544" y="335.7054426933922"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" id="BPMNEdge_sid-969CC500-7929-4A8E-ABA8-D18E8DE34600">
-        <omgdi:waypoint x="130.0" y="178.0"/>
-        <omgdi:waypoint x="199.5" y="178.0"/>
+        <omgdi:waypoint x="130.0" y="178.34414663155664"/>
+        <omgdi:waypoint x="727.6354171550292" y="178.34414663155664"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-C993955D-D80B-4CC4-A3E6-6F167C9E466E" id="BPMNEdge_sid-C993955D-D80B-4CC4-A3E6-6F167C9E466E">
         <omgdi:waypoint x="495.4845476199059" y="304.02315884278227"/>
@@ -282,8 +272,8 @@ OpenHR Team]]></activiti:expression>
         <omgdi:waypoint x="747.6354171550292" y="303.2243596968898"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-6D3A5AF7-6D21-4C8D-931F-E1F9229D22B6" id="BPMNEdge_sid-6D3A5AF7-6D21-4C8D-931F-E1F9229D22B6">
-        <omgdi:waypoint x="72.23190409716126" y="343.6393930158985"/>
-        <omgdi:waypoint x="42.320299681111706" y="342.0867236016441"/>
+        <omgdi:waypoint x="72.54634884265774" y="343.32494827040205"/>
+        <omgdi:waypoint x="42.32532764894739" y="341.9823370719354"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-45388483-8901-4D14-A01A-E30A6E55951F" id="BPMNEdge_sid-45388483-8901-4D14-A01A-E30A6E55951F">
         <omgdi:waypoint x="842.1342790809327" y="170.93268233624747"/>
@@ -309,10 +299,6 @@ OpenHR Team]]></activiti:expression>
         <omgdi:waypoint x="630.594155084446" y="352.71250194925216"/>
         <omgdi:waypoint x="593.3301747563798" y="380.4635816683121"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sid-6965CA84-E9CB-4F15-B8E4-D135595EE507" id="BPMNEdge_sid-6965CA84-E9CB-4F15-B8E4-D135595EE507">
-        <omgdi:waypoint x="299.5" y="177.8509439652531"/>
-        <omgdi:waypoint x="389.99999418854725" y="177.58115255968582"/>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-4CF0C6F6-EF05-460F-84F0-12990C68F915" id="BPMNEdge_sid-4CF0C6F6-EF05-460F-84F0-12990C68F915">
         <omgdi:waypoint x="496.8052455127498" y="378.80243760643225"/>
         <omgdi:waypoint x="464.0051229052587" y="351.3800548498585"/>
@@ -336,10 +322,6 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNEdge bpmnElement="sid-B9A6940E-0378-46D0-8B93-D303E04314BB" id="BPMNEdge_sid-B9A6940E-0378-46D0-8B93-D303E04314BB">
         <omgdi:waypoint x="630.8453111531093" y="335.3877142026702"/>
         <omgdi:waypoint x="589.7957029037873" y="303.2130887788176"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2" id="BPMNEdge_sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2">
-        <omgdi:waypoint x="489.99999418854725" y="177.58033207236434"/>
-        <omgdi:waypoint x="727.6945361034059" y="178.28502768317998"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
