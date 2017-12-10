@@ -1,5 +1,6 @@
 package org.openhr.domain.application;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openhr.domain.subject.Subject;
 
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ public class LeaveApplication implements Serializable {
   private boolean approvedByHR;
 
   @NotNull
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "SUBJECT_ID")
   private Subject subject;

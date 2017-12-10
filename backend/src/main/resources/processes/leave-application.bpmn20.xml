@@ -3,8 +3,9 @@
   <process id="leave-application" name="leave-application" isExecutable="true">
     <documentation>Business workflow process for a leave application.</documentation>
     <startEvent id="startEvent1"/>
-    <sequenceFlow id="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" sourceRef="startEvent1" targetRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
+    <sequenceFlow id="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" sourceRef="startEvent1" targetRef="recordAnApplication"/>
     <exclusiveGateway id="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
+    <sequenceFlow id="sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2" sourceRef="recordAnApplication" targetRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F"/>
     <userTask id="managerApprovesLeave" name="Manager approves the leave"/>
     <sequenceFlow id="sid-1A951E5E-0998-4170-888A-C62B9A39CC7B" sourceRef="sid-652298DD-EDB5-4EEB-B155-D54748AD355F" targetRef="managerApprovesLeave"/>
     <endEvent id="sid-97206B37-21A9-4600-8119-32987CB94815" name="Rejected"/>
@@ -131,6 +132,7 @@ OpenHR Team]]></activiti:expression>
     <sequenceFlow id="sid-0F250D5E-2BAE-47B8-B463-D7E8BAA12CC4" sourceRef="updateLeaveApplicationFinal" targetRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811"/>
     <endEvent id="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
     <sequenceFlow id="sid-12C29A06-988B-4216-BD02-801BEAA06B06" sourceRef="sid-A243B157-D24B-4AA7-BC0D-5F1E57939811" targetRef="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC"/>
+    <serviceTask id="recordAnApplication" name="Record an application" activiti:expression="${leaveApplicationServiceImpl.createLeaveApplication(subject, leaveApplication)}"/>
     <serviceTask id="updateLeaveApplicationRejectedByHR" name="Update application in DB" activiti:expression="${leaveApplicationService.rejectLeaveApplication(role, applicationId)}"/>
     <parallelGateway id="sid-D085D0B1-F40C-41EE-B0CC-959D68C7E950"/>
     <parallelGateway id="sid-13E9D8B0-33C9-4425-A871-65074E1166A2"/>
@@ -206,6 +208,9 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC" id="BPMNShape_sid-1122AE2C-69D2-48B1-AA4F-52FE984608BC">
         <omgdc:Bounds height="28.0" width="28.0" x="363.0584033553864" y="794.4818661089158"/>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="recordAnApplication" id="BPMNShape_recordAnApplication">
+        <omgdc:Bounds height="80.0" width="100.0" x="389.99999418854725" y="137.4320965249389"/>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="updateLeaveApplicationRejectedByHR" id="BPMNShape_updateLeaveApplicationRejectedByHR">
         <omgdc:Bounds height="64.99999999999989" width="86.0" x="136.0521064727154" y="359.999994635582"/>
       </bpmndi:BPMNShape>
@@ -236,8 +241,8 @@ OpenHR Team]]></activiti:expression>
         <omgdi:waypoint x="103.2253772470544" y="335.7054426933922"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-969CC500-7929-4A8E-ABA8-D18E8DE34600" id="BPMNEdge_sid-969CC500-7929-4A8E-ABA8-D18E8DE34600">
-        <omgdi:waypoint x="130.0" y="178.34414663155664"/>
-        <omgdi:waypoint x="727.6354171550292" y="178.34414663155664"/>
+        <omgdi:waypoint x="129.99994093511145" y="178.30205217625277"/>
+        <omgdi:waypoint x="389.99999418854725" y="177.57241192846607"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-C993955D-D80B-4CC4-A3E6-6F167C9E466E" id="BPMNEdge_sid-C993955D-D80B-4CC4-A3E6-6F167C9E466E">
         <omgdi:waypoint x="495.4845476199059" y="304.02315884278227"/>
@@ -322,6 +327,10 @@ OpenHR Team]]></activiti:expression>
       <bpmndi:BPMNEdge bpmnElement="sid-B9A6940E-0378-46D0-8B93-D303E04314BB" id="BPMNEdge_sid-B9A6940E-0378-46D0-8B93-D303E04314BB">
         <omgdi:waypoint x="630.8453111531093" y="335.3877142026702"/>
         <omgdi:waypoint x="589.7957029037873" y="303.2130887788176"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2" id="BPMNEdge_sid-26E01688-69FB-42BA-9B6E-7B20CE7768A2">
+        <omgdi:waypoint x="489.99999418854725" y="177.58033207236434"/>
+        <omgdi:waypoint x="727.6945361034059" y="178.28502768317998"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
