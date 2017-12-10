@@ -1,5 +1,6 @@
 package org.openhr.facade.leaveapplication;
 
+import org.openhr.command.leaveapplicaion.LeaveApplicationCommand;
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
@@ -14,11 +15,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   private final LeaveApplicationService leaveApplicationService;
   private final PersonalDetailsService personalDetailsService;
+  private final LeaveApplicationCommand leaveApplicationCommand;
 
   public LeaveApplicationFacadeImpl(final LeaveApplicationService leaveApplicationService,
-                                    final PersonalDetailsService personalDetailsService) {
+                                    final PersonalDetailsService personalDetailsService,
+                                    final LeaveApplicationCommand leaveApplicationCommand) {
     this.leaveApplicationService = leaveApplicationService;
     this.personalDetailsService = personalDetailsService;
+    this.leaveApplicationCommand = leaveApplicationCommand;
   }
 
   @Override
@@ -30,7 +34,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   public void createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException {
     final Subject subject = personalDetailsService.getSubjectDetails(subjectId);
-    leaveApplicationService.createLeaveApplication(subject, leaveApplication);
+    leaveApplicationCommand.startLeaveApplicationProcess(subject, leaveApplication);
   }
 
   @Override
