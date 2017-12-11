@@ -3,6 +3,7 @@ package org.openhr.domain.application;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openhr.domain.subject.Subject;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,8 +42,8 @@ public class LeaveApplication implements Serializable {
 
   @NotNull
   @JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "SUBJECT_ID")
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "SUBJECT_ID", nullable = false)
   private Subject subject;
 
   public LeaveApplication() {
