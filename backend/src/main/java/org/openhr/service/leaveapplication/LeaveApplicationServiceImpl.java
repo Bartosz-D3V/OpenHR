@@ -48,7 +48,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
-  public LeaveApplication rejectApplication(final Role role, final LeaveApplication leaveApplication) {
+  LeaveApplication rejectApplication(final Role role, final LeaveApplication leaveApplication) {
     switch (role) {
       case MANAGER:
         leaveApplication.setApprovedByManager(false);
@@ -58,7 +58,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     return leaveApplication;
   }
 
-  public LeaveApplication approveLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
+  LeaveApplication approveLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
     switch (role) {
       case MANAGER:
         leaveApplication.setApprovedByManager(true);
