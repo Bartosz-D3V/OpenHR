@@ -2,17 +2,22 @@ package org.openhr.controller.leaveapplication;
 
 import org.hibernate.HibernateException;
 import org.openhr.domain.application.LeaveApplication;
+import org.openhr.domain.process.Task;
 import org.openhr.enumeration.Role;
 import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.facade.leaveapplication.LeaveApplicationFacade;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/leave-application")
@@ -32,10 +37,11 @@ public class LeaveApplicationController {
 
   @Transactional
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void createLeaveApplication(@RequestParam final long subjectId,
-                                     @RequestBody final LeaveApplication leaveApplication) throws HibernateException,
+  public LeaveApplication createLeaveApplication(@RequestParam final long subjectId,
+                                                 @RequestBody final LeaveApplication leaveApplication)
+    throws HibernateException,
     SubjectDoesNotExistException {
-    leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
+    return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
   @Transactional
@@ -60,6 +66,13 @@ public class LeaveApplicationController {
                                       @RequestBody final Role role) throws HibernateException,
     ApplicationDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplication(role, applicationId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  public List<Task> getProcessTasks(@PathVariable final String processInstanceId) {
+    return leaveApplicationFacade.getProcessTasks(processInstanceId);
   }
 
 }

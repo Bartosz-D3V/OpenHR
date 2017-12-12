@@ -48,20 +48,23 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
+  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
+    LeaveApplication createdLeaveApplication;
     leaveApplication.setSubject(subject);
     subject.addLeaveApplication(leaveApplication);
     try {
       Session session = sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
-      session.merge(subject);
+      createdLeaveApplication = (LeaveApplication) session.merge(leaveApplication);
       transaction.commit();
       session.close();
     } catch (final HibernateException hibernateException) {
       log.error(hibernateException.getMessage());
       throw hibernateException;
     }
+
+    return createdLeaveApplication;
   }
 
   @Override
