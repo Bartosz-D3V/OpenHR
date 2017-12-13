@@ -39,7 +39,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<Task> getProcessTasks(final String processInstanceId) {
     return taskService.createTaskQuery()
-      .processInstanceId(processInstanceId)
+//      .processInstanceBusinessKey(processInstanceId)
       .list()
       .stream()
       .map(task -> new Task(task.getId(), task.getName(), task.getProcessInstanceId()))
