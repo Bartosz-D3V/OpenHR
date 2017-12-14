@@ -39,7 +39,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final Subject subject = personalDetailsService.getSubjectDetails(subjectId);
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
-    leaveApplicationCommand.startLeaveApplicationProcess(subject, savedLeaveApplication);
+    leaveApplicationCommand.startLeaveApplicationProcess(savedLeaveApplication);
 
     return savedLeaveApplication;
   }

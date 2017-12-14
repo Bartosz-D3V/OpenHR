@@ -4,7 +4,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.openhr.domain.application.LeaveApplication;
 import org.openhr.domain.process.Task;
-import org.openhr.domain.subject.Subject;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +25,8 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void startLeaveApplicationProcess(final Subject subject, final LeaveApplication leaveApplication) {
+  public void startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
-    parameters.put("email", subject.getContactInformation().getEmail());
-    parameters.put("applicantName", subject.getLastName());
-    parameters.put("subject", subject);
     parameters.put("leaveApplication", leaveApplication);
     runtimeService.startProcessInstanceByKey("leave-application", parameters);
   }
