@@ -7,18 +7,18 @@
     <userTask id="sid-5A508ADC-C959-4F82-9AB1-D5AF50E87135" name="Manager reviews the application"/>
     <sequenceFlow id="sid-F2279020-8DCE-48AE-81A1-24FA512C9909" name="Application recorded" sourceRef="startEvent1" targetRef="sid-5A508ADC-C959-4F82-9AB1-D5AF50E87135"/>
     <sequenceFlow id="sid-D4861E45-774A-434E-B6A6-F86F9BDCB538" sourceRef="sid-5A508ADC-C959-4F82-9AB1-D5AF50E87135" targetRef="sid-22DABFDC-033A-4B20-9F2A-8FBE66E2D79A"/>
-    <serviceTask id="sid-ED493EB6-19CB-4509-A07E-1ADECA136EE5" name="Mark application as rejected by Manager" activiti:expression="${leaveApplicationService.rejectLeaveApplication(Role.MANAGER, leaveApplication)}"/>
+    <serviceTask id="sid-ED493EB6-19CB-4509-A07E-1ADECA136EE5" name="Mark application as rejected by Manager" activiti:expression="${leaveApplicationServiceImpl.rejectLeaveApplication(role, leaveApplicationId)}"/>
     <endEvent id="sid-6D041B61-281D-45E5-A868-FCD333934B61"/>
     <sequenceFlow id="sid-669E07D7-5A45-474B-A4F0-882750233458" sourceRef="sid-ED493EB6-19CB-4509-A07E-1ADECA136EE5" targetRef="sid-6D041B61-281D-45E5-A868-FCD333934B61"/>
-    <serviceTask id="sid-D2BFCAD6-FCA5-4FE5-8B63-16C30C423273" name="Mark application as accepted by Manager" activiti:expression="${leaveApplicationService.approveLeaveApplication(Role.MANAGER, leaveApplication)}"/>
+    <serviceTask id="sid-D2BFCAD6-FCA5-4FE5-8B63-16C30C423273" name="Mark application as accepted by Manager" activiti:expression="${leaveApplicationServiceImpl.approveLeaveApplication(role, leaveApplication)}"/>
     <userTask id="sid-C57611C2-8D56-4653-9068-4FA5F1068DC8" name="HR reviews the application"/>
     <sequenceFlow id="sid-8DF2294F-A718-4825-8C56-C83775D8E1A3" sourceRef="sid-D2BFCAD6-FCA5-4FE5-8B63-16C30C423273" targetRef="sid-C57611C2-8D56-4653-9068-4FA5F1068DC8"/>
     <exclusiveGateway id="sid-DB6ACAE2-73EC-47E9-B5C2-5084E38696C0"/>
     <sequenceFlow id="sid-589996B0-48BA-496B-86F9-576736E2B4BC" sourceRef="sid-C57611C2-8D56-4653-9068-4FA5F1068DC8" targetRef="sid-DB6ACAE2-73EC-47E9-B5C2-5084E38696C0"/>
-    <serviceTask id="sid-3354A1FB-D3AA-4971-BB90-446AD17C1AD6" name="Mark application as rejected by HR" activiti:expression="${leaveApplicationService.rejectLeaveApplication(Role.HRTEAMMEMBER, leaveApplication)}"/>
+    <serviceTask id="sid-3354A1FB-D3AA-4971-BB90-446AD17C1AD6" name="Mark application as rejected by HR" activiti:expression="${leaveApplicationServiceImpl.rejectLeaveApplication(role, leaveApplicationId)}"/>
     <endEvent id="sid-6528DB99-3BF1-4948-BF19-DC0F926AAE85"/>
     <sequenceFlow id="sid-AC33EC3A-3689-424A-A639-F618DC57DE0B" sourceRef="sid-3354A1FB-D3AA-4971-BB90-446AD17C1AD6" targetRef="sid-6528DB99-3BF1-4948-BF19-DC0F926AAE85"/>
-    <serviceTask id="sid-0461F094-B896-4734-84E0-4BA3D684BB6B" name="Mark application as accepted by HR" activiti:expression="${leaveApplicationService.approveLeaveApplication(Role.HRTEAMMEMBER, leaveApplication)}"/>
+    <serviceTask id="sid-0461F094-B896-4734-84E0-4BA3D684BB6B" name="Mark application as accepted by HR" activiti:expression="${leaveApplicationServiceImpl.approveLeaveApplication(role, leaveApplication)}"/>
     <endEvent id="sid-6AB9146E-06F3-4DC8-88F8-84B57BC0886A"/>
     <sequenceFlow id="sid-5194F72B-4DDF-42E8-968C-7E57A9A65B3E" sourceRef="sid-0461F094-B896-4734-84E0-4BA3D684BB6B" targetRef="sid-6AB9146E-06F3-4DC8-88F8-84B57BC0886A"/>
     <sequenceFlow id="sid-8628F8A5-628A-4189-AD00-81856C7121D7" name="Rejected" sourceRef="sid-22DABFDC-033A-4B20-9F2A-8FBE66E2D79A" targetRef="sid-ED493EB6-19CB-4509-A07E-1ADECA136EE5">

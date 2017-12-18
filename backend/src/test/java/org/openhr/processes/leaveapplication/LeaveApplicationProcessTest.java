@@ -1,12 +1,10 @@
 package org.openhr.processes.leaveapplication;
 
-import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.spring.boot.DataSourceProcessEngineAutoConfiguration;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.domain.address.Address;
@@ -16,24 +14,24 @@ import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
-import org.openhr.processes.ContextResolver;
 import org.openhr.service.leaveapplication.LeaveApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
+@Transactional
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
@@ -50,17 +48,14 @@ public class LeaveApplicationProcessTest {
   @Autowired
   private LeaveApplicationService leaveApplicationService;
 
+  @Autowired
   private RuntimeService runtimeService;
+
+  @Autowired
   private TaskService taskService;
 
-  @Before
-  public void setUp() {
-    final AnnotationConfigApplicationContext context = ContextResolver.getContext(
-      DataSourceAutoConfiguration.class,
-      DataSourceProcessEngineAutoConfiguration.DataSourceProcessEngineConfiguration.class);
-    runtimeService = context.getBean(ProcessEngine.class).getRuntimeService();
-    taskService = context.getBean(ProcessEngine.class).getTaskService();
-  }
+  @Autowired
+  private HistoryService historyService;
 
   @Test
   public void processShouldStart() throws Exception {
@@ -81,4 +76,25 @@ public class LeaveApplicationProcessTest {
     assertEquals("Manager reviews the application", task.getName());
   }
 
+  @Test
+  public void managerShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    final LeaveApplication leaveApplication = leaveApplicationService
+      .createLeaveApplication(mockSubject, mockLeaveApplication);
+    final Map<String, Object> params = new HashMap<>();
+    params.put("leaveApplication", leaveApplication);
+    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("rejectedByManager", true);
+    params.put("approvedByManager", false);
+    params.put("role", Role.MANAGER);
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    taskService.complete(task.getId(), params);
+    final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
+    final LeaveApplication updatedLeaveApplication = leaveApplicationService
+      .getLeaveApplication(leaveApplication.getApplicationId());
+
+    assertEquals(0, tasks.size());
+    assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
+    assertFalse(updatedLeaveApplication.isApprovedByManager());
+  }
 }
