@@ -25,13 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional
 @WebAppConfiguration
+@Transactional
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
@@ -46,6 +46,9 @@ public class LeaveApplicationProcessTest {
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
 
   @Autowired
+  private LeaveApplicationService leaveApplicationService;
+
+  @Autowired
   private RuntimeService runtimeService;
 
   @Autowired
@@ -53,9 +56,6 @@ public class LeaveApplicationProcessTest {
 
   @Autowired
   private HistoryService historyService;
-
-  @Autowired
-  private LeaveApplicationService leaveApplicationService;
 
   @Test
   public void processShouldStart() throws Exception {
@@ -97,5 +97,4 @@ public class LeaveApplicationProcessTest {
     assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
     assertFalse(updatedLeaveApplication.isApprovedByManager());
   }
-
 }
