@@ -2,8 +2,10 @@ package org.openhr.command.leaveapplicaion;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.openhr.domain.application.LeaveApplication;
-import org.openhr.domain.process.Task;
+import org.openhr.domain.process.TaskDefinition;
+import org.openhr.enumeration.Role;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +34,31 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
+  public void rejectLeaveApplication(final Role role, final String taskId) {
+    final Map<String, Object> args = new HashMap<>();
+    final Task task = taskService.createTaskQuery().processInstanceId(taskId).singleResult();
+    args.put("role", role);
+    args.put("rejectedByManager", true);
+    taskService.complete(task.getId(), args);
+  }
+
+  @Override
+  public void approveLeaveApplication(Role role, String taskId) {
+    final Map<String, Object> args = new HashMap<>();
+    final Task task = taskService.createTaskQuery().processInstanceId(taskId).singleResult();
+    args.put("role", role);
+    args.put("approvedByManager", true);
+    taskService.complete(task.getId(), args);
+  }
+
+  @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Task> getProcessTasks(final String processInstanceId) {
+  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return taskService.createTaskQuery()
 //      .processInstanceBusinessKey(processInstanceId)
       .list()
       .stream()
-      .map(task -> new Task(task.getId(), task.getName(), task.getProcessInstanceId()))
+      .map(task -> new TaskDefinition(task.getId(), task.getName(), task.getProcessInstanceId()))
       .collect(Collectors.toList());
   }
 }

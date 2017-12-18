@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -209,7 +210,7 @@ public class LeaveApplicationControllerTest {
 
     MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
-        .param("applicationId", "1")
+        .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -222,11 +223,11 @@ public class LeaveApplicationControllerTest {
   public void rejectLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .rejectLeaveApplication(anyObject(), anyLong());
+      .rejectLeaveApplication(anyObject(), anyString());
 
     MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
-        .param("applicationId", "1")
+        .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -237,30 +238,12 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  public void rejectLeaveApplicationShouldHandle404Error() throws Exception {
-    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
-    doThrow(mock404Exception).when(leaveApplicationFacade)
-      .rejectLeaveApplication(anyObject(), anyLong());
-
-    MvcResult result = mockMvc
-      .perform(put("/leave-application/reject")
-        .param("applicationId", "1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(roleAsJson))
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mock404Error.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
   public void approveLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
     MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
-        .param("applicationId", "1")
+        .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -273,11 +256,11 @@ public class LeaveApplicationControllerTest {
   public void approveLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .approveLeaveApplication(anyObject(), anyLong());
+      .approveLeaveApplication(anyObject(), anyString());
 
     MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
-        .param("applicationId", "1")
+        .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -285,24 +268,6 @@ public class LeaveApplicationControllerTest {
       .andReturn();
     assertNotNull(result.getResolvedException());
     assertEquals(mockHibernateError.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  public void approveLeaveApplicationShouldHandle404Error() throws Exception {
-    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
-    doThrow(mock404Exception).when(leaveApplicationFacade)
-      .approveLeaveApplication(anyObject(), anyLong());
-
-    MvcResult result = mockMvc
-      .perform(put("/leave-application/approve")
-        .param("applicationId", "1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(roleAsJson))
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mock404Error.getMessage(), result.getResolvedException().getMessage());
   }
 
 }

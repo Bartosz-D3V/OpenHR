@@ -2,7 +2,7 @@ package org.openhr.controller.leaveapplication;
 
 import org.hibernate.HibernateException;
 import org.openhr.domain.application.LeaveApplication;
-import org.openhr.domain.process.Task;
+import org.openhr.domain.process.TaskDefinition;
 import org.openhr.enumeration.Role;
 import org.openhr.exception.ApplicationDoesNotExistException;
 import org.openhr.exception.SubjectDoesNotExistException;
@@ -54,24 +54,22 @@ public class LeaveApplicationController {
 
   @Transactional
   @RequestMapping(value = "/reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void rejectLeaveApplication(@RequestParam final long applicationId,
-                                     @RequestBody final Role role) throws HibernateException,
-    ApplicationDoesNotExistException {
-    leaveApplicationFacade.rejectLeaveApplication(role, applicationId);
+  public void rejectLeaveApplication(@RequestParam final String taskId,
+                                     @RequestBody final Role role) throws HibernateException {
+    leaveApplicationFacade.rejectLeaveApplication(role, taskId);
   }
 
   @Transactional
   @RequestMapping(value = "/approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void approveLeaveApplication(@RequestParam final long applicationId,
-                                      @RequestBody final Role role) throws HibernateException,
-    ApplicationDoesNotExistException {
-    leaveApplicationFacade.approveLeaveApplication(role, applicationId);
+  public void approveLeaveApplication(@RequestParam final String taskId,
+                                      @RequestBody final Role role) throws HibernateException {
+    leaveApplicationFacade.approveLeaveApplication(role, taskId);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
-  public List<Task> getProcessTasks(@PathVariable final String processInstanceId) {
+  public List<TaskDefinition> getProcessTasks(@PathVariable final String processInstanceId) {
     return leaveApplicationFacade.getProcessTasks(processInstanceId);
   }
 
