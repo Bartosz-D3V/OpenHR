@@ -2,7 +2,7 @@ package org.openhr.facade.leaveapplication;
 
 import org.openhr.command.leaveapplicaion.LeaveApplicationCommand;
 import org.openhr.domain.application.LeaveApplication;
-import org.openhr.domain.process.Task;
+import org.openhr.domain.process.TaskDefinition;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
 import org.openhr.exception.ApplicationDoesNotExistException;
@@ -51,19 +51,17 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final long applicationId)
-    throws ApplicationDoesNotExistException {
-    leaveApplicationService.rejectLeaveApplication(role, applicationId);
+  public void rejectLeaveApplication(final Role role, final String taskId) {
+    leaveApplicationCommand.rejectLeaveApplication(role, taskId);
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final long applicationId)
-    throws ApplicationDoesNotExistException {
-    leaveApplicationService.approveLeaveApplication(role, applicationId);
+  public void approveLeaveApplication(final Role role, final String taskId) {
+    leaveApplicationCommand.approveLeaveApplication(role, taskId);
   }
 
   @Override
-  public List<Task> getProcessTasks(final String processInstanceId) {
+  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return leaveApplicationCommand.getProcessTasks(processInstanceId);
   }
 }

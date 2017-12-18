@@ -2,16 +2,16 @@ package org.openhr.domain.process;
 
 import java.io.Serializable;
 
-public class Task implements Serializable {
+public class TaskDefinition implements Serializable {
   private String id;
   private String name;
   private String processInstanceId;
 
-  public Task() {
+  public TaskDefinition() {
     super();
   }
 
-  public Task(final String id, final String name, final String processInstanceId) {
+  public TaskDefinition(final String id, final String name, final String processInstanceId) {
     this.id = id;
     this.name = name;
     this.processInstanceId = processInstanceId;
