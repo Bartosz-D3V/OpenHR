@@ -66,7 +66,7 @@ public class LeaveApplicationControllerTest {
     final String leaveApplicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenReturn(mockLeaveApplication);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
       .andDo(print())
@@ -80,7 +80,7 @@ public class LeaveApplicationControllerTest {
   public void getLeaveApplicationShouldHandle404Exception() throws Exception {
     when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenThrow(mock404Exception);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
       .andDo(print())
@@ -95,7 +95,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .getLeaveApplication(anyLong());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
       .andDo(print())
@@ -111,7 +111,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockSubject404Exception).when(leaveApplicationFacade)
       .createLeaveApplication(anyLong(), anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(post("/leave-application")
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .createLeaveApplication(anyLong(), anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(post("/leave-application")
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -145,7 +145,7 @@ public class LeaveApplicationControllerTest {
   public void createLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(post("/leave-application")
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -162,7 +162,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mock404Exception).when(leaveApplicationFacade)
       .updateLeaveApplication(anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
@@ -179,7 +179,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .updateLeaveApplication(anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
@@ -194,7 +194,7 @@ public class LeaveApplicationControllerTest {
   public void updateLeaveApplicationShouldUpdateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
@@ -208,7 +208,7 @@ public class LeaveApplicationControllerTest {
   public void rejectLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
         .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -225,7 +225,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .rejectLeaveApplication(anyObject(), anyString());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
         .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -241,7 +241,7 @@ public class LeaveApplicationControllerTest {
   public void approveLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
         .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -258,7 +258,7 @@ public class LeaveApplicationControllerTest {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .approveLeaveApplication(anyObject(), anyString());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
         .param("taskId", "1")
         .contentType(MediaType.APPLICATION_JSON)
