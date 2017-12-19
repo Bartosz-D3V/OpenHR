@@ -97,4 +97,54 @@ public class LeaveApplicationProcessTest {
     assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
     assertFalse(updatedLeaveApplication.isApprovedByManager());
   }
+
+  @Test
+  public void hrTeamShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    final LeaveApplication leaveApplication = leaveApplicationService
+      .createLeaveApplication(mockSubject, mockLeaveApplication);
+    final Map<String, Object> params = new HashMap<>();
+    params.put("leaveApplication", leaveApplication);
+    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("approvedByManager", true);
+    params.put("rejectedByManager", false);
+    params.put("approvedByHR", false);
+    params.put("rejectedByHR", true);
+    params.put("role", Role.MANAGER);
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    taskService.complete(task.getId(), params);
+
+    assertEquals("Manager reviews the application", task.getName());
+
+    final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
+    assertEquals("HR reviews the application", tasks.get(0).getName());
+    taskService.complete(tasks.get(0).getId());
+
+    assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
+  }
+
+  @Test
+  public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws Exception {
+    final LeaveApplication leaveApplication = leaveApplicationService
+      .createLeaveApplication(mockSubject, mockLeaveApplication);
+    final Map<String, Object> params = new HashMap<>();
+    params.put("leaveApplication", leaveApplication);
+    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("approvedByManager", true);
+    params.put("rejectedByManager", false);
+    params.put("approvedByHR", true);
+    params.put("rejectedByHR", false);
+    params.put("role", Role.MANAGER);
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    taskService.complete(task.getId(), params);
+
+    assertEquals("Manager reviews the application", task.getName());
+
+    final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
+    assertEquals("HR reviews the application", tasks.get(0).getName());
+    taskService.complete(tasks.get(0).getId());
+
+    assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
+  }
 }
