@@ -35,18 +35,18 @@ public class LeaveApplicationServiceTest {
   }
 
   @Test
-  public void rejectApplicationShouldMarkApplicationAsApprovedByManager() {
+  public void rejectLeaveApplicationShouldMarkApplicationAsApprovedByManager() {
     mockLeaveApplication.setApprovedByManager(true);
-    final LeaveApplication leaveApplication = leaveApplicationServiceImpl.rejectApplication(Role.MANAGER,
+    final LeaveApplication leaveApplication = leaveApplicationServiceImpl.rejectLeaveApplication(Role.MANAGER,
       mockLeaveApplication);
 
     assertFalse(leaveApplication.isApprovedByManager());
   }
 
   @Test
-  public void rejectApplicationShouldMarkApplicationAsApprovedByHRTeamMember() {
+  public void rejectLeaveApplicationShouldMarkApplicationAsApprovedByHRTeamMember() {
     mockLeaveApplication.setApprovedByHR(true);
-    final LeaveApplication leaveApplication = leaveApplicationServiceImpl.rejectApplication(Role.HRTEAMMEMBER,
+    final LeaveApplication leaveApplication = leaveApplicationServiceImpl.rejectLeaveApplication(Role.HRTEAMMEMBER,
       mockLeaveApplication);
 
     assertFalse(leaveApplication.isApprovedByHR());

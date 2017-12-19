@@ -36,7 +36,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   public void rejectLeaveApplication(final Role role, final long applicationId)
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
-    leaveApplication = rejectApplication(role, leaveApplication);
+    leaveApplication = rejectLeaveApplication(role, leaveApplication);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
@@ -48,7 +48,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
-  LeaveApplication rejectApplication(final Role role, final LeaveApplication leaveApplication) {
+  LeaveApplication rejectLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
     switch (role) {
       case MANAGER:
         leaveApplication.setApprovedByManager(false);
