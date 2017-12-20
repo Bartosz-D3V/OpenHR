@@ -73,4 +73,10 @@ public class LeaveApplicationController {
     return leaveApplicationFacade.getProcessTasks(processInstanceId);
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @RequestMapping(value = "processes", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  public List<Long> getActiveProcessesId() {
+    return leaveApplicationFacade.getActiveProcessesId();
+  }
+
 }

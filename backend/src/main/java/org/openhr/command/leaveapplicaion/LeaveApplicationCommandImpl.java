@@ -53,12 +53,24 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
+  public final List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return taskService.createTaskQuery()
-//      .processInstanceBusinessKey(processInstanceId)
+      .processInstanceBusinessKey(processInstanceId)
       .list()
       .stream()
       .map(task -> new TaskDefinition(task.getId(), task.getName(), task.getProcessInstanceId()))
+      .collect(Collectors.toList());
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public final List<Long> getActiveProcessesId() {
+    return runtimeService
+      .createProcessInstanceQuery()
+      .active()
+      .list()
+      .stream()
+      .map(process -> new Long(process.getDeploymentId()))
       .collect(Collectors.toList());
   }
 }
