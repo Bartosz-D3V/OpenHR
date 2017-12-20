@@ -61,7 +61,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
+  public final List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return leaveApplicationCommand.getProcessTasks(processInstanceId);
   }
+
+  @Override
+  public final List<Long> getActiveProcessesId() {
+    return leaveApplicationCommand.getActiveProcessesId();
+  }
+
+
 }
