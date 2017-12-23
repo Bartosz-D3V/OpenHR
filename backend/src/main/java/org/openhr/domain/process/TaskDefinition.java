@@ -6,6 +6,7 @@ public class TaskDefinition implements Serializable {
   private String id;
   private String name;
   private String processInstanceId;
+  private String subjectAndApplicationId;
 
   public TaskDefinition() {
     super();

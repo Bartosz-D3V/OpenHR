@@ -22,5 +22,5 @@ public interface LeaveApplicationFacade {
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 
-  List<Long> getActiveProcessesId();
+  List<String> getActiveProcessesId();
 }

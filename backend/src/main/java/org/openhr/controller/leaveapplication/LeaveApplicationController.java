@@ -25,7 +25,7 @@ public class LeaveApplicationController {
 
   private final LeaveApplicationFacade leaveApplicationFacade;
 
-  public LeaveApplicationController(LeaveApplicationFacade leaveApplicationFacade) {
+  public LeaveApplicationController(final LeaveApplicationFacade leaveApplicationFacade) {
     this.leaveApplicationFacade = leaveApplicationFacade;
   }
 
@@ -75,7 +75,7 @@ public class LeaveApplicationController {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @RequestMapping(value = "processes", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-  public List<Long> getActiveProcessesId() {
+  public List<String> getActiveProcessesId() {
     return leaveApplicationFacade.getActiveProcessesId();
   }
 
