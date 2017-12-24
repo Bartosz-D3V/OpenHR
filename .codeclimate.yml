@@ -36,3 +36,4 @@ exclude_paths:
   - "/frontend/coverage"
   - "/frontend/dist"
   - "/backend/.mvn"
+  - "/backend/src/test"
