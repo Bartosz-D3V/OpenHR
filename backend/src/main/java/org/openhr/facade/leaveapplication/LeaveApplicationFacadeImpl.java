@@ -69,6 +69,4 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   public final List<String> getActiveProcessesId() {
     return leaveApplicationCommand.getActiveProcessesId();
   }
-
-
 }
