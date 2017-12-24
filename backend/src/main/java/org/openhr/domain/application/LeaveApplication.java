@@ -40,9 +40,6 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
-  @Column(name = "TASK_ID")
-  private String taskId;
-
   @NotNull
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
@@ -114,14 +111,6 @@ public class LeaveApplication implements Serializable {
 
   public void setApprovedByHR(final boolean approvedByHR) {
     this.approvedByHR = approvedByHR;
-  }
-
-  public String getTaskId() {
-    return taskId;
-  }
-
-  public void setTaskId(final String taskId) {
-    this.taskId = taskId;
   }
 
   public Subject getSubject() {
