@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openhr.configuration.JacksonConfiguration;
 import org.openhr.controller.common.ErrorInfo;
 import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.ContactInformation;
@@ -23,8 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -74,7 +71,7 @@ public class PersonalDetailsControllerTest {
   public void getSubjectDetailsShouldHandleError() throws Exception {
     when(personalDetailsFacade.getSubjectDetails(1)).thenThrow(mockException);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(get("/personal-details")
         .param("subjectId", "1"))
       .andDo(print())
@@ -89,7 +86,7 @@ public class PersonalDetailsControllerTest {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     when(personalDetailsFacade.getSubjectDetails(1)).thenReturn(mockSubject);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(get("/personal-details")
         .param("subjectId", "1"))
       .andDo(print())
@@ -104,7 +101,7 @@ public class PersonalDetailsControllerTest {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).addSubject(any());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(post("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
@@ -119,7 +116,7 @@ public class PersonalDetailsControllerTest {
   public void createSubjectShouldCreateSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(post("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
@@ -134,7 +131,7 @@ public class PersonalDetailsControllerTest {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).updateSubject(anyLong(), any());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details")
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +147,7 @@ public class PersonalDetailsControllerTest {
   public void updateSubjectShouldUpdateSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details")
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
         .contentType(MediaType.APPLICATION_JSON)
@@ -165,7 +162,7 @@ public class PersonalDetailsControllerTest {
   public void updateSubjectPersonalInformationShouldUpdatePersonalInformation() throws Exception {
     final String personalInformationAsJson = objectMapper.writeValueAsString(mockPersonalInformation);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/personal-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
@@ -182,7 +179,7 @@ public class PersonalDetailsControllerTest {
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
       .updateSubjectPersonalInformation(anyLong(), anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/personal-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
@@ -198,7 +195,7 @@ public class PersonalDetailsControllerTest {
   public void updateSubjectContactInformationShouldUpdateContactInformation() throws Exception {
     final String contactInformationAsJson = objectMapper.writeValueAsString(mockContactInformation);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/contact-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
@@ -215,7 +212,7 @@ public class PersonalDetailsControllerTest {
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
       .updateSubjectContactInformation(anyLong(), anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/contact-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
@@ -231,7 +228,7 @@ public class PersonalDetailsControllerTest {
   public void updateSubjectEmployeeInformationShouldUpdateContactInformation() throws Exception {
     final String employeeInformationAsJson = objectMapper.writeValueAsString(mockEmployeeInformation);
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/employee-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
@@ -248,7 +245,7 @@ public class PersonalDetailsControllerTest {
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
       .updateSubjectEmployeeInformation(anyLong(), anyObject());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(put("/personal-details/employee-information")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
@@ -262,7 +259,7 @@ public class PersonalDetailsControllerTest {
 
   @Test
   public void deleteSubjectShouldDeleteSubject() throws Exception {
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(delete("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId())))
@@ -276,7 +273,7 @@ public class PersonalDetailsControllerTest {
   public void deleteSubjectShouldHandleError() throws Exception {
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).deleteSubject(anyLong());
 
-    MvcResult result = mockMvc
+    final MvcResult result = mockMvc
       .perform(delete("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1"))
