@@ -2,16 +2,15 @@ package org.openhr.dao.subject;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.domain.address.Address;
 import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.enumeration.Role;
+import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;

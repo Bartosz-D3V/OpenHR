@@ -47,6 +47,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-spring-boot-starter-basic</artifactId>
+      <version>6.0.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
@@ -125,6 +131,7 @@
         <directory>src/main/resources</directory>
         <includes>
           <include>application.properties</include>
+          <include>**/*.xml</include>
         </includes>
       </resource>
     </resources>
