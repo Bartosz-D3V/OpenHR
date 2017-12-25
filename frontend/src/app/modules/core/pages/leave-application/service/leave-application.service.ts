@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
+import { SystemVariables } from '../../../../../config/system-variables';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
 export class LeaveApplicationService {
 
-  private url = 'app/leave-application';
+  private url: string = SystemVariables.API_URL + 'leave-application';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',

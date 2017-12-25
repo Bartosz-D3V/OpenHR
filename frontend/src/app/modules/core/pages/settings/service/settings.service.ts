@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
+import { SystemVariables } from '../../../../../config/system-variables';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 
 @Injectable()
 export class SettingsService {
 
-  private url = 'api/user-settings';
+  private url: string = SystemVariables.API_URL + 'user-settings';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',

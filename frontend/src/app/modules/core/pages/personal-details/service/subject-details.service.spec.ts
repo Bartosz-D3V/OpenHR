@@ -11,6 +11,7 @@ import { PersonalInformation } from '../domain/personal-information';
 import { ContactInformation } from '../domain/contact-information';
 import { EmployeeInformation } from '../domain/employee-information';
 import { SubjectDetailsService } from './subject-details.service';
+import { SystemVariables } from '../../../../../config/system-variables';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
@@ -74,10 +75,12 @@ describe('PersonalDetailsService', () => {
 
   describe('API access method', () => {
 
+    const apiLink: string = SystemVariables.API_URL + 'my-details';
+
     it('should query current service URL', fakeAsync(() => {
       personalDetailsService.getCurrentSubject().subscribe();
 
-      http.expectOne('app/my-details');
+      http.expectOne(apiLink);
     }));
 
     describe('getCurrentSubject', () => {
@@ -90,7 +93,7 @@ describe('PersonalDetailsService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: 'app/my-details',
+          url: apiLink,
           method: 'GET',
         }).flush(mockSubject);
         tick();
@@ -109,7 +112,7 @@ describe('PersonalDetailsService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: 'app/my-details',
+          url: apiLink,
           method: 'GET',
         }).error(new ErrorEvent('404'));
         tick();
