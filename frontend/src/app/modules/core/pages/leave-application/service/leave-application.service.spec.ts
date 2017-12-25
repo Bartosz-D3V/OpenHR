@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { LeaveApplicationService } from './leave-application.service';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { SystemVariables } from '../../../../../config/system-variables';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
@@ -60,10 +61,11 @@ describe('LeaveApplicationService', () => {
   });
 
   describe('API access methods', () => {
+    const apiLink: string = SystemVariables.API_URL + 'leave-application';
 
     it('should query current service URL', fakeAsync(() => {
       leaveApplicationService.getLeaveTypes().subscribe();
-      http.expectOne('app/leave-application');
+      http.expectOne(apiLink);
     }));
 
     describe('getLeaveTypes', () => {
@@ -76,7 +78,7 @@ describe('LeaveApplicationService', () => {
             (res: Array<string>) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: 'app/leave-application',
+          url: apiLink,
           method: 'GET',
         }).flush(mockLeaveTypes);
 
@@ -94,7 +96,7 @@ describe('LeaveApplicationService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: 'app/leave-application',
+          url: apiLink,
           method: 'GET',
         }).error(new ErrorEvent('404'));
         tick();

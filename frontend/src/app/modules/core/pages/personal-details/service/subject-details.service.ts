@@ -9,11 +9,12 @@ import 'rxjs/add/observable/throw';
 
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { Subject } from '../domain/subject';
+import { SystemVariables } from '../../../../../config/system-variables';
 
 @Injectable()
 export class SubjectDetailsService {
 
-  private url = 'app/my-details';
+  private url: string = SystemVariables.API_URL + 'my-details';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',

@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { ConfigService } from './config.service';
 import { ErrorResolverService } from '../error-resolver/error-resolver.service';
+import { SystemVariables } from '../../../config/system-variables';
 
 describe('ConfigService', () => {
   let http: HttpTestingController;
@@ -31,7 +32,7 @@ describe('ConfigService', () => {
     http = TestBed.get(HttpTestingController);
     configService = TestBed.get(ConfigService);
     errorResolverService = TestBed.get(ErrorResolverService);
-    spyOn(console, 'log');
+    spyOn(console, 'log').and.callThrough();
   });
 
   it('should be created', () => {
@@ -60,12 +61,12 @@ describe('ConfigService', () => {
   describe('API access method', () => {
 
     describe('getContractTypes', () => {
-      const apiLink = '/api/config/contractTypes';
+      const apiLink = SystemVariables.API_URL + 'config/contractTypes';
 
       it('should query current service URL', fakeAsync(() => {
         configService.getContractTypes().subscribe();
 
-        http.expectOne('/api/config/contractTypes');
+        http.expectOne(apiLink);
       }));
 
 
@@ -107,12 +108,12 @@ describe('ConfigService', () => {
     });
 
     describe('getLeaveTypes', () => {
-      const apiLink = '/api/config/leaveTypes';
+      const apiLink = SystemVariables.API_URL + 'config/leaveTypes';
 
       it('should query current service URL', fakeAsync(() => {
         configService.getLeaveTypes().subscribe();
 
-        http.expectOne('/api/config/leaveTypes');
+        http.expectOne(apiLink);
       }));
 
 
