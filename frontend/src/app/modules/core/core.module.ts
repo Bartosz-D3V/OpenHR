@@ -21,7 +21,6 @@ import { DateRangeComponent } from '../../shared/components/date-range/date-rang
 import { AvatarComponent } from '../../shared/components/avatar/avatar.component';
 import { StaticModalComponent } from '../../shared/components/static-modal/static-modal.component';
 import { SidenavItemListComponent } from '../../shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
-import { SidenavItemComponent } from '../../shared/components/sidenav/sidenav-item/sidenav-item.component';
 import { CapitalizePipe } from '../../shared/pipes/capitalize/capitalize.pipe';
 import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
@@ -66,7 +65,6 @@ import { AppRoutingModule } from '../../app-routing.module';
   ],
   declarations: [
     SidenavComponent,
-    SidenavItemComponent,
     SidenavItemListComponent,
     PersonalDetailsComponent,
     PageHeaderComponent,

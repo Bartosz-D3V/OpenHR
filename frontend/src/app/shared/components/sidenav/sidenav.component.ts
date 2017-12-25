@@ -1,26 +1,25 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MatSidenav } from '@angular/material';
 
 import { User } from '../../domain/user/user';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
+  providers: [ResponsiveHelperService],
 })
 export class SidenavComponent implements OnInit {
-
-  private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
 
   @Input()
   public user: User;
   public sidenav: MatSidenav;
 
   constructor(private _router: Router,
-              private _zone: NgZone) {
-    this.mediaMatcher.addListener(mql => _zone.run(() => this.mediaMatcher = mql));
+              private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit() {
@@ -32,7 +31,6 @@ export class SidenavComponent implements OnInit {
   }
 
   public isScreenSmall(): boolean {
-    return this.mediaMatcher.matches;
+    return this._responsiveHelper.isSmallTablet();
   }
-
 }
