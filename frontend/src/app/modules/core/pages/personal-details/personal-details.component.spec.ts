@@ -18,7 +18,6 @@ import { PageHeaderComponent } from '../../../../shared/components/page-header/p
 import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ConfigService } from '../../../../shared/services/config/config.service';
-import { Role } from '../../../../shared/constants/enumeration/role';
 
 import { Subject } from './domain/subject';
 import { Address } from './domain/address';
@@ -34,7 +33,7 @@ describe('PersonalDetailsComponent', () => {
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '123AS', new Date(), new Date());
-  const mockSubject: Subject = new Subject('John', 'Xavier', Role.EMPLOYEE, mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
 

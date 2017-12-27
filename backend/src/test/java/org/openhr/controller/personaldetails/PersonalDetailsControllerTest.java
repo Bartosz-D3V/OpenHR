@@ -12,7 +12,6 @@ import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
-import org.openhr.enumeration.Role;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.openhr.facade.personaldetails.PersonalDetailsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,7 @@ public class PersonalDetailsControllerTest {
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
-  private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE, mockPersonalInformation,
+  private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
 
   @Autowired

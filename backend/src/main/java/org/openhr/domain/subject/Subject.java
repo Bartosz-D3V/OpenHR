@@ -1,13 +1,10 @@
 package org.openhr.domain.subject;
 
 import org.openhr.domain.application.LeaveApplication;
-import org.openhr.enumeration.Role;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,10 +32,6 @@ public class Subject implements Serializable {
   @Column(name = "LAST_NAME")
   private String lastName;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Role role;
-
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
   @OneToOne(fetch = FetchType.EAGER, optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
   private PersonalInformation personalInformation;
@@ -58,18 +51,16 @@ public class Subject implements Serializable {
     super();
   }
 
-  public Subject(final String firstName, final String lastName, final Role role) {
+  public Subject(final String firstName, final String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.role = role;
+
   }
 
-  public Subject(final String firstName, final String lastName, final Role role,
-                 final PersonalInformation personalInformation, final ContactInformation contactInformation,
-                 final EmployeeInformation employeeInformation) {
+  public Subject(final String firstName, final String lastName, final PersonalInformation personalInformation,
+                 final ContactInformation contactInformation, final EmployeeInformation employeeInformation) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.role = role;
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;
@@ -93,14 +84,6 @@ public class Subject implements Serializable {
 
   public void setLastName(final String lastName) {
     this.lastName = lastName;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRole(final Role role) {
-    this.role = role;
   }
 
   public PersonalInformation getPersonalInformation() {

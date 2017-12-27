@@ -3,7 +3,6 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { Role } from '../../../../../shared/constants/enumeration/role';
 
 import { Subject } from '../domain/subject';
 import { Address } from '../domain/address';
@@ -18,7 +17,7 @@ describe('PersonalDetailsService', () => {
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '123AS', new Date(), new Date());
-  const mockSubject: Subject = new Subject('John', 'Xavier', Role.EMPLOYEE, mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   let http: HttpTestingController;
   let personalDetailsService;
