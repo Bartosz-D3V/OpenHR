@@ -28,7 +28,7 @@ public class ManagerController {
     return managerFacade.addManager(manager);
   }
 
-  @RequestMapping(value = "getEmployees", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "employees", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   public Set<Employee> getEmployees(@RequestParam final long managerId) throws SubjectDoesNotExistException {
     return managerFacade.getEmployees(managerId);
   }
