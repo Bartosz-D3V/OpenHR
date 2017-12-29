@@ -3,7 +3,10 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatAutocompleteModule, MatDatepickerModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import {
+  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatTableModule,
+  MatToolbarModule,
+} from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -26,15 +29,18 @@ describe('DelegationComponent', () => {
       ],
       imports: [
         HttpClientTestingModule,
+        MomentDateModule,
+        NoopAnimationsModule,
         FormsModule,
         FlexLayoutModule,
         ReactiveFormsModule,
         MatToolbarModule,
         MatDatepickerModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatInputModule,
         MatTableModule,
-        MomentDateModule,
         MatAutocompleteModule,
-        NoopAnimationsModule,
       ],
     })
       .compileComponents();

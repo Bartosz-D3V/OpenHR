@@ -1,17 +1,16 @@
 <mat-sidenav-container class="c-sidenav">
   <mat-sidenav #sidenav class="c-sidenav__bar" [opened]="!isScreenSmall()"
-              [mode]="isScreenSmall() ? 'over' : 'side'">
+               [mode]="isScreenSmall() ? 'over' : 'side'">
     <div class="c-sidenav__list">
       <h3 class="c-sidenav__title">OpenHR</h3>
       <hr class="c-header__line">
       <app-sidenav-item-list></app-sidenav-item-list>
     </div>
   </mat-sidenav>
-  <mat-toolbar [color]="'primary'" class="c-sidenav__toolbar">
+  <mat-toolbar [color]="'primary'" class="c-sidenav__toolbar" fxLayout="row" fxLayoutAlign="space-between center">
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon class="mat-24">menu</mat-icon>
     </button>
-    <div class="c-sidenav__flex-spacer"></div>
     <app-avatar [user]="user"></app-avatar>
   </mat-toolbar>
   <router-outlet name="core"></router-outlet>

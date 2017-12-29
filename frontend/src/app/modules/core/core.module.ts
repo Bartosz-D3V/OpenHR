@@ -30,7 +30,7 @@ import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AppRoutingModule } from '../../app-routing.module';
-import { WorkersComponent } from './pages/workers/workers.component';
+import { EmployeesComponent } from './pages/employees/employees.component';
 
 @NgModule({
   imports: [
@@ -81,7 +81,7 @@ import { WorkersComponent } from './pages/workers/workers.component';
     CoreWrapperComponent,
     AccountComponent,
     SettingsComponent,
-    WorkersComponent,
+    EmployeesComponent,
   ],
 })
 export class CoreModule {
