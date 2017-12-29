@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import {MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 
 import { CoreWrapperComponent } from './core-wrapper.component';
 import { AppComponent } from '../../../boot/app.component';
@@ -31,6 +31,7 @@ describe('CoreComponent', () => {
         MatSidenavModule,
         MatToolbarModule,
         MatMenuModule,
+        MatIconModule,
       ],
     })
       .compileComponents();

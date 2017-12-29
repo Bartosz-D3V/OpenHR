@@ -5,7 +5,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatDatepickerModule, MatExpansionModule, MatNativeDateModule, MatToolbarModule } from '@angular/material';
+import {
+  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatToolbarModule,
+} from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -68,6 +70,7 @@ describe('PersonalDetailsComponent', () => {
       ],
       imports: [
         HttpClientTestingModule,
+        NoopAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
@@ -75,7 +78,9 @@ describe('PersonalDetailsComponent', () => {
         MatExpansionModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        NoopAnimationsModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
       ],
       providers: [
         {

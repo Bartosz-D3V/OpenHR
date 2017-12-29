@@ -1,8 +1,8 @@
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MatButtonModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import {MatButtonModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 
 import { SidenavComponent } from './sidenav.component';
 import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
@@ -27,6 +27,7 @@ describe('SidenavComponent', () => {
       imports: [
         RouterTestingModule,
         BrowserAnimationsModule,
+        MatIconModule,
         MatSidenavModule,
         MatMenuModule,
         MatToolbarModule,

@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatToolbarModule } from '@angular/material';
+import { MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule } from '@angular/material';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
@@ -19,9 +20,13 @@ describe('AccountComponent', () => {
         CapitalizePipe,
       ],
       imports: [
+        NoopAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatInputModule,
       ],
     })
       .compileComponents();
