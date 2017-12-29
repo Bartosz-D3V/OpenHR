@@ -9,7 +9,6 @@ import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
-import org.openhr.enumeration.Role;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +30,7 @@ public class SubjectDAOTest {
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
-  private final static Subject mockSubject = new Subject("John", "Xavier", Role.EMPLOYEE, mockPersonalInformation,
+  private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
 
   @Autowired
@@ -55,7 +54,6 @@ public class SubjectDAOTest {
     assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
     assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
     assertEquals(mockSubject.getLastName(), actualSubject.getLastName());
-    assertEquals(mockSubject.getRole(), actualSubject.getRole());
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
@@ -98,7 +96,6 @@ public class SubjectDAOTest {
     assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
     assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
     assertEquals(mockSubject.getLastName(), actualSubject.getLastName());
-    assertEquals(mockSubject.getRole(), actualSubject.getRole());
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
@@ -146,7 +143,6 @@ public class SubjectDAOTest {
 
     mockSubject.setFirstName("John");
     mockSubject.setLastName("Blacksmith");
-    mockSubject.setRole(Role.HRTEAMMEMBER);
     mockSubject.getPersonalInformation().setMiddleName("Michel");
     mockSubject.getPersonalInformation().setDateOfBirth(null);
     mockSubject.getContactInformation().setEmail("k@s.com");
@@ -166,7 +162,6 @@ public class SubjectDAOTest {
     assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
     assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
     assertEquals(mockSubject.getLastName(), actualSubject.getLastName());
-    assertEquals(mockSubject.getRole(), actualSubject.getRole());
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),
