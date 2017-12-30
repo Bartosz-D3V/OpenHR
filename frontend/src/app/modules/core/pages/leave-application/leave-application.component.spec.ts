@@ -88,6 +88,7 @@ describe('LeaveApplicationComponent', () => {
     fixture = TestBed.createComponent(LeaveApplicationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
     component.leaveApplication = mockLeave;
   });
 

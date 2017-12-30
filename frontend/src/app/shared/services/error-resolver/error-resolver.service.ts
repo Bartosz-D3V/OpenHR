@@ -11,6 +11,11 @@ export class ErrorResolverService {
   constructor(public dialog: MatDialog) {
   }
 
+  public handleError(error: any): void {
+    console.log('An error occurred', error);
+    this.createAlert(error);
+  }
+
   public createAlert(error: any): void {
     const dialogRef = this.dialog.open(StaticModalComponent, {
       width: '250px',
