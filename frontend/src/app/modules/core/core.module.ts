@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import 'hammerjs/hammer';
 
+import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
 import { NamePipe } from '../../shared/pipes/name/name.pipe';
 import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
@@ -29,8 +30,8 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { AppRoutingModule } from '../../app-routing.module';
 import { EmployeesComponent } from './pages/employees/employees.component';
+import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { EmployeesComponent } from './pages/employees/employees.component';
     AccountComponent,
     SettingsComponent,
     EmployeesComponent,
+    AddEmployeeComponent,
   ],
 })
 export class CoreModule {
