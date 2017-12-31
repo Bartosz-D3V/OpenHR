@@ -9,6 +9,7 @@ import { CoreWrapperComponent } from '../modules/core/core-wrapper/core-wrapper.
 import { AccountComponent } from '../modules/core/pages/account/account.component';
 import { SettingsComponent } from '../modules/core/pages/settings/settings.component';
 import { EmployeesComponent } from '../modules/core/pages/employees/employees.component';
+import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-employee.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -33,6 +34,11 @@ export const routeDefinitions: Routes = [
       {
         path: 'employees',
         component: EmployeesComponent,
+        outlet: 'core',
+      },
+      {
+        path: 'add-employee',
+        component: AddEmployeeComponent,
         outlet: 'core',
       },
       {
