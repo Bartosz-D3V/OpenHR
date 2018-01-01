@@ -1,21 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {ISubscription} from 'rxjs/Subscription';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {RegularExpressions} from '../../../../shared/constants/regexps/regular-expressions';
-import {SubjectDetailsService} from '../../../../shared/services/subject/subject-details.service';
-import {ConfigService} from '../../../../shared/services/config/config.service';
+import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ConfigService } from '../../../../shared/services/config/config.service';
+import { Subject } from '../../../../shared/domain/subject/subject';
 
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.scss'],
-  providers: [ConfigService, SubjectDetailsService],
+  providers: [
+    ConfigService,
+    SubjectDetailsService,
+  ],
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   private $newSubject: ISubscription;
+  public subject: Subject;
 
   public personalInformationFormGroup: FormGroup = new FormGroup({
     firstNameFormControl: new FormControl('', [

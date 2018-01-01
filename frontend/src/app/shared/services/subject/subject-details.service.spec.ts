@@ -4,11 +4,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { ErrorResolverService } from '../error-resolver/error-resolver.service';
 
-import { Subject } from '../../../modules/core/pages/personal-details/domain/subject';
-import { Address } from '../../../modules/core/pages/personal-details/domain/address';
-import { PersonalInformation } from '../../../modules/core/pages/personal-details/domain/personal-information';
-import { ContactInformation } from '../../../modules/core/pages/personal-details/domain/contact-information';
-import { EmployeeInformation } from '../../../modules/core/pages/personal-details/domain/employee-information';
+import { Subject } from '../../domain/subject/subject';
+import { Address } from '../../domain/subject/address';
+import { PersonalInformation } from '../../domain/subject/personal-information';
+import { ContactInformation } from '../../domain/subject/contact-information';
+import { EmployeeInformation } from '../../domain/subject/employee-information';
 import { SystemVariables } from '../../../config/system-variables';
 import { SubjectDetailsService } from './subject-details.service';
 

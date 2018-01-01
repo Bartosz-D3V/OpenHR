@@ -21,11 +21,11 @@ import { StaticModalComponent } from '../../../../shared/components/static-modal
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 
-import { Subject } from './domain/subject';
-import { Address } from './domain/address';
-import { PersonalInformation } from './domain/personal-information';
-import { EmployeeInformation } from './domain/employee-information';
-import { ContactInformation } from './domain/contact-information';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { Address } from '../../../../shared/domain/subject/address';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
+import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 
 describe('PersonalDetailsComponent', () => {

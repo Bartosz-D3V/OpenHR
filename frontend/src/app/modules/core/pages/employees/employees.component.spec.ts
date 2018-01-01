@@ -8,8 +8,8 @@ import { PageHeaderComponent } from '../../../../shared/components/page-header/p
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { EmployeesComponent } from './employees.component';
 import { Employee } from './domain/employee';
-import { Subject } from '../personal-details/domain/subject';
-import { EmployeeInformation } from '../personal-details/domain/employee-information';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { EmployeeData } from './employee-data';
 import { EmployeesService } from './service/employees.service';
 import { Observable } from 'rxjs/Observable';

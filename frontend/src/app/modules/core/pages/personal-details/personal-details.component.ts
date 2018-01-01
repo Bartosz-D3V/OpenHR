@@ -6,13 +6,16 @@ import { ISubscription } from 'rxjs/Subscription';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { Subject } from './domain/subject';
+import { Subject } from '../../../../shared/domain/subject/subject';
 
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.scss'],
-  providers: [SubjectDetailsService, ConfigService],
+  providers: [
+    SubjectDetailsService,
+    ConfigService,
+  ],
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
