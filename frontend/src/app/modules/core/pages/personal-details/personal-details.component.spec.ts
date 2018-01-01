@@ -21,12 +21,12 @@ import { StaticModalComponent } from '../../../../shared/components/static-modal
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 
-import { Subject } from './domain/subject';
-import { Address } from './domain/address';
-import { PersonalInformation } from './domain/personal-information';
-import { EmployeeInformation } from './domain/employee-information';
-import { ContactInformation } from './domain/contact-information';
-import { SubjectDetailsService } from './service/subject-details.service';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { Address } from '../../../../shared/domain/subject/address';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
+import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
+import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -34,7 +34,7 @@ describe('PersonalDetailsComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '123AS', new Date(), new Date());
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date(), '123AS');
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];

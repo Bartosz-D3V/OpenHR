@@ -1,4 +1,4 @@
-import { Subject } from '../../personal-details/domain/subject';
+import { Subject } from '../../../../../shared/domain/subject/subject';
 import { Manager } from './manager';
 
 export class Employee {
