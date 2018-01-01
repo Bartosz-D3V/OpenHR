@@ -7,9 +7,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { Subject } from '../domain/subject';
-import { SystemVariables } from '../../../../../config/system-variables';
+import { ErrorResolverService } from '../error-resolver/error-resolver.service';
+import { Subject } from '../../../modules/core/pages/personal-details/domain/subject';
+import { SystemVariables } from '../../../config/system-variables';
 
 @Injectable()
 export class SubjectDetailsService {
