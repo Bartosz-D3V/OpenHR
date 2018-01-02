@@ -82,7 +82,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     selfAssignFormControl: new FormControl([]),
   });
 
-  public step = 0;
+  public stepNumber = 0;
 
   constructor() {
   }
@@ -93,20 +93,20 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  public setStep(number: number): void {
-    this.step = number;
+  public setStep(stepNumber: number): void {
+    this.stepNumber = stepNumber;
   }
 
   public getStep(): number {
-    return this.step;
+    return this.stepNumber;
   }
 
   public nextStep(): void {
-    this.step++;
+    this.stepNumber++;
   }
 
   public prevStep(): void {
-    this.step--;
+    this.stepNumber--;
   }
 
   public isValid(): boolean {

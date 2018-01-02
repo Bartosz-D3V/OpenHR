@@ -83,7 +83,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     endDateFormControl: new FormControl('', []),
   });
 
-  public step = 0;
+  public stepNumber = 0;
   public subject: Subject;
 
   constructor(private _subjectDetailsService: SubjectDetailsService,
@@ -98,20 +98,20 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     this.$currentSubject.unsubscribe();
   }
 
-  public setStep(number: number): void {
-    this.step = number;
+  public setStep(stepNumber: number): void {
+    this.stepNumber = stepNumber;
   }
 
   public getStep(): number {
-    return this.step;
+    return this.stepNumber;
   }
 
   public nextStep(): void {
-    this.step++;
+    this.stepNumber++;
   }
 
   public prevStep(): void {
-    this.step--;
+    this.stepNumber--;
   }
 
   public isValid(): boolean {
