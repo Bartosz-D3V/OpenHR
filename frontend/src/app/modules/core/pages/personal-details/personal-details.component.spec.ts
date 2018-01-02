@@ -106,9 +106,9 @@ describe('PersonalDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contains step variable set to 0', () => {
-    expect(component.step).toBeDefined();
-    expect(component.step).toEqual(0);
+  it('should contains stepNumber variable set to 0', () => {
+    expect(component.stepNumber).toBeDefined();
+    expect(component.stepNumber).toEqual(0);
   });
 
   describe('domain object', () => {
@@ -433,30 +433,30 @@ describe('PersonalDetailsComponent', () => {
 
   describe('methods for expansion panel', () => {
 
-    it('setStep should set the step', () => {
+    it('setStep should set the stepNumber', () => {
       component.setStep(1);
 
-      expect(component.step).toEqual(1);
+      expect(component.stepNumber).toEqual(1);
     });
 
-    it('get should return current step', () => {
-      component.step = 1;
+    it('get should return current stepNumber', () => {
+      component.stepNumber = 1;
 
       expect(component.getStep()).toEqual(1);
     });
 
-    it('next step should increase current step', () => {
-      component.step = 0;
+    it('next stepNumber should increase current stepNumber', () => {
+      component.stepNumber = 0;
       component.nextStep();
 
-      expect(component.step).toEqual(1);
+      expect(component.stepNumber).toEqual(1);
     });
 
-    it('previous step should decrease current step', () => {
-      component.step = 1;
+    it('previous stepNumber should decrease current stepNumber', () => {
+      component.stepNumber = 1;
       component.prevStep();
 
-      expect(component.step).toEqual(0);
+      expect(component.stepNumber).toEqual(0);
     });
 
   });

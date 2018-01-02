@@ -2,7 +2,7 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">New employee details</mat-toolbar>
   <mat-accordion>
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+    <mat-expansion-panel [expanded]="stepNumber === 0" (opened)="setStep(0)" hideToggle="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Personal information
@@ -63,7 +63,7 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+    <mat-expansion-panel [expanded]="stepNumber === 1" (opened)="setStep(1)" hideToggle="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Contact information
@@ -160,7 +160,7 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+    <mat-expansion-panel [expanded]="stepNumber === 2" (opened)="setStep(2)" hideToggle="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Employee details
