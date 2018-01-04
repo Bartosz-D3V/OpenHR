@@ -8,8 +8,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { ErrorResolverService } from '../error-resolver/error-resolver.service';
-import { Subject } from '../../domain/subject/subject';
 import { SystemVariables } from '../../../config/system-variables';
+import { Subject } from '../../domain/subject/subject';
 
 @Injectable()
 export class SubjectDetailsService {
@@ -32,6 +32,17 @@ export class SubjectDetailsService {
   public getCurrentSubject(): Observable<Subject> {
     return this._http
       .get<Subject>(this.url, {
+        headers: this.headers,
+      })
+      .catch((error: any) => {
+        this.handleError(error);
+        return Observable.of(error);
+      });
+  }
+
+  public createSubject(subject: Subject): Observable<Subject> {
+    return this._http
+      .post(this.url, subject, {
         headers: this.headers,
       })
       .catch((error: any) => {

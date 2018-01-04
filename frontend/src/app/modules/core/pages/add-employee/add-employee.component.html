@@ -214,5 +214,7 @@
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
-  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()">Submit</button>
+  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()"
+          (onClick)="createSubject(subject)">Submit
+  </button>
 </section>
