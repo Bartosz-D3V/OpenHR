@@ -84,7 +84,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   public stepNumber = 0;
 
-  constructor() {
+  constructor(private _configService: ConfigService,
+              private _subjectDetailsService: SubjectDetailsService) {
   }
 
   ngOnInit(): void {
@@ -113,6 +114,14 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     return this.personalInformationFormGroup.valid &&
       this.contactInformationFormGroup.valid &&
       this.employeeDetailsFormGroup.valid;
+  }
+
+  public createSubject(subject: Subject): void {
+    if (this.isValid()) {
+      this.$newSubject = this._subjectDetailsService
+        .createSubject(subject)
+        .subscribe();
+    }
   }
 
 }

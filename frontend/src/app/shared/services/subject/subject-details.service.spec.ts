@@ -76,13 +76,13 @@ describe('PersonalDetailsService', () => {
 
     const apiLink: string = SystemVariables.API_URL + 'my-details';
 
-    it('should query current service URL', fakeAsync(() => {
-      personalDetailsService.getCurrentSubject().subscribe();
-
-      http.expectOne(apiLink);
-    }));
-
     describe('getCurrentSubject', () => {
+
+      it('should query current service URL', fakeAsync(() => {
+        personalDetailsService.getCurrentSubject().subscribe();
+
+        http.expectOne(apiLink);
+      }));
 
       it('should return an Observable of type Subject', fakeAsync(() => {
         let result: Object;
@@ -113,6 +113,51 @@ describe('PersonalDetailsService', () => {
         http.expectOne({
           url: apiLink,
           method: 'GET',
+        }).error(new ErrorEvent('404'));
+        tick();
+
+        expect(personalDetailsService['handleError']).toHaveBeenCalled();
+      }));
+
+    });
+
+    describe('createSubject', () => {
+
+      it('should query current service URL', fakeAsync(() => {
+        personalDetailsService.createSubject().subscribe();
+
+        http.expectOne(apiLink);
+      }));
+
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        personalDetailsService.createSubject(mockSubject)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: apiLink,
+          method: 'POST',
+        }).flush(mockSubject);
+        tick();
+
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
+
+      it('should resolve error if server is down', fakeAsync(() => {
+        spyOn(personalDetailsService, 'handleError');
+        let result: Object;
+        let error: any;
+        personalDetailsService.createSubject(mockSubject)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: apiLink,
+          method: 'POST',
         }).error(new ErrorEvent('404'));
         tick();
 

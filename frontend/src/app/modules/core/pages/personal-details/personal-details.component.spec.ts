@@ -6,7 +6,13 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
-  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatToolbarModule,
+  MatDatepickerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatToolbarModule,
 } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
@@ -112,6 +118,7 @@ describe('PersonalDetailsComponent', () => {
   });
 
   describe('domain object', () => {
+
     it('should accept middle name as optional parameter', () => {
       mockPersonalInformation.middleName = 'Adam';
 
@@ -429,6 +436,7 @@ describe('PersonalDetailsComponent', () => {
       setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
+
   });
 
   describe('methods for expansion panel', () => {

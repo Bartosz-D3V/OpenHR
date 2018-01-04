@@ -1,28 +1,28 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {AddEmployeeComponent} from './add-employee.component';
-import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AddEmployeeComponent } from './add-employee.component';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import Spy = jasmine.Spy;
-import {Address} from '../../../../shared/domain/subject/address';
-import {EmployeeInformation} from '../../../../shared/domain/subject/employee-information';
-import {Subject} from '../../../../shared/domain/subject/subject';
-import {ContactInformation} from '../../../../shared/domain/subject/contact-information';
-import {PersonalInformation} from '../../../../shared/domain/subject/personal-information';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {SubjectDetailsService} from '../../../../shared/services/subject/subject-details.service';
-import {ConfigService} from '../../../../shared/services/config/config.service';
-import {ErrorResolverService} from '../../../../shared/services/error-resolver/error-resolver.service';
+import { Address } from '../../../../shared/domain/subject/address';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ConfigService } from '../../../../shared/services/config/config.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import {
   MatCheckboxModule,
   MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
   MatToolbarModule
 } from '@angular/material';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {PageHeaderComponent} from '../../../../shared/components/page-header/page-header.component';
-import {StaticModalComponent} from '../../../../shared/components/static-modal/static-modal.component';
-import {CapitalizePipe} from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -35,6 +35,8 @@ describe('AddEmployeeComponent', () => {
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
 
+  let subjectDetailsService: SubjectDetailsService;
+
   @Injectable()
   class FakeConfigService {
     public getContractTypes(): any {
@@ -46,6 +48,10 @@ describe('AddEmployeeComponent', () => {
   class FakeSubjectDetailsService {
     public getCurrentSubject(): any {
       return Observable.of(mockSubject);
+    }
+
+    public createSubject(subject: Subject): any {
+      return Observable.of(subject);
     }
   }
 
@@ -97,6 +103,7 @@ describe('AddEmployeeComponent', () => {
     fixture = TestBed.createComponent(AddEmployeeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    subjectDetailsService = TestBed.get(SubjectDetailsService);
   });
 
   it('should create', () => {
@@ -437,6 +444,28 @@ describe('AddEmployeeComponent', () => {
       component.prevStep();
 
       expect(component.stepNumber).toEqual(0);
+    });
+
+  });
+
+  xdescribe('create subject method', () => {
+
+    it('should call service method if the form is valid', () => {
+      spyOn(component, 'isValid').and.returnValue(true);
+      spyOn(subjectDetailsService, 'createSubject');
+
+      component.createSubject(mockSubject);
+
+      expect(subjectDetailsService.createSubject).toHaveBeenCalled();
+    });
+
+    it('should not call service method if the form is invalid', () => {
+      spyOn(component, 'isValid').and.returnValue(false);
+      spyOn(subjectDetailsService, 'createSubject');
+
+      component.createSubject(mockSubject);
+
+      expect(subjectDetailsService.createSubject).not.toHaveBeenCalled();
     });
 
   });
