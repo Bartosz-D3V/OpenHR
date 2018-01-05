@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
   private final static ObjectMapper objectMapper = new ObjectMapper();
-  private final static String MOCK_URL = "localhost:8080/api/personal-details";
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
 
   @Autowired

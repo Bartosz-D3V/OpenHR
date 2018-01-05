@@ -8,6 +8,7 @@ import { SubjectDetailsService } from '../../../../shared/services/subject/subje
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { RegisterDetails } from '../../../../shared/domain/register/register-details';
+import { Employee } from '../employees/domain/employee';
 
 @Component({
   selector: 'app-add-employee',
@@ -137,12 +138,27 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public createSubject(subject: Subject): void {
+  public submitForm(subject: Subject, selfAssign: boolean): void {
     if (this.isValid()) {
-      this.$newSubject = this._subjectDetailsService
-        .createSubject(subject)
-        .subscribe();
+      this.createSubject(subject);
+      if (selfAssign) {
+        this.assignEmployeeToManager();
+      }
     }
+  }
+
+  public createSubject(subject: Subject): void {
+    this.$newSubject = this._subjectDetailsService
+      .createSubject(subject)
+      .subscribe();
+  }
+
+  public assignEmployeeToManager(): void {
+    const employee: Employee = new Employee();
+    employee.subject = this.subject;
+    /**
+     * call a service
+     */
   }
 
 }

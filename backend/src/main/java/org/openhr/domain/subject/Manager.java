@@ -62,8 +62,4 @@ public class Manager implements Serializable {
   public void setEmployees(final Set<Employee> employees) {
     this.employees = employees;
   }
-
-  public void addEmployee(final Employee employee) {
-    employees.add(employee);
-  }
 }
