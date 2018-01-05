@@ -1,28 +1,29 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
-import { AddEmployeeComponent } from './add-employee.component';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import Spy = jasmine.Spy;
-import { Address } from '../../../../shared/domain/subject/address';
-import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import {
-  MatCheckboxModule,
-  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
+  MatCheckboxModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
   MatToolbarModule
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+import { Observable } from 'rxjs/Observable';
+
+import { Address } from '../../../../shared/domain/subject/address';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ConfigService } from '../../../../shared/services/config/config.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { AddEmployeeComponent } from './add-employee.component';
+import Spy = jasmine.Spy;
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -446,6 +447,20 @@ describe('AddEmployeeComponent', () => {
       expect(component.stepNumber).toEqual(0);
     });
 
+  });
+
+  describe('arePasswordsIdentical', () => {
+    it('arePasswordsIdentical should return true if passwords are the same', () => {
+      expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .hasError('passwordDoNotMatch')).toBeFalsy();
+    });
+
+    it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
+      expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .hasError('passwordDoNotMatch')).toBeTruthy();
+    });
   });
 
   xdescribe('create subject method', () => {
