@@ -7,6 +7,7 @@ import { RegularExpressions } from '../../../../shared/constants/regexps/regular
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
+import { RegisterDetails } from '../../../../shared/domain/register/register-details';
 
 @Component({
   selector: 'app-add-employee',
@@ -21,6 +22,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   private $newSubject: ISubscription;
   public subject: Subject;
+  public registerDetails: RegisterDetails;
 
   public personalInformationFormGroup: FormGroup = new FormGroup({
     firstNameFormControl: new FormControl('', [
@@ -82,6 +84,16 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     selfAssignFormControl: new FormControl([]),
   });
 
+  public loginInformationFormGroup: FormGroup = new FormGroup({
+    passwordFormControl: new FormControl('', [
+      Validators.required,
+    ]),
+
+    repeatPasswordFormControl: new FormControl('', [
+      Validators.required,
+    ]),
+  });
+
   public stepNumber = 0;
 
   constructor(private _configService: ConfigService,
@@ -114,6 +126,15 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     return this.personalInformationFormGroup.valid &&
       this.contactInformationFormGroup.valid &&
       this.employeeDetailsFormGroup.valid;
+  }
+
+  public arePasswordsIdentical(password1: string, password2: string): boolean {
+    if (password1 !== password2) {
+      this.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .setErrors({'passwordDoNotMatch': true});
+      return false;
+    }
+    return true;
   }
 
   public createSubject(subject: Subject): void {
