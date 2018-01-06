@@ -29,6 +29,7 @@ public class Manager implements Serializable {
   private Subject subject;
 
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @NotFound(action = NotFoundAction.IGNORE)
   private Set<Employee> employees;
 
   public Manager() {
