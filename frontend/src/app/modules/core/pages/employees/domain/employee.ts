@@ -2,11 +2,11 @@ import { Subject } from '../../../../../shared/domain/subject/subject';
 import { Manager } from './manager';
 
 export class Employee {
-  public employeeId: number;
+  public employeeId?: number;
   private _subject?: Subject;
   private _manager?: Manager;
 
-  constructor(employeeId: number) {
+  constructor(employeeId?: number) {
     this.employeeId = employeeId;
   }
 

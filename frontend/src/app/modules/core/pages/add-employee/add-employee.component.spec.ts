@@ -463,10 +463,45 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
+  describe('submitForm method', () => {
+
+    it('should call createSubject method if the form is valid', () => {
+      spyOn(component, 'createSubject');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, false);
+
+      expect(component.createSubject).toHaveBeenCalled();
+    });
+
+    it('should not call createSubject method if the form is not valid', () => {
+      spyOn(component, 'createSubject');
+      spyOn(component, 'isValid').and.returnValue(false);
+      component.submitForm(mockSubject, false);
+
+      expect(component.createSubject).not.toHaveBeenCalled();
+    });
+
+    it('should call assignEmployeeToManager method if the selfAssign is true', () => {
+      spyOn(component, 'assignEmployeeToManager');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, true);
+
+      expect(component.assignEmployeeToManager).toHaveBeenCalled();
+    });
+
+    it('should not call assignEmployeeToManager method if the selfAssign is false', () => {
+      spyOn(component, 'assignEmployeeToManager');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, false);
+
+      expect(component.assignEmployeeToManager).not.toHaveBeenCalled();
+    });
+
+  });
+
   xdescribe('create subject method', () => {
 
     it('should call service method if the form is valid', () => {
-      spyOn(component, 'isValid').and.returnValue(true);
       spyOn(subjectDetailsService, 'createSubject');
 
       component.createSubject(mockSubject);
@@ -475,7 +510,6 @@ describe('AddEmployeeComponent', () => {
     });
 
     it('should not call service method if the form is invalid', () => {
-      spyOn(component, 'isValid').and.returnValue(false);
       spyOn(subjectDetailsService, 'createSubject');
 
       component.createSubject(mockSubject);
