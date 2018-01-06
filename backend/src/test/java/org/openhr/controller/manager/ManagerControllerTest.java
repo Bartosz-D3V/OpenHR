@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -115,7 +116,7 @@ public class ManagerControllerTest {
     final Employee employee = new Employee();
     employee.setManager(new Manager());
     final String employeeAsJson = objectMapper.writeValueAsString(employee);
-    doThrow(mockException).when(managerFacade).addEmployeeToManager(employee, anyLong());
+    doThrow(mockException).when(managerFacade).addEmployeeToManager(anyObject(), anyLong());
 
     final MvcResult result = mockMvc
       .perform(post("/manager/{managerId}/employeeAssignment", 1L)

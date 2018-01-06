@@ -9,6 +9,8 @@ import org.openhr.exception.SubjectDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -42,6 +44,7 @@ public class ManagerDAOImpl implements ManagerDAO {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED)
   public void updateManager(final Manager manager) {
     try {
       final Session session = sessionFactory.openSession();
@@ -56,6 +59,7 @@ public class ManagerDAOImpl implements ManagerDAO {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Manager getManager(final long managerId) throws SubjectDoesNotExistException {
     Manager manager;
     try {
@@ -80,6 +84,12 @@ public class ManagerDAOImpl implements ManagerDAO {
     final Set<Employee> employees = manager.getEmployees();
     employees.add(employee);
     manager.setEmployees(employees);
-    updateManager(manager);
+    try {
+      final Session session = sessionFactory.openSession();
+      session.merge(manager);
+      session.close();
+    } catch (HibernateException e) {
+      log.error(e.getLocalizedMessage());
+    }
   }
 }

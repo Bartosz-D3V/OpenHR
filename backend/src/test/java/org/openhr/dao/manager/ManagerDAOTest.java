@@ -78,26 +78,4 @@ public class ManagerDAOTest {
     assertNotEquals(actualManager.getManagerId(), 0);
     assertEquals(mockManager.getManagerId(), actualManager.getManagerId());
   }
-
-  @Test
-  public void addEmployeeToManagerShouldAddEmployeeToManagersEmployeesSet() throws SubjectDoesNotExistException {
-    Manager mockManager = new Manager();
-    Session session = sessionFactory.openSession();
-    mockManager = (Manager) session.merge(mockManager);
-    session.save(mockSubject1);
-    session.save(mockSubject2);
-    mockEmployee1.setManager(mockManager);
-    mockEmployee2.setManager(mockManager);
-    session.save(mockEmployee1);
-    session.save(mockEmployee2);
-    session.close();
-    managerDAO.addEmployeeToManager(mockEmployee1, mockManager.getManagerId());
-    managerDAO.addEmployeeToManager(mockEmployee2, mockManager.getManagerId());
-    session = sessionFactory.openSession();
-    mockManager = session.get(Manager.class, mockManager.getManagerId());
-    session.close();
-
-    assertNotEquals(0, mockManager.getManagerId());
-    assertEquals(2, mockManager.getEmployees().size());
-  }
 }

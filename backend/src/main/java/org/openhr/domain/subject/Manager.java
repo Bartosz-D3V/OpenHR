@@ -25,7 +25,6 @@ public class Manager implements Serializable {
 
   @OneToOne(mappedBy = "manager")
   @PrimaryKeyJoinColumn
-  @NotFound(action = NotFoundAction.IGNORE)
   private Subject subject;
 
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
