@@ -40,7 +40,8 @@ public class ManagerController {
     return managerFacade.getEmployees(managerId);
   }
 
-  @RequestMapping(name = "/{managerId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "/{managerId}/employeeAssignment", method = RequestMethod.POST,
+    consumes = {MediaType.APPLICATION_JSON_VALUE})
   public void addEmployeeToManager(@RequestBody final Employee employee, @PathVariable final long managerId)
     throws SubjectDoesNotExistException {
     managerFacade.addEmployeeToManager(employee, managerId);

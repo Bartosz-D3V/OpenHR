@@ -4,8 +4,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.domain.subject.ContactInformation;
 import org.openhr.domain.subject.Employee;
+import org.openhr.domain.subject.EmployeeInformation;
 import org.openhr.domain.subject.Manager;
+import org.openhr.domain.subject.PersonalInformation;
 import org.openhr.domain.subject.Subject;
 import org.openhr.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,12 @@ import static org.junit.Assert.assertNotEquals;
 @SpringBootTest
 @Transactional
 public class ManagerDAOTest {
-  final static Subject mockSubject1 = new Subject("John", "Black");
-  final static Subject mockSubject2 = new Subject("Alex", "White");
-  final static Employee mockEmployee1 = new Employee(mockSubject1);
-  final static Employee mockEmployee2 = new Employee(mockSubject2);
+  private final static Subject mockSubject1 = new Subject("John", "Xavier", new PersonalInformation(),
+    new ContactInformation(), new EmployeeInformation());
+  private final static Subject mockSubject2 = new Subject("Alex", "White", new PersonalInformation(),
+    new ContactInformation(), new EmployeeInformation());
+  private final static Employee mockEmployee1 = new Employee(mockSubject1);
+  private final static Employee mockEmployee2 = new Employee(mockSubject2);
 
   @Autowired
   private SessionFactory sessionFactory;
