@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { LandingComponent } from '../modules/landing/pages/landing/landing.component';
 import { PersonalDetailsComponent } from '../modules/core/pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from '../modules/core/pages/leave-application/leave-application.component';
 import { DelegationComponent } from '../modules/core/pages/delegation/delegation.component';
@@ -10,6 +9,7 @@ import { AccountComponent } from '../modules/core/pages/account/account.componen
 import { SettingsComponent } from '../modules/core/pages/settings/settings.component';
 import { EmployeesComponent } from '../modules/core/pages/employees/employees.component';
 import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-employee.component';
+import { LoginComponent } from '../modules/landing/pages/login/login.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -60,12 +60,12 @@ export const routeDefinitions: Routes = [
   },
   {
     path: '',
-    redirectTo: 'welcome',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'welcome',
-    component: LandingComponent,
+    path: 'login',
+    component: LoginComponent,
     pathMatch: 'full',
   },
 ];

@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import 'hammerjs/hammer';
 
-import { LandingComponent } from './pages/landing/landing.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   imports: [
     CommonModule,
   ],
   declarations: [
-    LandingComponent,
+    LoginComponent,
   ],
 })
 export class LandingModule {
