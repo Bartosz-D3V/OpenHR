@@ -90,6 +90,7 @@ public class ManagerDAOImpl implements ManagerDAO {
       session.close();
     } catch (HibernateException e) {
       log.error(e.getLocalizedMessage());
+      throw e;
     }
   }
 }
