@@ -3,23 +3,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISubscription } from 'rxjs/Subscription';
 
-import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ConfigService } from '../../../../shared/services/config/config.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
+import { RegisterDetails } from '../../../../shared/domain/register/register-details';
+import { Employee } from '../employees/domain/employee';
 
 @Component({
-  selector: 'app-personal-details',
-  templateUrl: './personal-details.component.html',
-  styleUrls: ['./personal-details.component.scss'],
+  selector: 'app-add-employee',
+  templateUrl: './add-employee.component.html',
+  styleUrls: ['./add-employee.component.scss'],
   providers: [
-    SubjectDetailsService,
     ConfigService,
+    SubjectDetailsService,
   ],
 })
-export class PersonalDetailsComponent implements OnInit, OnDestroy {
+export class AddEmployeeComponent implements OnInit, OnDestroy {
 
-  private $currentSubject: ISubscription;
+  private $newSubject: ISubscription;
+  public subject: Subject;
+  public registerDetails: RegisterDetails;
 
   public personalInformationFormGroup: FormGroup = new FormGroup({
     firstNameFormControl: new FormControl('', [
@@ -74,28 +78,33 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
       Validators.pattern(RegularExpressions.NIN),
     ]),
 
-    employeeIdFormControl: new FormControl('', [
-      Validators.required,
-    ]),
-
     startDateFormControl: new FormControl('', []),
 
     endDateFormControl: new FormControl('', []),
+
+    selfAssignFormControl: new FormControl([]),
+  });
+
+  public loginInformationFormGroup: FormGroup = new FormGroup({
+    passwordFormControl: new FormControl('', [
+      Validators.required,
+    ]),
+
+    repeatPasswordFormControl: new FormControl('', [
+      Validators.required,
+    ]),
   });
 
   public stepNumber = 0;
-  public subject: Subject;
 
-  constructor(private _subjectDetailsService: SubjectDetailsService,
-              private _configService: ConfigService) {
+  constructor(private _configService: ConfigService,
+              private _subjectDetailsService: SubjectDetailsService) {
   }
 
   ngOnInit(): void {
-    this.getCurrentSubject();
   }
 
   ngOnDestroy(): void {
-    this.$currentSubject.unsubscribe();
   }
 
   public setStep(stepNumber: number): void {
@@ -120,12 +129,36 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
       this.employeeDetailsFormGroup.valid;
   }
 
-  getCurrentSubject(): void {
-    this.$currentSubject = this._subjectDetailsService
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
-        this.subject = response;
-      });
+  public arePasswordsIdentical(password1: string, password2: string): boolean {
+    if (password1 !== password2) {
+      this.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .setErrors({'passwordDoNotMatch': true});
+      return false;
+    }
+    return true;
+  }
+
+  public submitForm(subject: Subject, selfAssign: boolean): void {
+    if (this.isValid()) {
+      this.createSubject(subject);
+      if (selfAssign) {
+        this.assignEmployeeToManager();
+      }
+    }
+  }
+
+  public createSubject(subject: Subject): void {
+    this.$newSubject = this._subjectDetailsService
+      .createSubject(subject)
+      .subscribe();
+  }
+
+  public assignEmployeeToManager(): void {
+    const employee: Employee = new Employee();
+    employee.subject = this.subject;
+    /**
+     * call a service
+     */
   }
 
 }

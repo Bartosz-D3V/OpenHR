@@ -1,49 +1,42 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
-  MatDatepickerModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatNativeDateModule,
-  MatToolbarModule,
+  MatCheckboxModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
+  MatToolbarModule
 } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 
-import Spy = jasmine.Spy;
-
-import { PersonalDetailsComponent } from './personal-details.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { Address } from '../../../../shared/domain/subject/address';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { Subject } from '../../../../shared/domain/subject/subject';
-import { Address } from '../../../../shared/domain/subject/address';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
-import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ConfigService } from '../../../../shared/services/config/config.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { AddEmployeeComponent } from './add-employee.component';
+import Spy = jasmine.Spy;
 
-describe('PersonalDetailsComponent', () => {
-  let component: PersonalDetailsComponent;
-  let fixture: ComponentFixture<PersonalDetailsComponent>;
+describe('AddEmployeeComponent', () => {
+  let component: AddEmployeeComponent;
+  let fixture: ComponentFixture<AddEmployeeComponent>;
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date(), '123AS');
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date());
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
+
+  let subjectDetailsService: SubjectDetailsService;
 
   @Injectable()
   class FakeConfigService {
@@ -57,6 +50,10 @@ describe('PersonalDetailsComponent', () => {
     public getCurrentSubject(): any {
       return Observable.of(mockSubject);
     }
+
+    public createSubject(subject: Subject): any {
+      return Observable.of(subject);
+    }
   }
 
   @Injectable()
@@ -68,7 +65,7 @@ describe('PersonalDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        PersonalDetailsComponent,
+        AddEmployeeComponent,
         PageHeaderComponent,
         StaticModalComponent,
         CapitalizePipe,
@@ -86,6 +83,7 @@ describe('PersonalDetailsComponent', () => {
         MatIconModule,
         MatFormFieldModule,
         MatInputModule,
+        MatCheckboxModule,
       ],
       providers: [
         {
@@ -103,22 +101,21 @@ describe('PersonalDetailsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonalDetailsComponent);
+    fixture = TestBed.createComponent(AddEmployeeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    subjectDetailsService = TestBed.get(SubjectDetailsService);
   });
 
-  it('should be created', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
-
   it('should contains stepNumber variable set to 0', () => {
     expect(component.stepNumber).toBeDefined();
     expect(component.stepNumber).toEqual(0);
   });
 
   describe('domain object', () => {
-
     it('should accept middle name as optional parameter', () => {
       mockPersonalInformation.middleName = 'Adam';
 
@@ -367,28 +364,12 @@ describe('PersonalDetailsComponent', () => {
       expect(ninFormControl.valid).toBeTruthy();
       ninFormControl.reset();
     });
-
   });
 
-  describe('EmployeeID validator', () => {
-    let employeeIdFormControl: AbstractControl;
+  it('Checkbox for self-assign employee should be ticked by default', () => {
+    const selfAssignFormControl: AbstractControl = component.employeeDetailsFormGroup.controls['selfAssignFormControl'];
 
-    beforeEach(() => {
-      employeeIdFormControl = component.employeeDetailsFormGroup.controls['employeeIdFormControl'];
-      employeeIdFormControl.reset();
-    });
-
-    it('should mark form as invalid if input is empty', () => {
-      expect(employeeIdFormControl.valid).toBeFalsy();
-    });
-
-    it('should mark form as valid if input is not empty', () => {
-      const mockEmployeeId = '123AX';
-      employeeIdFormControl.setValue(mockEmployeeId);
-
-      expect(employeeIdFormControl.valid).toBeTruthy();
-    });
-
+    expect(selfAssignFormControl.value).toBeTruthy();
   });
 
   describe('isValid method', () => {
@@ -436,7 +417,6 @@ describe('PersonalDetailsComponent', () => {
       setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
-
   });
 
   describe('methods for expansion panel', () => {
@@ -465,6 +445,76 @@ describe('PersonalDetailsComponent', () => {
       component.prevStep();
 
       expect(component.stepNumber).toEqual(0);
+    });
+
+  });
+
+  describe('arePasswordsIdentical', () => {
+    it('arePasswordsIdentical should return true if passwords are the same', () => {
+      expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .hasError('passwordDoNotMatch')).toBeFalsy();
+    });
+
+    it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
+      expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
+        .hasError('passwordDoNotMatch')).toBeTruthy();
+    });
+  });
+
+  describe('submitForm method', () => {
+
+    it('should call createSubject method if the form is valid', () => {
+      spyOn(component, 'createSubject');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, false);
+
+      expect(component.createSubject).toHaveBeenCalled();
+    });
+
+    it('should not call createSubject method if the form is not valid', () => {
+      spyOn(component, 'createSubject');
+      spyOn(component, 'isValid').and.returnValue(false);
+      component.submitForm(mockSubject, false);
+
+      expect(component.createSubject).not.toHaveBeenCalled();
+    });
+
+    it('should call assignEmployeeToManager method if the selfAssign is true', () => {
+      spyOn(component, 'assignEmployeeToManager');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, true);
+
+      expect(component.assignEmployeeToManager).toHaveBeenCalled();
+    });
+
+    it('should not call assignEmployeeToManager method if the selfAssign is false', () => {
+      spyOn(component, 'assignEmployeeToManager');
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.submitForm(mockSubject, false);
+
+      expect(component.assignEmployeeToManager).not.toHaveBeenCalled();
+    });
+
+  });
+
+  xdescribe('create subject method', () => {
+
+    it('should call service method if the form is valid', () => {
+      spyOn(subjectDetailsService, 'createSubject');
+
+      component.createSubject(mockSubject);
+
+      expect(subjectDetailsService.createSubject).toHaveBeenCalled();
+    });
+
+    it('should not call service method if the form is invalid', () => {
+      spyOn(subjectDetailsService, 'createSubject');
+
+      component.createSubject(mockSubject);
+
+      expect(subjectDetailsService.createSubject).not.toHaveBeenCalled();
     });
 
   });

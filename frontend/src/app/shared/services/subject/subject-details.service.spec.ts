@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { ErrorResolverService } from '../error-resolver/error-resolver.service';
 
-import { Subject } from '../domain/subject';
-import { Address } from '../domain/address';
-import { PersonalInformation } from '../domain/personal-information';
-import { ContactInformation } from '../domain/contact-information';
-import { EmployeeInformation } from '../domain/employee-information';
+import { Subject } from '../../domain/subject/subject';
+import { Address } from '../../domain/subject/address';
+import { PersonalInformation } from '../../domain/subject/personal-information';
+import { ContactInformation } from '../../domain/subject/contact-information';
+import { EmployeeInformation } from '../../domain/subject/employee-information';
+import { SystemVariables } from '../../../config/system-variables';
 import { SubjectDetailsService } from './subject-details.service';
-import { SystemVariables } from '../../../../../config/system-variables';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '123AS', new Date(), new Date());
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date(), '123AS');
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   let http: HttpTestingController;
@@ -76,13 +76,13 @@ describe('PersonalDetailsService', () => {
 
     const apiLink: string = SystemVariables.API_URL + 'my-details';
 
-    it('should query current service URL', fakeAsync(() => {
-      personalDetailsService.getCurrentSubject().subscribe();
-
-      http.expectOne(apiLink);
-    }));
-
     describe('getCurrentSubject', () => {
+
+      it('should query current service URL', fakeAsync(() => {
+        personalDetailsService.getCurrentSubject().subscribe();
+
+        http.expectOne(apiLink);
+      }));
 
       it('should return an Observable of type Subject', fakeAsync(() => {
         let result: Object;
@@ -113,6 +113,51 @@ describe('PersonalDetailsService', () => {
         http.expectOne({
           url: apiLink,
           method: 'GET',
+        }).error(new ErrorEvent('404'));
+        tick();
+
+        expect(personalDetailsService['handleError']).toHaveBeenCalled();
+      }));
+
+    });
+
+    describe('createSubject', () => {
+
+      it('should query current service URL', fakeAsync(() => {
+        personalDetailsService.createSubject().subscribe();
+
+        http.expectOne(apiLink);
+      }));
+
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        personalDetailsService.createSubject(mockSubject)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: apiLink,
+          method: 'POST',
+        }).flush(mockSubject);
+        tick();
+
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
+
+      it('should resolve error if server is down', fakeAsync(() => {
+        spyOn(personalDetailsService, 'handleError');
+        let result: Object;
+        let error: any;
+        personalDetailsService.createSubject(mockSubject)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: apiLink,
+          method: 'POST',
         }).error(new ErrorEvent('404'));
         tick();
 

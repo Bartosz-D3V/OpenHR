@@ -5,8 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatSelectModule, MatStepperModule,
-  MatToolbarModule
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatStepperModule,
+  MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MomentInput } from 'moment';
@@ -56,10 +56,11 @@ describe('LeaveApplicationComponent', () => {
       ],
       imports: [
         HttpClientTestingModule,
+        NoopAnimationsModule,
         FormsModule,
+        ReactiveFormsModule,
         FlexLayoutModule,
         MatDatepickerModule,
-        ReactiveFormsModule,
         MomentDateModule,
         MatStepperModule,
         MatButtonModule,
@@ -67,7 +68,8 @@ describe('LeaveApplicationComponent', () => {
         MatToolbarModule,
         MatSelectModule,
         MatInputModule,
-        NoopAnimationsModule,
+        MatRadioModule,
+        MatCardModule,
       ],
       providers: [
         {
@@ -86,6 +88,7 @@ describe('LeaveApplicationComponent', () => {
     fixture = TestBed.createComponent(LeaveApplicationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
     component.leaveApplication = mockLeave;
   });
 

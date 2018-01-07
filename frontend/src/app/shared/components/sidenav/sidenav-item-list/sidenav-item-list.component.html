@@ -24,6 +24,16 @@
     Report
   </button>
 
+  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['employees'] } }]">
+    <i class="material-icons c-sidenav__icon">people</i>
+    Employees
+  </button>
+
+  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
+    <i class="material-icons c-sidenav__icon">person_add</i>
+    Add employee
+  </button>
+
   <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['about'] } }]">
     <i class="material-icons c-sidenav__icon">info_outline</i>
     About

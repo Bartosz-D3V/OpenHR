@@ -25,10 +25,10 @@ public class Manager implements Serializable {
 
   @OneToOne(mappedBy = "manager")
   @PrimaryKeyJoinColumn
-  @NotFound(action = NotFoundAction.IGNORE)
   private Subject subject;
 
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @NotFound(action = NotFoundAction.IGNORE)
   private Set<Employee> employees;
 
   public Manager() {
@@ -61,9 +61,5 @@ public class Manager implements Serializable {
 
   public void setEmployees(final Set<Employee> employees) {
     this.employees = employees;
-  }
-
-  public void addEmployee(final Employee employee) {
-    employees.add(employee);
   }
 }

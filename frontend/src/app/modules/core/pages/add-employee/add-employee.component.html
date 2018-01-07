@@ -1,6 +1,6 @@
-<app-page-header [header]="'Personal details'"></app-page-header>
+<app-page-header [header]="'Add employee'"></app-page-header>
 <section class="c-drawer">
-  <mat-toolbar [color]="'primary'">My details</mat-toolbar>
+  <mat-toolbar [color]="'primary'">New employee details</mat-toolbar>
   <mat-accordion>
     <mat-expansion-panel [expanded]="stepNumber === 0" (opened)="setStep(0)" hideToggle="true">
       <mat-expansion-panel-header>
@@ -181,16 +181,6 @@
         </mat-form-field>
 
         <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
-          <label for="personal-details-employeeId"></label>
-          <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
-                 id="personal-details-employeeId" name="employeeId"
-                 [ngModel]="subject?.employeeInformation?.employeeId">
-          <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
-            Employee ID is required
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
           <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
                  formControlName="startDateFormControl" name="startDate"
                  [ngModel]="subject?.employeeInformation?.startDate">
@@ -204,13 +194,57 @@
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #endDatePicker></mat-datepicker>
         </mat-form-field>
-      </form>
 
+        <div fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-checkbox [checked]="true" #selfAssign formControlName="selfAssignFormControl" name="selfAssign">Assign
+            employee to me
+          </mat-checkbox>
+        </div>
+      </form>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="stepNumber === 3" (opened)="setStep(3)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Login information
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>vpn_key</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="loginInformationFormGroup" fxLayout.gt-sm="row wrap"
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="account-details-password"></label>
+          <input matInput #password type="password" required="required" placeholder="Password"
+                 formControlName="passwordFormControl" id="account-details-password" name="password">
+          <mat-error *ngIf="loginInformationFormGroup.controls['passwordFormControl'].hasError('required')">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="account-details-repeat-password"></label>
+          <input matInput #repeatedPassword type="password" required="required" placeholder="Password"
+                 formControlName="repeatPasswordFormControl"
+                 id="account-details-repeat-password" name="password">
+          <mat-error *ngIf="!arePasswordsIdentical(password.value, repeatedPassword.value)">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+      </form>
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
         <button mat-button color="primary" (click)="nextStep()">End</button>
       </mat-action-row>
     </mat-expansion-panel>
+
   </mat-accordion>
-  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()">Save</button>
+  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()"
+          (onClick)="submitForm(subject, selfAssign.value)">Submit
+  </button>
 </section>

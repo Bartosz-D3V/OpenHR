@@ -7,12 +7,13 @@ import {
   MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
   MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule,
+  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule, MatPaginatorModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import 'hammerjs/hammer';
 
+import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
 import { NamePipe } from '../../shared/pipes/name/name.pipe';
 import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
@@ -29,7 +30,8 @@ import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { AppRoutingModule } from '../../app-routing.module';
+import { EmployeesComponent } from './pages/employees/employees.component';
+import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 
 @NgModule({
   imports: [
@@ -58,6 +60,7 @@ import { AppRoutingModule } from '../../app-routing.module';
     MatTableModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatPaginatorModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -80,6 +83,8 @@ import { AppRoutingModule } from '../../app-routing.module';
     CoreWrapperComponent,
     AccountComponent,
     SettingsComponent,
+    EmployeesComponent,
+    AddEmployeeComponent,
   ],
 })
 export class CoreModule {

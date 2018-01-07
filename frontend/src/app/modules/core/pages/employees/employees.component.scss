@@ -1,0 +1,27 @@
+@import 'variables';
+
+.c-drawer {
+  margin-left: $drawer-margin;
+  margin-top: 2%;
+  width: $drawer-width;
+}
+
+.c-table {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-table {
+  max-height: 500px;
+  overflow: auto;
+}
+
+.c-btn {
+  margin-top: 2%;
+}

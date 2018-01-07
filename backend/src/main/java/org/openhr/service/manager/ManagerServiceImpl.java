@@ -22,7 +22,17 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
+  public void updateManager(final Manager manager) {
+    managerDAO.updateManager(manager);
+  }
+
+  @Override
   public Set<Employee> getEmployees(final long managerId) throws SubjectDoesNotExistException {
     return managerDAO.getEmployees(managerId);
+  }
+
+  @Override
+  public void addEmployeeToManager(final Employee employee, final long managerId) throws SubjectDoesNotExistException {
+    managerDAO.addEmployeeToManager(employee, managerId);
   }
 }

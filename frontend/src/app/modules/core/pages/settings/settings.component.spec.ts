@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { MatSlideToggleModule, MatToolbarModule } from '@angular/material';
+import { MatCardModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -43,11 +43,12 @@ describe('SettingsComponent', () => {
         CapitalizePipe,
       ],
       imports: [
+        HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientTestingModule,
         MatToolbarModule,
         MatSlideToggleModule,
+        MatCardModule,
       ],
       providers: [
         {
