@@ -12,29 +12,29 @@ public class User implements Serializable {
   @Id
   @Column(name = "USER_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long UserId;
+  private long userId;
 
-  private String email;
+  private String username;
   private String password;
 
   public User() {
   }
 
-  public User(final String email, final String password) {
-    this.email = email;
+  public User(final String username, final String password) {
+    this.username = username;
     this.password = password;
   }
 
   public long getUserId() {
-    return UserId;
+    return userId;
   }
 
-  public String getEmail() {
-    return email;
+  public String getUsername() {
+    return username;
   }
 
-  public void setEmail(final String email) {
-    this.email = email;
+  public void setUsername(final String username) {
+    this.username = username;
   }
 
   public String getPassword() {

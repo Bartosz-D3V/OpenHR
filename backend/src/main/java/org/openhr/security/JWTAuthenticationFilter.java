@@ -35,7 +35,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     throws AuthenticationException {
     try {
       final User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
-      final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(),
+      final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
         user.getPassword(), new ArrayList<>());
       return authenticationManager.authenticate(token);
     } catch (IOException e) {
@@ -48,7 +48,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                           final FilterChain chain, final Authentication authResult)
     throws IOException, ServletException {
     final String token = Jwts.builder()
-      .setSubject(((User) authResult.getPrincipal()).getEmail())
+      .setSubject(((User) authResult.getPrincipal()).getUsername())
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILIS))
       .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
       .compact();
