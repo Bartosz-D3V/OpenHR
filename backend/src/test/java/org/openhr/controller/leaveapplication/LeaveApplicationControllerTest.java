@@ -148,6 +148,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void createLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
