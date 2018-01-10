@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,6 +52,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addManagerShouldAcceptManagerObject() throws Exception {
     final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
@@ -66,6 +68,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateManagerShouldAcceptManagerObject() throws Exception {
     final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
@@ -81,6 +84,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getEmployeesShouldHandleError() throws Exception {
     when(managerFacade.getEmployees(1)).thenThrow(mockException);
 
@@ -95,6 +99,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getEmployeesShouldReturnEmployees() throws Exception {
     final Set<Employee> employeeSet = new HashSet<>();
     employeeSet.add(new Employee());
@@ -112,6 +117,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addEmployeeToManagerShouldHandleError() throws Exception {
     final Employee employee = new Employee();
     employee.setManager(new Manager());
@@ -130,6 +136,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
     final Employee employee = new Employee();
     employee.setManager(new Manager());

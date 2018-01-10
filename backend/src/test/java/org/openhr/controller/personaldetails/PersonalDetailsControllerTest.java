@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -67,6 +68,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getSubjectDetailsShouldHandleError() throws Exception {
     when(personalDetailsFacade.getSubjectDetails(1)).thenThrow(mockException);
 
@@ -81,6 +83,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getSubjectDetailsShouldReturnSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     when(personalDetailsFacade.getSubjectDetails(1)).thenReturn(mockSubject);
@@ -96,6 +99,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void createSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).addSubject(any());
@@ -112,6 +116,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void createSubjectShouldCreateSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
@@ -126,6 +131,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).updateSubject(anyLong(), any());
@@ -143,6 +149,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectShouldUpdateSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
@@ -158,6 +165,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectPersonalInformationShouldUpdatePersonalInformation() throws Exception {
     final String personalInformationAsJson = objectMapper.writeValueAsString(mockPersonalInformation);
 
@@ -173,6 +181,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectPersonalInformationShouldHandleError() throws Exception {
     final String personalInformationAsJson = objectMapper.writeValueAsString(mockPersonalInformation);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
@@ -191,6 +200,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectContactInformationShouldUpdateContactInformation() throws Exception {
     final String contactInformationAsJson = objectMapper.writeValueAsString(mockContactInformation);
 
@@ -206,6 +216,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectContactInformationShouldHandleError() throws Exception {
     final String contactInformationAsJson = objectMapper.writeValueAsString(mockContactInformation);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
@@ -224,6 +235,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectEmployeeInformationShouldUpdateContactInformation() throws Exception {
     final String employeeInformationAsJson = objectMapper.writeValueAsString(mockEmployeeInformation);
 
@@ -239,6 +251,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateSubjectEmployeeInformationShouldHandleError() throws Exception {
     final String employeeInformationAsJson = objectMapper.writeValueAsString(mockEmployeeInformation);
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade)
@@ -257,6 +270,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void deleteSubjectShouldDeleteSubject() throws Exception {
     final MvcResult result = mockMvc
       .perform(delete("/personal-details")
@@ -269,6 +283,7 @@ public class PersonalDetailsControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void deleteSubjectShouldHandleError() throws Exception {
     doThrow(new HibernateException("DB Error")).when(personalDetailsFacade).deleteSubject(anyLong());
 
