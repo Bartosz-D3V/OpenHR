@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -62,6 +63,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getLeaveApplicationShouldReturnAnApplication() throws Exception {
     final String leaveApplicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenReturn(mockLeaveApplication);
@@ -77,6 +79,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getLeaveApplicationShouldHandle404Exception() throws Exception {
     when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenThrow(mock404Exception);
 
@@ -91,6 +94,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getLeaveApplicationShouldHandleHibernateError() throws Exception {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
       .getLeaveApplication(anyLong());
@@ -106,6 +110,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void createLeaveApplicationShouldHandle404Error() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockSubject404Exception).when(leaveApplicationFacade)
@@ -124,6 +129,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void createLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
@@ -157,6 +163,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateLeaveApplicationShouldHandle404Error() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mock404Exception).when(leaveApplicationFacade)
@@ -174,6 +181,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
@@ -191,6 +199,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void updateLeaveApplicationShouldUpdateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
@@ -205,6 +214,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void rejectLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
@@ -220,6 +230,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void rejectLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
@@ -238,6 +249,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void approveLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
@@ -253,6 +265,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void approveLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
