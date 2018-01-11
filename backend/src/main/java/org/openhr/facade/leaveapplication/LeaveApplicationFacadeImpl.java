@@ -51,13 +51,13 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final String taskId) {
-    leaveApplicationCommand.rejectLeaveApplication(role, taskId);
+  public void rejectLeaveApplication(final Role role, final String processInstanceId) {
+    leaveApplicationCommand.rejectLeaveApplication(role, processInstanceId);
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final String taskId) {
-    leaveApplicationCommand.approveLeaveApplication(role, taskId);
+  public void approveLeaveApplication(final Role role, final String processInstanceId) {
+    leaveApplicationCommand.approveLeaveApplication(role, processInstanceId);
   }
 
   @Override

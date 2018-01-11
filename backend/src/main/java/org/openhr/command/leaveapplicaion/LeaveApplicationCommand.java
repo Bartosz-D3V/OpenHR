@@ -10,9 +10,9 @@ public interface LeaveApplicationCommand {
 
   void startLeaveApplicationProcess(LeaveApplication leaveApplication);
 
-  void rejectLeaveApplication(Role role, String taskId);
+  void rejectLeaveApplication(Role role, String processInstanceId);
 
-  void approveLeaveApplication(Role role, String taskId);
+  void approveLeaveApplication(Role role, String processInstanceId);
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 

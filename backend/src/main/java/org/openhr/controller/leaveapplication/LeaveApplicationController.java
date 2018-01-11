@@ -49,15 +49,15 @@ public class LeaveApplicationController {
   }
 
   @RequestMapping(value = "/reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void rejectLeaveApplication(@RequestParam final String taskId,
+  public void rejectLeaveApplication(@RequestParam final String processInstanceId,
                                      @RequestBody final Role role) throws HibernateException {
-    leaveApplicationFacade.rejectLeaveApplication(role, taskId);
+    leaveApplicationFacade.rejectLeaveApplication(role, processInstanceId);
   }
 
   @RequestMapping(value = "/approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void approveLeaveApplication(@RequestParam final String taskId,
+  public void approveLeaveApplication(@RequestParam final String processInstanceId,
                                       @RequestBody final Role role) throws HibernateException {
-    leaveApplicationFacade.approveLeaveApplication(role, taskId);
+    leaveApplicationFacade.approveLeaveApplication(role, processInstanceId);
   }
 
   @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,
