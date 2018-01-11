@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -25,6 +26,7 @@ public class ManagerController {
 
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
   public Manager addManager(@RequestBody final Manager manager) {
     return managerFacade.addManager(manager);
   }
@@ -36,6 +38,7 @@ public class ManagerController {
   }
 
   @RequestMapping(value = "employees", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
   public Set<Employee> getEmployees(@RequestParam final long managerId) throws SubjectDoesNotExistException {
     return managerFacade.getEmployees(managerId);
   }

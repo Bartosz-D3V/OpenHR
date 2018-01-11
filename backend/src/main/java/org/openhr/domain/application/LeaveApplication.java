@@ -40,6 +40,9 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
+  @Column(name = "PROCESS_INSTANCE_ID")
+  private String processInstanceId;
+
   @NotNull
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
@@ -111,6 +114,14 @@ public class LeaveApplication implements Serializable {
 
   public void setApprovedByHR(final boolean approvedByHR) {
     this.approvedByHR = approvedByHR;
+  }
+
+  public String getProcessInstanceId() {
+    return processInstanceId;
+  }
+
+  public void setProcessInstanceId(final String processInstanceId) {
+    this.processInstanceId = processInstanceId;
   }
 
   public Subject getSubject() {

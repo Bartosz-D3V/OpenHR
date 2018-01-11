@@ -25,8 +25,8 @@ public class PersonalDetailsController {
     this.personalDetailsFacade = personalDetailsFacade;
   }
 
-  @ResponseBody
   @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
   public Subject getSubjectDetails(@RequestParam final long subjectId) throws SubjectDoesNotExistException {
     return personalDetailsFacade.getSubjectDetails(subjectId);
   }

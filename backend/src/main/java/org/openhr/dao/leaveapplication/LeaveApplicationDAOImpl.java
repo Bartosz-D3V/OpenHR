@@ -78,6 +78,7 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
     legacyLeaveApplication.setLeaveType(leaveApplication.getLeaveType());
     legacyLeaveApplication.setApprovedByManager(leaveApplication.isApprovedByManager());
     legacyLeaveApplication.setApprovedByHR(leaveApplication.isApprovedByHR());
+    legacyLeaveApplication.setProcessInstanceId(leaveApplication.getProcessInstanceId());
     try {
       Session session = sessionFactory.openSession();
       Transaction transaction = session.beginTransaction();
