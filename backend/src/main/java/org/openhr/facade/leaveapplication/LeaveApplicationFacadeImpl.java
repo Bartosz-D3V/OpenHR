@@ -35,13 +35,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
-    throws SubjectDoesNotExistException {
+    throws SubjectDoesNotExistException, ApplicationDoesNotExistException {
     final Subject subject = personalDetailsService.getSubjectDetails(subjectId);
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
-    leaveApplicationCommand.startLeaveApplicationProcess(savedLeaveApplication);
+    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(savedLeaveApplication);
+    savedLeaveApplication.setProcessInstanceId(processInstanceId);
 
-    return savedLeaveApplication;
+    return leaveApplicationService.updateLeaveApplication(savedLeaveApplication);
   }
 
   @Override

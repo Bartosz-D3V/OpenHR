@@ -27,10 +27,10 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
+  public String startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("leaveApplication", leaveApplication);
-    runtimeService.startProcessInstanceByKey("leave-application", parameters);
+    return runtimeService.startProcessInstanceByKey("leave-application", parameters).getProcessInstanceId();
   }
 
   @Override

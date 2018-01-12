@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface LeaveApplicationCommand {
 
-  void startLeaveApplicationProcess(LeaveApplication leaveApplication);
+  String startLeaveApplicationProcess(LeaveApplication leaveApplication);
 
   void rejectLeaveApplication(Role role, String processInstanceId);
 
