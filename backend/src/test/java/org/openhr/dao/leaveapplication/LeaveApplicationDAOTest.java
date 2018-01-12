@@ -87,6 +87,7 @@ public class LeaveApplicationDAOTest {
     assertEquals(mockLeaveApplication.getLeaveType(), actualLeaveApplication.getLeaveType());
     assertEquals(mockLeaveApplication.isApprovedByManager(), actualLeaveApplication.isApprovedByManager());
     assertEquals(mockLeaveApplication.isApprovedByHR(), actualLeaveApplication.isApprovedByHR());
+    assertEquals(mockLeaveApplication.getProcessInstanceId(), actualLeaveApplication.getProcessInstanceId());
   }
 
   @Test
