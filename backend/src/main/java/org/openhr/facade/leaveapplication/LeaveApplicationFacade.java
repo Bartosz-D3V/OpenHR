@@ -12,13 +12,13 @@ public interface LeaveApplicationFacade {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
-  LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication) throws SubjectDoesNotExistException;
+  LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication) throws SubjectDoesNotExistException, ApplicationDoesNotExistException;
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
-  void rejectLeaveApplication(Role role, String taskId);
+  void rejectLeaveApplication(Role role, String processInstanceId);
 
-  void approveLeaveApplication(Role role, String taskId);
+  void approveLeaveApplication(Role role, String processInstanceId);
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 

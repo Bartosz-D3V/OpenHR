@@ -18,6 +18,7 @@ public class ContactInformation implements Serializable {
   @Column(name = "CONTACT_INFORMATION_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long contactInformationId;
+
   private String telephone;
   private String email;
 

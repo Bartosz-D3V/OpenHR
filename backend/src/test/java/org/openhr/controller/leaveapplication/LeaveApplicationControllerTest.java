@@ -221,7 +221,7 @@ public class LeaveApplicationControllerTest {
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
-        .param("taskId", "1")
+        .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -239,7 +239,7 @@ public class LeaveApplicationControllerTest {
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
-        .param("taskId", "1")
+        .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -256,7 +256,7 @@ public class LeaveApplicationControllerTest {
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
-        .param("taskId", "1")
+        .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())
@@ -274,7 +274,7 @@ public class LeaveApplicationControllerTest {
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/approve")
-        .param("taskId", "1")
+        .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andDo(print())

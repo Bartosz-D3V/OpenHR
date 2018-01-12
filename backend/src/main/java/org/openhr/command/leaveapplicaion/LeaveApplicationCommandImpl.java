@@ -27,16 +27,16 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
+  public String startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("leaveApplication", leaveApplication);
-    runtimeService.startProcessInstanceByKey("leave-application", parameters);
+    return runtimeService.startProcessInstanceByKey("leave-application", parameters).getProcessInstanceId();
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final String taskId) {
+  public void rejectLeaveApplication(final Role role, final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
-    final Task task = taskService.createTaskQuery().processInstanceId(taskId).singleResult();
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("role", role);
     args.put("rejectedByManager", true);
     args.put("approvedByManager", false);
@@ -44,9 +44,9 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final String taskId) {
+  public void approveLeaveApplication(final Role role, final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
-    final Task task = taskService.createTaskQuery().processInstanceId(taskId).singleResult();
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("role", role);
     args.put("rejectedByManager", false);
     args.put("approvedByManager", true);
@@ -66,7 +66,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public final List<String> getActiveProcessesId() {
+  public List<String> getActiveProcessesId() {
     return runtimeService
       .createProcessInstanceQuery()
       .active()
