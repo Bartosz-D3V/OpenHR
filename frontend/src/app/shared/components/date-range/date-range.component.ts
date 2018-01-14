@@ -1,16 +1,18 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ISubscription } from 'rxjs/Subscription';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+import { ISubscription } from 'rxjs/Subscription';
 
 import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
 import { NAMED_DATE } from '../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { DateRangeService } from './service/date-range.service';
 
 @Component({
   selector: 'app-date-range',
@@ -20,6 +22,7 @@ import { ResponsiveHelperService } from '../../services/responsive-helper/respon
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     ResponsiveHelperService,
+    DateRangeService,
   ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
@@ -49,6 +52,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
+  public bankHolidaysEngland: BankHolidayEngland;
+  private $bankHolidays: ISubscription;
+
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [
       Validators.required,
@@ -58,17 +64,20 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     ]),
   });
 
-  constructor(private _responsiveHelper: ResponsiveHelperService) {
+  constructor(private _dateRangeService: DateRangeService,
+              private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit(): void {
     this.validateStartDateField();
     this.validateEndDateField();
+    this.getBankHolidays();
   }
 
   ngOnDestroy(): void {
     this.$startDateChange.unsubscribe();
     this.$endDateChange.unsubscribe();
+    this.$bankHolidays.unsubscribe();
   }
 
   public validateStartDateField(): void {
@@ -116,6 +125,15 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
+  }
+
+  public getBankHolidays(): void {
+    this.$bankHolidays = this._dateRangeService
+      .getBankHolidaysInEnglandAndWales()
+      .subscribe((data: BankHolidayEngland) => {
+        this.bankHolidaysEngland = data;
+        console.log(data);
+      });
   }
 
 }
