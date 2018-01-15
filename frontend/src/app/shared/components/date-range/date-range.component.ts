@@ -11,6 +11,7 @@ import * as moment from 'moment';
 
 import { NAMED_DATE } from '../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
 import { DateRangeService } from './service/date-range.service';
 
@@ -23,6 +24,7 @@ import { DateRangeService } from './service/date-range.service';
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     ResponsiveHelperService,
     DateRangeService,
+    ErrorResolverService,
   ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
@@ -103,9 +105,18 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
-    const numberOfDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
-    this.numberOfDays = numberOfDays;
-    this.updateNumberOfDays(numberOfDays);
+    let diffDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
+    let diffDaysCounter: number = diffDays;
+    while (diffDaysCounter > 0) {
+      diffDaysCounter--;
+      const date: Moment = moment(endDate).subtract(diffDaysCounter, 'days');
+      if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+        diffDays--;
+      }
+    }
+
+    this.numberOfDays = diffDays;
+    this.updateNumberOfDays(diffDays);
   }
 
   public updateStartDate(startDate: MomentInput): void {
@@ -132,7 +143,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
       .getBankHolidaysInEnglandAndWales()
       .subscribe((data: BankHolidayEngland) => {
         this.bankHolidaysEngland = data;
-        console.log(data);
       });
   }
 
