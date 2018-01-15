@@ -1,4 +1,6 @@
+import { Injectable } from '@angular/core';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -9,12 +11,27 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import moment = require('moment');
 import { MomentInput } from 'moment';
 
-import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { DateRangeComponent } from './date-range.component';
+import { DateRangeService } from './service/date-range.service';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
   let fixture: ComponentFixture<DateRangeComponent>;
+
+  @Injectable()
+  class FakeDateRangeService {
+  }
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public handleError(error: any): void {
+    }
+
+    public createAlert(error: any): void {
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,10 +45,17 @@ describe('DateRangeComponent', () => {
         FlexLayoutModule,
         MatDatepickerModule,
         MatInputModule,
+        HttpClientTestingModule,
         NoopAnimationsModule,
       ],
       providers: [
         ResponsiveHelperService,
+        {
+          provide: DateRangeService, useClass: FakeDateRangeService,
+        },
+        {
+          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+        },
       ],
     })
       .compileComponents();
@@ -151,25 +175,25 @@ describe('DateRangeComponent', () => {
   });
 
   describe('recalculateNumOfDays', () => {
-    it('should set numberOfDays including the end date', () => {
+    it('should set numberOfDays including the end date, but excluding weekends and bank holidays', () => {
       component.recalculateNumOfDays('2019-05-10', '2019-05-20', false);
 
       expect(component.numberOfDays).toBeDefined();
-      expect(component.numberOfDays).toEqual(11);
+      expect(component.numberOfDays).toEqual(7);
     });
 
-    it('should set numberOfDays including the end date by default', () => {
+    it('should set numberOfDays including the end date by default, but excluding weekends and bank holidays', () => {
       component.recalculateNumOfDays('2019-05-10', '2019-05-20');
 
       expect(component.numberOfDays).toBeDefined();
-      expect(component.numberOfDays).toEqual(11);
+      expect(component.numberOfDays).toEqual(7);
     });
 
-    it('should set numberOfDays excluding the end date', () => {
+    it('should set numberOfDays excluding the end date, but excluding weekends and bank holidays', () => {
       component.recalculateNumOfDays('2019-05-10', '2019-05-20', true);
 
       expect(component.numberOfDays).toBeDefined();
-      expect(component.numberOfDays).toEqual(10);
+      expect(component.numberOfDays).toEqual(6);
     });
 
     it('should emmit new value through EventEmmiter', () => {
@@ -181,8 +205,8 @@ describe('DateRangeComponent', () => {
       component.recalculateNumOfDays('2019-05-10', '2019-05-20', true);
 
       expect(result).toBeDefined();
-      expect(result).toEqual(10);
-      expect(component.updateNumberOfDays).toHaveBeenCalledWith(10);
+      expect(result).toEqual(6);
+      expect(component.updateNumberOfDays).toHaveBeenCalledWith(6);
     });
   });
 
