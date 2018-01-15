@@ -21,12 +21,8 @@ public class BankHolidaysRepositoryImpl implements BankHolidaysRepository {
     switch (country) {
       case "england":
       case "wales":
-        return getEnglandAndWalesAPI();
+        return englandAndWalesAPI;
     }
     return null;
-  }
-
-  String getEnglandAndWalesAPI() {
-    return englandAndWalesAPI;
   }
 }
