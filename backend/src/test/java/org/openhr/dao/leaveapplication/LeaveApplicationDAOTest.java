@@ -2,7 +2,7 @@ package org.openhr.dao.leaveapplication;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.domain.address.Address;
@@ -14,14 +14,14 @@ import org.openhr.domain.subject.Subject;
 import org.openhr.exception.ApplicationDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class LeaveApplicationDAOTest {
@@ -34,7 +34,7 @@ public class LeaveApplicationDAOTest {
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation);
-  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
+  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -42,12 +42,14 @@ public class LeaveApplicationDAOTest {
   @Autowired
   private LeaveApplicationDAO leaveApplicationDAO;
 
-  @After
-  public void tearDown() {
-    final String truncateHQL = "TRUNCATE TABLE LEAVE_APPLICATION";
-    final Session session = sessionFactory.openSession();
-    session.createSQLQuery(truncateHQL).executeUpdate();
-    session.close();
+  @Before
+  public void setUp() {
+    mockLeaveApplication.setProcessInstanceId(String.valueOf(5L));
+    mockLeaveApplication.setApprovedByManager(true);
+    mockLeaveApplication.setApprovedByHR(false);
+    mockLeaveApplication.setSubject(mockSubject);
+    mockLeaveApplication.setLeaveType("Annual Leave");
+    mockLeaveApplication.setMessage("I am going to Vanuatu!");
   }
 
   @Test
@@ -115,6 +117,7 @@ public class LeaveApplicationDAOTest {
 
   @Test(expected = ApplicationDoesNotExistException.class)
   public void updateLeaveApplicationShouldHandle404Error() throws ApplicationDoesNotExistException {
-    leaveApplicationDAO.updateLeaveApplication(mockLeaveApplication);
+    final LeaveApplication leaveApplication = new LeaveApplication();
+    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 }
