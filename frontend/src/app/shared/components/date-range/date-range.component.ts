@@ -13,6 +13,7 @@ import { NAMED_DATE } from '../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
 import { DateRangeService } from './service/date-range.service';
 
 @Component({
@@ -54,7 +55,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
-  public bankHolidaysEngland: BankHolidayEngland;
+  public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
   private $bankHolidays: ISubscription;
 
   public dateRangeGroup: FormGroup = new FormGroup({
@@ -110,7 +111,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     while (diffDaysCounter > 0) {
       diffDaysCounter--;
       const date: Moment = moment(endDate).subtract(diffDaysCounter, 'days');
-      if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+      if (date.isoWeekday() === 6 || date.isoWeekday() === 7 || this.isBankHoliday(date)) {
         diffDays--;
       }
     }
@@ -134,6 +135,14 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.numberOfDaysChange.emit(numberOfDays);
   }
 
+  public isBankHoliday(date: Moment): boolean {
+    const bankHolidays: Array<BankHoliday> = this.bankHolidaysEngland.events;
+    const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => {
+      return moment(event.date).isSame(date);
+    });
+    return !(foundEvent === undefined);
+  }
+
   public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
@@ -145,5 +154,4 @@ export class DateRangeComponent implements OnInit, OnDestroy {
         this.bankHolidaysEngland = data;
       });
   }
-
 }
