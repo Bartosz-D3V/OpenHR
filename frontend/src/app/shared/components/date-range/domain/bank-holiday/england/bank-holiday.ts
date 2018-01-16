@@ -1,6 +1,6 @@
 import { MomentInput } from 'moment';
 
-export interface BankHoliday {
+export class BankHoliday {
   title: string;
   date: MomentInput;
   notes: string;

@@ -15,6 +15,8 @@ import { DateRangeComponent } from './date-range.component';
 import { DateRangeService } from './service/date-range.service';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
+import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
+import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -247,6 +249,34 @@ describe('DateRangeComponent', () => {
     expect(component.numberOfDays).toEqual(20);
     expect(result).toBeDefined();
     expect(result).toEqual(20);
+  });
+
+  describe('isBankHoliday', () => {
+    let mockBankHolidaysEngland: BankHolidayEngland;
+    let mockEvents: Array<BankHoliday>;
+    const mockBankHoliday1: BankHoliday = new BankHoliday();
+    const mockBankHoliday2: BankHoliday = new BankHoliday();
+
+    beforeEach(() => {
+      mockBankHoliday1.date = '2020-01-01';
+      mockBankHoliday2.date = '2020-12-31';
+      mockEvents = [];
+      mockEvents.push(mockBankHoliday1);
+      mockEvents.push(mockBankHoliday2);
+      mockBankHolidaysEngland = new BankHolidayEngland('England-and-Wales', mockEvents);
+    });
+
+    it('should return true if the given date is a bank holiday', () => {
+      component.bankHolidaysEngland = mockBankHolidaysEngland;
+
+      expect(component.isBankHoliday(moment('2020-01-01'))).toBeTruthy();
+    });
+
+    it('should return false if the given date is not a bank holiday', () => {
+      component.bankHolidaysEngland = mockBankHolidaysEngland;
+
+      expect(component.isBankHoliday(moment('2020-01-11'))).toBeFalsy();
+    });
   });
 
   describe('isMobile', () => {
