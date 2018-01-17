@@ -1,0 +1,54 @@
+@import 'variables';
+
+.c-theme-picker-menu {
+  &__content {
+    padding: $theme-picker-menu-padding;
+  }
+
+  [mat-menu-item] {
+    flex: 0 0 auto;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  &__switch {
+    border-radius: 50%;
+    height: $theme-picker-swatch-size;
+    margin: ($theme-picker-grid-cell-size - $theme-picker-swatch-size) / 2;
+    overflow: hidden;
+    position: relative;
+    width: $theme-picker-swatch-size;
+  }
+
+  &__chosen-icon {
+    color: #FFF;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &::after {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    box-sizing: border-box;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  &--primary {
+    height: 100%;
+    width: 100%;
+  }
+
+  &--accent {
+    bottom: $theme-picker-accent-stripe-size;
+    height: $theme-picker-accent-stripe-size;
+    position: absolute;
+    width: 100%;
+  }
+}
