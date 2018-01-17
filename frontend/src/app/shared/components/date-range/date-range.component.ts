@@ -1,16 +1,20 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ISubscription } from 'rxjs/Subscription';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+import { ISubscription } from 'rxjs/Subscription';
 
 import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
 import { NAMED_DATE } from '../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
+import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
+import { DateRangeService } from './service/date-range.service';
 
 @Component({
   selector: 'app-date-range',
@@ -20,6 +24,8 @@ import { ResponsiveHelperService } from '../../services/responsive-helper/respon
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     ResponsiveHelperService,
+    DateRangeService,
+    ErrorResolverService,
   ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
@@ -49,6 +55,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
+  public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
+  private $bankHolidays: ISubscription;
+
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, [
       Validators.required,
@@ -58,17 +67,20 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     ]),
   });
 
-  constructor(private _responsiveHelper: ResponsiveHelperService) {
+  constructor(private _dateRangeService: DateRangeService,
+              private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit(): void {
     this.validateStartDateField();
     this.validateEndDateField();
+    this.getBankHolidays();
   }
 
   ngOnDestroy(): void {
     this.$startDateChange.unsubscribe();
     this.$endDateChange.unsubscribe();
+    this.$bankHolidays.unsubscribe();
   }
 
   public validateStartDateField(): void {
@@ -94,9 +106,18 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
-    const numberOfDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
-    this.numberOfDays = numberOfDays;
-    this.updateNumberOfDays(numberOfDays);
+    let diffDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? 0 : +1);
+    let diffDaysCounter: number = diffDays;
+    while (diffDaysCounter > 0) {
+      diffDaysCounter--;
+      const date: Moment = moment(endDate).subtract(diffDaysCounter, 'days');
+      if (date.isoWeekday() === 6 || date.isoWeekday() === 7 || this.isBankHoliday(date)) {
+        diffDays--;
+      }
+    }
+
+    this.numberOfDays = diffDays;
+    this.updateNumberOfDays(diffDays);
   }
 
   public updateStartDate(startDate: MomentInput): void {
@@ -114,8 +135,23 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.numberOfDaysChange.emit(numberOfDays);
   }
 
+  public isBankHoliday(date: Moment): boolean {
+    const bankHolidays: Array<BankHoliday> = this.bankHolidaysEngland.events;
+    const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => {
+      return moment(event.date).isSame(date);
+    });
+    return !(foundEvent === undefined);
+  }
+
   public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
 
+  public getBankHolidays(): void {
+    this.$bankHolidays = this._dateRangeService
+      .getBankHolidaysInEnglandAndWales()
+      .subscribe((data: BankHolidayEngland) => {
+        this.bankHolidaysEngland = data;
+      });
+  }
 }
