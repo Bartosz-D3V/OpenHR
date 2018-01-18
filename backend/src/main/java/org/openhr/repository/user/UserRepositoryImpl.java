@@ -28,7 +28,10 @@ public class UserRepositoryImpl implements UserRepository {
     try {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
-      user = (User) criteria.add(Restrictions.eq("username", username)).uniqueResult();
+      user = (User) criteria
+        .add(Restrictions.eq("username", username))
+        .setMaxResults(1)
+        .uniqueResult();
       session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
