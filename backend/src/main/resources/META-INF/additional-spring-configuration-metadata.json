@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "jwt.secret",
-      "type": "java.lang.String",
-      "description": "Secret token used to generate JWT (JSON Web Token) response"
-    }
-  ]
-}

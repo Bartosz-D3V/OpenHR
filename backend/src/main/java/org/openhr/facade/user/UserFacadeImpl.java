@@ -21,6 +21,12 @@ public class UserFacadeImpl implements UserFacade {
   }
 
   @Override
+  public User findByUsername(final String username) {
+    return userService.findByUsername(username);
+  }
+
+
+  @Override
   public void registerUser(final User user) {
     user.setPassword(authenticationService.encodePassword(user.getPassword()));
     userService.registerUser(user);

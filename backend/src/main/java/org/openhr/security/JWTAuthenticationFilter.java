@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.openhr.domain.user.User;
+import org.openhr.service.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,17 +20,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.openhr.security.SecurityConstants.EXPIRATION_TIME_IN_MILIS;
 import static org.openhr.security.SecurityConstants.HEADER_STRING;
 import static org.openhr.security.SecurityConstants.SECRET;
 import static org.openhr.security.SecurityConstants.TOKEN_PREFIX;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-  private final AuthenticationManager authenticationManager;
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements AuthenticationManager {
+  private final UserService userService;
 
-  public JWTAuthenticationFilter(final AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
+  public JWTAuthenticationFilter(final UserService userService) {
+    this.userService = userService;
   }
 
   @Override
@@ -37,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       final User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
       final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
         user.getPassword(), new ArrayList<>());
-      return authenticationManager.authenticate(token);
+      return authenticate(token);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -48,10 +52,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                           final FilterChain chain, final Authentication authResult)
     throws IOException, ServletException {
     final String token = Jwts.builder()
-      .setSubject(((User) authResult.getPrincipal()).getUsername())
+      .setSubject((String) authResult.getPrincipal())
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILIS))
       .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
       .compact();
     response.addHeader(HEADER_STRING, TOKEN_PREFIX.concat(token));
+  }
+
+  @Override
+  public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+    final String username = authentication.getName();
+    final String password = authentication.getCredentials().toString();
+    final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    if (!userService.validCredentials(username, password)) {
+      throw new BadCredentialsException("Bad Credentials");
+    }
+    return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
   }
 }
