@@ -16,11 +16,6 @@ public class UserFacadeImpl implements UserFacade {
   }
 
   @Override
-  public User findByEmail(final String email) {
-    return userService.findByEmail(email);
-  }
-
-  @Override
   public User findByUsername(final String username) {
     return userService.findByUsername(username);
   }

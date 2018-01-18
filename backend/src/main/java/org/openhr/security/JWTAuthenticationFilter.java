@@ -14,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -49,8 +48,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   @Override
   protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response,
-                                          final FilterChain chain, final Authentication authResult)
-    throws IOException, ServletException {
+                                          final FilterChain chain, final Authentication authResult) {
     final String token = Jwts.builder()
       .setSubject((String) authResult.getPrincipal())
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILIS))
@@ -65,7 +63,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     final String password = authentication.getCredentials().toString();
     final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
     if (!userService.validCredentials(username, password)) {
-      throw new BadCredentialsException("Bad Credentials");
+      throw new BadCredentialsException("Bad credentials");
     }
     return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
   }

@@ -23,22 +23,6 @@ public class UserRepositoryImpl implements UserRepository {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public User findByEmail(final String email) {
-    User user;
-    try {
-      final Session session = sessionFactory.openSession();
-      user = session.get(User.class, email);
-      session.close();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
-
-    return user;
-  }
-
-  @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public User findByUsername(final String username) {
     User user;
     try {
