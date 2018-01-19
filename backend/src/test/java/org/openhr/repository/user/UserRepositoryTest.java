@@ -15,10 +15,8 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional
+@Transactional()
 public class UserRepositoryTest {
-  private final static User mockUser = new User("username", "password");
-
   @Autowired
   private UserRepository userRepository;
 
@@ -27,6 +25,7 @@ public class UserRepositoryTest {
 
   @Test
   public void findByUsernameShouldReturnUserObject() {
+    final User mockUser = new User("username1", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser);
     session.close();
@@ -39,6 +38,7 @@ public class UserRepositoryTest {
 
   @Test
   public void registerUserShouldPersistUserObject() {
+    final User mockUser = new User("username2", "password");
     userRepository.registerUser(mockUser);
     final Session session = sessionFactory.openSession();
     final User actualUser = session.get(User.class, mockUser.getUserId());
@@ -51,6 +51,7 @@ public class UserRepositoryTest {
 
   @Test
   public void getEncodedPasswordShouldReturnEncodedPassword() {
+    final User mockUser = new User("username3", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser);
     session.close();
