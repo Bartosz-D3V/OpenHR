@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void registerUser(final User user) {
     try {
       final Session session = sessionFactory.openSession();
