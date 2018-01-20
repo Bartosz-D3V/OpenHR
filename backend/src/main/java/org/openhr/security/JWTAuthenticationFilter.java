@@ -61,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
     final String username = authentication.getName();
     final String password = authentication.getCredentials().toString();
-    final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    final List<? extends GrantedAuthority> grantedAuthorities = new ArrayList<>();
     if (!userService.validCredentials(username, password)) {
       throw new BadCredentialsException("Bad credentials");
     }
