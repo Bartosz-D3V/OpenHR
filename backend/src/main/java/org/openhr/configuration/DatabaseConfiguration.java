@@ -38,6 +38,9 @@ public class DatabaseConfiguration {
   @Value("${entitymanager.packagesToScan}")
   private String ENTITYMANAGER_PACKAGES_TO_SCAN;
 
+  @Value("${hibernate.hbm2ddl.import_files}")
+  private String HIBERNATE_LOAD_INITIAL_DATA;
+
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -57,6 +60,7 @@ public class DatabaseConfiguration {
     hibernateProperties.put("hibernate.dialect", HIBERNATE_DIALECT);
     hibernateProperties.put("hibernate.show_sql", HIBERNATE_SHOW_SQL);
     hibernateProperties.put("HBM2DDL_AUTO", HIBERNATE_HBM2DDL_AUTO);
+    hibernateProperties.put("hibernate.hbm2ddl.import_files", HIBERNATE_LOAD_INITIAL_DATA);
     sessionFactoryBean.setHibernateProperties(hibernateProperties);
 
     return sessionFactoryBean;

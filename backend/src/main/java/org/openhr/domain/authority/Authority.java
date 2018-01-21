@@ -19,10 +19,13 @@ public class Authority implements GrantedAuthority, Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long authorityId;
 
-  private final String authority;
+  private String authority;
 
   @ManyToMany(mappedBy = "authorities")
   private Set<User> users;
+
+  public Authority() {
+  }
 
   public Authority(final String authority) {
     this.authority = authority;
