@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -70,13 +68,8 @@ public class UserRepositoryImpl implements UserRepository {
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public void registerUser(final User user) {
-    final Set<Authority> authorities = new HashSet<>();
-    final Authority authority = new Authority("READ");
-    authorities.add(authority);
-    user.setAuthorities(authorities);
     try {
       final Session session = sessionFactory.openSession();
-      session.save(authority);
       session.save(user);
       session.close();
     } catch (final HibernateException e) {
