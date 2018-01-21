@@ -55,7 +55,7 @@ public class UserRepositoryTest {
     final Session session = sessionFactory.openSession();
     session.save(mockUser);
     session.close();
-    final String password = userRepository.getEncodedPassword(mockUser.getUsername());
+    final String password = userRepository.getEncodedPassword(mockUser.getUserId());
 
     assertEquals(mockUser.getPassword(), password);
   }

@@ -1,11 +1,18 @@
 package org.openhr.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openhr.domain.authority.Authority;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable {
@@ -19,6 +26,15 @@ public class User implements Serializable {
 
   @Column(nullable = false)
   private String password;
+
+  @JsonIgnore
+  @ManyToMany
+  @JoinTable(
+    name = "USER_AUTHORITIES",
+    joinColumns = {@JoinColumn(name = "USER_ID")},
+    inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID")}
+  )
+  private Set<Authority> authorities;
 
   public User() {
   }
@@ -46,5 +62,13 @@ public class User implements Serializable {
 
   public void setPassword(final String password) {
     this.password = password;
+  }
+
+  public Set<Authority> getAuthorities() {
+    return authorities;
+  }
+
+  public void setAuthorities(final Set<Authority> authorities) {
+    this.authorities = authorities;
   }
 }
