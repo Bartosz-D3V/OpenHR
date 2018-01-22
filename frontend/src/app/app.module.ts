@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule } from '@angular/material';
+
 import 'hammerjs/hammer';
 
 import { CoreModule } from './modules/core/core.module';
@@ -27,6 +29,10 @@ import { ThemePickerComponent } from './shared/components/theme-picker/theme-pic
     CoreModule,
     LandingModule,
     AppRoutingModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatGridListModule,
   ],
   providers: [ErrorResolverService],
   bootstrap: [AppComponent],
