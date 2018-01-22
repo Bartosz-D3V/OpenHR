@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
+import { StyleManagerService } from '../../services/style-manager/style-manager.service';
 import { ThemeStorageService } from './service/theme-storage.service';
 
 @Component({
@@ -8,12 +9,15 @@ import { ThemeStorageService } from './service/theme-storage.service';
   styleUrls: ['./theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    ThemeStorageService,
+    StyleManagerService,
+  ],
 })
-export class ThemePickerComponent implements OnInit {
+export class ThemePickerComponent {
 
-  constructor(private _themeStorageService: ThemeStorageService) { }
-
-  ngOnInit() {
+  constructor(private _themeStorageService: ThemeStorageService,
+              private _styleManagerService: StyleManagerService) {
   }
 
 }
