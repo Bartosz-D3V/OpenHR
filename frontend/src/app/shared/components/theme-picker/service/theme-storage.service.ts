@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 
-import { SiteTheme } from '../site-theme/site-theme';
+import { SiteTheme } from '../domain/site-theme';
 
 @Injectable()
 export class ThemeStorageService {
@@ -10,6 +10,7 @@ export class ThemeStorageService {
 
   public storeTheme(theme: SiteTheme): void {
     window.localStorage.setItem(ThemeStorageService.THEME_STORAGE_KEY, JSON.stringify(theme));
+    this.onThemeUpdate.emit(theme);
   }
 
   public getStoredTheme(): SiteTheme {
