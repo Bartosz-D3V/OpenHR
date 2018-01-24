@@ -13,7 +13,8 @@
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist ./coverage",
-    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
+    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false",
+    "build-themes": "bash ./tools/build-themes.sh"
   },
   "commitplease": {
     "nohook": true,
