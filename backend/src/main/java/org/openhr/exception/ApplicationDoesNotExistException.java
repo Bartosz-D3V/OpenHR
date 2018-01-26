@@ -13,7 +13,7 @@ public class ApplicationDoesNotExistException extends Exception {
    * Exception occurring when application was not found using
    * given ID
    *
-   * @param message: message to be thrown and logged
+   * @param message Message to be thrown
    */
   public ApplicationDoesNotExistException(final String message) {
     super(message);
