@@ -6,8 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.openhr.domain.authority.Authority;
 import org.openhr.domain.user.User;
+import org.openhr.domain.user.UserRole;
+import org.openhr.enumeration.UserPermissionRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -68,8 +69,14 @@ public class UserRepositoryImpl implements UserRepository {
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public void registerUser(final User user) {
+    final List<UserRole> permissions = new ArrayList<>();
+    final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
+    permissions.add(userRole);
+    user.setUserRoles(permissions);
+    userRole.setUser(user);
     try {
       final Session session = sessionFactory.openSession();
+      session.save(userRole);
       session.save(user);
       session.close();
     } catch (final HibernateException e) {
@@ -99,19 +106,23 @@ public class UserRepositoryImpl implements UserRepository {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Authority> getGrantedAuthorities(final long userId) {
-    List<Authority> authorities = new ArrayList<>();
+  public boolean usernameIsFree(final String username) {
+    boolean usernameIsFree;
     try {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
-      authorities = criteria
-        .add(Restrictions.eq("userId", userId))
-        .setProjection(Projections.property("authorities"))
-        .list();
+      int numberOfUsernames = criteria
+        .add(Restrictions.eq("username", username))
+        .setReadOnly(true)
+        .list()
+        .size();
+      session.close();
+      usernameIsFree = numberOfUsernames < 1;
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
+      throw e;
     }
-    return authorities;
-  }
 
+    return usernameIsFree;
+  }
 }

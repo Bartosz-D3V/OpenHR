@@ -45,7 +45,7 @@ public class UserControllerTest {
   public void registerUserShouldAcceptUserObject() throws Exception {
     final String userAsJson = objectMapper.writeValueAsString(mockUser);
     final MvcResult result = mockMvc
-      .perform(post("/users/register")
+      .perform(post("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .content(userAsJson))
       .andExpect(status().isOk())
@@ -60,7 +60,7 @@ public class UserControllerTest {
     when(userFacade.findByUsername("username")).thenReturn(mockUser);
 
     final MvcResult result = mockMvc
-      .perform(get("/users/user/{username}", "username"))
+      .perform(get("/users/{username}", "username"))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());

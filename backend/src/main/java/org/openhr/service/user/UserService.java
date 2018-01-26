@@ -1,20 +1,19 @@
 package org.openhr.service.user;
 
-import org.openhr.domain.authority.Authority;
 import org.openhr.domain.user.User;
-
-import java.util.List;
+import org.openhr.exception.UserAlreadyExists;
+import org.openhr.exception.UserDoesNotExist;
 
 public interface UserService {
-  User findByUsername(String username);
+  User findByUsername(String username) throws UserDoesNotExist;
 
-  void registerUser(User user);
+  void registerUser(User user) throws UserAlreadyExists, UserDoesNotExist;
 
   String getEncodedPassword(long userId);
 
   String getEncodedPassword(String username);
 
-  boolean validCredentials(String username, String password);
+  boolean validCredentials(String username, String password) throws UserDoesNotExist;
 
-  List<Authority> getGrantedAuthorities(String username);
+  boolean usernameIsFree(String username);
 }
