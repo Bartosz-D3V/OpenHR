@@ -75,7 +75,6 @@ public class PersonalDetailsControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/personal-details")
         .param("subjectId", "1"))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -91,7 +90,6 @@ public class PersonalDetailsControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/personal-details")
         .param("subjectId", "1"))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -108,7 +106,6 @@ public class PersonalDetailsControllerTest {
       .perform(post("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -124,7 +121,6 @@ public class PersonalDetailsControllerTest {
       .perform(post("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -141,7 +137,6 @@ public class PersonalDetailsControllerTest {
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -158,7 +153,6 @@ public class PersonalDetailsControllerTest {
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -174,7 +168,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
         .content(personalInformationAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -192,7 +185,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
         .content(personalInformationAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -209,7 +201,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
         .content(contactInformationAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -227,7 +218,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
         .content(contactInformationAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -244,7 +234,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
         .content(employeeInformationAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -262,7 +251,6 @@ public class PersonalDetailsControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1")
         .content(employeeInformationAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -276,7 +264,6 @@ public class PersonalDetailsControllerTest {
       .perform(delete("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", String.valueOf(mockSubject.getSubjectId())))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -291,7 +278,6 @@ public class PersonalDetailsControllerTest {
       .perform(delete("/personal-details")
         .contentType(MediaType.APPLICATION_JSON)
         .param("subjectId", "1"))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());

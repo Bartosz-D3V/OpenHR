@@ -61,7 +61,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
   }
 
   @Override
-  public boolean supports(Class<?> authentication) {
+  public boolean supports(final Class<?> authentication) {
     return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
   }
 }

@@ -1,6 +1,5 @@
 package org.openhr.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -13,8 +12,6 @@ import java.io.IOException;
 
 @Component
 public class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
-  private final ObjectMapper objectMapper = new ObjectMapper();
-
   @Override
   public void onAuthenticationFailure(final HttpServletRequest request, final HttpServletResponse response,
                                       final AuthenticationException exception) throws IOException {

@@ -33,7 +33,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
   private static final String TOKEN_REFRESH_ENTRY_POINT = "/api/auth/token";
 
   @Autowired
-  private  AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
   private final AjaxAuthenticationProvider ajaxAuthenticationProvider;
   private final JWTAuthenticationProvider jwtAuthenticationProvider;
   private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
@@ -80,12 +80,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(AuthenticationManagerBuilder auth) {
+  protected void configure(final AuthenticationManagerBuilder auth) {
     auth.authenticationProvider(ajaxAuthenticationProvider);
     auth.authenticationProvider(jwtAuthenticationProvider);
   }
 
-  private AjaxAuthenticationFilter buildAjaxAuthenticationFilter(String loginEntryPoint) {
+  private AjaxAuthenticationFilter buildAjaxAuthenticationFilter(final String loginEntryPoint) {
     final AjaxAuthenticationFilter ajaxAuthenticationFilter =
       new AjaxAuthenticationFilter(loginEntryPoint, jwtAuthenticationSuccessHandler,
         jwtAuthenticationFailureHandler);
@@ -93,7 +93,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     return ajaxAuthenticationFilter;
   }
 
-  private JWTTokenAuthenticationFilter buildJWTTokenAuthenticationFilter(String pattern) {
+  private JWTTokenAuthenticationFilter buildJWTTokenAuthenticationFilter(final String pattern) {
     final List<String> pathsToSkip = Arrays.asList(TOKEN_REFRESH_ENTRY_POINT, FORM_BASED_LOGIN_ENTRY_POINT,
       FORM_BASED_REGISTER_ENTRY_POINT);
     final SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, pattern);
