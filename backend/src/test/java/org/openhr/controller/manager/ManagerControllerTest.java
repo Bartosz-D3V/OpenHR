@@ -61,7 +61,6 @@ public class ManagerControllerTest {
       .perform(post("/manager")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -77,7 +76,6 @@ public class ManagerControllerTest {
       .perform(put("/manager")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -91,7 +89,6 @@ public class ManagerControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/manager/employees")
         .param("managerId", "1"))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -109,7 +106,6 @@ public class ManagerControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/manager/employees")
         .param("managerId", "1"))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -128,7 +124,6 @@ public class ManagerControllerTest {
       .perform(post("/manager/{managerId}/employeeAssignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -146,7 +141,6 @@ public class ManagerControllerTest {
       .perform(post("/manager/{managerId}/employeeAssignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());

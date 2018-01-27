@@ -71,7 +71,6 @@ public class LeaveApplicationControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -86,7 +85,6 @@ public class LeaveApplicationControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -102,7 +100,6 @@ public class LeaveApplicationControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/leave-application")
         .param("applicationId", "1"))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -121,7 +118,6 @@ public class LeaveApplicationControllerTest {
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -140,7 +136,6 @@ public class LeaveApplicationControllerTest {
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -157,7 +152,6 @@ public class LeaveApplicationControllerTest {
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -174,7 +168,6 @@ public class LeaveApplicationControllerTest {
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -192,7 +185,6 @@ public class LeaveApplicationControllerTest {
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -208,7 +200,6 @@ public class LeaveApplicationControllerTest {
       .perform(put("/leave-application")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -224,7 +215,6 @@ public class LeaveApplicationControllerTest {
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -242,7 +232,6 @@ public class LeaveApplicationControllerTest {
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -259,7 +248,6 @@ public class LeaveApplicationControllerTest {
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -277,7 +265,6 @@ public class LeaveApplicationControllerTest {
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
-      .andDo(print())
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());

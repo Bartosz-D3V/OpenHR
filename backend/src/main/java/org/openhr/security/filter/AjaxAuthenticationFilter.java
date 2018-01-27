@@ -34,17 +34,19 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
   @Override
   public Authentication attemptAuthentication(final HttpServletRequest req, final HttpServletResponse res)
     throws AuthenticationException {
+    User user;
     try {
-      final User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
-      if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-        throw new AuthenticationServiceException("Username or password is empty");
-      }
-      final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
-        user.getPassword());
-      return getAuthenticationManager().authenticate(token);
-    } catch (IOException e) {
+      user = new ObjectMapper().readValue(req.getInputStream(), User.class);
+    } catch (final IOException e) {
       throw new RuntimeException(e);
     }
+    if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+      throw new AuthenticationServiceException("Username or password is empty");
+    }
+    final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
+      user.getPassword());
+    return getAuthenticationManager().authenticate(token);
+
   }
 
   @Override
