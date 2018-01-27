@@ -2,6 +2,8 @@ package org.openhr.repository.user;
 
 import org.openhr.domain.user.User;
 
+import java.util.List;
+
 public interface UserRepository {
   User findByUsername(String username);
 
@@ -11,5 +13,5 @@ public interface UserRepository {
 
   String getEncodedPassword(long userId);
 
-  boolean usernameIsFree(String username);
+  List<String> retrieveUsernamesInUse();
 }

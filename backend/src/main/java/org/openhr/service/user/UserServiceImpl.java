@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void registerUser(final User user) throws UserAlreadyExists {
-    final boolean usernameIsFree = usernameIsFree(user.getUsername());
-    if (!usernameIsFree) {
+    final boolean isUsernameFree = isUsernameFree(user.getUsername());
+    if (!isUsernameFree) {
       throw new UserAlreadyExists("Provided username is already in use");
     }
     user.setPassword(authenticationService.encodePassword(user.getPassword()));
@@ -49,13 +49,13 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean validCredentials(final String username, final String password) throws UserDoesNotExist {
-    final User user = findByUsername(username);
+  public boolean validCredentials(final String username, final String password) {
+    final User user = userRepository.findByUsername(username);
     return user != null && authenticationService.passwordsMatch(password, user.getPassword());
   }
 
   @Override
-  public boolean usernameIsFree(final String username) {
-    return userRepository.usernameIsFree(username);
+  public boolean isUsernameFree(final String username) {
+    return !userRepository.retrieveUsernamesInUse().contains(username);
   }
 }

@@ -7,7 +7,7 @@ import org.openhr.exception.UserDoesNotExist;
 public interface UserFacade {
   User findByUsername(String username) throws UserDoesNotExist;
 
-  void registerUser(User user) throws UserAlreadyExists, UserDoesNotExist;
+  void registerUser(User user) throws UserAlreadyExists;
 
-  boolean usernameIsFree(String username);
+  boolean isUsernameFree(String username);
 }

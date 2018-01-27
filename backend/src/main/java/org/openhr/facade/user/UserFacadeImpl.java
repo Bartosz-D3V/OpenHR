@@ -21,12 +21,12 @@ public class UserFacadeImpl implements UserFacade {
 
 
   @Override
-  public void registerUser(final User user) throws UserAlreadyExists, UserDoesNotExist {
+  public void registerUser(final User user) throws UserAlreadyExists {
     userService.registerUser(user);
   }
 
   @Override
-  public boolean usernameIsFree(final String username) {
-    return userService.usernameIsFree(username);
+  public boolean isUsernameFree(final String username) {
+    return userService.isUsernameFree(username);
   }
 }

@@ -105,24 +105,23 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public boolean usernameIsFree(final String username) {
-    boolean usernameIsFree;
+  public List<String> retrieveUsernamesInUse() {
+    List<String> usernamesInUse;
     try {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
-      int numberOfUsernames = criteria
-        .add(Restrictions.eq("username", username))
+      usernamesInUse = criteria
+        .setProjection(Projections.property("username"))
         .setReadOnly(true)
-        .list()
-        .size();
+        .list();
       session.close();
-      usernameIsFree = numberOfUsernames < 1;
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
     }
 
-    return usernameIsFree;
+    return usernamesInUse;
   }
 }

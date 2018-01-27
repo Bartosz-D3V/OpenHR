@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.domain.user.User;
+import org.openhr.exception.UserAlreadyExists;
+import org.openhr.exception.UserDoesNotExist;
 import org.openhr.facade.user.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,7 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,8 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
-  private final static User mockUser = new User("username", "password");
   private final static ObjectMapper objectMapper = new ObjectMapper();
+  private final static UserAlreadyExists userAlreadyExistsError = new UserAlreadyExists("User already exists");
+  private final static UserDoesNotExist userDoesNotExist = new UserDoesNotExist("User does not exists");
+  private final static User mockUser = new User("username", "password");
 
   @Autowired
   private MockMvc mockMvc;
@@ -55,15 +62,41 @@ public class UserControllerTest {
 
   @Test
   @WithMockUser
-  public void getUserByUsernameShouldReturnUserByUsername() throws Exception {
+  public void registerUserShouldHandleUserAlreadyExistsError() throws Exception {
+    doThrow(userAlreadyExistsError).when(userFacade).registerUser(anyObject());
     final String userAsJson = objectMapper.writeValueAsString(mockUser);
-    when(userFacade.findByUsername("username")).thenReturn(mockUser);
+    final MvcResult result = mockMvc
+      .perform(post("/users")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(userAsJson))
+      .andExpect(status().isNotAcceptable())
+      .andReturn();
 
+    assertEquals(userAlreadyExistsError.getLocalizedMessage(), result.getResolvedException().getMessage());
+  }
+
+  @Test
+  @WithMockUser
+  public void getUserByUsernameShouldReturnUserByUsername() throws Exception {
+    when(userFacade.findByUsername("username")).thenReturn(mockUser);
+    final String userAsJson = objectMapper.writeValueAsString(mockUser);
     final MvcResult result = mockMvc
       .perform(get("/users/{username}", "username"))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
     assertEquals(userAsJson, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
+  public void getUserByUsernameShouldHandleUserDoesNotExistError() throws Exception {
+    when(userFacade.findByUsername("username")).thenThrow(userDoesNotExist);
+    final MvcResult result = mockMvc
+      .perform(get("/users/{username}", "username"))
+      .andExpect(status().isNotFound())
+      .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(userDoesNotExist.getMessage(), result.getResolvedException().getMessage());
   }
 }

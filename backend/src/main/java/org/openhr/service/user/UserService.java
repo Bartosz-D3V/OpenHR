@@ -7,7 +7,7 @@ import org.openhr.exception.UserDoesNotExist;
 public interface UserService {
   User findByUsername(String username) throws UserDoesNotExist;
 
-  void registerUser(User user) throws UserAlreadyExists, UserDoesNotExist;
+  void registerUser(User user) throws UserAlreadyExists;
 
   String getEncodedPassword(long userId);
 
@@ -15,5 +15,5 @@ public interface UserService {
 
   boolean validCredentials(String username, String password) throws UserDoesNotExist;
 
-  boolean usernameIsFree(String username);
+  boolean isUsernameFree(String username);
 }
