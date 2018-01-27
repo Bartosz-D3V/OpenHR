@@ -22,7 +22,7 @@ public class UserController {
   }
 
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void registerUser(@RequestBody final User user) throws UserAlreadyExists, UserDoesNotExist {
+  public void registerUser(@RequestBody final User user) throws UserAlreadyExists {
     userFacade.registerUser(user);
   }
 
