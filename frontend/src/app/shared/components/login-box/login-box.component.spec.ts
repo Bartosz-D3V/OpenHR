@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule } from '@angular/material';
+
 import { LoginBoxComponent } from './login-box.component';
 
 describe('LoginBoxComponent', () => {
@@ -8,6 +10,12 @@ describe('LoginBoxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+      ],
       declarations: [
         LoginBoxComponent,
       ],
