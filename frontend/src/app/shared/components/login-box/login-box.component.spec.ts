@@ -52,13 +52,13 @@ describe('LoginBoxComponent', () => {
       expect(component.loginBoxForm.controls['username'].valid).toBeTruthy();
     });
 
-    it('username should mark form as invalid if field is empty', () => {
+    it('password should mark form as invalid if field is empty', () => {
       component.loginBoxForm.controls['password'].setValue(null);
 
       expect(component.loginBoxForm.controls['password'].valid).toBeFalsy();
     });
 
-    it('username should mark form as valid if field is not empty', () => {
+    it('password should mark form as valid if field is not empty', () => {
       component.loginBoxForm.controls['password'].setValue('password123');
 
       expect(component.loginBoxForm.controls['password'].valid).toBeTruthy();
