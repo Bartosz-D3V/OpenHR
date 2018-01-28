@@ -3,19 +3,26 @@
     <mat-card-title class="c-login-box__title">Login</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form fxLayout="column" fxLayoutAlign="space-around">
+    <form [formGroup]="loginBoxForm" fxLayout="column" fxLayoutAlign="space-around">
       <mat-form-field fxFlex="100">
         <label for="login-page-username"></label>
-        <input matInput required="required" placeholder="Username" formControlName="firstNameFormControl"
-               id="login-page-username" name="username">
+        <input matInput required="required" placeholder="Username"
+               id="login-page-username" name="username" formControlName="username">
       </mat-form-field>
+      <mat-error *ngIf="loginBoxForm.controls['username'].hasError('required') &&
+        loginBoxForm.controls['username'].touched">
+        Username is required
+      </mat-error>
 
       <mat-form-field fxFlex="100">
         <label for="login-page-password"></label>
         <input matInput required="required" type="password" placeholder="Password"
-               formControlName="firstNameFormControl"
-               id="login-page-password" name="password">
+               id="login-page-password" name="password" formControlName="password">
       </mat-form-field>
+      <mat-error *ngIf="loginBoxForm.controls['password'].hasError('required') &&
+        loginBoxForm.controls['password'].touched">
+        Password is required
+      </mat-error>
     </form>
   </mat-card-content>
   <mat-card-actions class="c-login-box__actions">
