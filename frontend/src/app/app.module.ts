@@ -11,8 +11,8 @@ import { LandingModule } from './modules/landing/landing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './boot/app.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
-import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 
 @NgModule({
   declarations: [

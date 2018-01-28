@@ -1,0 +1,24 @@
+<mat-card class="c-login-box">
+  <mat-card-header class="c-login-box__header">
+    <mat-card-title class="c-login-box__title">Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form fxLayout="column" fxLayoutAlign="space-around">
+      <mat-form-field fxFlex="100">
+        <label for="login-page-username"></label>
+        <input matInput required="required" placeholder="Username" formControlName="firstNameFormControl"
+               id="login-page-username" name="username">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="100">
+        <label for="login-page-password"></label>
+        <input matInput required="required" type="password" placeholder="Password"
+               formControlName="firstNameFormControl"
+               id="login-page-password" name="password">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions class="c-login-box__actions">
+    <button mat-raised-button color="primary">Login</button>
+  </mat-card-actions>
+</mat-card>

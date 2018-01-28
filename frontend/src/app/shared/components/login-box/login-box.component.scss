@@ -1,0 +1,19 @@
+@import 'variables';
+
+.c-login-box {
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+
+  &__header,
+  &__actions {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 1.5em;
+  }
+}

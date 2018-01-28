@@ -2,12 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule } from '@angular/material';
 
-import { LoginBoxComponent } from '../../../../shared/components/login-box/login-box.component';
-import { LoginComponent } from './login.component';
+import { LoginBoxComponent } from './login-box.component';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('LoginBoxComponent', () => {
+  let component: LoginBoxComponent;
+  let fixture: ComponentFixture<LoginBoxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +17,6 @@ describe('LoginComponent', () => {
         MatFormFieldModule,
       ],
       declarations: [
-        LoginComponent,
         LoginBoxComponent,
       ],
     })
@@ -26,7 +24,7 @@ describe('LoginComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(LoginBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
