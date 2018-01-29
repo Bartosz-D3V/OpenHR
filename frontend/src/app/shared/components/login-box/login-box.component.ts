@@ -38,7 +38,7 @@ export class LoginBoxComponent implements OnInit {
     this._loginService
       .login(credentials)
       .subscribe((response: Response) => {
-        const token: string = response.headers.get('Bearer');
+        const token: string = response.headers.get('Authorization');
         this._jwtHelper.saveToken(token);
       });
   }
