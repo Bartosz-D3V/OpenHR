@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { SystemVariables } from '../../../config/system-variables';
 import { JwtHelperService } from './jwt-helper.service';
-import { Jwt } from './jwt';
+import { Jwt } from '../../domain/auth/jwt';
 
 describe('JwtHelperService', () => {
   let service: JwtHelperService;
@@ -19,10 +20,28 @@ describe('JwtHelperService', () => {
       ],
     });
     service = TestBed.get(JwtHelperService);
+    service.removeToken();
+    service.saveToken(mockTokenString);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('getToken should return token as a string', () => {
+    expect(service.getToken()).toEqual(mockTokenString);
+  });
+
+  it('saveToken should save token into localStorage', () => {
+    service.saveToken(mockTokenString);
+
+    expect(window.localStorage.getItem(SystemVariables.TOKEN_PREFIX)).toEqual(mockTokenString);
+  });
+
+  it('removeToken should remove token from localStorage', () => {
+    service.removeToken();
+
+    expect(window.localStorage.getItem(SystemVariables.TOKEN_PREFIX)).toBeNull();
   });
 
   describe('parseToken', () => {
@@ -47,7 +66,7 @@ describe('JwtHelperService', () => {
 
   describe('getUsersRole', () => {
     it('should return users roles', () => {
-      const roles: Array<string> = service.getUsersRole(mockTokenString);
+      const roles: Array<string> = service.getUsersRole();
 
       expect(roles).toBeDefined();
       expect(roles).toEqual(['ROLE_MEMBER']);
@@ -59,7 +78,7 @@ describe('JwtHelperService', () => {
       spyOn(service, 'parseToken').and.returnValue({
         exp: 0,
       });
-      const isExpired: boolean = service.isTokenExpired(mockTokenString);
+      const isExpired: boolean = service.isTokenExpired();
 
       expect(isExpired).toBeTruthy();
     });
@@ -68,7 +87,7 @@ describe('JwtHelperService', () => {
       spyOn(service, 'parseToken').and.returnValue({
         exp: Number.MAX_SAFE_INTEGER,
       });
-      const isExpired: boolean = service.isTokenExpired(mockTokenString);
+      const isExpired: boolean = service.isTokenExpired();
 
       expect(isExpired).toBeFalsy();
     });
@@ -76,13 +95,13 @@ describe('JwtHelperService', () => {
 
   describe('hasRole', () => {
     it('should return true if user has appropriate role', () => {
-      const hasRole: boolean = service.hasRole(mockTokenString, 'ROLE_MEMBER');
+      const hasRole: boolean = service.hasRole('ROLE_MEMBER');
 
       expect(hasRole).toBeTruthy();
     });
 
     it('should return false if user does not have appropriate role', () => {
-      const hasRole: boolean = service.hasRole(mockTokenString, 'ROLE_ADMIN');
+      const hasRole: boolean = service.hasRole('ROLE_ADMIN');
 
       expect(hasRole).toBeFalsy();
     });
