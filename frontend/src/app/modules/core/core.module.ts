@@ -16,6 +16,7 @@ import 'hammerjs/hammer';
 import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
 import { NamePipe } from '../../shared/pipes/name/name.pipe';
+import { JwtHelperService } from '../../shared/services/jwt/jwt-helper.service';
 import { SidenavComponent } from '../../shared/components/sidenav/sidenav.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { DateRangeComponent } from '../../shared/components/date-range/date-range.component';
@@ -32,7 +33,6 @@ import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
-import { JwtHelperService } from '../../shared/services/jwt/jwt-helper.service';
 
 @NgModule({
   imports: [
