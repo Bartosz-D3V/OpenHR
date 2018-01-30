@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SystemVariables } from '../../../config/system-variables';
-import { JwtHelperService } from './jwt-helper.service';
 import { Jwt } from '../../domain/auth/jwt';
+import { JwtHelperService } from './jwt-helper.service';
 
 describe('JwtHelperService', () => {
   let service: JwtHelperService;
@@ -12,6 +12,12 @@ describe('JwtHelperService', () => {
   NQkVSIl0sImlhdCI6MTUxNzAwODIzMCwiZXhwIjoxNTE3MDA4MjMxfQ.
   KaGUCKSC5M6QG61eZVQPcf31Db5LKWRvW90pikVlQ9M
   `;
+  const emptyJwt: Jwt = {
+    sub: '',
+    scopes: [],
+    iat: 0,
+    exp: 0,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,6 +51,12 @@ describe('JwtHelperService', () => {
   });
 
   describe('parseToken', () => {
+    it('should return empty object if validateToken method returned object', () => {
+      spyOn(service, 'validateToken').and.returnValue(emptyJwt);
+
+      expect(service.parseToken('')).toEqual(emptyJwt);
+    });
+
     it('should return object that implements JWT interface', () => {
       const parsedJwt: Object = service.parseToken(mockTokenString);
 
@@ -104,6 +116,20 @@ describe('JwtHelperService', () => {
       const hasRole: boolean = service.hasRole('ROLE_ADMIN');
 
       expect(hasRole).toBeFalsy();
+    });
+  });
+
+  describe('validateToken', () => {
+    it('should return empty token object if passed token is null', () => {
+      expect(service.parseToken('')).toEqual(emptyJwt);
+    });
+
+    it('should return empty token object if passed token is less than 10 chars in length', () => {
+      expect(service.parseToken('x'.repeat(9))).toEqual(emptyJwt);
+    });
+
+    it('should return empty token object if passed token does not have two dots', () => {
+      expect(service.parseToken(mockTokenString.replace('.', ''))).toEqual(emptyJwt);
     });
   });
 });
