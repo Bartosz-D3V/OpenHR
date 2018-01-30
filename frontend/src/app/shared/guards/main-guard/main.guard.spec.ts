@@ -15,7 +15,7 @@ describe('MainGuard', () => {
         JwtHelperService,
       ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([]),
       ],
     });
     guard = TestBed.get(MainGuard);

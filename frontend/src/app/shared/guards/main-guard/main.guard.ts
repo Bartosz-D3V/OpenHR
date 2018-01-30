@@ -14,8 +14,7 @@ export class MainGuard implements CanActivate {
       this._jwtHelper.hasRole('ROLE_MEMBER')) {
       return true;
     }
-    this._router.navigate(['/login']).then(() => {
-      return false;
-    }, (error: any) => console.log(error));
+    this._router.navigate(['/login']);
+    return false;
   }
 }
