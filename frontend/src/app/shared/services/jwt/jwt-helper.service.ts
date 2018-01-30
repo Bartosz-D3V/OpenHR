@@ -39,9 +39,27 @@ export class JwtHelperService {
   }
 
   public parseToken(token: string): Jwt {
+    const invalidToken = this.validateToken(token);
+    if (invalidToken !== undefined && 'scopes' in invalidToken) {
+      return invalidToken;
+    }
     const base64Text: string = token.split('.')[1];
     const base64: string = base64Text.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
   }
 
+  public validateToken(token: string): Jwt {
+    const emptyJwt: Jwt = {
+      sub: '',
+      scopes: [],
+      iat: 0,
+      exp: 0,
+    };
+    if (token === null || token.length < 10) {
+      return emptyJwt;
+    }
+    if (((token.split('.')).length - 1) !== 2) {
+      return emptyJwt;
+    }
+  }
 }

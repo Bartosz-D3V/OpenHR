@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { CanActivate, Router } from '@angular/router';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 
 @Injectable()
 export class MainGuard implements CanActivate {
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router,
+              private _jwtHelper: JwtHelperService) {
   }
 
-  canActivate(next: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
+  canActivate(): boolean {
+    if (!this._jwtHelper.isTokenExpired() ||
+      this._jwtHelper.hasRole('ROLE_MEMBER')) {
+      return true;
+    }
+    this._router.navigate(['/login']).then(() => {
+      return false;
+    }, (error: any) => console.log(error));
   }
 }

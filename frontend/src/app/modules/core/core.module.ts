@@ -32,6 +32,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
+import { JwtHelperService } from '../../shared/services/jwt/jwt-helper.service';
 
 @NgModule({
   imports: [
@@ -85,6 +86,9 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
     SettingsComponent,
     EmployeesComponent,
     AddEmployeeComponent,
+  ],
+  providers: [
+    JwtHelperService,
   ],
 })
 export class CoreModule {
