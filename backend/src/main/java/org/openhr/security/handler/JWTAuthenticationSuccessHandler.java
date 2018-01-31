@@ -2,6 +2,7 @@ package org.openhr.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openhr.domain.user.UserContext;
+import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAccessToken;
 import org.openhr.security.factory.JWTTokenFactory;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,12 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JWTAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
   private final ObjectMapper mapper = new ObjectMapper();
   private final JWTTokenFactory tokenFactory;
+
 
   public JWTAuthenticationSuccessHandler(final JWTTokenFactory tokenFactory) {
     this.tokenFactory = tokenFactory;
@@ -29,17 +28,13 @@ public class JWTAuthenticationSuccessHandler implements AuthenticationSuccessHan
 
   @Override
   public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-                                      final Authentication authentication) throws IOException {
+                                      final Authentication authentication) {
     final UserContext userContext = (UserContext) authentication.getPrincipal();
     final JWTAccessToken accessToken = tokenFactory.createJWTAccessToken(userContext);
-    final JWTAccessToken refreshToken = tokenFactory.createJWTAccessToken(userContext);
-    final Map<String, String> tokenMap = new HashMap<>();
-    tokenMap.put("token", accessToken.getRawToken());
-    tokenMap.put("refreshToken", refreshToken.getRawToken());
 
-    response.setStatus(HttpStatus.OK.value());
+    response.setStatus(HttpStatus.NO_CONTENT.value());
+    response.setHeader(SecurityConfigConstants.HEADER_STRING, accessToken.getRawToken());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-    mapper.writeValue(response.getWriter(), tokenMap);
     clearAuthenticationAttributes(request);
   }
 

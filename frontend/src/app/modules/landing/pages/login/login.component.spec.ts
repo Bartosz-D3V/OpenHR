@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 
@@ -29,6 +30,7 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         FormsModule,
+        RouterTestingModule,
         MatCardModule,
         MatButtonModule,
         MatIconModule,
@@ -52,5 +54,15 @@ describe('LoginComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('openApp method', () => {
+    it('should navigate to /app when user is authenticated', () => {
+      spyOn(component['_router'], 'navigate');
+      component.openApp(true);
+
+      expect(component['_router'].navigate).toHaveBeenCalled();
+      expect(component['_router'].navigate).toHaveBeenCalledWith(['/app']);
+    });
   });
 });

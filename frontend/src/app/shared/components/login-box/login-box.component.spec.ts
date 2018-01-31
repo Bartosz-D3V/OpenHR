@@ -103,5 +103,14 @@ describe('LoginBoxComponent', () => {
       expect(component['_jwtHelper'].saveToken).toHaveBeenCalled();
       expect(component['_jwtHelper'].saveToken).toHaveBeenCalledWith('mock-token');
     });
+
+    it('should emit true once token is saved', () => {
+      let authenticated: boolean;
+      component.onAuthenticated.subscribe((response) => authenticated = response);
+      component.login();
+
+      expect(authenticated).toBeDefined();
+      expect(authenticated).toBeTruthy();
+    });
   });
 });

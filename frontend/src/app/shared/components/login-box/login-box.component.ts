@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { Credentials } from './domain/credentials';
 import { LoginService } from './service/login.service';
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 
 @Component({
   selector: 'app-login-box',
@@ -12,6 +13,9 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
   providers: [JwtHelperService],
 })
 export class LoginBoxComponent implements OnInit {
+  @Output()
+  public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   loginBoxForm: FormGroup;
 
   constructor(private _fb: FormBuilder,
@@ -37,9 +41,10 @@ export class LoginBoxComponent implements OnInit {
     );
     this._loginService
       .login(credentials)
-      .subscribe((response: Response) => {
+      .subscribe((response: HttpResponse<null>) => {
         const token: string = response.headers.get('Authorization');
         this._jwtHelper.saveToken(token);
+        this.onAuthenticated.emit(true);
       });
   }
 

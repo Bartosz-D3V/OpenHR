@@ -1,10 +1,10 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { SystemVariables } from '../../../../config/system-variables';
 import { LoginService } from './login.service';
 import { Credentials } from '../domain/credentials';
-import { HttpHeaders } from '@angular/common/http';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -32,7 +32,7 @@ describe('LoginService', () => {
 
   describe('API access methods', () => {
     const mockCredentials: Credentials = new Credentials('User', 'password');
-    const apiLink: string = SystemVariables.API_URL + 'login/';
+    const apiLink: string = SystemVariables.API_URL + 'api/auth/login';
 
     it('should query current service URL', fakeAsync(() => {
       service.login(mockCredentials).subscribe();
@@ -42,11 +42,11 @@ describe('LoginService', () => {
     describe('login', () => {
 
       it('should return an Observable of type Response', fakeAsync(() => {
-        let result: Response;
+        let result: HttpResponse<null>;
         let error: any;
         service.login(mockCredentials)
           .subscribe(
-            (res: Response) => result = res,
+            (res: HttpResponse<null>) => result = res,
             (err: any) => error = err);
         http.expectOne({
           url: apiLink,
