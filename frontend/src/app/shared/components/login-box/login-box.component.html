@@ -23,6 +23,9 @@
         loginBoxForm.controls['password'].touched">
         Password is required
       </mat-error>
+      <mat-error *ngIf="loginBoxForm.controls['password'].hasError('unauthorized')">
+        Credentials are invalid
+      </mat-error>
     </form>
   </mat-card-content>
   <mat-card-actions class="c-login-box__actions">
