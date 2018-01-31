@@ -11,12 +11,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import moment = require('moment');
 import { MomentInput } from 'moment';
 
-import { DateRangeComponent } from './date-range.component';
-import { DateRangeService } from './service/date-range.service';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { DateRangeComponent } from './date-range.component';
+import { DateRangeService } from './service/date-range.service';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
