@@ -16,7 +16,7 @@ export class LoginBoxComponent implements OnInit {
   @Output()
   public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  loginBoxForm: FormGroup;
+  public loginBoxForm: FormGroup;
 
   constructor(private _fb: FormBuilder,
               private _loginService: LoginService,

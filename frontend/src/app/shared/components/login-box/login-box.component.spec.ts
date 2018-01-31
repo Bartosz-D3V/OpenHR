@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -15,7 +16,7 @@ import { Credentials } from './domain/credentials';
 describe('LoginBoxComponent', () => {
   let component: LoginBoxComponent;
   let fixture: ComponentFixture<LoginBoxComponent>;
-  let service: LoginService;
+  let service: FakeLoginService;
 
   @Injectable()
   class FakeLoginService {
@@ -24,6 +25,13 @@ describe('LoginBoxComponent', () => {
         headers: new Headers({
           'Authorization': 'mock-token',
         }),
+      }));
+    }
+
+    unathorizedLogin(credentials: Credentials): Observable<any> {
+      return Observable.throw(new HttpErrorResponse({
+        error: 'Unauthorized',
+        status: 401,
       }));
     }
   }
@@ -111,6 +119,34 @@ describe('LoginBoxComponent', () => {
 
       expect(authenticated).toBeDefined();
       expect(authenticated).toBeTruthy();
+    });
+
+    it('should call call error resolver method if failed to authorize', () => {
+      spyOn(component, 'handleErrorResponse');
+      spyOn(service, 'login').and.callFake(() => {
+        return service.unathorizedLogin(new Credentials('', ''));
+      });
+      component.login();
+
+      expect(component.handleErrorResponse).toHaveBeenCalled();
+    });
+  });
+
+  describe('handleErrorResponse', () => {
+    let passwordCtrl: AbstractControl;
+
+    beforeEach(() => {
+      passwordCtrl = component.loginBoxForm.controls['password'];
+    });
+
+    it('should set unauthorized error if the returned code is 401', () => {
+      const mockResponse: HttpResponse<null> = new HttpResponse({
+        status: 401,
+      });
+      component.handleErrorResponse(mockResponse);
+
+      expect(passwordCtrl.invalid).toBeTruthy();
+      expect(passwordCtrl.hasError('unauthorized')).toBeTruthy();
     });
   });
 });

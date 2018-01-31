@@ -143,15 +143,15 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     return !(foundEvent === undefined);
   }
 
-  public isMobile(): boolean {
-    return this._responsiveHelper.isMobile();
-  }
-
   public getBankHolidays(): void {
     this.$bankHolidays = this._dateRangeService
       .getBankHolidaysInEnglandAndWales()
       .subscribe((data: BankHolidayEngland) => {
         this.bankHolidaysEngland = data;
       });
+  }
+
+  isMobile(): boolean {
+    return this._responsiveHelper.isMobile();
   }
 }
