@@ -37,7 +37,7 @@ export class LoginBoxComponent implements OnInit {
   public login(): void {
     const credentials: Credentials = new Credentials(
       this.loginBoxForm.controls['username'].value,
-      this.loginBoxForm.controls['password'].value,
+      this.loginBoxForm.controls['password'].value
     );
     this._loginService
       .login(credentials)
