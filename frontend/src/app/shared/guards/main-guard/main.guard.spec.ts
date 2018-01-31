@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { MainGuard } from './main.guard';
@@ -15,11 +15,13 @@ describe('MainGuard', () => {
         JwtHelperService,
       ],
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
       ],
     });
     guard = TestBed.get(MainGuard);
     service = TestBed.get(JwtHelperService);
+
+    spyOn(guard['_router'], 'navigate');
   });
 
   it('should create', () => {
@@ -41,7 +43,6 @@ describe('MainGuard', () => {
 
     it('should navigate to login page if the returned value is false', () => {
       spyOn(guard['_jwtHelper'], 'hasRole').and.returnValue(false);
-      spyOn(guard['_router'], 'navigate');
       guard.canActivate();
 
       expect(guard['_router'].navigate).toHaveBeenCalled();

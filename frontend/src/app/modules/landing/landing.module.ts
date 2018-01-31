@@ -7,8 +7,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import 'hammerjs/hammer';
 
-import { LoginComponent } from './pages/login/login.component';
 import { LoginBoxComponent } from '../../shared/components/login-box/login-box.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   imports: [
