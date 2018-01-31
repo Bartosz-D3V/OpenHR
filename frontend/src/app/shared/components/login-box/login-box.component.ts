@@ -45,7 +45,16 @@ export class LoginBoxComponent implements OnInit {
         const token: string = response.headers.get('Authorization');
         this._jwtHelper.saveToken(token);
         this.onAuthenticated.emit(true);
+      }, (err: HttpResponse<null>) => {
+        this.handleErrorResponse(err);
       });
+  }
+
+  handleErrorResponse(err: HttpResponse<null>): void {
+    switch (err.status) {
+      case 401:
+        this.loginBoxForm.controls['password'].setErrors({unauthorized: true});
+    }
   }
 
 }
