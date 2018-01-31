@@ -1,7 +1,8 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
 import { SidenavItemListComponent } from './sidenav-item-list.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SidenavItemListComponent', () => {
   let component: SidenavItemListComponent;
@@ -15,6 +16,9 @@ describe('SidenavItemListComponent', () => {
       imports: [
         RouterTestingModule,
       ],
+      providers: [
+        JwtHelperService,
+      ],
     })
       .compileComponents();
   }));
@@ -27,5 +31,12 @@ describe('SidenavItemListComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('hasRole should call the JWT Helper Service', () => {
+    spyOn(component['_jwtHelper'], 'hasRole');
+    component.hasRole('Admin');
+
+    expect(component['_jwtHelper'].hasRole).toHaveBeenCalled();
   });
 });
