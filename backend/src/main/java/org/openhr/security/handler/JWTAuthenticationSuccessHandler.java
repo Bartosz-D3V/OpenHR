@@ -1,6 +1,5 @@
 package org.openhr.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openhr.domain.user.UserContext;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAccessToken;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 @Component
 public class JWTAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-  private final ObjectMapper mapper = new ObjectMapper();
   private final JWTTokenFactory tokenFactory;
 
 
