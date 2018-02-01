@@ -28,9 +28,9 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-  private static final String FORM_BASED_LOGIN_ENTRY_POINT = "/api/auth/login";
+  private static final String FORM_BASED_LOGIN_ENTRY_POINT = "/auth/login";
   private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/users";
-  private static final String TOKEN_REFRESH_ENTRY_POINT = "/api/auth/token";
+  private static final String TOKEN_REFRESH_ENTRY_POINT = "/auth/token";
 
   @Autowired
   private AuthenticationManager authenticationManager;

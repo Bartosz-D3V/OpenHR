@@ -93,6 +93,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     repeatPasswordFormControl: new FormControl('', [
       Validators.required,
     ]),
+
+    usernameFormControl: new FormControl('', [
+      Validators.required,
+    ]),
   });
 
   public stepNumber = 0;
