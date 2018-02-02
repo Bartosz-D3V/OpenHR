@@ -24,12 +24,14 @@
     Report
   </button>
 
-  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['employees'] } }]">
+  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['employees'] } }]">
     <i class="material-icons c-sidenav__icon">people</i>
     Employees
   </button>
 
-  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
+  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
     <i class="material-icons c-sidenav__icon">person_add</i>
     Add employee
   </button>

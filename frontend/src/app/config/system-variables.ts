@@ -1,3 +1,4 @@
 export class SystemVariables {
-  public static API_URL = 'localhost:8080/api/';
+  public static readonly API_URL = '/';
+  public static readonly TOKEN_PREFIX = 'openHR-TKN';
 }

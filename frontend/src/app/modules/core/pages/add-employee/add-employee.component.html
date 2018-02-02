@@ -219,6 +219,16 @@
       <form [formGroup]="loginInformationFormGroup" fxLayout.gt-sm="row wrap"
             fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="account-details-username"></label>
+          <input matInput #username type="text" required="required" placeholder="Username"
+                 formControlName="usernameFormControl"
+                 id="account-details-username" name="username">
+          <mat-error *ngIf="loginInformationFormGroup.controls['usernameFormControl'].hasError('required')">
+            Username is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
           <label for="account-details-password"></label>
           <input matInput #password type="password" required="required" placeholder="Password"
                  formControlName="passwordFormControl" id="account-details-password" name="password">

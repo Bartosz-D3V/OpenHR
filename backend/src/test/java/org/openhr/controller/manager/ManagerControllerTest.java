@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,6 +52,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addManagerShouldAcceptManagerObject() throws Exception {
     final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
@@ -59,13 +61,13 @@ public class ManagerControllerTest {
       .perform(post("/manager")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
   }
 
   @Test
+  @WithMockUser()
   public void updateManagerShouldAcceptManagerObject() throws Exception {
     final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
@@ -74,20 +76,19 @@ public class ManagerControllerTest {
       .perform(put("/manager")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
   }
 
   @Test
+  @WithMockUser()
   public void getEmployeesShouldHandleError() throws Exception {
     when(managerFacade.getEmployees(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
       .perform(get("/manager/employees")
         .param("managerId", "1"))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -95,6 +96,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void getEmployeesShouldReturnEmployees() throws Exception {
     final Set<Employee> employeeSet = new HashSet<>();
     employeeSet.add(new Employee());
@@ -104,7 +106,6 @@ public class ManagerControllerTest {
     final MvcResult result = mockMvc
       .perform(get("/manager/employees")
         .param("managerId", "1"))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -112,6 +113,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addEmployeeToManagerShouldHandleError() throws Exception {
     final Employee employee = new Employee();
     employee.setManager(new Manager());
@@ -122,7 +124,6 @@ public class ManagerControllerTest {
       .perform(post("/manager/{managerId}/employeeAssignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
-      .andDo(print())
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -130,6 +131,7 @@ public class ManagerControllerTest {
   }
 
   @Test
+  @WithMockUser()
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
     final Employee employee = new Employee();
     employee.setManager(new Manager());
@@ -139,7 +141,6 @@ public class ManagerControllerTest {
       .perform(post("/manager/{managerId}/employeeAssignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
-      .andDo(print())
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());

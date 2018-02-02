@@ -13,6 +13,7 @@
     "curly": true,
     "deprecation": true,
     "eofline": true,
+    "encoding": true,
     "forin": true,
     "import-blacklist": [
       true,
@@ -107,6 +108,7 @@
       true,
       "allow-null-check"
     ],
+    "typedef": true,
     "typedef-whitespace": [
       true,
       {
@@ -149,6 +151,7 @@
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
+    "no-var-requires": true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,

@@ -3,13 +3,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
-import { AvatarComponent } from './avatar.component';
 import { User } from '../../domain/user/user';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
+  let jwtHelper: JwtHelperService;
   const mockUser = new User(2199, 'john.test', 'John Test', null);
 
   beforeEach(async(() => {
@@ -23,6 +25,9 @@ describe('AvatarComponent', () => {
         MatButtonModule,
         RouterTestingModule,
       ],
+      providers: [
+        JwtHelperService,
+      ],
     })
       .compileComponents();
   }));
@@ -32,6 +37,7 @@ describe('AvatarComponent', () => {
     component = fixture.componentInstance;
     component.user = mockUser;
     fixture.detectChanges();
+    jwtHelper = TestBed.get(JwtHelperService);
   });
 
   it('should be created', () => {
@@ -44,10 +50,10 @@ describe('AvatarComponent', () => {
     expect(actualInitials).toEqual('JT');
   });
 
-  it('logout method should remove token from localStorage', () => {
-    window.localStorage.setItem('openHRAuth', 't0k3n');
+  it('logout method should call removeToken method from JWT Helper Service', () => {
+    spyOn(component['_jwtHelper'], 'removeToken');
     component.logout();
 
-    expect(window.localStorage.getItem('openHRAuth')).toBeNull();
+    expect(component['_jwtHelper'].removeToken).toHaveBeenCalled();
   });
 });

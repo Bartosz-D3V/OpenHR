@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { User } from '../../../shared/domain/user/user';
 
@@ -7,14 +7,8 @@ import { User } from '../../../shared/domain/user/user';
   templateUrl: './core-wrapper.component.html',
   styleUrls: ['./core-wrapper.component.scss'],
 })
-export class CoreWrapperComponent implements OnInit {
+export class CoreWrapperComponent {
 
   public mockUser: User = new User(1299, 'john.test', 'John Test', null);
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
 }

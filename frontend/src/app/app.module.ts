@@ -11,11 +11,13 @@ import { LandingModule } from './modules/landing/landing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './boot/app.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,9 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
     LandingModule,
     AppRoutingModule,
   ],
-  providers: [ErrorResolverService],
+  providers: [
+    ErrorResolverService,
+  ],
   bootstrap: [AppComponent],
   entryComponents: [StaticModalComponent],
 })
