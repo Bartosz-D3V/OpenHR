@@ -3,7 +3,7 @@ package org.openhr.security.provider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.openhr.domain.user.UserContext;
+import org.openhr.application.user.domain.UserContext;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAuthenticationToken;
 import org.springframework.core.annotation.Order;

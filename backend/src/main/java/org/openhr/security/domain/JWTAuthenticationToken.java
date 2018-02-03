@@ -1,6 +1,6 @@
 package org.openhr.security.domain;
 
-import org.openhr.domain.user.UserContext;
+import org.openhr.application.user.domain.UserContext;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 

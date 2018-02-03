@@ -3,7 +3,7 @@ package org.openhr.security.factory;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.openhr.domain.user.UserContext;
+import org.openhr.application.user.domain.UserContext;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAccessToken;
 import org.openhr.security.enumeration.Scope;
