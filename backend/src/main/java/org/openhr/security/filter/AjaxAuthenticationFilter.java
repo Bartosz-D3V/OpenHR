@@ -1,7 +1,7 @@
 package org.openhr.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openhr.domain.user.User;
+import org.openhr.application.user.domain.User;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,9 +1,9 @@
 package org.openhr.security.provider;
 
-import org.openhr.domain.user.User;
-import org.openhr.domain.user.UserContext;
-import org.openhr.exception.UserDoesNotExist;
-import org.openhr.service.user.UserService;
+import org.openhr.application.user.domain.User;
+import org.openhr.application.user.domain.UserContext;
+import org.openhr.common.exception.UserDoesNotExist;
+import org.openhr.application.user.service.UserService;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
