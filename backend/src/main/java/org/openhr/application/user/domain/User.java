@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class User implements Serializable {
   @Id
-  @Column(name = "USER_ID")
+  @Column(name = "ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long userId;
 

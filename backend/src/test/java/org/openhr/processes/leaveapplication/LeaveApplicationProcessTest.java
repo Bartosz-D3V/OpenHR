@@ -7,6 +7,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import static junit.framework.TestCase.assertFalse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
@@ -41,7 +43,7 @@ public class LeaveApplicationProcessTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation);
+    mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
 
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
 
@@ -58,7 +60,7 @@ public class LeaveApplicationProcessTest {
   private HistoryService historyService;
 
   @Test
-  public void processShouldStart() throws Exception {
+  public void processShouldStart() {
     final Map<String, Object> params = new HashMap<>();
     params.put("application", mockLeaveApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
@@ -124,7 +126,7 @@ public class LeaveApplicationProcessTest {
   }
 
   @Test
-  public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws Exception {
+  public void hrTeamShouldEndWorkflowByApprovingTheApplication() {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();

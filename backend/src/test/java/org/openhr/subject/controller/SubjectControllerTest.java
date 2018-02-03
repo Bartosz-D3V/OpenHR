@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.subject.controller.SubjectController;
 import org.openhr.application.subject.facade.SubjectFacade;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -54,7 +55,7 @@ public class SubjectControllerTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation);
+    mockContactInformation, mockEmployeeInformation, new User());
 
   @Autowired
   private MockMvc mockMvc;
@@ -100,7 +101,7 @@ public class SubjectControllerTest {
   @WithMockUser()
   public void createSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-    doThrow(new HibernateException("DB Error")).when(subjectFacade).addSubject(any());
+    doThrow(new HibernateException("DB Error")).when(subjectFacade).createSubject(any());
 
     final MvcResult result = mockMvc
       .perform(post("/subjects")

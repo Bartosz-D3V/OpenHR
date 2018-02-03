@@ -22,7 +22,6 @@ export class LoginService {
         headers: this.headers,
         observe: 'response',
       });
-
   }
 
 }

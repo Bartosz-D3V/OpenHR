@@ -27,7 +27,6 @@ public class JWTTokenFactoryImpl implements JWTTokenFactory {
     }
     final Claims claims = Jwts.claims().setSubject(userContext.getUsername());
     claims.put("scopes", userContext.getAuthorities().stream().map(Object::toString).collect(Collectors.toList()));
-
     final LocalDateTime currentTime = LocalDateTime.now();
 
     final String token = Jwts.builder()

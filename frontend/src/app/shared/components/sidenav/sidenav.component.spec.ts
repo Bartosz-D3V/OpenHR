@@ -12,7 +12,7 @@ import { User } from '../../domain/user/user';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 
 describe('SidenavComponent', () => {
-  const mockUser: User = new User(2199, 'john.test', 'John Test', null);
+  const mockUser: User = new User(2199, 'John', 'Test');
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 

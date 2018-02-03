@@ -40,7 +40,7 @@ public class DatabaseConfiguration {
 
   @Bean
   public DataSource dataSource() {
-    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    final DriverManagerDataSource dataSource = new DriverManagerDataSource();
     dataSource.setDriverClassName(DB_DRIVER);
     dataSource.setUrl(DB_URL);
     dataSource.setUsername(DB_USERNAME);
@@ -50,10 +50,10 @@ public class DatabaseConfiguration {
 
   @Bean
   public LocalSessionFactoryBean sessionFactory() {
-    LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+    final LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
     sessionFactoryBean.setDataSource(dataSource());
     sessionFactoryBean.setPackagesToScan(ENTITYMANAGER_PACKAGES_TO_SCAN);
-    Properties hibernateProperties = new Properties();
+    final Properties hibernateProperties = new Properties();
     hibernateProperties.put("hibernate.dialect", HIBERNATE_DIALECT);
     hibernateProperties.put("hibernate.show_sql", HIBERNATE_SHOW_SQL);
     hibernateProperties.put("HBM2DDL_AUTO", HIBERNATE_HBM2DDL_AUTO);

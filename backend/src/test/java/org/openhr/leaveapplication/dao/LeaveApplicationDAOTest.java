@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -34,7 +35,7 @@ public class LeaveApplicationDAOTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation);
+    mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
 
   @Autowired
@@ -79,7 +80,6 @@ public class LeaveApplicationDAOTest {
     LeaveApplication actualLeaveApplication;
     leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Session session = sessionFactory.openSession();
-    session.save(mockSubject);
     actualLeaveApplication = session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
     session.close();
 

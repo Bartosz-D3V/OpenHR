@@ -1,6 +1,8 @@
 package org.openhr.application.subject.service;
 
 import org.hibernate.HibernateException;
+import org.openhr.application.authentication.service.AuthenticationService;
+import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.subject.dao.SubjectDAO;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -15,9 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubjectServiceImpl implements SubjectService {
 
   private final SubjectDAO subjectDAO;
+  private final AuthenticationService authenticationService;
 
-  public SubjectServiceImpl(final SubjectDAO subjectDAO) {
+  public SubjectServiceImpl(final SubjectDAO subjectDAO,
+                            final AuthenticationService authenticationService) {
     this.subjectDAO = subjectDAO;
+    this.authenticationService = authenticationService;
   }
 
   @Override
@@ -27,9 +32,12 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional
-  public void addSubject(final Subject subject) throws HibernateException {
-    subjectDAO.addSubject(subject);
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void createSubject(final Subject subject) throws HibernateException {
+    final String encodedPassword = authenticationService.encodePassword(subject.getUser().getPassword());
+    subject.getUser().setPassword(encodedPassword);
+    subject.getUser().setUserRoles(authenticationService.setBasicUserRoles(subject.getUser()));
+    subjectDAO.createSubject(subject);
   }
 
   @Override
@@ -64,5 +72,11 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(propagation = Propagation.MANDATORY)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     subjectDAO.deleteSubject(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
+    return subjectDAO.getLightweightSubject(subjectId);
   }
 }

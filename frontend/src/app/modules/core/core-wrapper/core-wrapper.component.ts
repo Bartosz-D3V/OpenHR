@@ -9,6 +9,6 @@ import { User } from '../../../shared/domain/user/user';
 })
 export class CoreWrapperComponent {
 
-  public mockUser: User = new User(1299, 'john.test', 'John Test', null);
+  public mockUser: User = new User(1299, 'John', 'Test');
 
 }

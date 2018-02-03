@@ -23,5 +23,9 @@
     "employeeId": "123S",
     "startDate": null,
     "endDate": null
+  },
+  "user": {
+    "username": "user",
+    "password": "1234"
   }
 }

@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.subject.dao.SubjectDAO;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
@@ -13,15 +14,16 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class SubjectDAOTest {
 
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
@@ -32,7 +34,7 @@ public class SubjectDAOTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation);
+    mockContactInformation, mockEmployeeInformation, new User("Jhn13", "testPass"));
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -89,7 +91,7 @@ public class SubjectDAOTest {
 
   @Test
   public void addSubjectShouldInsertSubjectToDatabase() {
-    subjectDAO.addSubject(mockSubject);
+    subjectDAO.createSubject(mockSubject);
     final Session session = sessionFactory.openSession();
     final Subject actualSubject = session.get(Subject.class, mockSubject.getSubjectId());
     session.close();
