@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.domain.subject.Subject;
@@ -19,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hibernate.criterion.Restrictions.eq;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -37,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
       user = (User) criteria
-        .add(Restrictions.eq("username", username))
+        .add(eq("username", username))
         .setMaxResults(1)
         .uniqueResult();
       session.close();
@@ -58,7 +59,7 @@ public class UserRepositoryImpl implements UserRepository {
       final Criteria criteria = session.createCriteria(User.class);
       userId = (long) criteria
         .setProjection(Projections.property("userId"))
-        .add(Restrictions.eq("username", username))
+        .add(eq("username", username))
         .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -96,7 +97,7 @@ public class UserRepositoryImpl implements UserRepository {
       final Criteria criteria = session.createCriteria(User.class);
       encodedPassword = (String) criteria
         .setProjection(Projections.property("password"))
-        .add(Restrictions.eq("userId", userId))
+        .add(eq("userId", userId))
         .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -133,8 +134,9 @@ public class UserRepositoryImpl implements UserRepository {
     try {
       final Session session = sessionFactory.openSession();
       subjectId = (long) session.createCriteria(Subject.class)
-        .add(Restrictions.eq("user.username", username))
         .setProjection(Projections.property("subjectId"))
+        .createCriteria("user")
+        .add(eq("username", username))
         .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
