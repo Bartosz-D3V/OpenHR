@@ -1,14 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import { ISubscription } from 'rxjs/Subscription';
 
 import { User } from '../../../shared/domain/user/user';
+import { JwtHelperService } from '../../../shared/services/jwt/jwt-helper.service';
+import { LightweightSubjectService } from './service/lightweight-subject.service';
 
 @Component({
   selector: 'app-core-wrapper',
   templateUrl: './core-wrapper.component.html',
   styleUrls: ['./core-wrapper.component.scss'],
+  providers: [
+    LightweightSubjectService,
+    JwtHelperService,
+  ],
 })
-export class CoreWrapperComponent {
+export class CoreWrapperComponent implements OnInit, OnDestroy {
+  public user: User;
+  private $user: ISubscription;
 
-  public mockUser: User = new User(1299, 'John', 'Test');
+  constructor(private _lightweightSubject: LightweightSubjectService,
+              private _jwtHelper: JwtHelperService) {
+  }
 
+  ngOnInit(): void {
+    this._lightweightSubject
+      .getUser(this._jwtHelper.getSubjectId())
+      .subscribe((value: User) => {
+        this.user = new User(value.subjectId, value.firstName, value.lastName);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.$user.unsubscribe();
+  }
 }

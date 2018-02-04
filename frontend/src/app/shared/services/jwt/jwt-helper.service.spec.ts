@@ -14,6 +14,7 @@ describe('JwtHelperService', () => {
   `;
   const emptyJwt: Jwt = {
     sub: '',
+    subjectId: 0,
     scopes: [],
     iat: 0,
     exp: 0,
