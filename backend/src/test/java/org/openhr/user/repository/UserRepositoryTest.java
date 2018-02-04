@@ -117,6 +117,8 @@ public class UserRepositoryTest {
     session.close();
     final long subjectId = userRepository.findSubjectId(mockUser1.getUsername());
 
-    assertEquals(1L, subjectId);
+    assertNotEquals(0, mockUser1.getUsername());
+    assertNotEquals(0, subject.getSubjectId());
+    assertEquals(subject.getSubjectId(), subjectId);
   }
 }
