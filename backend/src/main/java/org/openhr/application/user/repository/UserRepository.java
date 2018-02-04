@@ -1,6 +1,7 @@
 package org.openhr.application.user.repository;
 
 import org.openhr.application.user.domain.User;
+import org.openhr.common.exception.UserDoesNotExist;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UserRepository {
   String getEncodedPassword(long userId);
 
   List<String> retrieveUsernamesInUse();
+
+  long findSubjectId(String username) throws UserDoesNotExist;
 }

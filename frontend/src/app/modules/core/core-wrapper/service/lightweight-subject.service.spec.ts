@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { LightweightSubjectService } from './lightweight-subject.service';
+import { MatDialogModule } from '@angular/material';
 
 describe('LightweightSubjectService', () => {
   beforeEach(() => {
@@ -13,6 +14,7 @@ describe('LightweightSubjectService', () => {
       ],
       imports: [
         HttpClientTestingModule,
+        MatDialogModule,
       ],
     });
   });

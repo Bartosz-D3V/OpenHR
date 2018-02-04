@@ -8,7 +8,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
+import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -123,5 +125,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     return usernamesInUse;
+  }
+
+  @Override
+  public long findSubjectId(final String username) throws UserDoesNotExist {
+    long subjectId;
+    try {
+      final Session session = sessionFactory.openSession();
+      subjectId = (long) session.createCriteria(Subject.class)
+        .add(Restrictions.eq("user.username", username))
+        .setProjection(Projections.property("subjectId"))
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    if (subjectId == 0) {
+      throw new UserDoesNotExist("User does not exist");
+    }
+
+    return subjectId;
   }
 }

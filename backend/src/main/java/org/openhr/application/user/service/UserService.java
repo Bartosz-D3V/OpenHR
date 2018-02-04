@@ -16,4 +16,6 @@ public interface UserService {
   boolean validCredentials(String username, String password) throws UserDoesNotExist;
 
   boolean isUsernameFree(String username);
+
+  long findSubjectId(String username) throws UserDoesNotExist;
 }

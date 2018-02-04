@@ -8,6 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.repository.UserRepository;
+import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -97,5 +102,21 @@ public class UserRepositoryTest {
     assertEquals(2, actualUsernamesInUse.size());
     assertEquals(mockUser1.getUsername(), actualUsernamesInUse.get(0));
     assertEquals(mockUser2.getUsername(), actualUsernamesInUse.get(1));
+  }
+
+  @Test
+  public void findSubjectIdShouldReturnSubjectIdByUsername() throws UserDoesNotExist {
+    final User mockUser1 = new User("Kopernik", "password");
+    final Subject subject = new Subject("Mikolaj", "Kopernik", mockUser1);
+    subject.setPersonalInformation(new PersonalInformation());
+    subject.setContactInformation(new ContactInformation());
+    subject.setEmployeeInformation(new EmployeeInformation());
+    final Session session = sessionFactory.openSession();
+    session.save(subject);
+    session.flush();
+    session.close();
+    final long subjectId = userRepository.findSubjectId(mockUser1.getUsername());
+
+    assertEquals(1L, subjectId);
   }
 }
