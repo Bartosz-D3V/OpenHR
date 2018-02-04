@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class SubjectDAOTest {
-
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
   private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);

@@ -58,4 +58,9 @@ public class UserServiceImpl implements UserService {
   public boolean isUsernameFree(final String username) {
     return !userRepository.retrieveUsernamesInUse().contains(username);
   }
+
+  @Override
+  public long findSubjectId(final String username) throws UserDoesNotExist {
+    return userRepository.findSubjectId(username);
+  }
 }
