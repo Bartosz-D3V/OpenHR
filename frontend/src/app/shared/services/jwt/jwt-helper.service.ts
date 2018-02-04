@@ -38,6 +38,11 @@ export class JwtHelperService {
     return jwt.scopes.indexOf(role) > -1;
   }
 
+  public getSubjectId(): number {
+    const jwt: Jwt = this.parseToken(this.getToken());
+    return jwt.subjectId;
+  }
+
   public parseToken(token: string): Jwt {
     const invalidToken = this.validateToken(token);
     if (invalidToken !== undefined && 'scopes' in invalidToken) {
@@ -52,6 +57,7 @@ export class JwtHelperService {
     const emptyJwt: Jwt = {
       sub: '',
       scopes: [],
+      subjectId: 0,
       iat: 0,
       exp: 0,
     };

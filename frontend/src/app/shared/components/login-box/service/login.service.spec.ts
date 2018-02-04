@@ -32,7 +32,7 @@ describe('LoginService', () => {
 
   describe('API access methods', () => {
     const mockCredentials: Credentials = new Credentials('User', 'password');
-    const apiLink: string = SystemVariables.API_URL + 'api/auth/login';
+    const apiLink: string = SystemVariables.API_URL + '/auth/login';
 
     it('should query current service URL', fakeAsync(() => {
       service.login(mockCredentials).subscribe();

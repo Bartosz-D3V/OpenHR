@@ -36,5 +36,9 @@ describe('InitialsPipe', () => {
       expect(pipe.transform(mockName1)).toEqual('JS');
     });
 
+    it('should return undefined if no value was provided', () => {
+      expect(pipe.transform(null)).toBeUndefined();
+    });
+
   });
 });
