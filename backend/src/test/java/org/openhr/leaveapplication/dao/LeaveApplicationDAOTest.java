@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.user.domain.User;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.address.Address;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.ContactInformation;
