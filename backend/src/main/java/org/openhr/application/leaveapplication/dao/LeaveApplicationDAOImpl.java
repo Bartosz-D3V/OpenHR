@@ -1,10 +1,9 @@
 package org.openhr.application.leaveapplication.dao;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.slf4j.Logger;
@@ -14,29 +13,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
+public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplicationDAO {
 
-  private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public LeaveApplicationDAOImpl(final SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
+    super(sessionFactory);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication;
-    try {
-      Session session = sessionFactory.openSession();
-      Transaction transaction = session.beginTransaction();
-      leaveApplication = session.get(LeaveApplication.class, applicationId);
-      transaction.commit();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
+    final LeaveApplication leaveApplication = (LeaveApplication) super.get(LeaveApplication.class, applicationId);
 
     if (leaveApplication == null) {
       log.error("Application could not be found");
@@ -52,21 +40,13 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
     throws HibernateException {
     leaveApplication.setSubject(subject);
     subject.addLeaveApplication(leaveApplication);
-    try {
-      final Session session = sessionFactory.openSession();
-      session.save(leaveApplication);
-      session.flush();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
+    super.save(leaveApplication);
 
     return leaveApplication;
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException, HibernateException {
     final LeaveApplication legacyLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());
@@ -77,16 +57,7 @@ public class LeaveApplicationDAOImpl implements LeaveApplicationDAO {
     legacyLeaveApplication.setApprovedByManager(leaveApplication.isApprovedByManager());
     legacyLeaveApplication.setApprovedByHR(leaveApplication.isApprovedByHR());
     legacyLeaveApplication.setProcessInstanceId(leaveApplication.getProcessInstanceId());
-    try {
-      Session session = sessionFactory.openSession();
-      Transaction transaction = session.beginTransaction();
-      session.merge(legacyLeaveApplication);
-      transaction.commit();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
+    super.merge(legacyLeaveApplication);
 
     return legacyLeaveApplication;
   }
