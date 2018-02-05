@@ -2,7 +2,6 @@ package org.openhr.user.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,12 +31,6 @@ public class UserRepositoryTest {
 
   @Autowired
   private SessionFactory sessionFactory;
-
-  @After
-  public void tearDown() {
-    sessionFactory.getCurrentSession().flush();
-    sessionFactory.getCurrentSession().clear();
-  }
 
   @Test
   public void findByUsernameShouldReturnUserObject() {

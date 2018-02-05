@@ -15,7 +15,7 @@ public abstract class BaseDAO {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public BaseDAO(final SessionFactory sessionFactory) {
+  protected BaseDAO(final SessionFactory sessionFactory) {
     this.sessionFactory = sessionFactory;
   }
 
