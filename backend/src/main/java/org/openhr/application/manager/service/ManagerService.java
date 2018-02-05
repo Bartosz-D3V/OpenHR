@@ -10,7 +10,7 @@ public interface ManagerService {
 
   Manager addManager(Manager manager);
 
-  void updateManager(Manager manager);
+  void updateManager(Manager manager) throws SubjectDoesNotExistException;
 
   Set<Employee> getEmployees(long managerId) throws SubjectDoesNotExistException;
 

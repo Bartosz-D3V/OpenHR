@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -22,28 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
-public class SubjectDAOImpl implements SubjectDAO {
+public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
 
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public SubjectDAOImpl(final SessionFactory sessionFactory) {
+    super(sessionFactory);
     this.sessionFactory = sessionFactory;
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException, HibernateException {
-    Subject subject;
-    try {
-      final Session session = sessionFactory.openSession();
-      subject = session.get(Subject.class, subjectId);
-      session.flush();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
+    final Subject subject = (Subject) super.get(Subject.class, subjectId);
     if (subject == null) {
       log.error("Subject could not be found, although it must exists at this point");
       throw new SubjectDoesNotExistException("Subject could not be found");
@@ -83,40 +76,20 @@ public class SubjectDAOImpl implements SubjectDAO {
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void createSubject(final Subject subject) throws HibernateException {
-    try {
-      final Session session = sessionFactory.openSession();
-      session.persist(subject);
-      session.flush();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    }
+    super.save(subject);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
     SubjectDoesNotExistException {
-    try {
-      final Session session = sessionFactory.openSession();
-      final Subject legacySubject = this.getSubjectDetails(subjectId);
-      legacySubject.setFirstName(subject.getFirstName());
-      legacySubject.setLastName(subject.getLastName());
-      legacySubject.setPersonalInformation(subject.getPersonalInformation());
-      legacySubject.setContactInformation(subject.getContactInformation());
-      legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
-      session.update(legacySubject);
-      session.flush();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error("Issue occurred during the update of the subject");
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
-    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
-      log.error(subjectDoesNotExistException.getMessage());
-      throw subjectDoesNotExistException;
-    }
+    final Subject legacySubject = this.getSubjectDetails(subjectId);
+    legacySubject.setFirstName(subject.getFirstName());
+    legacySubject.setLastName(subject.getLastName());
+    legacySubject.setPersonalInformation(subject.getPersonalInformation());
+    legacySubject.setContactInformation(subject.getContactInformation());
+    legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
+    super.merge(legacySubject);
   }
 
   @Override
@@ -125,7 +98,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setPersonalInformation(personalInformation);
-    mergeSubject(subject);
+    super.merge(subject);
   }
 
   @Override
@@ -134,7 +107,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setContactInformation(contactInformation);
-    mergeSubject(subject);
+    super.merge(subject);
   }
 
   @Override
@@ -143,7 +116,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setEmployeeInformation(employeeInformation);
-    mergeSubject(subject);
+    super.merge(subject);
   }
 
   @Override
@@ -161,20 +134,6 @@ public class SubjectDAOImpl implements SubjectDAO {
     } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
       log.error(subjectDoesNotExistException.getMessage());
       throw subjectDoesNotExistException;
-    }
-  }
-
-  private void mergeSubject(final Subject subject) throws HibernateException {
-    try {
-      Session session = sessionFactory.openSession();
-      Transaction transaction = session.beginTransaction();
-      session.merge(subject);
-      transaction.commit();
-      session.close();
-    } catch (final HibernateException hibernateException) {
-      log.error("Issue occurred during the update of the subject");
-      log.error(hibernateException.getMessage());
-      throw hibernateException;
     }
   }
 }

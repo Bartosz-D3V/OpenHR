@@ -22,7 +22,7 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  public void updateManager(final Manager manager) {
+  public void updateManager(final Manager manager) throws SubjectDoesNotExistException {
     managerDAO.updateManager(manager);
   }
 

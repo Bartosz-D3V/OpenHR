@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.UserPermissionRole;
 import org.openhr.common.exception.UserDoesNotExist;
@@ -22,11 +23,12 @@ import java.util.List;
 import static org.hibernate.criterion.Restrictions.eq;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public UserRepositoryImpl(final SessionFactory sessionFactory) {
+    super(sessionFactory);
     this.sessionFactory = sessionFactory;
   }
 
@@ -70,22 +72,15 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void registerUser(final User user) {
     final List<UserRole> permissions = new ArrayList<>();
     final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
     permissions.add(userRole);
     user.setUserRoles(permissions);
     userRole.setUser(user);
-    try {
-      final Session session = sessionFactory.openSession();
-      session.save(userRole);
-      session.save(user);
-      session.close();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
+    super.save(user);
+    super.save(userRole);
   }
 
   @Override
