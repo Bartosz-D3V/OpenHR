@@ -7,20 +7,19 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
-import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
-import org.openhr.application.leaveapplication.enumeration.Role;
-import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class LeaveApplicationProcessTest {
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
-    "12A", null, null);
+    "Core", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
 

@@ -31,7 +31,7 @@ public class SubjectDAOTest {
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
-    "12A", null, null);
+    "Core", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, new User("Jhn13", "testPass"));
 

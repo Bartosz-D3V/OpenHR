@@ -1,5 +1,7 @@
 package org.openhr.common.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -47,20 +49,24 @@ public class Subject implements Serializable {
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<LeaveApplication> leaveApplications = new HashSet<>();
 
+  @JsonIgnore
   @JoinColumn(unique = true, name = "EMPLOYEE_ID")
   @NotFound(action = NotFoundAction.IGNORE)
   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Employee employee;
 
+  @JsonIgnore
   @JoinColumn(unique = true, name = "MANAGER_ID")
   @NotFound(action = NotFoundAction.IGNORE)
   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Manager manager;
 
-  @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+  @JsonBackReference
+  @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, optional = false)
   private User user;
 
   public Subject() {
