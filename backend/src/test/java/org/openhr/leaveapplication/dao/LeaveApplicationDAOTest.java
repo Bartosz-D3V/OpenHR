@@ -35,7 +35,7 @@ public class LeaveApplicationDAOTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
+    mockContactInformation, mockEmployeeInformation, new User("Mck40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
 
   @Autowired

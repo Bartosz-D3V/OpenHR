@@ -33,7 +33,7 @@ import static junit.framework.TestCase.assertFalse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
