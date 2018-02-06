@@ -54,7 +54,7 @@ export class SubjectDetailsService {
       });
   }
 
-  saveSubject(subject: Subject): Observable<number> {
+  public saveSubject(subject: Subject): Observable<number> {
     return this._http
       .put(`${this.url}/${subject.subjectId}`, subject, {
         headers: this.headers,
