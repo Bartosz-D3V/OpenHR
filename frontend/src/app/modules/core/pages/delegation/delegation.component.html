@@ -7,24 +7,26 @@
            fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-subject-id"></label>
-          <input matInput placeholder="Subject ID" id="delegation-subject-id"
-                 name="subjectId" formControlName="subjectId">
+          <input matInput placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
+                 formControlName="subjectId" [ngModel]="subject?.subjectId">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-first-name"></label>
-          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first">
+          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first"
+                 [ngModel]="subject?.firstName">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-middle-name"></label>
           <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
-                 formControlName="middle">
+                 formControlName="middle" [ngModel]="subject?.personalInformation?.middleName">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
-          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last">
+          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last"
+                 [ngModel]="subject?.lastName">
         </mat-form-field>
       </div>
 
@@ -32,13 +34,14 @@
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-position"></label>
-          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position">
+          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position"
+                 [ngModel]="subject?.employeeInformation?.position">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
           <input matInput placeholder="Department" id="delegation-department" name="department"
-                 formControlName="department">
+                 formControlName="department" [ngModel]="subject?.employeeInformation?.department">
         </mat-form-field>
       </div>
 

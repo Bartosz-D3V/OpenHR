@@ -6,13 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
-  MatDatepickerModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatNativeDateModule,
-  MatToolbarModule,
+  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatToolbarModule,
 } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
@@ -33,6 +27,7 @@ import { PersonalInformation } from '../../../../shared/domain/subject/personal-
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -40,7 +35,8 @@ describe('PersonalDetailsComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date(), '123AS');
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '2020-02-08',
+    '2020-02-08', '123AS');
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
@@ -88,6 +84,7 @@ describe('PersonalDetailsComponent', () => {
         MatInputModule,
       ],
       providers: [
+        JwtHelperService,
         {
           provide: ConfigService, useClass: FakeConfigService,
         },

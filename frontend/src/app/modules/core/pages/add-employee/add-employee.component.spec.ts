@@ -4,7 +4,7 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 
 import {
   MatCheckboxModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
-  MatToolbarModule
+  MatToolbarModule,
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -22,6 +22,7 @@ import { PersonalInformation } from '../../../../shared/domain/subject/personal-
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { AddEmployeeComponent } from './add-employee.component';
 import Spy = jasmine.Spy;
 
@@ -31,7 +32,8 @@ describe('AddEmployeeComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date());
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core',
+    '2020-02-08', '2020-02-08');
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
@@ -86,6 +88,7 @@ describe('AddEmployeeComponent', () => {
         MatCheckboxModule,
       ],
       providers: [
+        JwtHelperService,
         {
           provide: ConfigService, useClass: FakeConfigService,
         },

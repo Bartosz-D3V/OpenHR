@@ -53,7 +53,7 @@ public class SubjectControllerTest {
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
-    "12A", null, null);
+    "Core", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, new User());
 
@@ -74,8 +74,7 @@ public class SubjectControllerTest {
     when(subjectFacade.getSubjectDetails(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
-      .perform(get("/subjects")
-        .param("subjectId", "1"))
+      .perform(get("/subjects/{subjectId}", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -89,8 +88,7 @@ public class SubjectControllerTest {
     when(subjectFacade.getSubjectDetails(1)).thenReturn(mockSubject);
 
     final MvcResult result = mockMvc
-      .perform(get("/subjects")
-        .param("subjectId", "1"))
+      .perform(get("/subjects/{subjectId}", 1L))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -134,8 +132,7 @@ public class SubjectControllerTest {
     doThrow(new HibernateException("DB Error")).when(subjectFacade).updateSubject(anyLong(), any());
 
     final MvcResult result = mockMvc
-      .perform(put("/subjects")
-        .param("subjectId", "1")
+      .perform(put("/subjects/{subjectId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isInternalServerError())
@@ -150,8 +147,7 @@ public class SubjectControllerTest {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
     final MvcResult result = mockMvc
-      .perform(put("/subjects")
-        .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
+      .perform(put("/subjects/{subjectId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isOk())

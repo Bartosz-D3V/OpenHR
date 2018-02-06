@@ -10,13 +10,15 @@ import { PersonalInformation } from '../../domain/subject/personal-information';
 import { ContactInformation } from '../../domain/subject/contact-information';
 import { EmployeeInformation } from '../../domain/subject/employee-information';
 import { SystemVariables } from '../../../config/system-variables';
+import { JwtHelperService } from '../jwt/jwt-helper.service';
 import { SubjectDetailsService } from './subject-details.service';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date(), '123AS');
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester',
+    '2020-02-08', '2020-02-08', '123AS');
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation);
   let http: HttpTestingController;
@@ -35,6 +37,7 @@ describe('PersonalDetailsService', () => {
         HttpClientTestingModule,
       ],
       providers: [
+        JwtHelperService,
         SubjectDetailsService,
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
@@ -74,14 +77,18 @@ describe('PersonalDetailsService', () => {
 
   describe('API access method', () => {
 
-    const apiLink: string = SystemVariables.API_URL + 'my-details';
+    const apiLink: string = SystemVariables.API_URL + '/subjects';
 
     describe('getCurrentSubject', () => {
+
+      beforeEach(() => {
+        spyOn(personalDetailsService['_jwtHelper'], 'getSubjectId').and.returnValue(1);
+      });
 
       it('should query current service URL', fakeAsync(() => {
         personalDetailsService.getCurrentSubject().subscribe();
 
-        http.expectOne(apiLink);
+        http.expectOne(`${apiLink}/1`);
       }));
 
       it('should return an Observable of type Subject', fakeAsync(() => {
@@ -92,7 +99,7 @@ describe('PersonalDetailsService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: apiLink,
+          url: `${apiLink}/1`,
           method: 'GET',
         }).flush(mockSubject);
         tick();
@@ -104,6 +111,7 @@ describe('PersonalDetailsService', () => {
 
       it('should resolve error if server is down', fakeAsync(() => {
         spyOn(personalDetailsService, 'handleError');
+
         let result: Object;
         let error: any;
         personalDetailsService.getCurrentSubject()
@@ -111,7 +119,7 @@ describe('PersonalDetailsService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: apiLink,
+          url: `${apiLink}/1`,
           method: 'GET',
         }).error(new ErrorEvent('404'));
         tick();
