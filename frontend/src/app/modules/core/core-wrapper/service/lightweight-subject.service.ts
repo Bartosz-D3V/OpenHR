@@ -23,7 +23,7 @@ export class LightweightSubjectService {
 
   public getUser(userId: number): Observable<User> {
     return this._http
-      .get<User>(this.url + '/' + userId, {
+      .get<User>(`${this.url}/${userId}`, {
         headers: this.headers,
       })
       .catch((error: any) => {
