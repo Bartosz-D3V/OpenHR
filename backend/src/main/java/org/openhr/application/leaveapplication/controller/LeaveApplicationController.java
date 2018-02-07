@@ -2,11 +2,13 @@ package org.openhr.application.leaveapplication.controller;
 
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -77,4 +80,10 @@ public class LeaveApplicationController {
     return leaveApplicationFacade.getActiveProcessesId();
   }
 
+  @RequestMapping(value = "/types", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(value = HttpStatus.OK)
+  public List<LeaveType> getLeaveTypes() {
+    return leaveApplicationFacade.getLeaveTypes();
+  }
 }

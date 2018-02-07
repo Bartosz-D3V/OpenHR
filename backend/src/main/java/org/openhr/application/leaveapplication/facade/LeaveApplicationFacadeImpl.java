@@ -2,6 +2,7 @@ package org.openhr.application.leaveapplication.facade;
 
 import org.openhr.application.leaveapplication.command.LeaveApplicationCommand;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.application.leaveapplication.enumeration.Role;
@@ -10,6 +11,8 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -69,5 +72,11 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   @Override
   public final List<String> getActiveProcessesId() {
     return leaveApplicationCommand.getActiveProcessesId();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveType> getLeaveTypes() {
+    return leaveApplicationService.getLeaveTypes();
   }
 }
