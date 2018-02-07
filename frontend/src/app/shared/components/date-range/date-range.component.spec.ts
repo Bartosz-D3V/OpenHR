@@ -13,6 +13,7 @@ import { MomentInput } from 'moment';
 
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
 import { DateRangeComponent } from './date-range.component';
@@ -52,6 +53,7 @@ describe('DateRangeComponent', () => {
       ],
       providers: [
         ResponsiveHelperService,
+        JwtHelperService,
         {
           provide: DateRangeService, useClass: FakeDateRangeService,
         },
@@ -191,11 +193,25 @@ describe('DateRangeComponent', () => {
       expect(component.numberOfDays).toEqual(7);
     });
 
-    it('should set numberOfDays excluding the end date, but excluding weekends and bank holidays', () => {
+    it('should set numberOfDays excluding the end date and excluding weekends and bank holidays', () => {
       component.recalculateNumOfDays('2019-05-10', '2019-05-20', true);
 
       expect(component.numberOfDays).toBeDefined();
       expect(component.numberOfDays).toEqual(6);
+    });
+
+    it('should set numberOfDays to 2 if the end date and start date are the same and end date is not excluded', () => {
+      component.recalculateNumOfDays('2019-05-10', '2019-05-10', false);
+
+      expect(component.numberOfDays).toBeDefined();
+      expect(component.numberOfDays).toEqual(1);
+    });
+
+    it('should set numberOfDays to 1 if the end date and start date are the same and end date is excluded', () => {
+      component.recalculateNumOfDays('2019-05-10', '2019-05-10', true);
+
+      expect(component.numberOfDays).toBeDefined();
+      expect(component.numberOfDays).toEqual(0);
     });
 
     it('should emmit new value through EventEmmiter', () => {

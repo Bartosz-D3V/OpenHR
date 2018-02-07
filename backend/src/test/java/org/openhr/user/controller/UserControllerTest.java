@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.user.controller.UserController;
 import org.openhr.application.user.domain.User;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.facade.UserFacade;
@@ -56,7 +57,7 @@ public class UserControllerTest {
       .perform(post("/users")
         .contentType(MediaType.APPLICATION_JSON)
         .content(userAsJson))
-      .andExpect(status().isOk())
+      .andExpect(status().isAccepted())
       .andReturn();
     assertNull(result.getResolvedException());
   }
@@ -91,7 +92,7 @@ public class UserControllerTest {
 
   @Test
   @WithMockUser
-  public void getUserByUsernameShouldHandleUserDoesNotExistError() throws Exception {
+  public void getUserByUsernameShouldHandleSubjectDoesNotExistError() throws Exception {
     when(userFacade.findByUsername("username")).thenThrow(userDoesNotExist);
     final MvcResult result = mockMvc
       .perform(get("/users/{username}", "username"))

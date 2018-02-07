@@ -1,6 +1,7 @@
 package org.openhr.application.subject.controller;
 
 import org.hibernate.HibernateException;
+import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -8,6 +9,7 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.subject.facade.SubjectFacade;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,23 +27,30 @@ public class SubjectController {
     this.subjectFacade = subjectFacade;
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
-  public Subject getSubjectDetails(@RequestParam final long subjectId) throws SubjectDoesNotExistException {
+  public Subject getSubjectDetails(@PathVariable final long subjectId) throws SubjectDoesNotExistException {
     return subjectFacade.getSubjectDetails(subjectId);
   }
 
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   public void createSubject(@RequestBody final Subject subject) throws HibernateException {
-    subjectFacade.addSubject(subject);
+    subjectFacade.createSubject(subject);
   }
 
-  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
-  public void updateSubject(@RequestParam final long subjectId, @RequestBody final Subject subject)
+  public void updateSubject(@PathVariable final long subjectId, @RequestBody final Subject subject)
     throws HibernateException, SubjectDoesNotExistException {
     subjectFacade.updateSubject(subjectId, subject);
+  }
+
+  @RequestMapping(value = "/lightweight/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  public LightweightSubjectDTO getLightweightSubject(@PathVariable final long subjectId)
+    throws SubjectDoesNotExistException {
+    return subjectFacade.getLightweightSubject(subjectId);
   }
 
   @RequestMapping(value = "personal-information", method = RequestMethod.PUT,

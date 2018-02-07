@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.manager.dao.ManagerDAO;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
@@ -28,9 +29,9 @@ import static org.junit.Assert.assertNotEquals;
 @Transactional
 public class ManagerDAOTest {
   private final static Subject mockSubject1 = new Subject("John", "Xavier", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation());
+    new ContactInformation(), new EmployeeInformation(), new User());
   private final static Subject mockSubject2 = new Subject("Alex", "White", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation());
+    new ContactInformation(), new EmployeeInformation(), new User());
   private final static Employee mockEmployee1 = new Employee(mockSubject1);
   private final static Employee mockEmployee2 = new Employee(mockSubject2);
 

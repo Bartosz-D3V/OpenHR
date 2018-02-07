@@ -98,6 +98,14 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     this.$currentSubject.unsubscribe();
   }
 
+  save(): void {
+    if (this.isValid()) {
+      this._subjectDetailsService
+        .saveSubject(this.subject)
+        .subscribe();
+    }
+  }
+
   public setStep(stepNumber: number): void {
     this.stepNumber = stepNumber;
   }

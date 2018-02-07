@@ -1,7 +1,13 @@
 package org.openhr.application.authentication.service;
 
+import org.openhr.application.user.domain.User;
+import org.openhr.application.user.domain.UserRole;
+import org.openhr.common.enumeration.UserPermissionRole;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -12,7 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
-  public String encodePassword(final String password) {
+  public final String encodePassword(final String password) {
     String encodedPassword = null;
     int i = 0;
     while (i < 12) {
@@ -25,6 +31,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public boolean passwordsMatch(final String rawPassword, final String encodedPassword) {
     return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
+  }
+
+  @Override
+  public List<UserRole> setBasicUserRoles(final User user) {
+    final List<UserRole> basicUserRoles = new ArrayList<>();
+    final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
+    userRole.setUser(user);
+    basicUserRoles.add(userRole);
+    return basicUserRoles;
   }
 
 }

@@ -22,6 +22,7 @@ public class EmployeeInformation implements Serializable {
   @Column(name = "NATIONAL_INSURANCE_NUMBER")
   private String nationalInsuranceNumber;
   private String position;
+  private String department;
 
   @Column(name = "EMPLOYEE_ID")
   private String employeeId;
@@ -38,10 +39,11 @@ public class EmployeeInformation implements Serializable {
     super();
   }
 
-  public EmployeeInformation(final String nationalInsuranceNumber, final String position, final String employeeId,
-                             final LocalDate startDate, final LocalDate endDate) {
+  public EmployeeInformation(final String nationalInsuranceNumber, final String position, final String department,
+                             final String employeeId, final LocalDate startDate, final LocalDate endDate) {
     this.nationalInsuranceNumber = nationalInsuranceNumber;
     this.position = position;
+    this.department = department;
     this.employeeId = employeeId;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -65,6 +67,14 @@ public class EmployeeInformation implements Serializable {
 
   public void setPosition(String position) {
     this.position = position;
+  }
+
+  public String getDepartment() {
+    return department;
+  }
+
+  public void setDepartment(final String department) {
+    this.department = department;
   }
 
   public String getEmployeeId() {

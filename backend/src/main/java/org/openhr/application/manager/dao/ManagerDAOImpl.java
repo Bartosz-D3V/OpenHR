@@ -3,6 +3,7 @@ package org.openhr.application.manager.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -15,26 +16,30 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 @Repository
-public class ManagerDAOImpl implements ManagerDAO {
+public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public ManagerDAOImpl(final SessionFactory sessionFactory) {
+    super(sessionFactory);
     this.sessionFactory = sessionFactory;
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Set<Employee> getEmployees(final long managerId) throws SubjectDoesNotExistException {
     return getManager(managerId).getEmployees();
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager addManager(final Manager manager) {
     try {
       final Session session = sessionFactory.openSession();
       final long generatedId = (long) session.save(manager);
       session.close();
       manager.setManagerId(generatedId);
+      super.merge(manager);
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -44,53 +49,27 @@ public class ManagerDAOImpl implements ManagerDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public void updateManager(final Manager manager) {
-    try {
-      final Session session = sessionFactory.openSession();
-      final Manager legacyManager = session.get(Manager.class, manager.getManagerId());
-      legacyManager.setSubject(manager.getSubject());
-      legacyManager.setEmployees(manager.getEmployees());
-      session.update(legacyManager);
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void updateManager(final Manager manager) throws SubjectDoesNotExistException {
+    final Manager legacyManager = getManager(manager.getManagerId());
+    legacyManager.setSubject(manager.getSubject());
+    legacyManager.setEmployees(manager.getEmployees());
+    super.merge(legacyManager);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Manager getManager(final long managerId) throws SubjectDoesNotExistException {
-    Manager manager;
-    try {
-      final Session session = sessionFactory.openSession();
-      manager = session.get(Manager.class, managerId);
-      session.close();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
-    if (manager == null) {
-      log.debug("Manager not found");
-      throw new SubjectDoesNotExistException("Manager was not found");
-    }
-
-    return manager;
+    return (Manager) super.get(Manager.class, managerId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void addEmployeeToManager(final Employee employee, final long managerId) throws SubjectDoesNotExistException {
     final Manager manager = getManager(managerId);
     final Set<Employee> employees = manager.getEmployees();
     employees.add(employee);
     manager.setEmployees(employees);
-    try {
-      final Session session = sessionFactory.openSession();
-      session.merge(manager);
-      session.close();
-    } catch (HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
+    super.merge(manager);
   }
 }

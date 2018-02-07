@@ -9,7 +9,7 @@ import java.util.Set;
 public interface ManagerFacade {
   Manager addManager(Manager manager);
 
-  void updateManager(Manager manager);
+  void updateManager(Manager manager) throws SubjectDoesNotExistException;
 
   Set<Employee> getEmployees(long managerId) throws SubjectDoesNotExistException;
 

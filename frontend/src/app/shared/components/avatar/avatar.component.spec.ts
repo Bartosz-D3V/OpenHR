@@ -12,7 +12,7 @@ describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let jwtHelper: JwtHelperService;
-  const mockUser = new User(2199, 'john.test', 'John Test', null);
+  const mockUser = new User(2199, 'John', 'Test');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

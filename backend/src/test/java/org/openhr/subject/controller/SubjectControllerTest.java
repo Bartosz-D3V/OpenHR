@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.subject.controller.SubjectController;
 import org.openhr.application.subject.facade.SubjectFacade;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -52,9 +53,9 @@ public class SubjectControllerTest {
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
-    "12A", null, null);
+    "Core", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation);
+    mockContactInformation, mockEmployeeInformation, new User());
 
   @Autowired
   private MockMvc mockMvc;
@@ -73,8 +74,7 @@ public class SubjectControllerTest {
     when(subjectFacade.getSubjectDetails(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
-      .perform(get("/subjects")
-        .param("subjectId", "1"))
+      .perform(get("/subjects/{subjectId}", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -88,8 +88,7 @@ public class SubjectControllerTest {
     when(subjectFacade.getSubjectDetails(1)).thenReturn(mockSubject);
 
     final MvcResult result = mockMvc
-      .perform(get("/subjects")
-        .param("subjectId", "1"))
+      .perform(get("/subjects/{subjectId}", 1L))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -100,7 +99,7 @@ public class SubjectControllerTest {
   @WithMockUser()
   public void createSubjectShouldHandleError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-    doThrow(new HibernateException("DB Error")).when(subjectFacade).addSubject(any());
+    doThrow(new HibernateException("DB Error")).when(subjectFacade).createSubject(any());
 
     final MvcResult result = mockMvc
       .perform(post("/subjects")
@@ -133,8 +132,7 @@ public class SubjectControllerTest {
     doThrow(new HibernateException("DB Error")).when(subjectFacade).updateSubject(anyLong(), any());
 
     final MvcResult result = mockMvc
-      .perform(put("/subjects")
-        .param("subjectId", "1")
+      .perform(put("/subjects/{subjectId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isInternalServerError())
@@ -149,8 +147,7 @@ public class SubjectControllerTest {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
 
     final MvcResult result = mockMvc
-      .perform(put("/subjects")
-        .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
+      .perform(put("/subjects/{subjectId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isOk())

@@ -2,12 +2,17 @@ package org.openhr.user.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.repository.UserRepository;
+import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,12 +32,6 @@ public class UserRepositoryTest {
 
   @Autowired
   private SessionFactory sessionFactory;
-
-  @After
-  public void tearDown() {
-    sessionFactory.getCurrentSession().flush();
-    sessionFactory.getCurrentSession().clear();
-  }
 
   @Test
   public void findByUsernameShouldReturnUserObject() {
@@ -73,7 +72,7 @@ public class UserRepositoryTest {
   }
 
   @Test
-  public void getEncodedPasswordShouldReturnEncodedPassword() {
+  public void getEncodedPasswordShouldReturnEncodedPassword() throws UserDoesNotExist {
     final User mockUser = new User("username3", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser);
@@ -83,11 +82,16 @@ public class UserRepositoryTest {
     assertEquals(mockUser.getPassword(), password);
   }
 
+  @Test(expected = UserDoesNotExist.class)
+  public void getEncodedPasswordShouldThrowErrorIfUserDoesNotExist() throws UserDoesNotExist {
+    userRepository.getEncodedPassword(1000L);
+  }
+
   @Test
   @Ignore("Test class is not transactional - needs to be fixed")
   public void retrieveUsernamesInUseShouldReturnListOfUsernamesInUse() {
-    final User mockUser1 = new User("Kopernik", "password");
-    final User mockUser2 = new User("Smith", "password");
+    final User mockUser1 = new User("Curie", "password");
+    final User mockUser2 = new User("Heisenberg", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser1);
     session.save(mockUser2);
@@ -97,5 +101,28 @@ public class UserRepositoryTest {
     assertEquals(2, actualUsernamesInUse.size());
     assertEquals(mockUser1.getUsername(), actualUsernamesInUse.get(0));
     assertEquals(mockUser2.getUsername(), actualUsernamesInUse.get(1));
+  }
+
+  @Test
+  public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
+    final User mockUser1 = new User("Kopernik", "password");
+    final Subject subject = new Subject("Mikolaj", "Kopernik", mockUser1);
+    subject.setPersonalInformation(new PersonalInformation());
+    subject.setContactInformation(new ContactInformation());
+    subject.setEmployeeInformation(new EmployeeInformation());
+    final Session session = sessionFactory.openSession();
+    session.save(subject);
+    session.flush();
+    session.close();
+    final long subjectId = userRepository.findSubjectId(mockUser1.getUsername());
+
+    assertNotEquals(0, mockUser1.getUsername());
+    assertNotEquals(0, subject.getSubjectId());
+    assertEquals(subject.getSubjectId(), subjectId);
+  }
+
+  @Test(expected = SubjectDoesNotExistException.class)
+  public void findSubjectIdShouldThrowErrorIfUserWasNotFound() throws SubjectDoesNotExistException {
+    userRepository.findSubjectId("ThisUsernameDoesNotExist");
   }
 }

@@ -23,7 +23,7 @@ public class ManagerFacadeImpl implements ManagerFacade {
   }
 
   @Override
-  public void updateManager(final Manager manager) {
+  public void updateManager(final Manager manager) throws SubjectDoesNotExistException {
     managerService.updateManager(manager);
   }
 

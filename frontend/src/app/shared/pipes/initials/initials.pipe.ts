@@ -8,12 +8,14 @@ export class InitialsPipe implements PipeTransform {
   private readonly SINGLE_SPACE: string = ' ';
 
   transform(fullName: string): string {
-    const splittedName: Array<string> = fullName.trim().split(this.SINGLE_SPACE);
+    if (fullName !== null) {
+      const splittedName: Array<string> = fullName.trim().split(this.SINGLE_SPACE);
 
-    return splittedName[0]
-      .charAt(0)
-      .concat(splittedName[splittedName.length - 1].charAt(0))
-      .toUpperCase();
+      return splittedName[0]
+        .charAt(0)
+        .concat(splittedName[splittedName.length - 1].charAt(0))
+        .toUpperCase();
+    }
   }
 
 }

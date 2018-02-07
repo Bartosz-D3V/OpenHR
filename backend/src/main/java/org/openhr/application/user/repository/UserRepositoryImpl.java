@@ -5,10 +5,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
+import org.openhr.common.dao.BaseDAO;
+import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -18,12 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hibernate.criterion.Restrictions.eq;
+
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public UserRepositoryImpl(final SessionFactory sessionFactory) {
+    super(sessionFactory);
     this.sessionFactory = sessionFactory;
   }
 
@@ -35,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
       user = (User) criteria
-        .add(Restrictions.eq("username", username))
+        .add(eq("username", username))
         .setMaxResults(1)
         .uniqueResult();
       session.close();
@@ -56,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
       final Criteria criteria = session.createCriteria(User.class);
       userId = (long) criteria
         .setProjection(Projections.property("userId"))
-        .add(Restrictions.eq("username", username))
+        .add(eq("username", username))
         .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -67,38 +73,34 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void registerUser(final User user) {
     final List<UserRole> permissions = new ArrayList<>();
     final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
     permissions.add(userRole);
     user.setUserRoles(permissions);
     userRole.setUser(user);
-    try {
-      final Session session = sessionFactory.openSession();
-      session.save(userRole);
-      session.save(user);
-      session.close();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
+    super.save(user);
+    super.save(userRole);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public String getEncodedPassword(final long userId) {
+  public String getEncodedPassword(final long userId) throws UserDoesNotExist {
     String encodedPassword;
     try {
       final Session session = sessionFactory.openSession();
       final Criteria criteria = session.createCriteria(User.class);
       encodedPassword = (String) criteria
         .setProjection(Projections.property("password"))
-        .add(Restrictions.eq("userId", userId))
+        .add(eq("userId", userId))
         .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
+    }
+    if (encodedPassword == null) {
+      throw new UserDoesNotExist("User does not exists");
     }
 
     return encodedPassword;
@@ -123,5 +125,28 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     return usernamesInUse;
+  }
+
+  @Override
+  public long findSubjectId(final String username) throws SubjectDoesNotExistException {
+    long subjectId;
+    try {
+      final Session session = sessionFactory.openSession();
+      subjectId = (long) session.createCriteria(Subject.class)
+        .setProjection(Projections.property("subjectId"))
+        .createCriteria("user")
+        .add(eq("username", username))
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    } catch (final NullPointerException e) {
+      throw new SubjectDoesNotExistException("Subject does not exist");
+    }
+    if (subjectId == 0) {
+      throw new SubjectDoesNotExistException("Subject does not exist");
+    }
+
+    return subjectId;
   }
 }
