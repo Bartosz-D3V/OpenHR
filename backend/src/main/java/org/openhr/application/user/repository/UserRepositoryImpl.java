@@ -10,6 +10,7 @@ import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +86,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public String getEncodedPassword(final long userId) {
+  public String getEncodedPassword(final long userId) throws UserDoesNotExist {
     String encodedPassword;
     try {
       final Session session = sessionFactory.openSession();
@@ -97,6 +98,9 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
+    }
+    if (encodedPassword == null) {
+      throw new UserDoesNotExist("User does not exists");
     }
 
     return encodedPassword;
@@ -124,7 +128,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   }
 
   @Override
-  public long findSubjectId(final String username) throws UserDoesNotExist {
+  public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     long subjectId;
     try {
       final Session session = sessionFactory.openSession();
@@ -136,9 +140,11 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
+    } catch (final NullPointerException e) {
+      throw new SubjectDoesNotExistException("Subject does not exist");
     }
     if (subjectId == 0) {
-      throw new UserDoesNotExist("User does not exist");
+      throw new SubjectDoesNotExistException("Subject does not exist");
     }
 
     return subjectId;

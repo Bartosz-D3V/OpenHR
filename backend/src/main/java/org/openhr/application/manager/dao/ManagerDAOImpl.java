@@ -26,17 +26,20 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Set<Employee> getEmployees(final long managerId) throws SubjectDoesNotExistException {
     return getManager(managerId).getEmployees();
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager addManager(final Manager manager) {
     try {
       final Session session = sessionFactory.openSession();
       final long generatedId = (long) session.save(manager);
       session.close();
       manager.setManagerId(generatedId);
+      super.merge(manager);
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
