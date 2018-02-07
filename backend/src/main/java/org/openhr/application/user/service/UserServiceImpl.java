@@ -1,6 +1,7 @@
 package org.openhr.application.user.service;
 
 import org.openhr.application.user.domain.User;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.repository.UserRepository;
@@ -38,12 +39,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String getEncodedPassword(final long userId) {
+  public String getEncodedPassword(final long userId) throws UserDoesNotExist {
     return userRepository.getEncodedPassword(userId);
   }
 
   @Override
-  public String getEncodedPassword(final String username) {
+  public String getEncodedPassword(final String username) throws UserDoesNotExist {
     final long userId = userRepository.findUserId(username);
     return userRepository.getEncodedPassword(userId);
   }
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public long findSubjectId(final String username) throws UserDoesNotExist {
+  public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     return userRepository.findSubjectId(username);
   }
 }

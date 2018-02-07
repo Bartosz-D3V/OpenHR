@@ -11,6 +11,7 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,7 +72,7 @@ public class UserRepositoryTest {
   }
 
   @Test
-  public void getEncodedPasswordShouldReturnEncodedPassword() {
+  public void getEncodedPasswordShouldReturnEncodedPassword() throws UserDoesNotExist {
     final User mockUser = new User("username3", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser);
@@ -81,11 +82,16 @@ public class UserRepositoryTest {
     assertEquals(mockUser.getPassword(), password);
   }
 
+  @Test(expected = UserDoesNotExist.class)
+  public void getEncodedPasswordShouldThrowErrorIfUserDoesNotExist() throws UserDoesNotExist {
+    userRepository.getEncodedPassword(1000L);
+  }
+
   @Test
   @Ignore("Test class is not transactional - needs to be fixed")
   public void retrieveUsernamesInUseShouldReturnListOfUsernamesInUse() {
-    final User mockUser1 = new User("Kopernik", "password");
-    final User mockUser2 = new User("Smith", "password");
+    final User mockUser1 = new User("Curie", "password");
+    final User mockUser2 = new User("Heisenberg", "password");
     final Session session = sessionFactory.openSession();
     session.save(mockUser1);
     session.save(mockUser2);
@@ -98,7 +104,7 @@ public class UserRepositoryTest {
   }
 
   @Test
-  public void findSubjectIdShouldReturnSubjectIdByUsername() throws UserDoesNotExist {
+  public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
     final User mockUser1 = new User("Kopernik", "password");
     final Subject subject = new Subject("Mikolaj", "Kopernik", mockUser1);
     subject.setPersonalInformation(new PersonalInformation());
@@ -113,5 +119,10 @@ public class UserRepositoryTest {
     assertNotEquals(0, mockUser1.getUsername());
     assertNotEquals(0, subject.getSubjectId());
     assertEquals(subject.getSubjectId(), subjectId);
+  }
+
+  @Test(expected = SubjectDoesNotExistException.class)
+  public void findSubjectIdShouldThrowErrorIfUserWasNotFound() throws SubjectDoesNotExistException {
+    userRepository.findSubjectId("ThisUsernameDoesNotExist");
   }
 }
