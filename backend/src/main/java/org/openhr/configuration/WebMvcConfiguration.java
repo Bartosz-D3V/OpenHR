@@ -12,13 +12,15 @@ public class WebMvcConfiguration {
   @Value("${app.turnOff.cors}")
   private boolean proxyOff;
 
+  private static final String PATTERN_ALL_URLS = "/**/*";
+
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurerAdapter() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         if (!proxyOff) {
-          registry.addMapping("/**/*").allowedOrigins("http://localhost:4200");
+          registry.addMapping(PATTERN_ALL_URLS).allowedOrigins("http://localhost:4200");
         }
       }
     };
