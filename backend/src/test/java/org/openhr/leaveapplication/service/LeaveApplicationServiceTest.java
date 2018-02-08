@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.leaveapplication.service.LeaveApplicationServiceImpl;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
@@ -29,13 +30,16 @@ public class LeaveApplicationServiceTest {
   @Autowired
   private LeaveApplicationService leaveApplicationService;
 
+  @Autowired
+  private LeaveApplicationRepository leaveApplicationRepository;
+
   @MockBean
   private LeaveApplicationDAO leaveApplicationDAO;
 
   @Before()
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    leaveApplicationServiceImpl = new LeaveApplicationServiceImpl(leaveApplicationDAO);
+    leaveApplicationServiceImpl = new LeaveApplicationServiceImpl(leaveApplicationDAO, leaveApplicationRepository);
     mockLeaveApplication.setApplicationId(1L);
   }
 

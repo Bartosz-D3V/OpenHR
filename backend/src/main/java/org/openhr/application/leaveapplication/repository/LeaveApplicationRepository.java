@@ -19,6 +19,7 @@ private final SessionFactory sessionFactory;
   }
 
   @Transactional(propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
   public List<LeaveType> getLeaveTypes()  throws HibernateException {
     List<LeaveType> leaveTypes;
     try {
