@@ -20,9 +20,11 @@ import { DateRangeComponent } from '../../../../shared/components/date-range/dat
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
+import { LeaveType } from './domain/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -30,8 +32,6 @@ describe('LeaveApplicationComponent', () => {
   const mockStartDate: MomentInput = '2020-05-05';
   const mockEndDate: MomentInput = '2020-05-10';
   const mockLeave = new LeaveApplication();
-  mockLeave.leaveType = 'Holiday';
-  mockLeave.message = '';
 
   @Injectable()
   class FakeLeaveApplicationService {
@@ -72,6 +72,7 @@ describe('LeaveApplicationComponent', () => {
         MatCardModule,
       ],
       providers: [
+        JwtHelperService,
         {
           provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
         },
@@ -127,11 +128,11 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setLeaveType should update selector type', () => {
-    component.setLeaveType('Holiday');
+    component.setLeaveType(new LeaveType(1, 'Holiday', 'Just a holiday'));
 
     expect(component.leaveApplication.leaveType).toBeDefined();
-    expect(typeof component.leaveApplication.leaveType).toBe('string');
-    expect(component.leaveApplication.leaveType).toEqual('Holiday');
+    expect(typeof component.leaveApplication.leaveType.leaveCategory).toBe('string');
+    expect(component.leaveApplication.leaveType.leaveCategory).toEqual('Holiday');
   });
 
   describe('leaveApplication Form Group', () => {

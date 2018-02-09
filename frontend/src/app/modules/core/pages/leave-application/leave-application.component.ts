@@ -10,6 +10,7 @@ import { MomentInput } from 'moment';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplication } from './domain/leave-application';
+import { LeaveType } from './domain/leave-type';
 
 @Component({
   selector: 'app-leave-application',
@@ -23,7 +24,7 @@ import { LeaveApplication } from './domain/leave-application';
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   private $leaveTypes: ISubscription;
-  public leaveTypes: Array<string> = [];
+  public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication;
   public selectorType = 'range';
 
@@ -55,10 +56,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   public getLeaveTypes(): void {
     this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
-      .subscribe((response: Array<string>) => {
+      .subscribe((response: Array<LeaveType>) => {
         this.leaveTypes = response;
-      }, (error: any) => {
-        this.leaveTypes = [''];
       });
   }
 
@@ -74,7 +73,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.selectorType = selector.value;
   }
 
-  public setLeaveType(leaveType: string): void {
+  public setLeaveType(leaveType: LeaveType): void {
     this.leaveApplication.leaveType = leaveType;
   }
 
