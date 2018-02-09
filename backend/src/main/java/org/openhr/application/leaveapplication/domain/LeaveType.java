@@ -16,15 +16,17 @@ public class LeaveType implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long leaveTypeId;
 
-  private String type;
+  @Column(name = "LEAVE_CATEGORY")
+  private String leaveCategory;
+
   private String description;
 
   public LeaveType() {
     super();
   }
 
-  public LeaveType(final String type, final String description) {
-    this.type = type;
+  public LeaveType(final String leaveCategory, final String description) {
+    this.leaveCategory = leaveCategory;
     this.description = description;
   }
 
@@ -36,12 +38,12 @@ public class LeaveType implements Serializable {
     this.leaveTypeId = leaveTypeId;
   }
 
-  public String getType() {
-    return type;
+  public String getLeaveCategory() {
+    return leaveCategory;
   }
 
-  public void setType(final String type) {
-    this.type = type;
+  public void setLeaveCategory(final String leaveCategory) {
+    this.leaveCategory = leaveCategory;
   }
 
   public String getDescription() {
