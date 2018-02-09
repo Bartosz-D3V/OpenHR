@@ -45,14 +45,6 @@ describe('LeaveApplicationService', () => {
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', () => {
-      spyOn(console, 'log');
-      leaveApplicationService['handleError'](mockError);
-
-      expect(console.log).toHaveBeenCalled();
-      expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
-    });
-
     it('should trigger createAlert method', () => {
       spyOn(errorResolverService, 'createAlert');
       leaveApplicationService['handleError'](mockError);

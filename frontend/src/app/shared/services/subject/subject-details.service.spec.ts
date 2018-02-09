@@ -58,13 +58,6 @@ describe('PersonalDetailsService', () => {
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', () => {
-      personalDetailsService['handleError'](mockError);
-
-      expect(console.log).toHaveBeenCalledTimes(1);
-      expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
-    });
-
     it('should trigger createAlert method', () => {
       spyOn(errorResolverService, 'createAlert');
       personalDetailsService['handleError'](mockError);
