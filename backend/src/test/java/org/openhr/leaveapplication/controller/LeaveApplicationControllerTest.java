@@ -7,12 +7,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.leaveapplication.controller.LeaveApplicationController;
-import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
+import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -153,7 +152,7 @@ public class LeaveApplicationControllerTest {
         .param("subjectId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
-      .andExpect(status().isOk())
+      .andExpect(status().isCreated())
       .andReturn();
     assertNull(result.getResolvedException());
   }
