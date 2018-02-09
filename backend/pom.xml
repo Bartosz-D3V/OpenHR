@@ -151,6 +151,8 @@
         <includes>
           <include>application.properties</include>
           <include>**/*.xml</include>
+          <include>**/*.sql</include>
+          <include>**/*.txt</include>
         </includes>
       </resource>
     </resources>
