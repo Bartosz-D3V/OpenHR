@@ -13,7 +13,7 @@
       <mat-select fxFlex.gt-xs="50" fxFlex.xs="100" placeholder="Leave type"
                   formControlName="leaveTypeSelectorController">
         <mat-option *ngFor="let leaveType of leaveTypes" (selectorChange)="setLeaveType($event)" name="leaveType">
-          {{leaveType}}
+          {{leaveType.leaveCategory}}
         </mat-option>
       </mat-select>
       <app-date-range fxFlex="50" *ngIf="selectorType === 'range'; else single_date_template" [mainFlexProperty]="50"
