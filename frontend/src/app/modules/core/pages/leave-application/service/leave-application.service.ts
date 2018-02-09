@@ -19,7 +19,6 @@ export class LeaveApplicationService {
   });
 
   private handleError(error: any): void {
-    console.log('An error occurred', error);
     this._errorResolver.createAlert(error);
   }
 
