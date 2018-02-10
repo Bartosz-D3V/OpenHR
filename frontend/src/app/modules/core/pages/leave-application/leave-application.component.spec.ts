@@ -23,6 +23,7 @@ import { ResponsiveHelperService } from '../../../../shared/services/responsive-
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
+import { DateSelectorType } from './domain/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveType } from './domain/leave-type';
 
@@ -120,11 +121,11 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setSelector should update selector type', () => {
-    component.setSelector({source: null, value: 'range'});
+    component.setSelector({source: null, value: DateSelectorType.RANGE});
 
     expect(component.selectorType).toBeDefined();
     expect(typeof component.selectorType).toBe('string');
-    expect(component.selectorType).toEqual('range');
+    expect(component.selectorType).toEqual(DateSelectorType.RANGE);
   });
 
   it('setLeaveType should update selector type', () => {

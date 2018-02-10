@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { MatRadioChange } from '@angular/material';
@@ -9,6 +9,7 @@ import { MomentInput } from 'moment';
 
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
+import { DateSelectorType } from './domain/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveType } from './domain/leave-type';
 
@@ -23,31 +24,36 @@ import { LeaveType } from './domain/leave-type';
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
+  private dateRangePickerIsValid: boolean;
   private $leaveTypes: ISubscription;
   public leaveTypes: Array<LeaveType> = [];
-  public leaveApplication: LeaveApplication;
-  public selectorType = 'range';
+  public leaveApplication: LeaveApplication = new LeaveApplication();
+  public selectorType: DateSelectorType = DateSelectorType.RANGE;
 
   public leaveApplicationFormGroup: FormGroup = new FormGroup({
-    leaveTypeSelectorController: new FormControl(this.leaveTypes[0], [
+    leaveTypeSelectorController: new FormControl('', [
       Validators.required,
     ]),
     messageController: new FormControl('', [
       Validators.maxLength(500),
     ]),
     dateRangeController: new FormControl('', []),
-    singleDateController: new FormControl('', [
-      Validators.required,
-    ]),
+    singleDateController: new FormControl('', []),
   });
 
   constructor(private _leaveApplicationService: LeaveApplicationService,
               private _responsiveHelper: ResponsiveHelperService) {
   }
 
+  private setConditionalValidators(): void {
+    if (this.selectorType === DateSelectorType.SINGLE) {
+      this.leaveApplicationFormGroup.controls['singleDateController']
+        .setValidators(Validators.required);
+    }
+  }
+
   ngOnInit() {
     this.getLeaveTypes();
-    this.leaveApplication = new LeaveApplication();
   }
 
   ngOnDestroy() {
@@ -70,7 +76,10 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public setSelector(selector: MatRadioChange): void {
-    this.selectorType = selector.value;
+    this.selectorType = selector.value === 'Range' ?
+      DateSelectorType.RANGE :
+      DateSelectorType.SINGLE;
+    this.setConditionalValidators();
   }
 
   public setLeaveType(leaveType: LeaveType): void {
@@ -81,4 +90,20 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     return this._responsiveHelper.isMobile();
   }
 
+  public isValid(): boolean {
+    switch (this.selectorType) {
+      case DateSelectorType.SINGLE:
+        return this.leaveApplicationFormGroup.valid;
+      case DateSelectorType.RANGE:
+      default:
+        return this.leaveApplicationFormGroup.valid && this.dateRangePickerIsValid;
+    }
+  }
+
+  public submitForm(): void {
+  }
+
+  public isDateRangePickerValid(isValid: boolean): void {
+    this.dateRangePickerIsValid = isValid;
+  }
 }
