@@ -23,7 +23,7 @@ import { ResponsiveHelperService } from '../../../../shared/services/responsive-
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
-import { DateSelectorType } from './domain/date-selector-type.enum';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveType } from './domain/leave-type';
 
@@ -129,11 +129,15 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setLeaveType should update selector type', () => {
-    component.setLeaveType(new LeaveType(1, 'Holiday', 'Just a holiday'));
+    const mockLeaveType: LeaveType = new LeaveType(1, 'Holiday', 'Annual leave');
+    component.leaveTypes = [mockLeaveType];
+    component.setLeaveType('Holiday');
 
     expect(component.leaveApplication.leaveType).toBeDefined();
     expect(typeof component.leaveApplication.leaveType.leaveCategory).toBe('string');
+    expect(component.leaveApplication.leaveType.leaveTypeId).toEqual(1);
     expect(component.leaveApplication.leaveType.leaveCategory).toEqual('Holiday');
+    expect(component.leaveApplication.leaveType.description).toEqual('Annual leave');
   });
 
   describe('leaveApplication Form Group', () => {

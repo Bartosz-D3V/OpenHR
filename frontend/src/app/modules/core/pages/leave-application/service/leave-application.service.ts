@@ -7,6 +7,7 @@ import { SystemVariables } from '../../../../../config/system-variables';
 import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveType } from '../domain/leave-type';
+import { LeaveApplication } from '../domain/leave-application';
 
 @Injectable()
 export class LeaveApplicationService {
@@ -35,6 +36,18 @@ export class LeaveApplicationService {
       .catch((error: any) => {
         this.handleError(error);
         return Observable.of([]);
+      });
+  }
+
+  public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
+    return this._http
+      .post<LeaveApplication>(`${this.url}/${this._jwtHelper.getSubjectId()}`,
+        leaveApplication, {
+          headers: this.headers,
+        })
+      .catch((error: any) => {
+        this.handleError(error);
+        return Observable.of(error);
       });
   }
 
