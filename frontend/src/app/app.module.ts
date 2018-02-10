@@ -13,6 +13,7 @@ import { AppComponent } from './boot/app.component';
 import { StaticModalComponent } from './shared/components/static-modal/static-modal.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
+import { NotificationService } from './shared/services/notification/notification.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ErrorResolverService } from './shared/services/error-resolver/error-res
   ],
   providers: [
     ErrorResolverService,
+    NotificationService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [StaticModalComponent],

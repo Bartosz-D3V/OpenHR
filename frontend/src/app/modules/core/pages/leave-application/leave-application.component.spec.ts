@@ -5,7 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatStepperModule,
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatSnackBarModule,
+  MatStepperModule,
   MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
@@ -20,6 +21,7 @@ import { DateRangeComponent } from '../../../../shared/components/date-range/dat
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
@@ -71,9 +73,11 @@ describe('LeaveApplicationComponent', () => {
         MatInputModule,
         MatRadioModule,
         MatCardModule,
+        MatSnackBarModule,
       ],
       providers: [
         JwtHelperService,
+        NotificationService,
         {
           provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
         },

@@ -7,7 +7,7 @@ import {
   MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
   MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule, MatPaginatorModule,
+  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule, MatPaginatorModule, MatSnackBarModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -62,6 +62,7 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
     MatAutocompleteModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,

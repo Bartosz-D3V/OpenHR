@@ -34,15 +34,4 @@ export class ConfigService {
       });
   }
 
-  public getLeaveTypes(): Observable<Array<string>> {
-    return this._http
-      .get<Array<string>>(this.url + 'leaveTypes', {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
-  }
-
 }

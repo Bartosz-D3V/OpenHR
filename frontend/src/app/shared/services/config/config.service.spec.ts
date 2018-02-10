@@ -99,53 +99,6 @@ describe('ConfigService', () => {
         expect(configService['handleError']).toHaveBeenCalled();
       }));
     });
-
-    describe('getLeaveTypes', () => {
-      const apiLink = SystemVariables.API_URL + 'config/leaveTypes';
-
-      it('should query current service URL', fakeAsync(() => {
-        configService.getLeaveTypes().subscribe();
-
-        http.expectOne(apiLink);
-      }));
-
-
-      it('should return array with strings if response is valid', fakeAsync(() => {
-        const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
-        let result: Object;
-        let error: any;
-        configService.getLeaveTypes()
-          .subscribe(
-            (res: Object) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: apiLink,
-          method: 'GET',
-        }).flush(mockLeaveTypes);
-        tick();
-
-        expect(error).toBeUndefined();
-        expect(typeof result).toBe('object');
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockLeaveTypes));
-      }));
-
-      it('should resolve error if server is down', fakeAsync(() => {
-        spyOn(configService, 'handleError');
-        let result: Object;
-        let error: any;
-        configService.getLeaveTypes()
-          .subscribe(
-            (res: Object) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: apiLink,
-          method: 'GET',
-        }).error(new ErrorEvent('404'));
-        tick();
-
-        expect(configService['handleError']).toHaveBeenCalled();
-      }));
-    });
   });
 
 });
