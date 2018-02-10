@@ -1,15 +1,17 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { MatRadioChange } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange, MatSelectChange } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { ISubscription } from 'rxjs/Subscription';
 
 import { MomentInput } from 'moment';
 
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { NAMED_DATE } from '../../../../config/datepicker-format';
 import { LeaveApplicationService } from './service/leave-application.service';
-import { DateSelectorType } from './domain/date-selector-type.enum';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveType } from './domain/leave-type';
 
@@ -18,6 +20,8 @@ import { LeaveType } from './domain/leave-type';
   templateUrl: './leave-application.component.html',
   styleUrls: ['./leave-application.component.scss'],
   providers: [
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     LeaveApplicationService,
     ResponsiveHelperService,
   ],
@@ -26,6 +30,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   private dateRangePickerIsValid: boolean;
   private $leaveTypes: ISubscription;
+  private $leaveApplication: ISubscription;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication();
   public selectorType: DateSelectorType = DateSelectorType.RANGE;
@@ -58,6 +63,28 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$leaveTypes.unsubscribe();
+    this.$leaveApplication.unsubscribe();
+  }
+
+  setStartDate(startDate: MomentInput): void {
+    this.leaveApplication.startDate = startDate;
+  }
+
+  setEndDate(endDate: MomentInput): void {
+    this.leaveApplication.endDate = endDate;
+  }
+
+  setSelector(selector: MatRadioChange): void {
+    this.selectorType = selector.value === 'Range' ?
+      DateSelectorType.RANGE :
+      DateSelectorType.SINGLE;
+    this.setConditionalValidators();
+  }
+
+  setLeaveType(leaveTypeCategory: string): void {
+    this.leaveApplication.leaveType = this.leaveTypes.find((element: LeaveType) => {
+      return element.leaveCategory === leaveTypeCategory;
+    });
   }
 
   public getLeaveTypes(): void {
@@ -65,25 +92,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
       .subscribe((response: Array<LeaveType>) => {
         this.leaveTypes = response;
       });
-  }
-
-  public setStartDate(startDate: MomentInput): void {
-    this.leaveApplication.startDate = startDate;
-  }
-
-  public setEndDate(endDate: MomentInput): void {
-    this.leaveApplication.endDate = endDate;
-  }
-
-  public setSelector(selector: MatRadioChange): void {
-    this.selectorType = selector.value === 'Range' ?
-      DateSelectorType.RANGE :
-      DateSelectorType.SINGLE;
-    this.setConditionalValidators();
-  }
-
-  public setLeaveType(leaveType: LeaveType): void {
-    this.leaveApplication.leaveType = leaveType;
   }
 
   public isMobile(): boolean {
@@ -100,10 +108,13 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public submitForm(): void {
-  }
-
   public isDateRangePickerValid(isValid: boolean): void {
     this.dateRangePickerIsValid = isValid;
+  }
+
+  public submitForm(): void {
+    this.$leaveApplication = this._leaveApplicationService
+      .submitLeaveApplication(this.leaveApplication)
+      .subscribe();
   }
 }

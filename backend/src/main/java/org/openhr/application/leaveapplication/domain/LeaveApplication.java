@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,8 +32,9 @@ public class LeaveApplication implements Serializable {
   private LocalDate endDate;
   private String message;
 
-  @Column(name = "LEAVE_TYPE")
-  private String leaveType;
+  @JoinColumn(unique = true, name = "LEAVE_TYPE_LEAVE_TYPE_ID")
+  @OneToOne(optional = false)
+  private LeaveType leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")
   private boolean approvedByManager;
@@ -96,11 +98,11 @@ public class LeaveApplication implements Serializable {
     this.message = message;
   }
 
-  public String getLeaveType() {
+  public LeaveType getLeaveType() {
     return leaveType;
   }
 
-  public void setLeaveType(final String leaveType) {
+  public void setLeaveType(final LeaveType leaveType) {
     this.leaveType = leaveType;
   }
 

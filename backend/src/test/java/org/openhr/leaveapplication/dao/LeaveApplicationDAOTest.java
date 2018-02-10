@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -37,6 +38,7 @@ public class LeaveApplicationDAOTest {
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, new User("Mck40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
+  private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -46,12 +48,15 @@ public class LeaveApplicationDAOTest {
 
   @Before
   public void setUp() {
+    final Session session = sessionFactory.openSession();
     mockLeaveApplication.setProcessInstanceId(String.valueOf(5L));
     mockLeaveApplication.setApprovedByManager(true);
     mockLeaveApplication.setApprovedByHR(false);
     mockLeaveApplication.setSubject(mockSubject);
-    mockLeaveApplication.setLeaveType("Annual Leave");
     mockLeaveApplication.setMessage("I am going to Vanuatu!");
+    session.save(leaveType);
+    mockLeaveApplication.setLeaveType(leaveType);
+    session.close();
   }
 
   @Test
@@ -67,7 +72,7 @@ public class LeaveApplicationDAOTest {
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
     assertEquals(mockLeaveApplication.getEndDate(), actualLeaveApplication.getEndDate());
     assertEquals(mockLeaveApplication.getMessage(), actualLeaveApplication.getMessage());
-    assertEquals(mockLeaveApplication.getLeaveType(), actualLeaveApplication.getLeaveType());
+    assertEquals(mockLeaveApplication.getLeaveType().getLeaveTypeId(), actualLeaveApplication.getLeaveType().getLeaveTypeId());
   }
 
   @Test(expected = ApplicationDoesNotExistException.class)
@@ -87,7 +92,7 @@ public class LeaveApplicationDAOTest {
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
     assertEquals(mockLeaveApplication.getEndDate(), actualLeaveApplication.getEndDate());
     assertEquals(mockLeaveApplication.getMessage(), actualLeaveApplication.getMessage());
-    assertEquals(mockLeaveApplication.getLeaveType(), actualLeaveApplication.getLeaveType());
+    assertEquals(mockLeaveApplication.getLeaveType().getLeaveTypeId(), actualLeaveApplication.getLeaveType().getLeaveTypeId());
     assertEquals(mockLeaveApplication.isApprovedByManager(), actualLeaveApplication.isApprovedByManager());
     assertEquals(mockLeaveApplication.isApprovedByHR(), actualLeaveApplication.isApprovedByHR());
     assertEquals(mockLeaveApplication.getProcessInstanceId(), actualLeaveApplication.getProcessInstanceId());

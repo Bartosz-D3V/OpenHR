@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.leaveapplication.controller.LeaveApplicationController;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.openhr.common.domain.error.ErrorInfo;
@@ -50,6 +51,7 @@ public class LeaveApplicationControllerTest {
   private final static ErrorInfo mockSubject404Error = new ErrorInfo(MOCK_URL, mockSubject404Exception);
   private final static ErrorInfo mockHibernateError = new ErrorInfo(MOCK_URL, mockHibernateException);
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
+  private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
   @Autowired
   private MockMvc mockMvc;
@@ -60,6 +62,7 @@ public class LeaveApplicationControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+    mockLeaveApplication.setLeaveType(leaveType);
   }
 
   @Test
@@ -114,8 +117,7 @@ public class LeaveApplicationControllerTest {
       .createLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application")
-        .param("subjectId", "1")
+      .perform(post("/leave-application/{subjectId}", 1)
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isNotFound())
@@ -132,8 +134,7 @@ public class LeaveApplicationControllerTest {
       .createLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application")
-        .param("subjectId", "1")
+      .perform(post("/leave-application/{subjectId}", 1)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isInternalServerError())
@@ -148,8 +149,7 @@ public class LeaveApplicationControllerTest {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application")
-        .param("subjectId", "1")
+      .perform(post("/leave-application/{subjectId}", 1)
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isCreated())

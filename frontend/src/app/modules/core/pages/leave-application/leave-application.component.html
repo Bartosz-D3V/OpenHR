@@ -12,8 +12,8 @@
         </mat-radio-button>
       </mat-radio-group>
       <mat-select fxFlex.gt-xs="30" fxFlex.xs="100" placeholder="Select a leave type"
-                  formControlName="leaveTypeSelectorController">
-        <mat-option *ngFor="let leaveType of leaveTypes" (selectorChange)="setLeaveType($event)" name="leaveType"
+                  formControlName="leaveTypeSelectorController" (selectionChange)="setLeaveType($event.value)">
+        <mat-option *ngFor="let leaveType of leaveTypes" name="leaveType"
                     [value]="leaveType.leaveCategory">
           {{leaveType.leaveCategory}}
         </mat-option>
@@ -21,8 +21,8 @@
       <app-date-range fxFlex="50" *ngIf="selectorType === 'Range'; else single_date_template" [mainFlexProperty]="50"
                       [mobileFlexProperty]="100" [requireStartDate]="selectorType === 'Range'"
                       [requireEndDate]="selectorType === 'Range'" [startDate]="leaveApplication.startDate"
-                      [endDate]="leaveApplication.endDate" (updateStartDate)="setStartDate($event)"
-                      (updateEndDate)="setEndDate($event)"
+                      [endDate]="leaveApplication.endDate" (startDateChange)="setStartDate($event)"
+                      (endDateChange)="setEndDate($event)"
                       (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
       <ng-template #single_date_template>
         <mat-form-field fxFlex="50">
@@ -37,12 +37,12 @@
       </ng-template>
       <mat-form-field fxFlex="60" class="c-textarea">
         <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
-                  formControlName="messageController"></textarea>
+                  formControlName="messageController" [(ngModel)]="leaveApplication.message"></textarea>
         <mat-hint align="end">{{message.value.length || 0}} / 500</mat-hint>
       </mat-form-field>
     </form>
   </mat-card>
   <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()"
-          (onClick)="submitForm()">Submit
+          (click)="submitForm()">Submit
   </button>
 </section>

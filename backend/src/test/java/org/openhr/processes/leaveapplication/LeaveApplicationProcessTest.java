@@ -5,9 +5,13 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.user.domain.User;
@@ -43,8 +47,8 @@ public class LeaveApplicationProcessTest {
     "Core", "12A", null, null);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
-
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
+  private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
   @Autowired
   private LeaveApplicationService leaveApplicationService;
@@ -57,6 +61,17 @@ public class LeaveApplicationProcessTest {
 
   @Autowired
   private HistoryService historyService;
+
+  @Autowired
+  private SessionFactory sessionFactory;
+
+  @Before
+  public void setUp() {
+    final Session session = sessionFactory.openSession();
+    session.save(leaveType);
+    session.close();
+    mockLeaveApplication.setLeaveType(leaveType);
+  }
 
   @Test
   public void processShouldStart() {
