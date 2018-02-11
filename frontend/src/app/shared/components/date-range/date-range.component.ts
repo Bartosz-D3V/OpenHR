@@ -171,6 +171,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
       });
   }
 
+  public reset(): void {
+    this.dateRangeGroup.reset();
+  }
+
   isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
