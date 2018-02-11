@@ -11,7 +11,8 @@
         <mat-radio-button #range class="c-radio__option" value="Range" fxFlex="50">Range
         </mat-radio-button>
       </mat-radio-group>
-      <app-date-range class="c-drawer__element" fxFlex="100" *ngIf="selectorType === 'Range'; else single_date_template"
+      <app-date-range #dateRange class="c-drawer__element" fxFlex="100"
+                      *ngIf="selectorType === 'Range'; else single_date_template"
                       [requireStartDate]="selectorType === 'Range'"
                       [requireEndDate]="selectorType === 'Range'" [startDate]="leaveApplication.startDate"
                       [endDate]="leaveApplication.endDate" (startDateChange)="setStartDate($event)"

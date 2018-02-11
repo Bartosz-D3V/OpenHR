@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
@@ -15,6 +15,7 @@ import { LeaveApplicationService } from './service/leave-application.service';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
 import { LeaveType } from './domain/leave-type';
+import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 
 @Component({
   selector: 'app-leave-application',
@@ -30,10 +31,14 @@ import { LeaveType } from './domain/leave-type';
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
+  @ViewChild('dateRange')
+  private dateRangeComponent: DateRangeComponent;
+
   private dateRangePickerIsValid: boolean;
   private $leaveTypes: ISubscription;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication();
+
   public selectorType: DateSelectorType = DateSelectorType.RANGE;
 
   public leaveApplicationFormGroup: FormGroup = new FormGroup({
@@ -118,6 +123,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
       .submitLeaveApplication(this.leaveApplication)
       .subscribe((response: LeaveApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
+        this.leaveApplicationFormGroup.reset();
+        this.dateRangeComponent.reset();
         this._notificationService.openSnackBar(message, 'OK');
       });
   }
