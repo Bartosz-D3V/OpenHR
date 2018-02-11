@@ -27,4 +27,6 @@ public interface SubjectService {
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
+
+  long getLeftAllowanceInDays(long subjectId);
 }

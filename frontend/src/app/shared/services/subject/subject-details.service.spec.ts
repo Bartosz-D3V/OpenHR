@@ -12,6 +12,7 @@ import { EmployeeInformation } from '../../domain/subject/employee-information';
 import { SystemVariables } from '../../../config/system-variables';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
 import { SubjectDetailsService } from './subject-details.service';
+import { HrInformation } from '../../domain/subject/hr-information';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
@@ -19,8 +20,9 @@ describe('PersonalDetailsService', () => {
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester',
     '2020-02-08', '2020-02-08', '123AS');
+  const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation);
+    mockEmployeeInformation, mockHrInformation);
   let http: HttpTestingController;
   let personalDetailsService;
   let errorResolverService: ErrorResolverService;

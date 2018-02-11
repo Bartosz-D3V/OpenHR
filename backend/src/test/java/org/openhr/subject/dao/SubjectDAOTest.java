@@ -9,13 +9,14 @@ import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional
 public class SubjectDAOTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
@@ -32,8 +33,9 @@ public class SubjectDAOTest {
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
+  private final static HrInformation mockHrInformation = new HrInformation(25L);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, new User("Jhn13", "testPass"));
+    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn13", "testPass"));
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -41,12 +43,14 @@ public class SubjectDAOTest {
   @Autowired
   private SubjectDAO subjectDAO;
 
+  @Rollback
   @Test(expected = SubjectDoesNotExistException.class)
   public void getSubjectDetailsShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
     subjectDAO.getSubjectDetails(123L);
   }
 
   @Test
+  @Rollback
   public void getSubjectDetailsShouldReturnSubjectObjectBySubjectId() throws SubjectDoesNotExistException {
     final Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
@@ -89,6 +93,7 @@ public class SubjectDAOTest {
   }
 
   @Test
+  @Rollback
   public void addSubjectShouldInsertSubjectToDatabase() {
     subjectDAO.createSubject(mockSubject);
     final Session session = sessionFactory.openSession();
@@ -131,12 +136,14 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
+  @Rollback
   public void updateSubjectShouldThrowExceptionIfSubjectDoesNotExist()
     throws SubjectDoesNotExistException {
     subjectDAO.updateSubject(123L, mockSubject);
   }
 
   @Test
+  @Rollback
   public void updateSubjectShouldAlterExistingSubject()
     throws SubjectDoesNotExistException {
     Session session = sessionFactory.openSession();
@@ -186,12 +193,14 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
+  @Rollback
   public void updateSubjectPersonalInformationShouldThrowExceptionIfSubjectDoesNotExist()
     throws SubjectDoesNotExistException {
     subjectDAO.updateSubjectPersonalInformation(123L, mockPersonalInformation);
   }
 
   @Test
+  @Rollback
   public void updateSubjectPersonalInformationShouldUpdatePersonalInformationBySubjectIdAndPersonalInformation()
     throws SubjectDoesNotExistException {
     mockPersonalInformation.setDateOfBirth(null);
@@ -208,12 +217,14 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
+  @Rollback
   public void updateSubjectContactInformationShouldThrowExceptionIfSubjectDoesNotExist()
     throws SubjectDoesNotExistException {
     subjectDAO.updateSubjectContactInformation(123L, mockContactInformation);
   }
 
   @Test
+  @Rollback
   public void updateSubjectContactInformationShouldUpdateContactInformationBySubjectIdAndContactInformation()
     throws SubjectDoesNotExistException {
     mockContactInformation.setEmail("j.x@mail.com");
@@ -248,12 +259,14 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
+  @Rollback
   public void updateSubjectEmployeeInformationShouldThrowExceptionIfSubjectDoesNotExist()
     throws SubjectDoesNotExistException {
     subjectDAO.updateSubjectEmployeeInformation(123L, mockEmployeeInformation);
   }
 
   @Test
+  @Rollback
   public void updateSubjectEmployeeInformationShouldUpdateEmployeeInformationBySubjectIdAndEmployeeInformation()
     throws SubjectDoesNotExistException {
     Session session = sessionFactory.openSession();
@@ -280,11 +293,13 @@ public class SubjectDAOTest {
   }
 
   @Test(expected = SubjectDoesNotExistException.class)
+  @Rollback
   public void deleteSubjectShouldShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
     subjectDAO.deleteSubject(678L);
   }
 
   @Test
+  @Rollback
   public void deleteSubjectShouldDeleteSubject() throws SubjectDoesNotExistException {
     Session session = sessionFactory.openSession();
     session.saveOrUpdate(mockSubject);
@@ -296,6 +311,29 @@ public class SubjectDAOTest {
     session.close();
 
     assertNull(subject);
+  }
+
+  @Test
+  @Rollback
+  public void getAllowanceShouldReturnAllowance() {
+    final Session session = sessionFactory.openSession();
+    session.saveOrUpdate(mockSubject);
+    session.close();
+    final long actualAllowance = subjectDAO.getAllowance(mockSubject.getSubjectId());
+
+    assertEquals(mockHrInformation.getAllowance(), actualAllowance);
+  }
+
+  @Test
+  @Rollback
+  public void getUsedAllowanceShouldReturnUsedAllowance() {
+    mockSubject.getHrInformation().setUsedAllowance(10L);
+    final Session session = sessionFactory.openSession();
+    session.saveOrUpdate(mockSubject);
+    session.close();
+    final long actualAllowance = subjectDAO.getUsedAllowance(mockSubject.getSubjectId());
+
+    assertEquals(mockHrInformation.getUsedAllowance(), actualAllowance);
   }
 
 }

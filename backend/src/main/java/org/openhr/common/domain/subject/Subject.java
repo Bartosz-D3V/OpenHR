@@ -49,6 +49,10 @@ public class Subject implements Serializable {
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
 
+  @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  private HrInformation hrInformation;
+
   @JsonIgnore
   @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<LeaveApplication> leaveApplications = new HashSet<>();
@@ -82,13 +86,14 @@ public class Subject implements Serializable {
 
   public Subject(final String firstName, final String lastName, final PersonalInformation personalInformation,
                  final ContactInformation contactInformation, final EmployeeInformation employeeInformation,
-                 final User user) {
+                 final HrInformation hrInformation, final User user) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;
+    this.hrInformation = hrInformation;
     this.user = user;
   }
 
@@ -138,6 +143,14 @@ public class Subject implements Serializable {
 
   public void setEmployeeInformation(final EmployeeInformation employeeInformation) {
     this.employeeInformation = employeeInformation;
+  }
+
+  public HrInformation getHrInformation() {
+    return hrInformation;
+  }
+
+  public void setHrInformation(final HrInformation hrInformation) {
+    this.hrInformation = hrInformation;
   }
 
   public Set<LeaveApplication> getLeaveApplications() {

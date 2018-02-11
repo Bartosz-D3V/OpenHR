@@ -9,6 +9,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
@@ -29,9 +30,9 @@ import static org.junit.Assert.assertNotEquals;
 @Transactional
 public class ManagerDAOTest {
   private final static Subject mockSubject1 = new Subject("John", "Xavier", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation(), new User());
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User());
   private final static Subject mockSubject2 = new Subject("Alex", "White", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation(), new User());
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User());
   private final static Employee mockEmployee1 = new Employee(mockSubject1);
   private final static Employee mockEmployee2 = new Employee(mockSubject2);
 

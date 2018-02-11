@@ -3,26 +3,34 @@ package org.openhr.application.leaveapplication.service;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
-import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
-import org.openhr.common.domain.subject.Subject;
 import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
+import org.openhr.application.subject.service.SubjectService;
+import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ValidationException;
+import java.time.LocalDate;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   private final LeaveApplicationDAO leaveApplicationDAO;
   private final LeaveApplicationRepository leaveApplicationRepository;
+  private final SubjectService subjectService;
 
   public LeaveApplicationServiceImpl(final LeaveApplicationDAO leaveApplicationDAO,
-                                     final LeaveApplicationRepository leaveApplicationRepository) {
+                                     final LeaveApplicationRepository leaveApplicationRepository,
+                                     final SubjectService subjectService) {
     this.leaveApplicationDAO = leaveApplicationDAO;
     this.leaveApplicationRepository = leaveApplicationRepository;
+    this.subjectService = subjectService;
   }
 
   @Override
@@ -32,6 +40,14 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+    final LocalDate startDate = leaveApplication.getStartDate();
+    final LocalDate endDate = leaveApplication.getEndDate();
+    if (startDate.isAfter(endDate)) {
+      throw new ValidationException("Provided dates are not valid");
+    }
+    if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) < DAYS.between(startDate, endDate)) {
+      throw new ValidationException("Not enough leave allowance");
+    }
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 

@@ -9,6 +9,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.repository.UserRepository;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -110,6 +111,7 @@ public class UserRepositoryTest {
     subject.setPersonalInformation(new PersonalInformation());
     subject.setContactInformation(new ContactInformation());
     subject.setEmployeeInformation(new EmployeeInformation());
+    subject.setHrInformation(new HrInformation());
     final Session session = sessionFactory.openSession();
     session.save(subject);
     session.flush();

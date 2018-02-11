@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(name = "LEAVE_TYPE")
 public class LeaveType implements Serializable {
   @Id
-  @Column(name = "LEAVE_TYPE_ID")
+  @Column(name = "LEAVE_TYPE_ID", unique = true)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long leaveTypeId;
 

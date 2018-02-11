@@ -14,24 +14,30 @@ import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
+import org.openhr.application.subject.service.SubjectService;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -45,13 +51,17 @@ public class LeaveApplicationProcessTest {
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
+  private final static HrInformation mockHrInformation = new HrInformation(25L);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, new User("Jhn40", "testPass"));
-  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(null, null);
+    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
+  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
   @Autowired
   private LeaveApplicationService leaveApplicationService;
+
+  @MockBean
+  private SubjectService subjectService;
 
   @Autowired
   private RuntimeService runtimeService;
@@ -94,6 +104,8 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void managerShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
@@ -116,6 +128,8 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void hrTeamShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
@@ -141,6 +155,8 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void hrTeamShouldEndWorkflowByApprovingTheApplication() {
+    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();

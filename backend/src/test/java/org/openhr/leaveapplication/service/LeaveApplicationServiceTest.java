@@ -10,6 +10,7 @@ import org.openhr.application.leaveapplication.service.LeaveApplicationServiceIm
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,13 +34,17 @@ public class LeaveApplicationServiceTest {
   @Autowired
   private LeaveApplicationRepository leaveApplicationRepository;
 
+  @Autowired
+  private SubjectService subjectService;
+
   @MockBean
   private LeaveApplicationDAO leaveApplicationDAO;
 
   @Before()
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    leaveApplicationServiceImpl = new LeaveApplicationServiceImpl(leaveApplicationDAO, leaveApplicationRepository);
+    leaveApplicationServiceImpl = new LeaveApplicationServiceImpl(leaveApplicationDAO, leaveApplicationRepository,
+      subjectService);
     mockLeaveApplication.setApplicationId(1L);
   }
 

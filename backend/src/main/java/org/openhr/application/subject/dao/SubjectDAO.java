@@ -27,4 +27,8 @@ public interface SubjectDAO {
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
+
+  long getAllowance(long subjectId);
+
+  long getUsedAllowance(long subjectId);
 }

@@ -79,4 +79,10 @@ public class SubjectServiceImpl implements SubjectService {
   public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
     return subjectDAO.getLightweightSubject(subjectId);
   }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getLeftAllowanceInDays(final long subjectId) {
+    return subjectDAO.getAllowance(subjectId) - subjectDAO.getUsedAllowance(subjectId);
+  }
 }
