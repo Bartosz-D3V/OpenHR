@@ -4,6 +4,10 @@
   margin-left: $drawer-margin;
   margin-top: $workspace-margin-top;
   width: $drawer-width;
+
+  &__element {
+    margin-top: 3%;
+  }
 }
 
 .c-btn {

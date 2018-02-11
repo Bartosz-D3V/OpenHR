@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange, MatSelectChange } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { ISubscription } from 'rxjs/Subscription';
@@ -9,6 +9,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { MomentInput } from 'moment';
 
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { NAMED_DATE } from '../../../../config/datepicker-format';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
@@ -24,13 +25,13 @@ import { LeaveType } from './domain/leave-type';
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     LeaveApplicationService,
     ResponsiveHelperService,
+    NotificationService,
   ],
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   private dateRangePickerIsValid: boolean;
   private $leaveTypes: ISubscription;
-  private $leaveApplication: ISubscription;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication();
   public selectorType: DateSelectorType = DateSelectorType.RANGE;
@@ -47,7 +48,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   });
 
   constructor(private _leaveApplicationService: LeaveApplicationService,
-              private _responsiveHelper: ResponsiveHelperService) {
+              private _responsiveHelper: ResponsiveHelperService,
+              private _notificationService: NotificationService) {
   }
 
   private setConditionalValidators(): void {
@@ -63,7 +65,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$leaveTypes.unsubscribe();
-    this.$leaveApplication.unsubscribe();
   }
 
   setStartDate(startDate: MomentInput): void {
@@ -113,8 +114,11 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    this.$leaveApplication = this._leaveApplicationService
+    this._leaveApplicationService
       .submitLeaveApplication(this.leaveApplication)
-      .subscribe();
+      .subscribe((response: LeaveApplication) => {
+        const message = `Application with id ${response.applicationId} has been created`;
+        this._notificationService.openSnackBar(message, 'OK');
+      });
   }
 }
