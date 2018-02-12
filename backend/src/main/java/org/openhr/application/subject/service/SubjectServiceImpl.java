@@ -41,35 +41,35 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
     SubjectDoesNotExistException {
     subjectDAO.updateSubject(subjectId, subject);
   }
 
   @Override
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectDAO.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Override
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectDAO.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Override
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectDAO.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     subjectDAO.deleteSubject(subjectId);
   }
