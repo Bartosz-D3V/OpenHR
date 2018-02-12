@@ -10,6 +10,7 @@ import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
-    throws SubjectDoesNotExistException, ApplicationDoesNotExistException {
+    throws SubjectDoesNotExistException, ApplicationDoesNotExistException, ValidationException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
