@@ -43,22 +43,26 @@ public class LeaveApplicationRepository {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public boolean dateRangeAlreadyBooked(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
-    boolean dateRangeAlreadyBooked;
+    final int numOfResults;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
-      dateRangeAlreadyBooked = (boolean) criteria
-        .add(Restrictions.eq("subjectId", subjectId))
+      numOfResults = criteria
+        .createAlias("subject", "subject")
+        .add(Restrictions.eq("subject.subjectId", subjectId))
+        .add(Restrictions.eq("approvedByManager", true))
+        .add(Restrictions.eq("approvedByHR", true))
         .add(Restrictions.disjunction()
-          .add(Restrictions.between("startDate", startDate, endDate))
-          .add(Restrictions.between("endDate", startDate, endDate)))
+//          .add(Restrictions.between("startDate", startDate, endDate))
+//          .add(Restrictions.between("endDate", startDate, endDate)))
         .setReadOnly(true)
-        .uniqueResult();
+        .list()
+        .size();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
     }
 
-    return dateRangeAlreadyBooked;
+    return numOfResults > 0;
   }
 }
