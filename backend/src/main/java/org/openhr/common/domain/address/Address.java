@@ -2,21 +2,30 @@ package org.openhr.common.domain.address;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Embeddable
 public class Address implements Serializable {
   @Column(name = "FIRST_LINE_ADDRESS")
+  @Size(max = 80)
   private String firstLineAddress;
 
   @Column(name = "SECOND_LINE_ADDRESS")
+  @Size(max = 80)
   private String secondLineAddress;
 
   @Column(name = "THIRD_LINE_ADDRESS")
+  @Size(max = 80)
   private String thirdLineAddress;
-    private String postcode;
 
+  @Size(max = 10)
+  private String postcode;
+
+  @Size(max = 50)
   private String city;
+
+  @Size(max = 50)
   private String country;
 
   public Address() {

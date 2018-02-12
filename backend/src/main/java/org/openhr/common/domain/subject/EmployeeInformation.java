@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -20,11 +21,17 @@ public class EmployeeInformation implements Serializable {
   private long employeeInformationId;
 
   @Column(name = "NATIONAL_INSURANCE_NUMBER")
+  @Size(max = 12)
   private String nationalInsuranceNumber;
+
+  @Size(max = 255)
   private String position;
+
+  @Size(max = 255)
   private String department;
 
   @Column(name = "EMPLOYEE_ID")
+  @Size(max = 255)
   private String employeeId;
 
   @Column(name = "START_DATE")

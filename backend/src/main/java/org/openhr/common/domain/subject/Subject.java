@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,10 +32,12 @@ public class Subject implements Serializable {
 
   @NotNull
   @Column(name = "FIRST_NAME")
+  @Size(max = 255)
   private String firstName;
 
   @NotNull
   @Column(name = "LAST_NAME")
+  @Size(max = 255)
   private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
