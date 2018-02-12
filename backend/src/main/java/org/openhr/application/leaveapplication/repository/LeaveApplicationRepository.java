@@ -1,8 +1,11 @@
 package org.openhr.application.leaveapplication.repository;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -21,7 +25,7 @@ public class LeaveApplicationRepository {
     this.sessionFactory = sessionFactory;
   }
 
-  @Transactional(propagation = Propagation.SUPPORTS)
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
   public List<LeaveType> getLeaveTypes() throws HibernateException {
     List<LeaveType> leaveTypes;
@@ -37,4 +41,24 @@ public class LeaveApplicationRepository {
     return leaveTypes;
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public boolean dateRangeAlreadyBooked(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
+    boolean dateRangeAlreadyBooked;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      dateRangeAlreadyBooked = (boolean) criteria
+        .add(Restrictions.eq("subjectId", subjectId))
+        .add(Restrictions.disjunction()
+          .add(Restrictions.between("startDate", startDate, endDate))
+          .add(Restrictions.between("endDate", startDate, endDate)))
+        .setReadOnly(true)
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return dateRangeAlreadyBooked;
+  }
 }
