@@ -85,8 +85,9 @@ describe('EmployeesComponent', () => {
     const mockArray: Array<Employee> = [];
     const mockEmployee1 = new Employee(1);
     const mockEmployee2 = new Employee(2);
-    mockEmployee1.subject = new Subject('Jack', 'Strong', null, null, new EmployeeInformation(null, 'Spy', null, null, null));
-    mockEmployee2.subject = new Subject('Mikolaj', 'Kopernik', null, null, new EmployeeInformation(null, 'Astronomic', null, null, null));
+    mockEmployee1.subject = new Subject('Jack', 'Strong', null, null, new EmployeeInformation(null, 'Spy', null, null, null), null);
+    mockEmployee2.subject = new Subject('Mikolaj', 'Kopernik', null, null,
+      new EmployeeInformation(null, 'Astronomic', null, null, null), null);
     mockArray.push(mockEmployee1);
     mockArray.push(mockEmployee2);
     const convertedArray: Array<EmployeeData> = component.simplifyEmployeeArray(mockArray);
@@ -105,7 +106,7 @@ describe('EmployeesComponent', () => {
   it('simplifyEmployeeObject method should create simplified object from Employee object', () => {
     const employee: Employee = new Employee(1);
     let result: EmployeeData;
-    employee.subject = new Subject('John', 'Xavier', null, null, new EmployeeInformation(null, 'Senior Tester', null, null, null));
+    employee.subject = new Subject('John', 'Xavier', null, null, new EmployeeInformation(null, 'Senior Tester', null, null, null), null);
     result = component.simplifyEmployeeObject(employee);
 
     expect(result).toBeDefined();

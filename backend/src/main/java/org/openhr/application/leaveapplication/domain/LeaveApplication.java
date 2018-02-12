@@ -32,7 +32,7 @@ public class LeaveApplication implements Serializable {
   private LocalDate endDate;
   private String message;
 
-  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID")
+  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
   @OneToOne(optional = false)
   private LeaveType leaveType;
 

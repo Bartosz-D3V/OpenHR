@@ -4,7 +4,6 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -38,7 +37,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException, HibernateException {
     final Subject subject = (Subject) super.get(Subject.class, subjectId);
     if (subject == null) {
-      log.error("Subject could not be found, although it must exists at this point");
+      log.error("Subject could not be found");
       throw new SubjectDoesNotExistException("Subject could not be found");
     }
 
@@ -89,6 +88,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
     legacySubject.setPersonalInformation(subject.getPersonalInformation());
     legacySubject.setContactInformation(subject.getContactInformation());
     legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
+    legacySubject.setHrInformation(subject.getHrInformation());
     super.merge(legacySubject);
   }
 
@@ -135,5 +135,47 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
       log.error(subjectDoesNotExistException.getMessage());
       throw subjectDoesNotExistException;
     }
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getAllowance(final long subjectId) {
+    long allowance;
+    try {
+      final Session session = sessionFactory.openSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      allowance = (long) criteria
+        .createAlias("hrInformation", "hrInformation")
+        .add(Restrictions.eq("subjectId", subjectId))
+        .setProjection(Projections.property("hrInformation.allowance"))
+        .uniqueResult();
+      session.flush();
+      session.close();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return allowance;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getUsedAllowance(final long subjectId) {
+    long usedAllowance;
+    try {
+      final Session session = sessionFactory.openSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      usedAllowance = (long) criteria
+        .createAlias("hrInformation", "hrInformation")
+        .add(Restrictions.eq("subjectId", subjectId))
+        .setProjection(Projections.property("hrInformation.usedAllowance"))
+        .uniqueResult();
+      session.flush();
+      session.close();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return usedAllowance;
   }
 }

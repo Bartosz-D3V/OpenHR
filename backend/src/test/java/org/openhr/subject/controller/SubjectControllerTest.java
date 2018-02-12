@@ -13,6 +13,7 @@ import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -54,8 +55,9 @@ public class SubjectControllerTest {
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
+  private final static HrInformation mockHrInformation = new HrInformation(25L);
   private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, new User());
+    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User());
 
   @Autowired
   private MockMvc mockMvc;
