@@ -26,14 +26,17 @@ public class LeaveApplication implements Serializable {
   private long applicationId;
 
   @Column(name = "START_DATE")
+  @NotNull
   private LocalDate startDate;
 
   @Column(name = "END_DATE")
+  @NotNull
   private LocalDate endDate;
   private String message;
 
   @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
   @ManyToOne(optional = false)
+  @NotNull
   private LeaveType leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")

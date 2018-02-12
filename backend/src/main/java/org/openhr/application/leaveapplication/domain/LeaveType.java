@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -17,6 +18,7 @@ public class LeaveType implements Serializable {
   private long leaveTypeId;
 
   @Column(name = "LEAVE_CATEGORY")
+  @NotNull
   private String leaveCategory;
 
   private String description;

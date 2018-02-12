@@ -14,6 +14,7 @@ import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -46,6 +47,7 @@ public class LeaveApplicationControllerTest {
     new ApplicationDoesNotExistException("Not found");
   private final static SubjectDoesNotExistException mockSubject404Exception =
     new SubjectDoesNotExistException("Subject not found");
+  private final static ValidationException mockValidationException = new ValidationException("Validation exception");
   private final static HibernateException mockHibernateException = new HibernateException("DB error");
   private final static ErrorInfo mock404Error = new ErrorInfo(MOCK_URL, mock404Exception);
   private final static ErrorInfo mockSubject404Error = new ErrorInfo(MOCK_URL, mockSubject404Exception);
@@ -124,6 +126,23 @@ public class LeaveApplicationControllerTest {
       .andReturn();
     assertNotNull(result.getResolvedException());
     assertEquals(mockSubject404Error.getMessage(), result.getResolvedException().getMessage());
+  }
+
+  @Test
+  @WithMockUser()
+  public void createLeaveApplicationShouldHandleValidationError() throws Exception {
+    final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
+    doThrow(mockValidationException).when(leaveApplicationFacade)
+      .createLeaveApplication(anyLong(), anyObject());
+
+    final MvcResult result = mockMvc
+      .perform(post("/leave-application/{subjectId}", 1)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(applicationAsJson))
+      .andExpect(status().isInternalServerError())
+      .andReturn();
+    assertNotNull(result.getResolvedException());
+    assertEquals(mockValidationException.getMessage(), result.getResolvedException().getMessage());
   }
 
   @Test

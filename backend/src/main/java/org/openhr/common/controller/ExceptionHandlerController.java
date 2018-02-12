@@ -6,6 +6,7 @@ import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,6 +51,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(UserDoesNotExist.class)
   public ErrorInfo handleUserDoesNotExistException(final HttpServletRequest req, final Exception ex) {
+    return new ErrorInfo(req.getRequestURL().toString(), ex);
+  }
+
+  @ResponseBody
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(ValidationException.class)
+  public ErrorInfo handleValidationException(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 }

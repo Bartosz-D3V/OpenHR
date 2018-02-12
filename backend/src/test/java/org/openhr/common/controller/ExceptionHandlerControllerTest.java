@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -56,6 +57,16 @@ public class ExceptionHandlerControllerTest {
   @Test
   public void handleHibernateExceptionShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
     final HibernateException mockError = new HibernateException("DB error");
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleHibernateException(httpServletRequest, mockError);
+    final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
+
+    assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
+    assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
+  }
+
+  @Test
+  public void handleValidationExceptionShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
+    final ValidationException mockError = new ValidationException("Validation error");
     final ErrorInfo returnedInfo = exceptionHandlerController.handleHibernateException(httpServletRequest, mockError);
     final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
 
