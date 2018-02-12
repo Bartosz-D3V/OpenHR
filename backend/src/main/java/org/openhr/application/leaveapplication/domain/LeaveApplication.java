@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -32,6 +33,9 @@ public class LeaveApplication implements Serializable {
   @Column(name = "END_DATE")
   @NotNull
   private LocalDate endDate;
+
+  @Size(max = 500)
+  @Column(length = 500)
   private String message;
 
   @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)

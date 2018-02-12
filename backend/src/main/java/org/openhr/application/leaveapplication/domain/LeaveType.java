@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -18,9 +19,11 @@ public class LeaveType implements Serializable {
   private long leaveTypeId;
 
   @Column(name = "LEAVE_CATEGORY")
+  @Size(max = 150)
   @NotNull
   private String leaveCategory;
 
+  @Size(max = 200)
   private String description;
 
   public LeaveType() {

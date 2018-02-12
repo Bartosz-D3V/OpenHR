@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import java.io.Serializable;
 
 @Entity
@@ -17,9 +18,11 @@ public class HrInformation implements Serializable {
   private long hrInformationId;
 
   @Column(name = "ALLOWANCE")
+  @Max(value = 40)
   private long allowance;
 
   @Column(name = "USED_ALLOWANCE")
+  @Max(value = 40)
   private long usedAllowance;
 
   public HrInformation() {

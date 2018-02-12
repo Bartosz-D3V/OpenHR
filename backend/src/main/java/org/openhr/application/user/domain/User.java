@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class User implements Serializable {
   private long userId;
 
   @Column(unique = true, nullable = false)
+  @Size(max = 20)
   private String username;
 
   @Column(nullable = false)
