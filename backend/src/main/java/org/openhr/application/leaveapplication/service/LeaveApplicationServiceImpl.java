@@ -8,11 +8,11 @@ import org.openhr.application.leaveapplication.repository.LeaveApplicationReposi
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ValidationException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,7 +39,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
+    throws ValidationException {
     final LocalDate startDate = leaveApplication.getStartDate();
     final LocalDate endDate = leaveApplication.getEndDate();
     if (startDate.isAfter(endDate)) {

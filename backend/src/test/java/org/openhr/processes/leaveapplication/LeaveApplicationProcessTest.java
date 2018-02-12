@@ -22,6 +22,7 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -154,7 +155,7 @@ public class LeaveApplicationProcessTest {
   }
 
   @Test
-  public void hrTeamShouldEndWorkflowByApprovingTheApplication() {
+  public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws ValidationException {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
 
     final LeaveApplication leaveApplication = leaveApplicationService

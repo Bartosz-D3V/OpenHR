@@ -8,6 +8,7 @@ import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +45,7 @@ public class LeaveApplicationController {
   @ResponseStatus(HttpStatus.CREATED)
   public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
-    throws HibernateException,
-    SubjectDoesNotExistException, ApplicationDoesNotExistException {
+    throws HibernateException, SubjectDoesNotExistException, ApplicationDoesNotExistException, ValidationException {
     return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
