@@ -33,7 +33,7 @@ public class LeaveApplication implements Serializable {
   private String message;
 
   @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
-  @OneToOne(optional = false)
+  @ManyToOne(optional = false)
   private LeaveType leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")

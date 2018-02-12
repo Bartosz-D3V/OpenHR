@@ -24,5 +24,9 @@
     "employeeId": "123S",
     "startDate": null,
     "endDate": null
+  },
+  "hrInformation": {
+    "allowance": 25,
+    "usedAllowance": 0
   }
 }

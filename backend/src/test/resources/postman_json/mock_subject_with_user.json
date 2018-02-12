@@ -25,6 +25,10 @@
     "startDate": null,
     "endDate": null
   },
+  "hrInformation": {
+    "allowance": 25,
+    "usedAllowance": 0
+  },
   "user": {
     "username": "user",
     "password": "1234"
