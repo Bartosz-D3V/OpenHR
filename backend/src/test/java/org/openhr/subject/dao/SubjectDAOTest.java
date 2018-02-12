@@ -3,6 +3,7 @@ package org.openhr.subject.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.subject.dao.SubjectDAO;
@@ -303,7 +304,11 @@ public class SubjectDAOTest {
   @Test
   @Ignore("Test breaks the whole class")
   public void getAllowanceShouldReturnAllowance() throws HibernateException {
+    mockHrInformation.setAllowance(25L);
+    mockHrInformation.setHrInformationId(2L);
+    mockSubject.setHrInformation(mockHrInformation);
     final Session session = sessionFactory.openSession();
+    session.saveOrUpdate(mockHrInformation);
     session.saveOrUpdate(mockSubject);
     session.close();
     final long actualAllowance = subjectDAO.getAllowance(mockSubject.getSubjectId());
