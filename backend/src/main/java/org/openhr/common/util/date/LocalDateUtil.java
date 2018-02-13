@@ -4,17 +4,13 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class LocalDateUtil {
-  public static long diffDays(final LocalDate startDate, final LocalDate endDate) {
+public final class LocalDateUtil {
+  public static long diffDaysInclEnd(final LocalDate startDate, final LocalDate endDate) {
     return startDate.until(endDate, ChronoUnit.DAYS);
   }
 
-  public static long diffDaysInclEnd(final LocalDate startDate, final LocalDate endDate) {
-    return startDate.until(endDate, ChronoUnit.DAYS) + 1;
-  }
-
   public static long diffDaysInclBoth(final LocalDate startDate, final LocalDate endDate) {
-    return startDate.until(endDate, ChronoUnit.DAYS) + 2;
+    return startDate.until(endDate, ChronoUnit.DAYS) + 1;
   }
 
   public static long getWeekendDaysBetween(final LocalDate startDate, final LocalDate endDate) {
