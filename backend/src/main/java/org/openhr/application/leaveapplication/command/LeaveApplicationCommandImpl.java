@@ -27,29 +27,46 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public String startLeaveApplicationProcess(final LeaveApplication leaveApplication) {
+  public String startLeaveApplicationProcess(final Role role, final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
+    parameters.put("role", role);
     parameters.put("leaveApplication", leaveApplication);
     return runtimeService.startProcessInstanceByKey("leave-application", parameters).getProcessInstanceId();
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final String processInstanceId) {
+  public void rejectLeaveApplicationByManager(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("role", role);
     args.put("rejectedByManager", true);
     args.put("approvedByManager", false);
     taskService.complete(task.getId(), args);
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final String processInstanceId) {
+  public void approveLeaveApplicationByManager(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("role", role);
     args.put("rejectedByManager", false);
     args.put("approvedByManager", true);
+    taskService.complete(task.getId(), args);
+  }
+
+  @Override
+  public void rejectLeaveApplicationByHr(final String processInstanceId) {
+    final Map<String, Object> args = new HashMap<>();
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    args.put("rejectedByHr", true);
+    args.put("approvedByHr", false);
+    taskService.complete(task.getId(), args);
+  }
+
+  @Override
+  public void approveLeaveApplicationByHr(final String processInstanceId) {
+    final Map<String, Object> args = new HashMap<>();
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    args.put("rejectedByHr", false);
+    args.put("approvedByHr", true);
     taskService.complete(task.getId(), args);
   }
 

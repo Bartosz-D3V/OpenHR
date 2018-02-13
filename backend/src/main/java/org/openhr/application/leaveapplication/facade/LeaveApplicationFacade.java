@@ -3,7 +3,6 @@ package org.openhr.application.leaveapplication.facade;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
@@ -19,9 +18,9 @@ public interface LeaveApplicationFacade {
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
-  void rejectLeaveApplication(Role role, String processInstanceId);
+  void rejectLeaveApplicationByManager(String processInstanceId);
 
-  void approveLeaveApplication(Role role, String processInstanceId);
+  void approveLeaveApplicationByManager(String processInstanceId);
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 

@@ -4,13 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
-import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
-import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -63,45 +59,5 @@ public class LeaveApplicationServiceTest {
 
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
     leaveApplicationService.createLeaveApplication(new Subject(), leaveApplication);
-  }
-
-  @Test
-  public void rejectLeaveApplicationShouldMarkApplicationAsApprovedByManager() throws ApplicationDoesNotExistException {
-    when(leaveApplicationDAO.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
-
-    mockLeaveApplication.setApprovedByManager(true);
-    leaveApplicationServiceImpl.rejectLeaveApplication(Role.MANAGER, mockLeaveApplication.getApplicationId());
-
-    assertFalse(mockLeaveApplication.isApprovedByManager());
-  }
-
-  @Test
-  public void rejectLeaveApplicationShouldMarkApplicationAsApprovedByHRTeamMember() throws ApplicationDoesNotExistException {
-    when(leaveApplicationDAO.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
-
-    mockLeaveApplication.setApprovedByHR(true);
-    leaveApplicationServiceImpl.rejectLeaveApplication(Role.HRTEAMMEMBER, mockLeaveApplication.getApplicationId());
-
-    assertFalse(mockLeaveApplication.isApprovedByHR());
-  }
-
-  @Test
-  public void approveApplicationShouldMarkApplicationAsApprovedByManager() throws ApplicationDoesNotExistException {
-    when(leaveApplicationDAO.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
-
-    mockLeaveApplication.setApprovedByManager(true);
-    leaveApplicationServiceImpl.approveLeaveApplication(Role.MANAGER, mockLeaveApplication.getApplicationId());
-
-    assertTrue(mockLeaveApplication.isApprovedByManager());
-  }
-
-  @Test
-  public void approveApplicationShouldMarkApplicationAsApprovedByHRTeamMember() throws ApplicationDoesNotExistException {
-    when(leaveApplicationDAO.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
-
-    mockLeaveApplication.setApprovedByHR(true);
-    leaveApplicationServiceImpl.approveLeaveApplication(Role.HRTEAMMEMBER, mockLeaveApplication.getApplicationId());
-
-    assertTrue(mockLeaveApplication.isApprovedByHR());
   }
 }
