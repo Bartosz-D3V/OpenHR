@@ -52,10 +52,12 @@ public class LeaveApplicationRepository {
         .add(Restrictions.eq("subject.subjectId", subjectId))
         .add(Restrictions.eq("approvedByManager", true))
         .add(Restrictions.eq("approvedByHR", true))
-        .add(Restrictions.disjunction()
-//          .add(Restrictions.between("startDate", startDate, endDate))
-//          .add(Restrictions.between("endDate", startDate, endDate)))
+        .add(Restrictions.conjunction()
+          .add(Restrictions.ge("endDate", startDate))
+          .add(Restrictions.le("startDate", endDate)))
+        .setMaxResults(1)
         .setReadOnly(true)
+        .setCacheable(true)
         .list()
         .size();
     } catch (final HibernateException e) {
