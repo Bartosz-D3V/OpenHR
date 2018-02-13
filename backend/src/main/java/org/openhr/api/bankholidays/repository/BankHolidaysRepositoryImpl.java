@@ -18,7 +18,7 @@ public class BankHolidaysRepositoryImpl implements BankHolidaysRepository {
   }
 
   String getApiByCountry(final String country) {
-    switch (country) {
+    switch (country.toLowerCase()) {
       case "england":
       case "wales":
         return englandAndWalesAPI;
