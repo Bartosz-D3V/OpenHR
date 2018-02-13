@@ -46,9 +46,9 @@ public class HolidayServiceTest {
     bankHolidays.getEvents().clear();
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
-    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.now(), LocalDate.now().plusDays(2));
+    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 5), LocalDate.of(2020, 1, 8));
 
-    assertEquals(3, daysDiff);
+    assertEquals(4, daysDiff);
   }
 
   @Test
