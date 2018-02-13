@@ -1,7 +1,9 @@
 package org.openhr.application.subject.service;
 
 import org.hibernate.HibernateException;
+import org.openhr.api.bankholidays.service.BankHolidaysService;
 import org.openhr.application.authentication.service.AuthenticationService;
+import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.subject.dao.SubjectDAO;
@@ -9,20 +11,27 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.ValidationException;
+import org.openhr.common.util.date.LocalDateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
   private final SubjectDAO subjectDAO;
   private final AuthenticationService authenticationService;
+  private final HolidayService holidayService;
 
   public SubjectServiceImpl(final SubjectDAO subjectDAO,
-                            final AuthenticationService authenticationService) {
+                            final AuthenticationService authenticationService,
+                            final HolidayService holidayService) {
     this.subjectDAO = subjectDAO;
     this.authenticationService = authenticationService;
+    this.holidayService = holidayService;
   }
 
   @Override
@@ -84,5 +93,22 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeftAllowanceInDays(final long subjectId) {
     return subjectDAO.getAllowance(subjectId) - subjectDAO.getUsedAllowance(subjectId);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void subtractDaysExcludingFreeDays(final Subject subject, final LocalDate startDate, final LocalDate endDate)
+    throws ValidationException {
+    final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(startDate, endDate);
+    final long currentlyUsedAllowance = getLeftAllowanceInDays(subject.getSubjectId());
+    final long newUsedAllowance = currentlyUsedAllowance - allowanceToSubtract;
+    if (newUsedAllowance < 0) {
+      throw new ValidationException("Not enough leave allowance");
+    }
+    if (allowanceToSubtract > subject.getHrInformation().getAllowance()) {
+      throw new ValidationException("Leave is too long");
+    }
+    subject.getHrInformation().setUsedAllowance(newUsedAllowance);
+    subjectDAO.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
   }
 }

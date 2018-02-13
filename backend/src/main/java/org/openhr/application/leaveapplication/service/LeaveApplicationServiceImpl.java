@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 @Service
 public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
@@ -46,12 +44,11 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     if (startDate.isAfter(endDate)) {
       throw new ValidationException("Provided dates are not valid");
     }
-    if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) < DAYS.between(startDate, endDate)) {
-      throw new ValidationException("Not enough leave allowance");
+    if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
+      throw new ValidationException("No leave allowance left");
     }
-    if (leaveApplicationRepository.dateRangeAlreadyBooked(subject.getSubjectId(), startDate, endDate)) {
-      throw new ValidationException("Selected date has been already booked");
-    }
+    subjectService.subtractDaysExcludingFreeDays(subject, startDate, endDate);
+
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 

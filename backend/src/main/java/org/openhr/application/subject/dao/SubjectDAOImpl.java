@@ -11,6 +11,7 @@ import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -42,6 +43,11 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
     }
 
     return subject;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  protected Subject getExistingSubjectDetails(final long subjectId) throws HibernateException {
+    return (Subject) super.get(Subject.class, subjectId);
   }
 
   @Override
@@ -116,6 +122,15 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
     throws HibernateException, SubjectDoesNotExistException {
     final Subject subject = this.getSubjectDetails(subjectId);
     subject.setEmployeeInformation(employeeInformation);
+    super.merge(subject);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
+    throws HibernateException {
+    final Subject subject = this.getExistingSubjectDetails(subjectId);
+    subject.setHrInformation(hrInformation);
     super.merge(subject);
   }
 
