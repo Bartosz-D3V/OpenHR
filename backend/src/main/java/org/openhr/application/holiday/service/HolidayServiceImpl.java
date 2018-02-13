@@ -19,7 +19,7 @@ public class HolidayServiceImpl implements HolidayService {
 
   @Override
   public long getWorkingDaysBetweenIncl(final LocalDate startDate, final LocalDate endDate) {
-    final long diffInclFreeDays = LocalDateUtil.diffDaysInclEnd(startDate, endDate);
+    final long diffInclFreeDays = LocalDateUtil.diffDaysInclBoth(startDate, endDate);
     final Set<BankHoliday> bankHolidays = bankHolidaysService.getBankHolidays("England").getEvents();
     long freeDays = LocalDateUtil.getWeekendDaysBetween(startDate, endDate);
     for (final BankHoliday bankHoliday : bankHolidays) {
