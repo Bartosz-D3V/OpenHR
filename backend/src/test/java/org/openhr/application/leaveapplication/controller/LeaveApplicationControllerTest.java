@@ -243,7 +243,7 @@ public class LeaveApplicationControllerTest {
   public void rejectLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .rejectLeaveApplication(anyObject(), anyString());
+      .rejectLeaveApplicationByManager(anyString());
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/reject")
@@ -276,7 +276,7 @@ public class LeaveApplicationControllerTest {
   public void approveLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .approveLeaveApplication(anyObject(), anyString());
+      .approveLeaveApplicationByManager(anyString());
 
     final MvcResult result = mockMvc
       .perform(put("/leave-application/approve")

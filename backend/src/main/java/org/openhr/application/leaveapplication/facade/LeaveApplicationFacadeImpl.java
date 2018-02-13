@@ -3,13 +3,12 @@ package org.openhr.application.leaveapplication.facade;
 import org.openhr.application.leaveapplication.command.LeaveApplicationCommand;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
-import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.common.domain.subject.Subject;
-import org.openhr.application.leaveapplication.enumeration.Role;
-import org.openhr.common.exception.ApplicationDoesNotExistException;
-import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
+import org.openhr.common.domain.process.TaskDefinition;
+import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.ApplicationDoesNotExistException;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,7 +42,8 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
-    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(savedLeaveApplication);
+    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject.getRole(),
+      savedLeaveApplication);
     savedLeaveApplication.setProcessInstanceId(processInstanceId);
 
     return leaveApplicationService.updateLeaveApplication(savedLeaveApplication);
@@ -56,13 +56,13 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public void rejectLeaveApplication(final Role role, final String processInstanceId) {
-    leaveApplicationCommand.rejectLeaveApplication(role, processInstanceId);
+  public void rejectLeaveApplicationByManager(final String processInstanceId) {
+    leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId);
   }
 
   @Override
-  public void approveLeaveApplication(final Role role, final String processInstanceId) {
-    leaveApplicationCommand.approveLeaveApplication(role, processInstanceId);
+  public void approveLeaveApplicationByManager(final String processInstanceId) {
+    leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId);
   }
 
   @Override

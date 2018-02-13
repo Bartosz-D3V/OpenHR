@@ -3,11 +3,10 @@ package org.openhr.application.leaveapplication.controller;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
+import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,15 +57,13 @@ public class LeaveApplicationController {
   }
 
   @RequestMapping(value = "/reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void rejectLeaveApplication(@RequestParam final String processInstanceId,
-                                     @RequestBody final Role role) throws HibernateException {
-    leaveApplicationFacade.rejectLeaveApplication(role, processInstanceId);
+  public void rejectLeaveApplicationByManager(@RequestParam final String processInstanceId) throws HibernateException {
+    leaveApplicationFacade.rejectLeaveApplicationByManager(processInstanceId);
   }
 
   @RequestMapping(value = "/approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void approveLeaveApplication(@RequestParam final String processInstanceId,
-                                      @RequestBody final Role role) throws HibernateException {
-    leaveApplicationFacade.approveLeaveApplication(role, processInstanceId);
+  public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId) throws HibernateException {
+    leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
   }
 
   @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,

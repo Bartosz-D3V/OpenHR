@@ -8,11 +8,15 @@ import java.util.List;
 
 public interface LeaveApplicationCommand {
 
-  String startLeaveApplicationProcess(LeaveApplication leaveApplication);
+  String startLeaveApplicationProcess(Role role, LeaveApplication leaveApplication);
 
-  void rejectLeaveApplication(Role role, String processInstanceId);
+  void rejectLeaveApplicationByManager(String processInstanceId);
 
-  void approveLeaveApplication(Role role, String processInstanceId);
+  void approveLeaveApplicationByManager(String processInstanceId);
+
+  void rejectLeaveApplicationByHr(String processInstanceId);
+
+  void approveLeaveApplicationByHr(String processInstanceId);
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 

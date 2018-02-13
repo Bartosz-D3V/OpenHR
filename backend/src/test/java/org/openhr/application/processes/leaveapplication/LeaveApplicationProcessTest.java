@@ -92,6 +92,7 @@ public class LeaveApplicationProcessTest {
   @Test
   public void processShouldStart() {
     final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.EMPLOYEE);
     params.put("application", mockLeaveApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
@@ -99,8 +100,19 @@ public class LeaveApplicationProcessTest {
   }
 
   @Test
-  public void reviewShouldBeTheFirstStep() throws Exception {
+  public void processShouldStartWithoutRoleUsingDefaultRoute() {
     final Map<String, Object> params = new HashMap<>();
+    params.put("application", mockLeaveApplication);
+    params.put("role", null);
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
+
+    assertFalse(processInstance.isSuspended());
+  }
+
+  @Test
+  public void reviewShouldBeTheFirstStep() {
+    final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.EMPLOYEE);
     params.put("application", mockLeaveApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -116,11 +128,11 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
     params.put("leaveApplicationId", leaveApplication.getApplicationId());
     params.put("rejectedByManager", true);
     params.put("approvedByManager", false);
-    params.put("role", Role.MANAGER);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId(), params);
@@ -141,13 +153,13 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
     params.put("leaveApplicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("rejectedByManager", false);
     params.put("approvedByHR", false);
     params.put("rejectedByHR", true);
-    params.put("role", Role.MANAGER);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId(), params);
@@ -169,13 +181,13 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
     params.put("leaveApplicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("rejectedByManager", false);
     params.put("approvedByHR", true);
     params.put("rejectedByHR", false);
-    params.put("role", Role.MANAGER);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId(), params);
@@ -185,6 +197,38 @@ public class LeaveApplicationProcessTest {
     final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
     assertEquals("HR reviews the application", tasks.get(0).getName());
     taskService.complete(tasks.get(0).getId());
+
+    assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
+  }
+
+  @Test
+  public void processShouldStartAndSetApprovedByManagerIfManagerMadeAnApplication() throws ValidationException {
+    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final LeaveApplication leaveApplication = leaveApplicationService
+      .createLeaveApplication(mockSubject, mockLeaveApplication);
+    final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.MANAGER);
+    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    final ProcessInstance processInstance = runtimeService
+      .startProcessInstanceByKey("leave-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+    assertEquals("HR reviews the application", task.getName());
+  }
+
+  @Test
+  public void workflowShouldEndIfHrTeamMemberAppliedForLeave() throws ValidationException {
+    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final LeaveApplication leaveApplication = leaveApplicationService
+      .createLeaveApplication(mockSubject, mockLeaveApplication);
+    final Map<String, Object> params = new HashMap<>();
+    params.put("role", Role.HRTEAMMEMBER);
+    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    runtimeService.startProcessInstanceByKey("leave-application", params);
 
     assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());
   }
