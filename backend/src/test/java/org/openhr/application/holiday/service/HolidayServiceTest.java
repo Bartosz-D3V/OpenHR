@@ -25,7 +25,7 @@ public class HolidayServiceTest {
   private final static BankHoliday newYearsDay = new BankHoliday("New Year", LocalDate.of(2020, 1, 1), null, false);
   private final static BankHoliday christmasDay = new BankHoliday("Christmas Day", LocalDate.of(2020, 12, 24), null, false);
   private static Set<BankHoliday> bankHolidaySet;
-  private static BankHolidays bankHolidays = new BankHolidays();
+  private static BankHolidays bankHolidays;
 
   @Autowired
   private HolidayService holidayService;
@@ -35,15 +35,15 @@ public class HolidayServiceTest {
 
   @Before
   public void setUp() {
+    bankHolidays = new BankHolidays();
     bankHolidaySet = new HashSet<>();
     bankHolidaySet.add(newYearsDay);
     bankHolidaySet.add(christmasDay);
-    bankHolidays.setEvents(bankHolidaySet);
   }
 
   @Test
   public void getWorkingDaysBetweenInclShouldReturnDiffDaysIfThereAreNoFreeDaysBetween() {
-    bankHolidays.getEvents().clear();
+    bankHolidays.setEvents(new HashSet<>());
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
     final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 5), LocalDate.of(2020, 1, 8));
@@ -53,6 +53,7 @@ public class HolidayServiceTest {
 
   @Test
   public void getWorkingDaysBetweenInclShouldReturnDiffDaysIfThereFreeDaysBetween() {
+    bankHolidays.setEvents(bankHolidaySet);
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
     final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));

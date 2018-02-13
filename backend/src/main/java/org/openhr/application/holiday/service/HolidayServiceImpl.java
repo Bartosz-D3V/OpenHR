@@ -26,7 +26,9 @@ public class HolidayServiceImpl implements HolidayService {
       if (bankHoliday.getDate().compareTo(startDateIt) == 0) {
         freeDays++;
       }
-      startDateIt = startDateIt.plusDays(1L);
+      if (freeDays == diffInclFreeDays) {
+        break;
+      }
     }
 
     return diffInclFreeDays - freeDays;
