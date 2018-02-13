@@ -21,7 +21,7 @@ public class EmployeeInformation implements Serializable {
   private long employeeInformationId;
 
   @Column(name = "NATIONAL_INSURANCE_NUMBER")
-  @Size(max = 12)
+  @Size(max = 13)
   private String nationalInsuranceNumber;
 
   @Size(max = 255)

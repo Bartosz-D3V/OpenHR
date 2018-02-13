@@ -55,9 +55,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   }
 
   @ResponseBody
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(ValidationException.class)
   public ErrorInfo handleValidationException(final HttpServletRequest req, final Exception ex) {
+    return new ErrorInfo(req.getRequestURL().toString(), ex);
+  }
+
+  @ResponseBody
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(javax.validation.ValidationException.class)
+  public ErrorInfo handleJavaEEValidationException(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 }

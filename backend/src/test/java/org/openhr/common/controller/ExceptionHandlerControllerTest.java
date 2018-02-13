@@ -73,4 +73,14 @@ public class ExceptionHandlerControllerTest {
     assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
     assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
   }
+
+  @Test
+  public void handleJavaEEValidationExceptionShouldConvertErrorIntoDomainObjectWithAppropriateHeaders() {
+    final javax.validation.ValidationException mockError = new javax.validation.ValidationException("Validation error");
+    final ErrorInfo returnedInfo = exceptionHandlerController.handleHibernateException(httpServletRequest, mockError);
+    final ErrorInfo expectedInfo = new ErrorInfo(MOCK_URL, mockError);
+
+    assertEquals(expectedInfo.getUrl(), returnedInfo.getUrl());
+    assertEquals(expectedInfo.getMessage(), returnedInfo.getMessage());
+  }
 }
