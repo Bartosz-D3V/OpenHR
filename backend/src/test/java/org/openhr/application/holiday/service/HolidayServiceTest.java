@@ -46,7 +46,7 @@ public class HolidayServiceTest {
     bankHolidays.setEvents(new HashSet<>());
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
-    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 5), LocalDate.of(2020, 1, 8));
+    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 6), LocalDate.of(2020, 1, 9));
 
     assertEquals(4, daysDiff);
   }
@@ -56,8 +56,10 @@ public class HolidayServiceTest {
     bankHolidays.setEvents(bankHolidaySet);
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
-    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
+    final long daysDiff1 = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
+    final long daysDiff2 = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
 
-    assertEquals(4, daysDiff);
+    assertEquals(2, daysDiff1);
+    assertEquals(0, daysDiff2);
   }
 }
