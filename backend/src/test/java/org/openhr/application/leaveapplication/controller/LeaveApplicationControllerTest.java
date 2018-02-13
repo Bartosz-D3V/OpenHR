@@ -138,7 +138,7 @@ public class LeaveApplicationControllerTest {
       .perform(post("/leave-application/{subjectId}", 1)
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
-      .andExpect(status().isInternalServerError())
+      .andExpect(status().isBadRequest())
       .andReturn();
     assertNotNull(result.getResolvedException());
     assertEquals(mockValidationException.getMessage(), result.getResolvedException().getMessage());
