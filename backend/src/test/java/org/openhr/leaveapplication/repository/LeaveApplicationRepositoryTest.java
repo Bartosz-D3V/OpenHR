@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,16 +67,59 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication2.setSubject(mockSubject);
     leaveApplication2.setApprovedByManager(true);
     leaveApplication2.setApprovedByHR(true);
-    final LeaveApplication actualLeaveApplication = new LeaveApplication();
-    actualLeaveApplication.setStartDate(LocalDate.of(2020, 5, 7));
-    actualLeaveApplication.setEndDate(LocalDate.of(2020, 5, 8));
-    actualLeaveApplication.setLeaveType(leaveType1);
-    actualLeaveApplication.setSubject(mockSubject);
+    final LeaveApplication actualLeaveApplication1 = new LeaveApplication();
+    actualLeaveApplication1.setStartDate(LocalDate.of(2020, 5, 7));
+    actualLeaveApplication1.setEndDate(LocalDate.of(2020, 5, 8));
+    actualLeaveApplication1.setLeaveType(leaveType1);
+    actualLeaveApplication1.setSubject(mockSubject);
+    final LeaveApplication actualLeaveApplication2 = new LeaveApplication();
+    actualLeaveApplication2.setStartDate(LocalDate.of(2020, 5, 2));
+    actualLeaveApplication2.setEndDate(LocalDate.of(2020, 5, 18));
+    actualLeaveApplication2.setLeaveType(leaveType1);
+    actualLeaveApplication2.setSubject(mockSubject);
     final Session session = sessionFactory.getCurrentSession();
     session.save(leaveApplication1);
     session.save(leaveApplication2);
 
     assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
-      actualLeaveApplication.getStartDate(), actualLeaveApplication.getEndDate()));
+      actualLeaveApplication1.getStartDate(), actualLeaveApplication1.getEndDate()));
+    assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+      actualLeaveApplication2.getStartDate(), actualLeaveApplication2.getEndDate()));
+  }
+
+  @Test
+  public void dateRangeAlreadyBookedShouldReturnFalseIfRequestedLeaveDatesDoNotOverlapWithDBEntries() {
+    final LeaveApplication leaveApplication1 = new LeaveApplication();
+    leaveApplication1.setStartDate(LocalDate.of(2020, 5, 5));
+    leaveApplication1.setEndDate(LocalDate.of(2020, 5, 10));
+    leaveApplication1.setLeaveType(leaveType1);
+    leaveApplication1.setSubject(mockSubject);
+    leaveApplication1.setApprovedByManager(true);
+    leaveApplication1.setApprovedByHR(true);
+    final LeaveApplication leaveApplication2 = new LeaveApplication();
+    leaveApplication2.setStartDate(LocalDate.of(2020, 5, 11));
+    leaveApplication2.setEndDate(LocalDate.of(2020, 5, 13));
+    leaveApplication2.setLeaveType(leaveType1);
+    leaveApplication2.setSubject(mockSubject);
+    leaveApplication2.setApprovedByManager(true);
+    leaveApplication2.setApprovedByHR(true);
+    final LeaveApplication actualLeaveApplication1 = new LeaveApplication();
+    actualLeaveApplication1.setStartDate(LocalDate.of(2020, 5, 14));
+    actualLeaveApplication1.setEndDate(LocalDate.of(2020, 5, 15));
+    actualLeaveApplication1.setLeaveType(leaveType1);
+    actualLeaveApplication1.setSubject(mockSubject);
+    final LeaveApplication actualLeaveApplication2 = new LeaveApplication();
+    actualLeaveApplication2.setStartDate(LocalDate.of(2020, 5, 3));
+    actualLeaveApplication2.setEndDate(LocalDate.of(2020, 5, 4));
+    actualLeaveApplication2.setLeaveType(leaveType1);
+    actualLeaveApplication2.setSubject(mockSubject);
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(leaveApplication1);
+    session.save(leaveApplication2);
+
+    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+      actualLeaveApplication1.getStartDate(), actualLeaveApplication1.getEndDate()));
+    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+      actualLeaveApplication2.getStartDate(), actualLeaveApplication2.getEndDate()));
   }
 }
