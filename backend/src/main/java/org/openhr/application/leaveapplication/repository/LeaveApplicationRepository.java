@@ -1,8 +1,11 @@
 package org.openhr.application.leaveapplication.repository;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -21,7 +25,7 @@ public class LeaveApplicationRepository {
     this.sessionFactory = sessionFactory;
   }
 
-  @Transactional(propagation = Propagation.SUPPORTS)
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
   public List<LeaveType> getLeaveTypes() throws HibernateException {
     List<LeaveType> leaveTypes;
@@ -37,4 +41,30 @@ public class LeaveApplicationRepository {
     return leaveTypes;
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public boolean dateRangeAlreadyBooked(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
+    final int numOfResults;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      numOfResults = criteria
+        .createAlias("subject", "subject")
+        .add(Restrictions.eq("subject.subjectId", subjectId))
+        .add(Restrictions.eq("approvedByManager", true))
+        .add(Restrictions.eq("approvedByHR", true))
+        .add(Restrictions.conjunction()
+          .add(Restrictions.ge("endDate", startDate))
+          .add(Restrictions.le("startDate", endDate)))
+        .setMaxResults(1)
+        .setReadOnly(true)
+        .setCacheable(true)
+        .list()
+        .size();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return numOfResults > 0;
+  }
 }

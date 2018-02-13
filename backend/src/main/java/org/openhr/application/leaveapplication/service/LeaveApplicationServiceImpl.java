@@ -49,6 +49,9 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) < DAYS.between(startDate, endDate)) {
       throw new ValidationException("Not enough leave allowance");
     }
+    if (leaveApplicationRepository.dateRangeAlreadyBooked(subject.getSubjectId(), startDate, endDate)) {
+      throw new ValidationException("Selected date has been already booked");
+    }
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
@@ -80,7 +83,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     return leaveApplicationRepository.getLeaveTypes();
   }
 
-  LeaveApplication rejectLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
+  private LeaveApplication rejectLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
     switch (role) {
       case MANAGER:
         leaveApplication.setApprovedByManager(false);
@@ -90,7 +93,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     return leaveApplication;
   }
 
-  LeaveApplication approveLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
+  private LeaveApplication approveLeaveApplication(final Role role, final LeaveApplication leaveApplication) {
     switch (role) {
       case MANAGER:
         leaveApplication.setApprovedByManager(true);

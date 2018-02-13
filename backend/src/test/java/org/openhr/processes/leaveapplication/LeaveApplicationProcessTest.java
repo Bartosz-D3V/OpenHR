@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.application.user.domain.User;
@@ -38,6 +39,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -63,6 +65,9 @@ public class LeaveApplicationProcessTest {
 
   @MockBean
   private SubjectService subjectService;
+
+  @MockBean
+  private LeaveApplicationRepository leaveApplicationRepository;
 
   @Autowired
   private RuntimeService runtimeService;
@@ -106,6 +111,7 @@ public class LeaveApplicationProcessTest {
   @Test
   public void managerShouldEndWorkflowByRejectingTheApplication() throws Exception {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
@@ -130,6 +136,7 @@ public class LeaveApplicationProcessTest {
   @Test
   public void hrTeamShouldEndWorkflowByRejectingTheApplication() throws Exception {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
@@ -157,6 +164,7 @@ public class LeaveApplicationProcessTest {
   @Test
   public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws ValidationException {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
