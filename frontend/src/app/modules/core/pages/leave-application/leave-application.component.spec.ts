@@ -26,8 +26,8 @@ import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.ser
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
-import { LeaveApplication } from './domain/leave-application';
-import { LeaveType } from './domain/leave-type';
+import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
+import { LeaveType } from '../../../../shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;

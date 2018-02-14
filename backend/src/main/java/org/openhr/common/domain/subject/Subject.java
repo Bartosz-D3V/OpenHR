@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.common.enumeration.Role;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
