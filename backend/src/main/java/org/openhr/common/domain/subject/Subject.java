@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -70,13 +71,13 @@ public class Subject implements Serializable {
   @JsonIgnore
   @JoinColumn(unique = true, name = "EMPLOYEE_ID")
   @NotFound(action = NotFoundAction.IGNORE)
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Employee employee;
 
   @JsonIgnore
   @JoinColumn(unique = true, name = "MANAGER_ID")
   @NotFound(action = NotFoundAction.IGNORE)
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Manager manager;
 
   @JsonBackReference
@@ -181,6 +182,14 @@ public class Subject implements Serializable {
 
   public void addLeaveApplication(final LeaveApplication leaveApplication) {
     this.leaveApplications.add(leaveApplication);
+  }
+
+  public Manager getManager() {
+    return manager;
+  }
+
+  public void setManager(final Manager manager) {
+    this.manager = manager;
   }
 
   public User getUser() {
