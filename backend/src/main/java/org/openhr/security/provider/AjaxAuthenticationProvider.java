@@ -53,7 +53,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
     }
     final List<GrantedAuthority> authorities = user.getUserRoles()
       .stream()
-      .map(authority -> new SimpleGrantedAuthority(authority.getUserPermissionRole().authority()))
+      .map(authority -> new SimpleGrantedAuthority(authority.getUserRole().getRole()))
       .collect(Collectors.toList());
     final UserContext userContext = new UserContext(user.getUsername(), authorities);
 
