@@ -28,6 +28,7 @@ import { EmployeeInformation } from '../../../../shared/domain/subject/employee-
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 
 describe('PersonalDetailsComponent', () => {
@@ -87,6 +88,7 @@ describe('PersonalDetailsComponent', () => {
       ],
       providers: [
         JwtHelperService,
+        ResponsiveHelperService,
         {
           provide: ConfigService, useClass: FakeConfigService,
         },
