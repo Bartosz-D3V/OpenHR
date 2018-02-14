@@ -3,8 +3,10 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LeaveApplicationService } from './leave-application.service';
+import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { SystemVariables } from '../../../../../config/system-variables';
+import { LeaveType } from '../domain/leave-type';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
@@ -24,6 +26,7 @@ describe('LeaveApplicationService', () => {
         HttpClientTestingModule,
       ],
       providers: [
+        JwtHelperService,
         LeaveApplicationService,
         {
           provide: ErrorResolverService, useClass: FakeErrorResolverService,
@@ -42,14 +45,6 @@ describe('LeaveApplicationService', () => {
   describe('handleError method', () => {
     const mockError = 'Mock Error';
 
-    it('should log actual error', () => {
-      spyOn(console, 'log');
-      leaveApplicationService['handleError'](mockError);
-
-      expect(console.log).toHaveBeenCalled();
-      expect(console.log).toHaveBeenCalledWith('An error occurred', mockError);
-    });
-
     it('should trigger createAlert method', () => {
       spyOn(errorResolverService, 'createAlert');
       leaveApplicationService['handleError'](mockError);
@@ -61,24 +56,24 @@ describe('LeaveApplicationService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + 'leave-application';
+    const apiLink: string = SystemVariables.API_URL + '/leave-application';
 
     it('should query current service URL', fakeAsync(() => {
       leaveApplicationService.getLeaveTypes().subscribe();
-      http.expectOne(apiLink);
+      http.expectOne(`${apiLink}/types`);
     }));
 
     describe('getLeaveTypes', () => {
 
-      it('should return an Observable of type Array of type string', fakeAsync(() => {
+      it('should return an Observable of type Array of type LeaveType', fakeAsync(() => {
         let result: any;
         let error: any;
         leaveApplicationService.getLeaveTypes()
           .subscribe(
-            (res: Array<string>) => result = res,
+            (res: Array<LeaveType>) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: apiLink,
+          url: `${apiLink}/types`,
           method: 'GET',
         }).flush(mockLeaveTypes);
 
@@ -96,7 +91,7 @@ describe('LeaveApplicationService', () => {
             (res: Object) => result = res,
             (err: any) => error = err);
         http.expectOne({
-          url: apiLink,
+          url: `${apiLink}/types`,
           method: 'GET',
         }).error(new ErrorEvent('404'));
         tick();

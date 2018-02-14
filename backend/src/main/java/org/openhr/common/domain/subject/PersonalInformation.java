@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class PersonalInformation implements Serializable {
   private long personalInformationId;
 
   @Column(name = "MIDDLE_NAME")
+  @Size(max = 255)
   private String middleName;
 
   @Column(name = "DATE_OF_BIRTH")

@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.enumeration.Role;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,10 +35,12 @@ public class Subject implements Serializable {
 
   @NotNull
   @Column(name = "FIRST_NAME")
+  @Size(max = 255)
   private String firstName;
 
   @NotNull
   @Column(name = "LAST_NAME")
+  @Size(max = 255)
   private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
@@ -48,6 +54,14 @@ public class Subject implements Serializable {
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private EmployeeInformation employeeInformation;
+
+  @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  private HrInformation hrInformation;
+
+  @JsonIgnore
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   @JsonIgnore
   @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -82,13 +96,14 @@ public class Subject implements Serializable {
 
   public Subject(final String firstName, final String lastName, final PersonalInformation personalInformation,
                  final ContactInformation contactInformation, final EmployeeInformation employeeInformation,
-                 final User user) {
+                 final HrInformation hrInformation, final User user) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;
+    this.hrInformation = hrInformation;
     this.user = user;
   }
 
@@ -138,6 +153,22 @@ public class Subject implements Serializable {
 
   public void setEmployeeInformation(final EmployeeInformation employeeInformation) {
     this.employeeInformation = employeeInformation;
+  }
+
+  public HrInformation getHrInformation() {
+    return hrInformation;
+  }
+
+  public void setHrInformation(final HrInformation hrInformation) {
+    this.hrInformation = hrInformation;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(final Role role) {
+    this.role = role;
   }
 
   public Set<LeaveApplication> getLeaveApplications() {

@@ -7,6 +7,9 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.ValidationException;
+
+import java.time.LocalDate;
 
 public interface SubjectService {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
@@ -27,4 +30,8 @@ public interface SubjectService {
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
+
+  long getLeftAllowanceInDays(long subjectId);
+
+  void subtractDaysExcludingFreeDays(Subject subject, LocalDate startDate, LocalDate endDate) throws ValidationException;
 }

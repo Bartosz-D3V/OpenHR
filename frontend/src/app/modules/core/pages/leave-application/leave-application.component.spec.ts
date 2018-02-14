@@ -5,7 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatStepperModule,
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatSnackBarModule,
+  MatStepperModule,
   MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
@@ -20,9 +21,13 @@ import { DateRangeComponent } from '../../../../shared/components/date-range/dat
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplication } from './domain/leave-application';
+import { LeaveType } from './domain/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -30,8 +35,6 @@ describe('LeaveApplicationComponent', () => {
   const mockStartDate: MomentInput = '2020-05-05';
   const mockEndDate: MomentInput = '2020-05-10';
   const mockLeave = new LeaveApplication();
-  mockLeave.leaveType = 'Holiday';
-  mockLeave.message = '';
 
   @Injectable()
   class FakeLeaveApplicationService {
@@ -70,8 +73,11 @@ describe('LeaveApplicationComponent', () => {
         MatInputModule,
         MatRadioModule,
         MatCardModule,
+        MatSnackBarModule,
       ],
       providers: [
+        JwtHelperService,
+        NotificationService,
         {
           provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
         },
@@ -119,19 +125,23 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setSelector should update selector type', () => {
-    component.setSelector({source: null, value: 'range'});
+    component.setSelector({source: null, value: DateSelectorType.RANGE});
 
     expect(component.selectorType).toBeDefined();
     expect(typeof component.selectorType).toBe('string');
-    expect(component.selectorType).toEqual('range');
+    expect(component.selectorType).toEqual(DateSelectorType.RANGE);
   });
 
   it('setLeaveType should update selector type', () => {
+    const mockLeaveType: LeaveType = new LeaveType(1, 'Holiday', 'Annual leave');
+    component.leaveTypes = [mockLeaveType];
     component.setLeaveType('Holiday');
 
     expect(component.leaveApplication.leaveType).toBeDefined();
-    expect(typeof component.leaveApplication.leaveType).toBe('string');
-    expect(component.leaveApplication.leaveType).toEqual('Holiday');
+    expect(typeof component.leaveApplication.leaveType.leaveCategory).toBe('string');
+    expect(component.leaveApplication.leaveType.leaveTypeId).toEqual(1);
+    expect(component.leaveApplication.leaveType.leaveCategory).toEqual('Holiday');
+    expect(component.leaveApplication.leaveType.description).toEqual('Annual leave');
   });
 
   describe('leaveApplication Form Group', () => {

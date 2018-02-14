@@ -25,6 +25,7 @@ import { ErrorResolverService } from '../../../../shared/services/error-resolver
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { AddEmployeeComponent } from './add-employee.component';
 import Spy = jasmine.Spy;
+import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -34,8 +35,9 @@ describe('AddEmployeeComponent', () => {
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core',
     '2020-02-08', '2020-02-08');
+  const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation);
+    mockEmployeeInformation, mockHrInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
 
   let subjectDetailsService: SubjectDetailsService;

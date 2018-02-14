@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Abstract class that shall replace repetitive, simple Hibernate queries.
  */

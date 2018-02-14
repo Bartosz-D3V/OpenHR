@@ -11,8 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -25,14 +27,21 @@ public class LeaveApplication implements Serializable {
   private long applicationId;
 
   @Column(name = "START_DATE")
+  @NotNull
   private LocalDate startDate;
 
   @Column(name = "END_DATE")
+  @NotNull
   private LocalDate endDate;
+
+  @Size(max = 500)
+  @Column(length = 500)
   private String message;
 
-  @Column(name = "LEAVE_TYPE")
-  private String leaveType;
+  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
+  @ManyToOne(optional = false)
+  @NotNull
+  private LeaveType leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")
   private boolean approvedByManager;
@@ -96,11 +105,11 @@ public class LeaveApplication implements Serializable {
     this.message = message;
   }
 
-  public String getLeaveType() {
+  public LeaveType getLeaveType() {
     return leaveType;
   }
 
-  public void setLeaveType(final String leaveType) {
+  public void setLeaveType(final LeaveType leaveType) {
     this.leaveType = leaveType;
   }
 

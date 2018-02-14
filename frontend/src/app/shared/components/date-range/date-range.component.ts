@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
@@ -46,6 +46,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Input()
   public endDate?: MomentInput;
+
+  @Input()
+  public requireStartDate = true;
+
+  @Input()
+  public requireEndDate = true;
+
   public numberOfDays: number;
 
   @Output()
@@ -57,16 +64,15 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   @Output()
   public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
+  @Output()
+  public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
   private $bankHolidays: ISubscription;
 
   public dateRangeGroup: FormGroup = new FormGroup({
-    startDate: new FormControl(this.startDate, [
-      Validators.required,
-    ]),
-    endDate: new FormControl(this.endDate, [
-      Validators.required,
-    ]),
+    startDate: new FormControl(this.startDate, []),
+    endDate: new FormControl(this.endDate, []),
   });
 
   constructor(private _dateRangeService: DateRangeService,
@@ -74,6 +80,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setValidators();
     this.validateStartDateField();
     this.validateEndDateField();
     this.getBankHolidays();
@@ -83,6 +90,15 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.$startDateChange.unsubscribe();
     this.$endDateChange.unsubscribe();
     this.$bankHolidays.unsubscribe();
+  }
+
+  private setValidators(): void {
+    if (this.requireStartDate) {
+      this.dateRangeGroup.controls['startDate'].setValidators(Validators.required);
+    }
+    if (this.requireEndDate) {
+      this.dateRangeGroup.controls['endDate'].setValidators(Validators.required);
+    }
   }
 
   public validateStartDateField(): void {
@@ -125,11 +141,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public updateStartDate(startDate: MomentInput): void {
     this.startDate = startDate;
     this.startDateChange.emit(startDate);
+    this.isValidChange.emit(this.dateRangeGroup.valid);
   }
 
   public updateEndDate(endDate: MomentInput): void {
     this.endDate = endDate;
     this.endDateChange.emit(endDate);
+    this.isValidChange.emit(this.dateRangeGroup.valid);
   }
 
   public updateNumberOfDays(numberOfDays: number): void {
@@ -151,6 +169,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
       .subscribe((data: BankHolidayEngland) => {
         this.bankHolidaysEngland = data;
       });
+  }
+
+  public reset(): void {
+    this.dateRangeGroup.reset();
   }
 
   isMobile(): boolean {
