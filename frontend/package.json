@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "GNU AGPLv3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
