@@ -10,6 +10,7 @@ import { NAMED_DATE } from '../../../../config/datepicker-format';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 
 @Component({
@@ -21,6 +22,7 @@ import { Subject } from '../../../../shared/domain/subject/subject';
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     SubjectDetailsService,
     ConfigService,
+    ResponsiveHelperService,
   ],
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
@@ -93,7 +95,8 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   public subject: Subject;
 
   constructor(private _subjectDetailsService: SubjectDetailsService,
-              private _configService: ConfigService) {
+              private _configService: ConfigService,
+              private _responsiveHelper: ResponsiveHelperService) {
   }
 
   ngOnInit(): void {
@@ -142,4 +145,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  isMobile(): boolean {
+    return this._responsiveHelper.isMobile();
+  }
 }
