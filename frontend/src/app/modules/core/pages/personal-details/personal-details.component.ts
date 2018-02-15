@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-
 import { ISubscription } from 'rxjs/Subscription';
 
 import { NAMED_DATE } from '../../../../config/datepicker-format';
@@ -91,6 +89,17 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     endDateFormControl: new FormControl('', []),
   });
 
+  public hrInformationFormGroup: FormGroup = new FormGroup({
+
+    allowanceFormControl: new FormControl('', [
+      Validators.min(0),
+    ]),
+
+    usedAllowanceFormControl: new FormControl('', [
+      Validators.min(0),
+    ]),
+  });
+
   public stepNumber = 0;
   public subject: Subject;
 
@@ -101,6 +110,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentSubject();
+    this.hrInformationFormGroup.disable();
   }
 
   ngOnDestroy(): void {

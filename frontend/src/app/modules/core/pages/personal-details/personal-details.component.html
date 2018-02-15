@@ -210,6 +210,44 @@
 
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="stepNumber === 3" (opened)="setStep(3)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          HR Information
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>people_outline</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="hrInformationFormGroup" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+            fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+          <input type="number" matInput placeholder="Allowance"
+                 formControlName="allowanceFormControl" name="allowance"
+                 [ngModel]="subject.hrInformation.allowance">
+          <mat-error *ngIf="hrInformationFormGroup.controls['allowanceFormControl'].hasError('min')">
+            Allowance cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+          <input type="number" matInput placeholder="Used allowance"
+                 formControlName="usedAllowanceFormControl"
+                 name="usedAllowance" [ngModel]="subject.hrInformation.usedAllowance">
+          <mat-error *ngIf="hrInformationFormGroup.controls['usedAllowanceFormControl'].hasError('min')">
+            Used allowance cannot be negative
+          </mat-error>
+        </mat-form-field>
+      </form>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
         <button mat-button color="primary" (click)="nextStep()">End</button>
       </mat-action-row>
     </mat-expansion-panel>
