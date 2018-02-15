@@ -11,6 +11,7 @@ export class LeaveApplication {
   public leaveType: LeaveType;
   public approvedByManager = false;
   public approvedByHR = false;
+  public processInstanceId: string;
 
   constructor() {
   }

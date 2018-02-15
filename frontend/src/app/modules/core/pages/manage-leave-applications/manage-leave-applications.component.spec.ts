@@ -2,13 +2,19 @@ import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialogModule } from '@angular/material';
+import {
+  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatTableModule, MatToolbarModule,
+} from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { InitialsPipe } from '../../../../shared/pipes/initials/initials.pipe';
 import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
+import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
@@ -26,15 +32,25 @@ describe('ManageLeaveApplicationsComponent', () => {
       return Observable.of(null);
     }
   }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         ManageLeaveApplicationsComponent,
+        InitialsPipe,
+        CapitalizePipe,
+        PageHeaderComponent,
       ],
       imports: [
         HttpClientTestingModule,
-        MatDialogModule,
         NoopAnimationsModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
       ],
       providers: [
         ErrorResolverService,
