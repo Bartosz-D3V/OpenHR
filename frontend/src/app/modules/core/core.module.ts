@@ -7,7 +7,8 @@ import {
   MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
   MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule, MatPaginatorModule, MatSnackBarModule,
+  MatExpansionModule, MatStepperModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatCheckboxModule, MatSnackBarModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -59,11 +60,13 @@ import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applicati
     MatExpansionModule,
     MatStepperModule,
     MatSelectModule,
+    MatPaginatorModule,
     MatTableModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
