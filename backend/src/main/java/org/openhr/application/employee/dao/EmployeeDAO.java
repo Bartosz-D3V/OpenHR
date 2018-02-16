@@ -1,0 +1,26 @@
+package org.openhr.application.employee.dao;
+
+import org.hibernate.SessionFactory;
+import org.openhr.common.dao.BaseDAO;
+import org.openhr.common.domain.subject.Employee;
+import org.openhr.common.domain.subject.Manager;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+public class EmployeeDAO extends BaseDAO {
+  public EmployeeDAO(final SessionFactory sessionFactory) {
+    super(sessionFactory);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Manager setEmployeeManager(final long employeeId, final Employee employee) {
+    final Manager manager = employee.getManager();
+    final Employee savedEmployee = (Employee) super.get(Employee.class, employeeId);
+    savedEmployee.setManager(manager);
+    super.merge(savedEmployee);
+
+    return manager;
+  }
+}

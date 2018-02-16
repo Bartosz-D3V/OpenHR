@@ -58,7 +58,7 @@ public class ManagerControllerTest {
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
-      .perform(post("/manager")
+      .perform(post("/managers")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
       .andExpect(status().isOk())
@@ -73,7 +73,7 @@ public class ManagerControllerTest {
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
-      .perform(put("/manager")
+      .perform(put("/managers")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
       .andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
-      .perform(get("/manager/employees")
+      .perform(get("/managers/employees")
         .param("managerId", "1"))
       .andExpect(status().isNotFound())
       .andReturn();
@@ -104,7 +104,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenReturn(employeeSet);
 
     final MvcResult result = mockMvc
-      .perform(get("/manager/employees")
+      .perform(get("/managers/employees")
         .param("managerId", "1"))
       .andExpect(status().isOk())
       .andReturn();
@@ -121,7 +121,7 @@ public class ManagerControllerTest {
     doThrow(mockException).when(managerFacade).addEmployeeToManager(anyObject(), anyLong());
 
     final MvcResult result = mockMvc
-      .perform(post("/manager/{managerId}/employeeAssignment", 1L)
+      .perform(post("/managers/{managerId}/employee-assignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
       .andExpect(status().isNotFound())
@@ -138,7 +138,7 @@ public class ManagerControllerTest {
     final String employeeAsJson = objectMapper.writeValueAsString(employee);
 
     final MvcResult result = mockMvc
-      .perform(post("/manager/{managerId}/employeeAssignment", 1L)
+      .perform(post("/managers/{managerId}/employee-assignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeeAsJson))
       .andExpect(status().isOk())

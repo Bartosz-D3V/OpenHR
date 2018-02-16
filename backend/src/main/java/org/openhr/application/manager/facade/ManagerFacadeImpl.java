@@ -5,7 +5,10 @@ import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.manager.service.ManagerService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -25,6 +28,12 @@ public class ManagerFacadeImpl implements ManagerFacade {
   @Override
   public void updateManager(final Manager manager) throws SubjectDoesNotExistException {
     managerService.updateManager(manager);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Manager> getManagers() {
+    return managerService.getManagers();
   }
 
   @Override

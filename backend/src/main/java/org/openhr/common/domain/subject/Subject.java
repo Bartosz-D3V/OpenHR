@@ -183,6 +183,22 @@ public class Subject implements Serializable {
     this.leaveApplications.add(leaveApplication);
   }
 
+  public Employee getEmployee() {
+    return employee;
+  }
+
+  public void setEmployee(final Employee employee) {
+    this.employee = employee;
+  }
+
+  public Manager getManager() {
+    return manager;
+  }
+
+  public void setManager(final Manager manager) {
+    this.manager = manager;
+  }
+
   public User getUser() {
     return user;
   }
