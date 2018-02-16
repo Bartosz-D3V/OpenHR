@@ -8,7 +8,9 @@ describe('ManageEmployeesDataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageEmployeesDataComponent ]
+      declarations: [
+        ManageEmployeesDataComponent,
+      ],
     })
     .compileComponents();
   }));
