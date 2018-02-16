@@ -42,6 +42,17 @@ export class SubjectDetailsService {
       });
   }
 
+  public getSubjectById(subjectId: number): Observable<Subject> {
+    return this._http
+      .get<Subject>(`${this.url}/${subjectId}`, {
+        headers: this.headers,
+      })
+      .catch((error: any) => {
+        this.handleError(error);
+        return Observable.of(error);
+      });
+  }
+
   public createSubject(subject: Subject): Observable<Subject> {
     return this._http
       .post(this.url, subject, {
