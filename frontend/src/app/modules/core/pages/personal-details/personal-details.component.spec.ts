@@ -78,7 +78,6 @@ describe('PersonalDetailsComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
-        MatToolbarModule,
         MatExpansionModule,
         MatDatepickerModule,
         MatNativeDateModule,
