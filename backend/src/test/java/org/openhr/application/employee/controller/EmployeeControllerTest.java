@@ -7,9 +7,11 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.employee.facade.EmployeeFacade;
 import org.openhr.common.domain.subject.Employee;
+import org.openhr.common.domain.subject.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,14 +22,17 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
+  private final static Manager manager = new Manager();
   private final static Employee employee = new Employee();
 
   @Autowired
@@ -60,5 +65,24 @@ public class EmployeeControllerTest {
 
     assertNull(result.getResolvedException());
     assertEquals(employeesAsJSON, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
+  public void setEmployeeManagerShouldAssignAndReturnManger() throws Exception {
+    employee.setManager(manager);
+    final String managerAsJSON = objectMapper.writeValueAsString(manager);
+    final String employeesAsJSON = objectMapper.writeValueAsString(employee);
+    when(employeeFacade.setEmployeeManager(anyLong(), anyObject())).thenReturn(manager);
+
+    final MvcResult result = mockMvc
+      .perform(put("/employees/{employeeId}/manager-assignment", 1L)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(employeesAsJSON))
+      .andExpect(status().isAccepted())
+      .andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(managerAsJSON, result.getResponse().getContentAsString());
   }
 }
