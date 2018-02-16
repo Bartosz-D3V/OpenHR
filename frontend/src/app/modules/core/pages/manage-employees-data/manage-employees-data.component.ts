@@ -1,21 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-manage-employees-data',
   templateUrl: './manage-employees-data.component.html',
   styleUrls: ['./manage-employees-data.component.scss'],
+  providers: [
+    SubjectDetailsService,
+  ],
 })
-export class ManageEmployeesDataComponent implements OnInit {
+export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
+  private $subject: ISubscription;
+  subject: Subject;
   employeeForm: FormGroup;
 
-  constructor(private _fb: FormBuilder) {
+  constructor(private _subjectService: SubjectDetailsService,
+              private _fb: FormBuilder) {
   }
 
   ngOnInit() {
     this.constructForm();
+  }
+
+  ngOnDestroy(): void {
+    this.$subject.unsubscribe();
   }
 
   private constructForm(): void {
@@ -59,6 +72,12 @@ export class ManageEmployeesDataComponent implements OnInit {
         manager: ['', Validators.required],
       }),
     });
+  }
+
+  private fetchSubject(subjectId: number): void {
+    this.$subject = this._subjectService
+      .getSubjectById(subjectId)
+      .subscribe((result: Subject) => this.subject = result);
   }
 
   save(): void {
