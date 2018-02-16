@@ -11,7 +11,11 @@ describe('EmployeesService', () => {
   let http: HttpTestingController;
   let service: EmployeesService;
   let errorResolverService: ErrorResolverService;
-  const mockEmployees: Array<Employee> = [new Employee(1), new Employee(2)];
+  const employee1: Employee = new Employee();
+  employee1.employeeId = 1;
+  const employee2: Employee = new Employee();
+  employee2.employeeId = 2;
+  const mockEmployees: Array<Employee> = [employee1, employee2];
 
   @Injectable()
   class FakeErrorResolverService {

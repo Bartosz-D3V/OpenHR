@@ -11,14 +11,24 @@ import { Observable } from 'rxjs/Observable';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { ManageEmployeesDataComponent } from './manage-employees-data.component';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { Subject } from '../../../../shared/domain/subject/subject';
+import { Employee } from '../employees/domain/employee';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { ManageEmployeesDataComponent } from './manage-employees-data.component';
 
 describe('ManageEmployeesDataComponent', () => {
   let component: ManageEmployeesDataComponent;
   let fixture: ComponentFixture<ManageEmployeesDataComponent>;
+
+  @Injectable()
+  class FakeManageEmployeesDataService {
+    getEmployees(): Observable<any> {
+      return Observable.of([]);
+    }
+  }
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -52,6 +62,7 @@ describe('ManageEmployeesDataComponent', () => {
       providers: [
         JwtHelperService,
         ErrorResolverService,
+        {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},
         {provide: SubjectDetailsService, useClass: FakeSubjectDetailsService},
       ],
     })
@@ -66,5 +77,49 @@ describe('ManageEmployeesDataComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('autocomplete methods', () => {
+    const employee1: Employee = new Employee();
+    employee1.subject = new Subject('Jack', 'Sparrow', null, null, null, null);
+    const employee2: Employee = new Employee();
+    employee2.subject = new Subject('Donnie', 'Darko', null, null, null, null);
+    const mockEmployees: Array<Employee> = [employee1, employee2];
+
+    it('filterEmployees method should filter an array by last name of the employee', () => {
+      let filteredEmployees: Array<Employee> = component.filterEmployees(mockEmployees, 'Sp');
+
+      expect(filteredEmployees.length).toEqual(1);
+      expect(filteredEmployees[0]).toEqual(employee1);
+
+      filteredEmployees = component.filterEmployees(mockEmployees, 'Da');
+
+      expect(filteredEmployees.length).toEqual(1);
+      expect(filteredEmployees[0]).toEqual(employee2);
+    });
+
+    describe('reduceEmployees', () => {
+      let result: Array<Employee>;
+
+      it('should not filter results if input is empty', () => {
+        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+          result = data;
+        });
+        component.employeesCtrl.setValue('');
+
+        expect(result).toBeDefined();
+        expect(result).toEqual(mockEmployees);
+      });
+
+      it('should filter results accordingly to input value', () => {
+        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+          result = data;
+        });
+        component.employeesCtrl.setValue('Dar');
+
+        expect(result).toBeDefined();
+        expect(result[0]).toEqual(employee2);
+      });
+    });
   });
 });

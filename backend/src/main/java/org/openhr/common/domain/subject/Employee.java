@@ -1,5 +1,6 @@
 package org.openhr.common.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -24,7 +25,7 @@ public class Employee implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long employeeId;
 
-  @JsonIgnore
+  @JsonBackReference
   @OneToOne(mappedBy = "employee")
   @PrimaryKeyJoinColumn
   @NotFound(action = NotFoundAction.IGNORE)

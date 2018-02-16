@@ -1,33 +1,45 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ISubscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operator/map';
+import { startWith } from 'rxjs/operator/startWith';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
-import { ISubscription } from 'rxjs/Subscription';
+import { Employee } from '../employees/domain/employee';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
   selector: 'app-manage-employees-data',
   templateUrl: './manage-employees-data.component.html',
   styleUrls: ['./manage-employees-data.component.scss'],
   providers: [
+    ManageEmployeesDataService,
     SubjectDetailsService,
   ],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
+  private $employees: ISubscription;
   private $subject: ISubscription;
+  employees: Array<Employee>;
   subject: Subject;
   employeeForm: FormGroup;
+  employeesCtrl: FormControl;
 
-  constructor(private _subjectService: SubjectDetailsService,
+  constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
+              private _subjectService: SubjectDetailsService,
               private _fb: FormBuilder) {
   }
 
   ngOnInit() {
     this.constructForm();
+    this.fetchEmployees();
   }
 
   ngOnDestroy(): void {
+    this.$employees.unsubscribe();
     this.$subject.unsubscribe();
   }
 
@@ -74,7 +86,29 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     });
   }
 
-  private fetchSubject(subjectId: number): void {
+  reduceEmployees(employees: Array<Employee>): Observable<Array<Employee>> {
+    this.employeesCtrl = new FormControl();
+    return this.employeesCtrl
+      .valueChanges
+      .startWith(null)
+      .map(lastName => lastName ? this.filterEmployees(employees, lastName) : employees.slice());
+  }
+
+  filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
+    return employees.filter(employee =>
+    employee.subject.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+  }
+
+  fetchEmployees(): void {
+    this.$employees = this._manageEmployeesDataService
+      .getEmployees()
+      .subscribe((response: Array<Employee>) => {
+        this.employees = response;
+        this.reduceEmployees(response);
+      });
+  }
+
+  fetchSubject(subjectId: number): void {
     this.$subject = this._subjectService
       .getSubjectById(subjectId)
       .subscribe((result: Subject) => this.subject = result);
