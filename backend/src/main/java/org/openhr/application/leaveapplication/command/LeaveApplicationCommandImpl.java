@@ -5,7 +5,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.common.enumeration.Role;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

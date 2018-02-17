@@ -11,6 +11,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
+import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -120,5 +124,35 @@ public class LeaveApplicationRepositoryTest {
       actualLeaveApplication1.getStartDate(), actualLeaveApplication1.getEndDate()));
     assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
       actualLeaveApplication2.getStartDate(), actualLeaveApplication2.getEndDate()));
+  }
+
+  @Test
+  public void getAwaitingForManagerLeaveApplicationsShouldReturnAssignedToManagerUnfinishedLeaveApplications() {
+    final Manager manager = new Manager();
+    mockSubject.setManager(manager);
+    final LeaveApplication leaveApplication1 = new LeaveApplication();
+    leaveApplication1.setStartDate(LocalDate.of(2020, 5, 5));
+    leaveApplication1.setEndDate(LocalDate.of(2020, 5, 10));
+    leaveApplication1.setLeaveType(leaveType1);
+    leaveApplication1.setSubject(mockSubject);
+    leaveApplication1.setApprovedByManager(false);
+    leaveApplication1.setApprovedByHR(false);
+    final LeaveApplication leaveApplication2 = new LeaveApplication();
+    leaveApplication2.setStartDate(LocalDate.of(2020, 5, 11));
+    leaveApplication2.setEndDate(LocalDate.of(2020, 5, 15));
+    leaveApplication2.setLeaveType(leaveType1);
+    leaveApplication2.setSubject(mockSubject);
+    leaveApplication2.setApprovedByManager(true);
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(manager);
+    session.save(mockSubject);
+    session.save(leaveApplication1);
+    session.save(leaveApplication2);
+
+    final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
+      .getAwaitingForManagerLeaveApplications(manager.getManagerId());
+
+    assertEquals(1, actualLeaveApplications.size());
+    assertSame(actualLeaveApplications.get(0), leaveApplication1);
   }
 }
