@@ -1,4 +1,4 @@
-package org.openhr.application.processes.engine;
+package org.openhr.processes.engine;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.spring.boot.DataSourceProcessEngineAutoConfiguration;

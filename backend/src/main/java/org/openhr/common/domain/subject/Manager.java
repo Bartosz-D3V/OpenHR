@@ -1,7 +1,9 @@
 package org.openhr.common.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +32,10 @@ public class Manager implements Serializable {
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @NotFound(action = NotFoundAction.IGNORE)
   private Set<Employee> employees;
+
+  @OneToOne
+  @JsonBackReference
+  private User user;
 
   public Manager() {
     super();
@@ -61,5 +67,13 @@ public class Manager implements Serializable {
 
   public void setEmployees(final Set<Employee> employees) {
     this.employees = employees;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(final User user) {
+    this.user = user;
   }
 }
