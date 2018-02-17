@@ -34,6 +34,8 @@ import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
+import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
+import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 
 @NgModule({
   imports: [
