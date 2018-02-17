@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
-import { startWith } from 'rxjs/operator/startWith';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
@@ -26,7 +24,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   employees: Array<Employee>;
   subject: Subject;
   employeeForm: FormGroup;
-  employeesCtrl: FormControl;
+  employeesCtrl: FormControl = new FormControl();
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _subjectService: SubjectDetailsService,
@@ -87,7 +85,6 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   reduceEmployees(employees: Array<Employee>): Observable<Array<Employee>> {
-    this.employeesCtrl = new FormControl();
     return this.employeesCtrl
       .valueChanges
       .startWith(null)

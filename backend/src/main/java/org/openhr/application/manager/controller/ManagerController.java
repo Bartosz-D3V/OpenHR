@@ -30,8 +30,8 @@ public class ManagerController {
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
-  public Manager addManager(@RequestBody final Manager manager) {
-    return managerFacade.addManager(manager);
+  public Manager createManager(@RequestBody final Manager manager) {
+    return managerFacade.createManager(manager);
   }
 
   @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},

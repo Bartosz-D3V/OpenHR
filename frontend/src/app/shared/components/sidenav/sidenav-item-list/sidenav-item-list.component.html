@@ -31,6 +31,12 @@
   </button>
 
   <button mat-button class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['manage-employees-data'] } }]">
+    <i class="material-icons c-sidenav__icon">supervisor_account</i>
+    Manage employees' data
+  </button>
+
+  <button mat-button class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['manage-leave-applications'] } }]">
     <i class="material-icons c-sidenav__icon">view_list</i>
     Manage leave applications

@@ -1,7 +1,6 @@
 package org.openhr.common.domain.subject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -19,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-public class Employee implements Serializable {
+public class Employee extends Subject implements Serializable {
   @Id
   @Column(name = "EMPLOYEE_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)

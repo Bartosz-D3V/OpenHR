@@ -1,7 +1,5 @@
 package org.openhr.application.manager.dao;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Employee;
@@ -33,17 +31,8 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager addManager(final Manager manager) {
-    try {
-      final Session session = sessionFactory.openSession();
-      final long generatedId = (long) session.save(manager);
-      session.close();
-      manager.setManagerId(generatedId);
-      super.merge(manager);
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
+  public Manager createManager(final Manager manager) {
+    super.save(manager);
 
     return manager;
   }

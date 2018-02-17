@@ -1,4 +1,13 @@
 <app-page-header [header]="'Manage employees\' data'"></app-page-header>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Select employee" aria-label="Select employee" [matAutocomplete]="auto"
+         [formControl]="employeesCtrl">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let employee of employees" [value]="employee?.subject?.lastName">
+      <span>{{ employee?.subject?.firstName + ' ' + employee?.subject?.lastName}}</span>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
 <section class="c-drawer" *ngIf="subject">
   <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>
   <mat-accordion [formGroup]="employeeForm">

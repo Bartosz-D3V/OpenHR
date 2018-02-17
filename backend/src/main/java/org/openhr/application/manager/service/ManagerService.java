@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface ManagerService {
 
-  Manager addManager(Manager manager);
+  Manager createManager(Manager manager);
 
   void updateManager(Manager manager) throws SubjectDoesNotExistException;
 
