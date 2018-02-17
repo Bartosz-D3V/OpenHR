@@ -67,4 +67,27 @@ public class LeaveApplicationRepository {
 
     return numOfResults > 0;
   }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
+    List<LeaveApplication> filteredLeaveApplications;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      filteredLeaveApplications = criteria
+        .createAlias("subject", "subject")
+        .createAlias("subject.manager", "manager")
+        .add(Restrictions.eq("approvedByManager", false))
+        .add(Restrictions.eq("approvedByHR", false))
+        .add(Restrictions.eq("manager.managerId", managerId))
+        .setReadOnly(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return filteredLeaveApplications;
+  }
 }

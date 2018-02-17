@@ -1,4 +1,4 @@
-package org.openhr.application.processes.leaveapplication;
+package org.openhr.processes.leaveapplication;
 
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
-import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.common.enumeration.Role;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
