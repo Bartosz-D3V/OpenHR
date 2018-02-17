@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
-import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.enumeration.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,6 +32,6 @@ public class AuthenticationServiceTest {
   public void setBasicUserRolesShouldReturnListWithMemberEnum() {
     final List<UserRole> userRoleList = authenticationService.setBasicUserRoles(new User());
 
-    assertTrue(userRoleList.get(0).getUserPermissionRole().equals(UserPermissionRole.MEMBER));
+    assertTrue(userRoleList.get(0).getUserRole().equals(Role.EMPLOYEE));
   }
 }

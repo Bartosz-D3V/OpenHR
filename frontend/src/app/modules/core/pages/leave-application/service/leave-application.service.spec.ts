@@ -6,7 +6,7 @@ import { LeaveApplicationService } from './leave-application.service';
 import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { SystemVariables } from '../../../../../config/system-variables';
-import { LeaveType } from '../domain/leave-type';
+import { LeaveType } from '../../../../../shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];

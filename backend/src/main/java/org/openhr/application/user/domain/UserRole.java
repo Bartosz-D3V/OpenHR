@@ -1,6 +1,6 @@
 package org.openhr.application.user.domain;
 
-import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.enumeration.Role;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,8 +23,8 @@ public class UserRole {
   private long userRoleId;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "USER_PERMISSION_ROLE")
-  private UserPermissionRole userPermissionRole;
+  @Column(name = "USER_ROLE")
+  private Role role;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "USER_ID", nullable = false)
@@ -33,20 +33,20 @@ public class UserRole {
   public UserRole() {
   }
 
-  public UserRole(final UserPermissionRole userPermissionRole) {
-    this.userPermissionRole = userPermissionRole;
+  public UserRole(final Role role) {
+    this.role = role;
   }
 
   public long getUserRoleId() {
     return userRoleId;
   }
 
-  public UserPermissionRole getUserPermissionRole() {
-    return userPermissionRole;
+  public Role getUserRole() {
+    return role;
   }
 
-  public void setUserPermissionRole(final UserPermissionRole userPermissionRole) {
-    this.userPermissionRole = userPermissionRole;
+  public void setUserRole(final Role role) {
+    this.role = role;
   }
 
   public User getUser() {

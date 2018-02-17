@@ -7,7 +7,8 @@ import {
   MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
   MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatTableModule, MatCheckboxModule, MatPaginatorModule, MatSnackBarModule,
+  MatExpansionModule, MatStepperModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatCheckboxModule, MatSnackBarModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -33,7 +34,6 @@ import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
-import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 
 @NgModule({
   imports: [
@@ -59,11 +59,13 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
     MatExpansionModule,
     MatStepperModule,
     MatSelectModule,
+    MatPaginatorModule,
     MatTableModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -88,6 +90,7 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
     SettingsComponent,
     EmployeesComponent,
     AddEmployeeComponent,
+    ManageLeaveApplicationsComponent,
     ManageEmployeesDataComponent,
   ],
   providers: [
