@@ -25,6 +25,14 @@ public class EmployeeController {
     this.employeeFacade = employeeFacade;
   }
 
+  @RequestMapping(method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE},
+    consumes = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(code = HttpStatus.CREATED)
+  public Employee createEmployee(@RequestBody final Employee employee) {
+    return null;
+  }
+
   @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
