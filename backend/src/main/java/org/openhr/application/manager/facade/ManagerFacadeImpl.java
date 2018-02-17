@@ -21,8 +21,8 @@ public class ManagerFacadeImpl implements ManagerFacade {
   }
 
   @Override
-  public Manager addManager(final Manager manager) {
-    return managerService.addManager(manager);
+  public Manager createManager(final Manager manager) {
+    return managerService.createManager(manager);
   }
 
   @Override

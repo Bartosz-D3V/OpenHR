@@ -9,7 +9,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Subject;
-import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.slf4j.Logger;
@@ -76,7 +76,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void registerUser(final User user) {
     final List<UserRole> permissions = new ArrayList<>();
-    final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
+    final UserRole userRole = new UserRole(Role.EMPLOYEE);
     permissions.add(userRole);
     user.setUserRoles(permissions);
     userRole.setUser(user);

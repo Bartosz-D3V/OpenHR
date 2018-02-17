@@ -3,7 +3,6 @@ package org.openhr.application.employee.facade;
 import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +27,11 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager setEmployeeManager(final long employeeId, final Employee employee) {
     return employeeService.setEmployeeManager(employeeId, employee);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Employee createEmployee(final Employee employee) {
+    return employeeService.createEmployee(employee);
   }
 }

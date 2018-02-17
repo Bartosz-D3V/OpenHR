@@ -45,8 +45,8 @@ public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFi
     }
     final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
       user.getPassword());
-    return getAuthenticationManager().authenticate(token);
 
+    return getAuthenticationManager().authenticate(token);
   }
 
   @Override

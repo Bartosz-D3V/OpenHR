@@ -10,7 +10,9 @@ import { SettingsComponent } from '../modules/core/pages/settings/settings.compo
 import { EmployeesComponent } from '../modules/core/pages/employees/employees.component';
 import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-employee.component';
 import { LoginComponent } from '../modules/landing/pages/login/login.component';
+import { ManageLeaveApplicationsComponent } from '../modules/core/pages/manage-leave-applications/manage-leave-applications.component';
 import { MainGuard } from '../shared/guards/main-guard/main.guard';
+import { ManageEmployeesDataComponent } from '../modules/core/pages/manage-employees-data/manage-employees-data.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -39,8 +41,18 @@ export const routeDefinitions: Routes = [
         outlet: 'core',
       },
       {
+        path: 'manage-employees-data',
+        component: ManageEmployeesDataComponent,
+        outlet: 'core',
+      },
+      {
         path: 'add-employee',
         component: AddEmployeeComponent,
+        outlet: 'core',
+      },
+      {
+        path: 'manage-leave-applications',
+        component: ManageLeaveApplicationsComponent,
         outlet: 'core',
       },
       {

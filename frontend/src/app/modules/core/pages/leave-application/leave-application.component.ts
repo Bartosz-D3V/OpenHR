@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
@@ -8,14 +8,14 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { MomentInput } from 'moment';
 
+import { NAMED_DATE } from '../../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { NAMED_DATE } from '../../../../config/datepicker-format';
-import { LeaveApplicationService } from './service/leave-application.service';
-import { DateSelectorType } from './enumeration/date-selector-type.enum';
-import { LeaveApplication } from './domain/leave-application';
-import { LeaveType } from './domain/leave-type';
+import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
+import { LeaveType } from '../../../../shared/domain/leave-application/leave-type';
 import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
+import { LeaveApplicationService } from './service/leave-application.service';
 
 @Component({
   selector: 'app-leave-application',

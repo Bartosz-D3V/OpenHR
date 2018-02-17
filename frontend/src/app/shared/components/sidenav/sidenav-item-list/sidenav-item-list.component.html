@@ -30,6 +30,18 @@
     Employees
   </button>
 
+  <button mat-button class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['manage-employees-data'] } }]">
+    <i class="material-icons c-sidenav__icon">supervisor_account</i>
+    Manage employees' data
+  </button>
+
+  <button mat-button class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['manage-leave-applications'] } }]">
+    <i class="material-icons c-sidenav__icon">view_list</i>
+    Manage leave applications
+  </button>
+
   <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
     <i class="material-icons c-sidenav__icon">person_add</i>

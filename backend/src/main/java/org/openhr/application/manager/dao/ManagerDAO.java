@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface ManagerDAO {
 
-  Manager addManager(Manager manager);
+  Manager createManager(Manager manager);
 
   Manager getManager(long managerId) throws SubjectDoesNotExistException;
 

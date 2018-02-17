@@ -4,7 +4,6 @@ import org.openhr.application.employee.dao.EmployeeDAO;
 import org.openhr.application.employee.repository.EmployeeRepository;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,5 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager setEmployeeManager(final long employeeId, final Employee employee) {
     return employeeDAO.setEmployeeManager(employeeId, employee);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Employee createEmployee(final Employee employee) {
+    return employeeDAO.createEmployee(employee);
   }
 }
