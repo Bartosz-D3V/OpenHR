@@ -2,7 +2,7 @@ package org.openhr.application.authentication.service;
 
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
-import org.openhr.common.enumeration.UserPermissionRole;
+import org.openhr.common.enumeration.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public List<UserRole> setBasicUserRoles(final User user) {
     final List<UserRole> basicUserRoles = new ArrayList<>();
-    final UserRole userRole = new UserRole(UserPermissionRole.MEMBER);
+    final UserRole userRole = new UserRole(Role.EMPLOYEE);
     userRole.setUser(user);
     basicUserRoles.add(userRole);
     return basicUserRoles;

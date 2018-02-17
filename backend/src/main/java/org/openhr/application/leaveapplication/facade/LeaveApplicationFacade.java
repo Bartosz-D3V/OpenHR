@@ -22,6 +22,8 @@ public interface LeaveApplicationFacade {
 
   void approveLeaveApplicationByManager(String processInstanceId);
 
+  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long managerId);
+
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 
   List<String> getActiveProcessesId();

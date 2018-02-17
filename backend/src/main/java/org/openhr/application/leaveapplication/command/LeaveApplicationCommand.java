@@ -2,7 +2,7 @@ package org.openhr.application.leaveapplication.command;
 
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.application.leaveapplication.enumeration.Role;
+import org.openhr.common.enumeration.Role;
 
 import java.util.List;
 
