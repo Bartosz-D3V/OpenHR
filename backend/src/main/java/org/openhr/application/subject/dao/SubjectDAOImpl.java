@@ -80,29 +80,9 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
-  public void createSubject(final Subject subject) throws HibernateException {
-    super.save(subject);
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
-  public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
-    SubjectDoesNotExistException {
-    final Subject legacySubject = this.getSubjectDetails(subjectId);
-    legacySubject.setFirstName(subject.getFirstName());
-    legacySubject.setLastName(subject.getLastName());
-    legacySubject.setPersonalInformation(subject.getPersonalInformation());
-    legacySubject.setContactInformation(subject.getContactInformation());
-    legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
-    legacySubject.setHrInformation(subject.getHrInformation());
-    super.merge(legacySubject);
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setPersonalInformation(personalInformation);
     super.merge(subject);
   }
@@ -111,7 +91,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setContactInformation(contactInformation);
     super.merge(subject);
   }
@@ -120,7 +100,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setEmployeeInformation(employeeInformation);
     super.merge(subject);
   }
@@ -129,7 +109,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
     throws HibernateException {
-    final Subject subject = this.getExistingSubjectDetails(subjectId);
+    final Subject subject = getExistingSubjectDetails(subjectId);
     subject.setHrInformation(hrInformation);
     super.merge(subject);
   }

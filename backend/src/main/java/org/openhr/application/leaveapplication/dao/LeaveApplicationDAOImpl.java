@@ -39,7 +39,6 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
     leaveApplication.setSubject(subject);
-    subject.addLeaveApplication(leaveApplication);
     super.save(leaveApplication);
 
     return leaveApplication;

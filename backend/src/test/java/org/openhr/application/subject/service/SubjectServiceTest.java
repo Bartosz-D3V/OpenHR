@@ -3,7 +3,9 @@ package org.openhr.application.subject.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.holiday.service.HolidayService;
+import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dao.SubjectDAO;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
@@ -46,8 +48,9 @@ public class SubjectServiceTest {
     when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
     when(subjectDAO.getAllowance(anyLong())).thenReturn(20L);
     when(subjectDAO.getUsedAllowance(anyLong())).thenReturn(17L);
+    final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(new Subject(), LocalDate.now(), LocalDate.now().plusDays(4));
+    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
   }
 
   @Test(expected = ValidationException.class)
@@ -57,11 +60,12 @@ public class SubjectServiceTest {
     when(subjectDAO.getAllowance(anyLong())).thenReturn(20L);
     when(subjectDAO.getUsedAllowance(anyLong())).thenReturn(17L);
 
-    final Subject subject = new Subject();
+    final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
     hrInformation.setAllowance(25L);
     subject.setHrInformation(hrInformation);
+    final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(subject, LocalDate.now(), LocalDate.now().plusDays(4));
+    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
   }
 }

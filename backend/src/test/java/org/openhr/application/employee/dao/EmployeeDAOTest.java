@@ -36,8 +36,8 @@ public class EmployeeDAOTest {
     assertSame(manager, employee.getManager());
 
     employee.setManager(manager2);
-    final Manager actualManager = employeeDAO.setEmployeeManager(employee.getEmployeeId(), employee);
-    final Employee actualEmployee = session.get(Employee.class, employee.getEmployeeId());
+    final Manager actualManager = employeeDAO.setEmployeeManager(employee.getSubjectId(), employee);
+    final Employee actualEmployee = session.get(Employee.class, employee.getSubjectId());
 
     assertSame(manager2, actualManager);
     assertSame(manager2, actualEmployee.getManager());

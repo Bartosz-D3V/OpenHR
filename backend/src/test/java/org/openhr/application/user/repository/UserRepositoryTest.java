@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -106,7 +107,10 @@ public class UserRepositoryTest {
   @Test
   public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
     final User mockUser1 = new User("Kopernik", "password");
-    final Subject subject = new Subject("Mikolaj", "Kopernik", mockUser1);
+    final Subject subject = new Employee();
+    subject.setFirstName("Mikolaj");
+    subject.setFirstName("Kopernik");
+    subject.setUser(mockUser1);
     subject.setPersonalInformation(new PersonalInformation());
     subject.setContactInformation(new ContactInformation());
     subject.setEmployeeInformation(new EmployeeInformation());

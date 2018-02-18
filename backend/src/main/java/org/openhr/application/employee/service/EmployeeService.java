@@ -9,5 +9,5 @@ import java.util.List;
 public interface EmployeeService {
   List<Employee> getEmployeesOfManager(long managerId);
 
-  Manager setEmployeeManager(long employeeId, Employee employee);
+  Manager setEmployeeManager(long subjectId, Employee employee);
 }

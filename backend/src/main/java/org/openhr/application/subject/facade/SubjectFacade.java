@@ -11,10 +11,6 @@ import org.openhr.common.domain.subject.Subject;
 public interface SubjectFacade {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
-  void createSubject(Subject subject) throws HibernateException;
-
-  void updateSubject(long subjectId, Subject subject) throws HibernateException, SubjectDoesNotExistException;
-
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException;
 

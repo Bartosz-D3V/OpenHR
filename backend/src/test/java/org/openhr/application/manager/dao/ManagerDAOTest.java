@@ -28,12 +28,14 @@ import static org.junit.Assert.assertNotEquals;
 @SpringBootTest
 @Transactional
 public class ManagerDAOTest {
-  private final static Subject mockSubject1 = new Subject("John", "Xavier", new PersonalInformation(),
+  private final static Subject mockSubject1 = new Employee("John", "Xavier", new PersonalInformation(),
     new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User());
-  private final static Subject mockSubject2 = new Subject("Alex", "White", new PersonalInformation(),
+  private final static Subject mockSubject2 = new Employee("Alex", "White", new PersonalInformation(),
     new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User());
-  private final static Employee mockEmployee1 = new Employee(mockSubject1);
-  private final static Employee mockEmployee2 = new Employee(mockSubject2);
+  private final static Employee mockEmployee1 = new Employee();
+  private final static Employee mockEmployee2 = new Employee();
+  private final static Manager mockManager = new Manager("John", "Xavier", new PersonalInformation(),
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("", ""));
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -43,18 +45,16 @@ public class ManagerDAOTest {
 
   @Test
   public void getManagerShouldReturnManagerById() throws SubjectDoesNotExistException {
-    final Manager mockManager = new Manager();
     final Session session = sessionFactory.openSession();
-    long id = (long) session.save(mockManager);
+    session.save(mockManager);
     session.close();
-    final Manager manager = managerDAO.getManager(id);
+    final Manager manager = managerDAO.getManager(mockManager.getSubjectId());
 
-    assertEquals(id, manager.getManagerId());
+    assertEquals(mockManager.getSubjectId(), manager.getSubjectId());
   }
 
   @Test
   public void getEmployeesShouldReturnSetOfEmployeesForParticularManager() throws SubjectDoesNotExistException {
-    final Manager mockManager = new Manager();
     final Session session = sessionFactory.openSession();
     mockEmployee1.setManager(mockManager);
     mockEmployee2.setManager(mockManager);
@@ -71,13 +71,12 @@ public class ManagerDAOTest {
 
   @Test
   public void addManagerShouldAddManagerToDB() {
-    Manager mockManager = new Manager();
-    mockManager = managerDAO.addManager(mockManager);
+    managerDAO.addManager(mockManager);
     final Session session = sessionFactory.openSession();
-    final Manager actualManager = session.get(Manager.class, mockManager.getManagerId());
+    final Manager actualManager = session.get(Manager.class, mockManager.getSubjectId());
     session.close();
 
-    assertNotEquals(actualManager.getManagerId(), 0);
-    assertEquals(mockManager.getManagerId(), actualManager.getManagerId());
+    assertNotEquals(actualManager.getSubjectId(), 0);
+    assertEquals(mockManager.getSubjectId(), actualManager.getSubjectId());
   }
 }

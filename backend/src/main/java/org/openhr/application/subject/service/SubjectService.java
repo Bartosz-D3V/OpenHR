@@ -1,22 +1,17 @@
 package org.openhr.application.subject.service;
 
 import org.hibernate.HibernateException;
+import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
-import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
-
-import java.time.LocalDate;
 
 public interface SubjectService {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
-
-  void createSubject(Subject subject) throws HibernateException;
-
-  void updateSubject(long subjectId, Subject subject) throws HibernateException, SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException;
@@ -33,5 +28,5 @@ public interface SubjectService {
 
   long getLeftAllowanceInDays(long subjectId);
 
-  void subtractDaysExcludingFreeDays(Subject subject, LocalDate startDate, LocalDate endDate) throws ValidationException;
+  void subtractDaysExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 }

@@ -11,6 +11,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.error.ErrorInfo;
 import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -28,21 +29,18 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SubjectController.class)
 public class SubjectControllerTest {
-
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final static String MOCK_URL = "localhost:8080/api/subjects";
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("DB Error");
@@ -55,7 +53,7 @@ public class SubjectControllerTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
+  private final static Subject mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User());
 
   @Autowired
@@ -94,66 +92,6 @@ public class SubjectControllerTest {
       .andReturn();
     assertNull(result.getResolvedException());
     assertEquals(subjectAsJson, result.getResponse().getContentAsString());
-  }
-
-  @Test
-  @WithMockUser()
-  public void createSubjectShouldHandleError() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-    doThrow(new HibernateException("DB Error")).when(subjectFacade).createSubject(any());
-
-    final MvcResult result = mockMvc
-      .perform(post("/subjects")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(subjectAsJson))
-      .andExpect(status().isInternalServerError())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  @WithMockUser()
-  public void createSubjectShouldCreateSubject() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-
-    final MvcResult result = mockMvc
-      .perform(post("/subjects")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(subjectAsJson))
-      .andExpect(status().isOk())
-      .andReturn();
-    assertNull(result.getResolvedException());
-  }
-
-  @Test
-  @WithMockUser()
-  public void updateSubjectShouldHandleError() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-    doThrow(new HibernateException("DB Error")).when(subjectFacade).updateSubject(anyLong(), any());
-
-    final MvcResult result = mockMvc
-      .perform(put("/subjects/{subjectId}", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(subjectAsJson))
-      .andExpect(status().isInternalServerError())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  @WithMockUser()
-  public void updateSubjectShouldUpdateSubject() throws Exception {
-    final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
-
-    final MvcResult result = mockMvc
-      .perform(put("/subjects/{subjectId}", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(subjectAsJson))
-      .andExpect(status().isOk())
-      .andReturn();
-    assertNull(result.getResolvedException());
   }
 
   @Test

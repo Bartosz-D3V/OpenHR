@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Abstract class that shall replace repetitive, simple Hibernate queries.
  */
@@ -39,7 +37,7 @@ public abstract class BaseDAO {
   protected Object get(final Class objectClass, final long id) throws HibernateException {
     Object object;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       object = session.get(objectClass, id);
       session.close();
     } catch (final HibernateException hibernateException) {

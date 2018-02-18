@@ -76,7 +76,7 @@ public class EmployeeControllerTest {
     when(employeeFacade.setEmployeeManager(anyLong(), anyObject())).thenReturn(manager);
 
     final MvcResult result = mockMvc
-      .perform(put("/employees/{employeeId}/manager-assignment", 1L)
+      .perform(put("/employees/{subjectId}/manager-assignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(employeesAsJSON))
       .andExpect(status().isAccepted())

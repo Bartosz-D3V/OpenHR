@@ -38,7 +38,7 @@ public class EmployeeRepositoryTest {
     employee2.setManager(manager);
     session.save(employee1);
     session.save(employee2);
-    final List<Employee> actualEmployees = employeeRepository.getEmployeesOfManager(manager.getManagerId());
+    final List<Employee> actualEmployees = employeeRepository.getEmployeesOfManager(manager.getSubjectId());
 
     assertEquals(2, actualEmployees.size());
     assertSame(employee1, actualEmployees.get(0));

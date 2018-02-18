@@ -44,7 +44,7 @@ public class LeaveApplicationController {
   @ResponseStatus(HttpStatus.CREATED)
   public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
-    throws HibernateException, SubjectDoesNotExistException, ApplicationDoesNotExistException, ValidationException {
+    throws HibernateException, SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 

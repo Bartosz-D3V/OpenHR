@@ -1,7 +1,9 @@
 package org.openhr.application.manager.service;
 
+import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.manager.dao.ManagerDAO;
 import org.openhr.application.manager.repository.ManagerRepository;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -16,15 +18,22 @@ import java.util.Set;
 public class ManagerServiceImpl implements ManagerService {
   private final ManagerDAO managerDAO;
   private final ManagerRepository managerRepository;
+  private final AuthenticationService authenticationService;
 
   public ManagerServiceImpl(final ManagerDAO managerDAO,
-                            final ManagerRepository managerRepository) {
+                            final ManagerRepository managerRepository,
+                            final AuthenticationService authenticationService) {
     this.managerDAO = managerDAO;
     this.managerRepository = managerRepository;
+    this.authenticationService = authenticationService;
   }
 
   @Override
   public Manager addManager(final Manager manager) {
+    final User user = manager.getUser();
+    final String encodedPassword = authenticationService.encodePassword(user.getPassword());
+    user.setPassword(encodedPassword);
+    user.setUserRoles(authenticationService.setManagerUserRole(user));
     return managerDAO.addManager(manager);
   }
 

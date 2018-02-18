@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,9 +37,9 @@ public class LeaveApplication implements Serializable {
   @Column(length = 500)
   private String message;
 
+  @NotNull
   @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
   @ManyToOne(optional = false)
-  @NotNull
   private LeaveType leaveType;
 
   @Column(name = "APPROVED_BY_MANAGER")
@@ -54,8 +53,8 @@ public class LeaveApplication implements Serializable {
 
   @NotNull
   @JsonIgnore
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "SUBJECT_ID", nullable = false)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
+  @JoinColumn(name = "SUBJECT_ID")
   private Subject subject;
 
   public LeaveApplication() {

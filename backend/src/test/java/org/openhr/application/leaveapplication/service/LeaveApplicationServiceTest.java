@@ -8,7 +8,7 @@ import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.subject.service.SubjectService;
-import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +50,7 @@ public class LeaveApplicationServiceTest {
   @Test(expected = ValidationException.class)
   public void createLeaveApplicationShouldThrowExceptionIfEndDateIsBeforeStartDate() throws ValidationException {
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now().plusDays(5), LocalDate.now());
-    leaveApplicationService.createLeaveApplication(new Subject(), leaveApplication);
+    leaveApplicationService.createLeaveApplication(new Employee(), leaveApplication);
   }
 
   @Test(expected = ValidationException.class)
@@ -58,6 +58,6 @@ public class LeaveApplicationServiceTest {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(0L);
 
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
-    leaveApplicationService.createLeaveApplication(new Subject(), leaveApplication);
+    leaveApplicationService.createLeaveApplication(new Employee(), leaveApplication);
   }
 }

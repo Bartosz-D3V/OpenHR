@@ -26,7 +26,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setEmployeeManager(final long employeeId, final Employee employee) {
-    return employeeService.setEmployeeManager(employeeId, employee);
+  public Manager setEmployeeManager(final long subjectId, final Employee employee) {
+    return employeeService.setEmployeeManager(subjectId, employee);
   }
 }

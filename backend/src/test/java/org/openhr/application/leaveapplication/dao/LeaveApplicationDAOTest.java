@@ -10,10 +10,10 @@ import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
-import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +36,7 @@ public class LeaveApplicationDAOTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Subject mockSubject = new Subject("John", "Xavier", mockPersonalInformation,
+  private final static Employee mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
