@@ -49,23 +49,21 @@ public class LeaveApplicationDAOTest {
 
   @Before
   public void setUp() {
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setProcessInstanceId(String.valueOf(5L));
     mockLeaveApplication.setApprovedByManager(true);
     mockLeaveApplication.setApprovedByHR(false);
     mockLeaveApplication.setSubject(mockSubject);
     mockLeaveApplication.setMessage("I am going to Vanuatu!");
-    session.save(leaveType);
     mockLeaveApplication.setLeaveType(leaveType);
-    session.close();
+    session.save(leaveType);
   }
 
   @Test
   public void getLeaveApplicationShouldReturnApplication() throws ApplicationDoesNotExistException {
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setSubject(mockSubject);
     session.save(mockLeaveApplication);
-    session.close();
     final LeaveApplication actualLeaveApplication = leaveApplicationDAO.
       getLeaveApplication(mockLeaveApplication.getApplicationId());
 
@@ -85,9 +83,8 @@ public class LeaveApplicationDAOTest {
   public void createLeaveApplicationShouldAddEntryToDB() {
     LeaveApplication actualLeaveApplication;
     leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     actualLeaveApplication = session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
-    session.close();
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
@@ -107,10 +104,9 @@ public class LeaveApplicationDAOTest {
     updatedLeaveApplication.setApprovedByManager(true);
     updatedLeaveApplication.setApprovedByHR(true);
 
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setSubject(mockSubject);
     session.save(mockLeaveApplication);
-    session.close();
     final LeaveApplication actualUpdatedApplication = leaveApplicationDAO.updateLeaveApplication(updatedLeaveApplication);
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualUpdatedApplication.getApplicationId());

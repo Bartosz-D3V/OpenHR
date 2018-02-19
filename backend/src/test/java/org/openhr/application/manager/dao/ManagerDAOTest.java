@@ -2,6 +2,7 @@ package org.openhr.application.manager.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
@@ -43,11 +44,18 @@ public class ManagerDAOTest {
   @Autowired
   private ManagerDAO managerDAO;
 
+  @Before
+  public void setUp() {
+    final Set<Employee> employees = new HashSet<>();
+    employees.add(mockEmployee1);
+    employees.add(mockEmployee2);
+    mockManager.setEmployees(employees);
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(mockManager);
+  }
+
   @Test
   public void getManagerShouldReturnManagerById() throws SubjectDoesNotExistException {
-    final Session session = sessionFactory.openSession();
-    session.save(mockManager);
-    session.close();
     final Manager manager = managerDAO.getManager(mockManager.getSubjectId());
 
     assertEquals(mockManager.getSubjectId(), manager.getSubjectId());
@@ -55,26 +63,16 @@ public class ManagerDAOTest {
 
   @Test
   public void getEmployeesShouldReturnSetOfEmployeesForParticularManager() throws SubjectDoesNotExistException {
-    final Session session = sessionFactory.openSession();
-    mockEmployee1.setManager(mockManager);
-    mockEmployee2.setManager(mockManager);
-    final Set<Employee> employees = new HashSet<>();
-    employees.add(mockEmployee1);
-    employees.add(mockEmployee2);
-    mockManager.setEmployees(employees);
-    final long managerId = (long) session.save(mockManager);
-    session.close();
-    final Set<Employee> employees2 = managerDAO.getEmployees(managerId);
+    final Set<Employee> employees2 = managerDAO.getEmployees(mockManager.getSubjectId());
 
-    assertEquals(employees2.size(), employees.size());
+    assertEquals(2, employees2.size());
   }
 
   @Test
   public void addManagerShouldAddManagerToDB() {
+    final Session session = sessionFactory.getCurrentSession();
     managerDAO.addManager(mockManager);
-    final Session session = sessionFactory.openSession();
     final Manager actualManager = session.get(Manager.class, mockManager.getSubjectId());
-    session.close();
 
     assertNotEquals(actualManager.getSubjectId(), 0);
     assertEquals(mockManager.getSubjectId(), actualManager.getSubjectId());

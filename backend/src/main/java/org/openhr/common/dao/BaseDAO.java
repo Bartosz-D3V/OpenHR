@@ -22,10 +22,9 @@ public abstract class BaseDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   protected void save(final Object object) throws HibernateException {
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       session.save(object);
       session.flush();
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error(hibernateException.getLocalizedMessage());
       throw hibernateException;
@@ -39,7 +38,6 @@ public abstract class BaseDAO {
     try {
       final Session session = sessionFactory.getCurrentSession();
       object = session.get(objectClass, id);
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error(hibernateException.getLocalizedMessage());
       throw hibernateException;
@@ -51,10 +49,9 @@ public abstract class BaseDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   protected void merge(final Object object) throws HibernateException {
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       session.merge(object);
       session.flush();
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error(hibernateException.getLocalizedMessage());
       throw hibernateException;
