@@ -4,14 +4,12 @@ import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity
 public class Employee extends Subject implements Serializable {
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
   private Manager manager;
 
   public Employee() {

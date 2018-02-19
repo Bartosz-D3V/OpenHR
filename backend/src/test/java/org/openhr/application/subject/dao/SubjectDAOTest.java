@@ -41,7 +41,7 @@ public class SubjectDAOTest {
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
   private final static User mockUser = new User("Jhn13", "testPass");
-  private final static Manager mockSubject = new Manager("John", "Xavier", mockPersonalInformation,
+  private final static Employee mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, mockUser);
 
   @Autowired
