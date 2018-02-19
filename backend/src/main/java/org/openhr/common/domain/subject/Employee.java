@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 public class Employee extends Subject implements Serializable {
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "MANAGER_ID")
+  @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
   private Manager manager;
 
   public Employee() {

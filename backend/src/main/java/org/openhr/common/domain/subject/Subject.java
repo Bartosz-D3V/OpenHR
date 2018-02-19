@@ -74,11 +74,6 @@ public abstract class Subject implements Serializable {
   @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
   private HrInformation hrInformation;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LeaveApplication> leaveApplications = new HashSet<>();
-
   @JsonIgnore
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -174,9 +169,5 @@ public abstract class Subject implements Serializable {
 
   public void setUser(final User user) {
     this.user = user;
-  }
-
-  public void addLeaveApplication(final LeaveApplication leaveApplication) {
-    this.leaveApplications.add(leaveApplication);
   }
 }

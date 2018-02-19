@@ -55,7 +55,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
     LightweightSubjectDTO lightweightSubjectDTO;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       lightweightSubjectDTO = (LightweightSubjectDTO) criteria
         .add(Restrictions.eq("subjectId", subjectId))
@@ -66,7 +66,6 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
         .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -118,10 +117,9 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       session.delete(getSubjectDetails(subjectId));
       session.flush();
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error("Issue occurred during the deletion of the subject");
       log.error(hibernateException.getMessage());
@@ -137,7 +135,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public long getAllowance(final long subjectId) {
     long allowance;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       allowance = (long) criteria
         .createAlias("hrInformation", "hrInformation")
@@ -145,7 +143,6 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
         .setProjection(Projections.property("hrInformation.allowance"))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -158,7 +155,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public long getUsedAllowance(final long subjectId) {
     long usedAllowance;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       usedAllowance = (long) criteria
         .createAlias("hrInformation", "hrInformation")
@@ -166,7 +163,6 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
         .setProjection(Projections.property("hrInformation.usedAllowance"))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;

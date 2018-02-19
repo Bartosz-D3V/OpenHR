@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 @Repository
+@Transactional
 public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());

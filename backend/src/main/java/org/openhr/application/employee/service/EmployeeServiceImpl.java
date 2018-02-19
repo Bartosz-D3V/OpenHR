@@ -23,9 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Employee> getEmployeesOfManager(final long managerId) {
-    return employeeRepository.getEmployeesOfManager(managerId);
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Employee createEmployee(final Employee employee) {
+    return employeeDAO.createEmployee(employee);
   }
 
   @Override
