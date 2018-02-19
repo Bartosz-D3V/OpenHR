@@ -6,6 +6,7 @@ import org.openhr.common.domain.subject.Subject;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 @Table(name = "LEAVE_APPLICATION")
 public class LeaveApplication implements Serializable {
   @Id
-  @Column(name = "APPLICATION_ID")
+  @Column(name = "APPLICATION_ID", unique = true)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long applicationId;
 

@@ -30,9 +30,8 @@ public class LeaveApplicationRepository {
   public List<LeaveType> getLeaveTypes() throws HibernateException {
     List<LeaveType> leaveTypes;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       leaveTypes = session.createCriteria(LeaveType.class).list();
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error(hibernateException.getLocalizedMessage());
       throw hibernateException;
@@ -70,17 +69,16 @@ public class LeaveApplicationRepository {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
     List<LeaveApplication> filteredLeaveApplications;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
       filteredLeaveApplications = criteria
         .createAlias("subject", "subject")
-        .createAlias("subject.manager", "manager")
         .add(Restrictions.eq("approvedByManager", false))
         .add(Restrictions.eq("approvedByHR", false))
-        .add(Restrictions.eq("manager.managerId", managerId))
+        .add(Restrictions.eq("subject.subjectId", subjectId))
         .setReadOnly(true)
         .list();
     } catch (final HibernateException e) {

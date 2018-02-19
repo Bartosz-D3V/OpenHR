@@ -49,12 +49,12 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  public Set<Employee> getEmployees(final long managerId) throws SubjectDoesNotExistException {
-    return managerDAO.getEmployees(managerId);
+  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
+    return managerDAO.getEmployees(subjectId);
   }
 
   @Override
-  public void addEmployeeToManager(final Employee employee, final long managerId) throws SubjectDoesNotExistException {
-    managerDAO.addEmployeeToManager(employee, managerId);
+  public void addEmployeeToManager(final Employee employee, final long subjectId) throws SubjectDoesNotExistException {
+    managerDAO.addEmployeeToManager(employee, subjectId);
   }
 }

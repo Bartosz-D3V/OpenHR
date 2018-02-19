@@ -51,24 +51,6 @@ public class EmployeeControllerTest {
 
   @Test
   @WithMockUser
-  public void getEmployeesOfManagerShouldReturnEmployeesOfManager() throws Exception {
-    final List<Employee> employees = new ArrayList<>();
-    employees.add(employee);
-    final String employeesAsJSON = objectMapper.writeValueAsString(employees);
-    when(employeeFacade.getEmployeesOfManager(1L)).thenReturn(employees);
-
-    final MvcResult result = mockMvc
-      .perform(get("/employees")
-        .param("managerId", String.valueOf(1L)))
-      .andExpect(status().isOk())
-      .andReturn();
-
-    assertNull(result.getResolvedException());
-    assertEquals(employeesAsJSON, result.getResponse().getContentAsString());
-  }
-
-  @Test
-  @WithMockUser
   public void setEmployeeManagerShouldAssignAndReturnManger() throws Exception {
     employee.setManager(manager);
     final String managerAsJSON = objectMapper.writeValueAsString(manager);

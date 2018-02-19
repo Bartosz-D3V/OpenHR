@@ -1,7 +1,5 @@
 package org.openhr.common.domain.subject;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
@@ -14,7 +12,6 @@ import java.util.Set;
 @Entity
 public class Manager extends Subject implements Serializable {
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @NotFound(action = NotFoundAction.IGNORE)
   private Set<Employee> employees;
 
   public Manager() {

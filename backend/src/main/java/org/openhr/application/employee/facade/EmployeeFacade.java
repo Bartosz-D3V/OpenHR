@@ -7,7 +7,7 @@ import org.openhr.common.domain.subject.Subject;
 import java.util.List;
 
 public interface EmployeeFacade {
-  List<Employee> getEmployeesOfManager(long managerId);
+  Employee createEmployee(Employee employee);
 
   Manager setEmployeeManager(long subjectId, Employee employee);
 }

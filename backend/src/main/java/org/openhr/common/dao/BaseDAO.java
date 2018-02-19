@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Abstract class that shall replace repetitive, simple Hibernate queries.
  */
+@Transactional
 public abstract class BaseDAO {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());

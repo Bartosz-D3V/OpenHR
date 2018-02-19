@@ -21,6 +21,7 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
+import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.ValidationException;
@@ -55,7 +56,7 @@ public class LeaveApplicationProcessTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
+  private final static Manager mockSubject = new Manager("John", "Xavier", mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
@@ -83,9 +84,8 @@ public class LeaveApplicationProcessTest {
 
   @Before
   public void setUp() {
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(leaveType);
-    session.close();
     mockLeaveApplication.setLeaveType(leaveType);
   }
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.enumeration.Role;
 
@@ -19,13 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -60,24 +56,20 @@ public abstract class Subject implements Serializable {
   private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private PersonalInformation personalInformation;
 
   @JoinColumn(unique = true, name = "CONTACT_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private ContactInformation contactInformation;
 
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private EmployeeInformation employeeInformation;
 
   @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private HrInformation hrInformation;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LeaveApplication> leaveApplications = new HashSet<>();
 
   @JsonIgnore
   @Enumerated(EnumType.STRING)
@@ -174,9 +166,5 @@ public abstract class Subject implements Serializable {
 
   public void setUser(final User user) {
     this.user = user;
-  }
-
-  public void addLeaveApplication(final LeaveApplication leaveApplication) {
-    this.leaveApplications.add(leaveApplication);
   }
 }

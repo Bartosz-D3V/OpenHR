@@ -4,8 +4,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.user.domain.User;
+import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
+import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Manager;
+import org.openhr.common.domain.subject.PersonalInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,9 +22,10 @@ import static org.junit.Assert.assertSame;
 @SpringBootTest
 @Transactional
 public class EmployeeDAOTest {
-  private final static Manager manager = new Manager();
-  private final static Manager manager2 = new Manager();
-  private final static Employee employee = new Employee();
+  private final static Employee mockEmployee = new Employee("John", "Xavier", new PersonalInformation(),
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("1", ""));
+  private final static Manager mockManager = new Manager("John", "Xavier", new PersonalInformation(),
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("2", ""));
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -30,16 +36,14 @@ public class EmployeeDAOTest {
   @Test
   public void setEmployeeManagerShouldSetManagerAndReturnIt() {
     final Session session = sessionFactory.getCurrentSession();
-    employee.setManager(manager);
-    session.save(manager);
-    session.save(employee);
-    assertSame(manager, employee.getManager());
+    session.save(mockManager);
+    session.save(mockEmployee);
+    session.flush();
 
-    employee.setManager(manager2);
-    final Manager actualManager = employeeDAO.setEmployeeManager(employee.getSubjectId(), employee);
-    final Employee actualEmployee = session.get(Employee.class, employee.getSubjectId());
+    final Manager actualManager = employeeDAO.setEmployeeManager(mockManager.getSubjectId(), mockEmployee);
+    final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
-    assertSame(manager2, actualManager);
-    assertSame(manager2, actualEmployee.getManager());
+    assertSame(mockManager.getSubjectId(), actualManager.getSubjectId());
+    assertSame(mockManager.getSubjectId(), actualEmployee.getManager().getSubjectId());
   }
 }
