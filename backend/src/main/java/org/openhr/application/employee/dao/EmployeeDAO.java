@@ -22,11 +22,10 @@ public class EmployeeDAO extends BaseDAO {
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager setEmployeeManager(final long subjectId, final Employee employee) {
-    final Manager manager = employee.getManager();
-    final Employee savedEmployee = (Employee) super.get(Employee.class, subjectId);
-    savedEmployee.setManager(manager);
-    super.merge(savedEmployee);
+    final Manager savedManager = (Manager) super.get(Manager.class, subjectId);
+    employee.setManager(savedManager);
+    super.merge(savedManager);
 
-    return manager;
+    return savedManager;
   }
 }

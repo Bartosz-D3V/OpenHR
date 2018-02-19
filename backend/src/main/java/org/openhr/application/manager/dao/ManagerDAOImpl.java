@@ -4,7 +4,6 @@ import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
+  public Set<Employee> getEmployees(final long subjectId) {
     return getManager(subjectId).getEmployees();
   }
 
@@ -34,7 +33,6 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager addManager(final Manager manager) {
     super.save(manager);
-
     return manager;
   }
 
