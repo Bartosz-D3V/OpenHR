@@ -40,7 +40,7 @@ export class JwtHelperService {
 
   public getSubjectId(): number {
     const jwt: Jwt = this.parseToken(this.getToken());
-    return jwt.subjectId;
+    return Number(jwt.subjectId) || 0;
   }
 
   public parseToken(token: string): Jwt {
