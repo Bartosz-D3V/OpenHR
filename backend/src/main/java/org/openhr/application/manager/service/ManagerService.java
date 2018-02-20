@@ -9,6 +9,8 @@ import java.util.Set;
 
 public interface ManagerService {
 
+  Manager getManager(long subjectId);
+
   Manager addManager(Manager manager);
 
   void updateManager(Manager manager) throws SubjectDoesNotExistException;

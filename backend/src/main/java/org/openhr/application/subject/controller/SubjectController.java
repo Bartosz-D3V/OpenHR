@@ -33,7 +33,8 @@ public class SubjectController {
     return subjectFacade.getSubjectDetails(subjectId);
   }
 
-  @RequestMapping(value = "/lightweight/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "/lightweight/{subjectId}", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   public LightweightSubjectDTO getLightweightSubject(@PathVariable final long subjectId)
     throws SubjectDoesNotExistException {

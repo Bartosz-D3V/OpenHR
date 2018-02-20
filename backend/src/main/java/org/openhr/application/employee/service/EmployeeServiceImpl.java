@@ -25,6 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
+  public Employee getEmployee(final long subjectId) {
+    return employeeDAO.getEmployee(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Employee createEmployee(final Employee employee) {
     final User user = employee.getUser();
@@ -36,7 +41,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setEmployeeManager(final long subjectId, final Employee employee) {
-    return employeeDAO.setEmployeeManager(subjectId, employee);
+  public Employee updateEmployee(final long subjectId, final Employee employee) {
+    return employeeDAO.updateEmployee(subjectId, employee);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
+    return employeeDAO.setManagerToEmployee(subjectId, employee);
   }
 }

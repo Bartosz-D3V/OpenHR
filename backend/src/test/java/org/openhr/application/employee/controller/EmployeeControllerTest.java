@@ -17,9 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
@@ -55,7 +52,7 @@ public class EmployeeControllerTest {
     employee.setManager(manager);
     final String managerAsJSON = objectMapper.writeValueAsString(manager);
     final String employeesAsJSON = objectMapper.writeValueAsString(employee);
-    when(employeeFacade.setEmployeeManager(anyLong(), anyObject())).thenReturn(manager);
+    when(employeeFacade.setManagerToEmployee(anyLong(), anyObject())).thenReturn(manager);
 
     final MvcResult result = mockMvc
       .perform(put("/employees/{subjectId}/manager-assignment", 1L)

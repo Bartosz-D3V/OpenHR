@@ -40,7 +40,7 @@ public class EmployeeDAOTest {
     session.save(mockEmployee);
     session.flush();
 
-    final Manager actualManager = employeeDAO.setEmployeeManager(mockManager.getSubjectId(), mockEmployee);
+    final Manager actualManager = employeeDAO.setManagerToEmployee(mockManager.getSubjectId(), mockEmployee);
     final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertSame(mockManager.getSubjectId(), actualManager.getSubjectId());

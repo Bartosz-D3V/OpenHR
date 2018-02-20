@@ -8,6 +8,4 @@ public interface UserFacade {
   User findByUsername(String username) throws UserDoesNotExist;
 
   void registerUser(User user) throws UserAlreadyExists;
-
-  boolean isUsernameFree(String username);
 }

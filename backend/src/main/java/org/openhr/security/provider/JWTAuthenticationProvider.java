@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import org.openhr.application.user.domain.UserContext;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAuthenticationToken;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Order(value = 2)
 public class JWTAuthenticationProvider implements AuthenticationProvider {
   private final Base64.Encoder base64Encoder;
 
