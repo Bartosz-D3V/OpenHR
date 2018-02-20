@@ -33,19 +33,6 @@ public class SubjectController {
     return subjectFacade.getSubjectDetails(subjectId);
   }
 
-  @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
-    produces = {MediaType.APPLICATION_JSON_VALUE})
-  public void createSubject(@RequestBody final Subject subject) throws HibernateException {
-    subjectFacade.createSubject(subject);
-  }
-
-  @RequestMapping(value = "/{subjectId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
-    produces = {MediaType.APPLICATION_JSON_VALUE})
-  public void updateSubject(@PathVariable final long subjectId, @RequestBody final Subject subject)
-    throws HibernateException, SubjectDoesNotExistException {
-    subjectFacade.updateSubject(subjectId, subject);
-  }
-
   @RequestMapping(value = "/lightweight/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   public LightweightSubjectDTO getLightweightSubject(@PathVariable final long subjectId)

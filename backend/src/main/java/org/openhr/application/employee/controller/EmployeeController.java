@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -30,21 +27,14 @@ public class EmployeeController {
   @ResponseBody
   @ResponseStatus(code = HttpStatus.CREATED)
   public Employee createEmployee(@RequestBody final Employee employee) {
-    return null;
+    return employeeFacade.createEmployee(employee);
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-  @ResponseBody
-  @ResponseStatus(HttpStatus.OK)
-  public List<Employee> getEmployeesOfManager(@RequestParam final long managerId) {
-    return employeeFacade.getEmployeesOfManager(managerId);
-  }
-
-  @RequestMapping(value = "/{employeeId}/manager-assignment", method = RequestMethod.PUT,
+  @RequestMapping(value = "/{subjectId}/manager-assignment", method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public Manager setEmployeeManager(@PathVariable final long employeeId, @RequestBody final Employee employee) {
-    return employeeFacade.setEmployeeManager(employeeId, employee);
+  public Manager setEmployeeManager(@PathVariable final long subjectId, @RequestBody final Employee employee) {
+    return employeeFacade.setEmployeeManager(subjectId, employee);
   }
 }

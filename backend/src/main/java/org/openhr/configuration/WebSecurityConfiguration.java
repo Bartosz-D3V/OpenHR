@@ -29,7 +29,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private static final String FORM_BASED_LOGIN_ENTRY_POINT = "/auth/login";
-  private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/subjects";
+  private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/employees";
   private static final String TOKEN_REFRESH_ENTRY_POINT = "/auth/token";
 
   @Autowired

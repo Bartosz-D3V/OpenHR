@@ -2,11 +2,10 @@ package org.openhr.common.domain.subject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.common.enumeration.Role;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.openhr.application.user.domain.User;
+import org.openhr.common.enumeration.Role;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,23 +14,35 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-public class Subject implements Serializable {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Subject implements Serializable {
   @Id
   @Column(name = "SUBJECT_ID")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GenericGenerator(
+    name = "ID_GENERATOR",
+    strategy = "enhanced-sequence",
+    parameters = {
+      @Parameter(
+        name = "sequence_name",
+        value = "JPWH_SEQUENCE"
+      ),
+      @Parameter(
+        name = "initial_value",
+        value = "1"
+      )
+    }
+  )
+  @GeneratedValue(generator = "ID_GENERATOR")
   private long subjectId;
 
   @NotNull
@@ -45,40 +56,24 @@ public class Subject implements Serializable {
   private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private PersonalInformation personalInformation;
 
   @JoinColumn(unique = true, name = "CONTACT_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private ContactInformation contactInformation;
 
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private EmployeeInformation employeeInformation;
 
   @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private HrInformation hrInformation;
 
   @JsonIgnore
   @Enumerated(EnumType.STRING)
   private Role role;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Set<LeaveApplication> leaveApplications = new HashSet<>();
-
-  @JsonIgnore
-  @JoinColumn(unique = true, name = "EMPLOYEE_ID")
-  @NotFound(action = NotFoundAction.IGNORE)
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Employee employee;
-
-  @JsonIgnore
-  @JoinColumn(unique = true, name = "MANAGER_ID")
-  @NotFound(action = NotFoundAction.IGNORE)
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  private Manager manager;
 
   @JsonBackReference
   @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, optional = false)
@@ -86,13 +81,6 @@ public class Subject implements Serializable {
 
   public Subject() {
     super();
-  }
-
-  public Subject(final String firstName, final String lastName, final User user) {
-    super();
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.user = user;
   }
 
   public Subject(final String firstName, final String lastName, final PersonalInformation personalInformation,
@@ -170,34 +158,6 @@ public class Subject implements Serializable {
 
   public void setRole(final Role role) {
     this.role = role;
-  }
-
-  public Set<LeaveApplication> getLeaveApplications() {
-    return leaveApplications;
-  }
-
-  public void setLeaveApplications(final Set<LeaveApplication> leaveApplications) {
-    this.leaveApplications = leaveApplications;
-  }
-
-  public void addLeaveApplication(final LeaveApplication leaveApplication) {
-    this.leaveApplications.add(leaveApplication);
-  }
-
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public void setEmployee(final Employee employee) {
-    this.employee = employee;
-  }
-
-  public Manager getManager() {
-    return manager;
-  }
-
-  public void setManager(final Manager manager) {
-    this.manager = manager;
   }
 
   public User getUser() {

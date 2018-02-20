@@ -38,13 +38,12 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   public User findByUsername(final String username) {
     User user;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
       user = (User) criteria
         .add(eq("username", username))
         .setMaxResults(1)
         .uniqueResult();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -58,7 +57,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   public long findUserId(final String username) {
     long userId;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
       userId = (long) criteria
         .setProjection(Projections.property("userId"))
@@ -89,7 +88,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   public String getEncodedPassword(final long userId) throws UserDoesNotExist {
     String encodedPassword;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
       encodedPassword = (String) criteria
         .setProjection(Projections.property("password"))
@@ -112,13 +111,12 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   public List<String> retrieveUsernamesInUse() {
     List<String> usernamesInUse;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
       usernamesInUse = criteria
         .setProjection(Projections.property("username"))
         .setReadOnly(true)
         .list();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -131,7 +129,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     long subjectId;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       subjectId = (long) session.createCriteria(Subject.class)
         .setProjection(Projections.property("subjectId"))
         .createCriteria("user")

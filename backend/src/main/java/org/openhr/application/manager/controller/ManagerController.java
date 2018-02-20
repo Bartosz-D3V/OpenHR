@@ -49,14 +49,14 @@ public class ManagerController {
 
   @RequestMapping(value = "employees", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
-  public Set<Employee> getEmployees(@RequestParam final long managerId) throws SubjectDoesNotExistException {
-    return managerFacade.getEmployees(managerId);
+  public Set<Employee> getEmployees(@RequestParam final long subjectId) throws SubjectDoesNotExistException {
+    return managerFacade.getEmployees(subjectId);
   }
 
-  @RequestMapping(value = "/{managerId}/employee-assignment", method = RequestMethod.POST,
+  @RequestMapping(value = "/{subjectId}/employee-assignment", method = RequestMethod.POST,
     consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void addEmployeeToManager(@RequestBody final Employee employee, @PathVariable final long managerId)
+  public void addEmployeeToManager(@RequestBody final Employee employee, @PathVariable final long subjectId)
     throws SubjectDoesNotExistException {
-    managerFacade.addEmployeeToManager(employee, managerId);
+    managerFacade.addEmployeeToManager(employee, subjectId);
   }
 }

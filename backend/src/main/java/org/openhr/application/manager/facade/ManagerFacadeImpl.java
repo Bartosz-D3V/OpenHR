@@ -37,12 +37,12 @@ public class ManagerFacadeImpl implements ManagerFacade {
   }
 
   @Override
-  public Set<Employee> getEmployees(final long managerId) throws SubjectDoesNotExistException {
-    return managerService.getEmployees(managerId);
+  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
+    return managerService.getEmployees(subjectId);
   }
 
   @Override
-  public void addEmployeeToManager(final Employee employee, final long managerId) throws SubjectDoesNotExistException {
-    managerService.addEmployeeToManager(employee, managerId);
+  public void addEmployeeToManager(final Employee employee, final long subjectId) throws SubjectDoesNotExistException {
+    managerService.addEmployeeToManager(employee, subjectId);
   }
 }

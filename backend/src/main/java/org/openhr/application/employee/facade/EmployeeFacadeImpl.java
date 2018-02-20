@@ -19,14 +19,14 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
   }
 
   @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Employee> getEmployeesOfManager(final long managerId) {
-    return employeeService.getEmployeesOfManager(managerId);
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Employee createEmployee(final Employee employee) {
+    return employeeService.createEmployee(employee);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setEmployeeManager(final long employeeId, final Employee employee) {
-    return employeeService.setEmployeeManager(employeeId, employee);
+  public Manager setEmployeeManager(final long subjectId, final Employee employee) {
+    return employeeService.setEmployeeManager(subjectId, employee);
   }
 }

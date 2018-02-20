@@ -44,7 +44,7 @@ public class LeaveApplicationController {
   @ResponseStatus(HttpStatus.CREATED)
   public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
-    throws HibernateException, SubjectDoesNotExistException, ApplicationDoesNotExistException, ValidationException {
+    throws HibernateException, SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
@@ -66,12 +66,12 @@ public class LeaveApplicationController {
     leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
   }
 
-  @RequestMapping(value = "/{managerId}/awaiting", method = RequestMethod.GET,
+  @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(@PathVariable("managerId") final long managerId) {
-    return leaveApplicationFacade.getAwaitingForManagerLeaveApplications(managerId);
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(@PathVariable("subjectId") final long subjectId) {
+    return leaveApplicationFacade.getAwaitingForManagerLeaveApplications(subjectId);
   }
 
   @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,

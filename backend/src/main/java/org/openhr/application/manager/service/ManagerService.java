@@ -15,7 +15,7 @@ public interface ManagerService {
 
   List<Manager> getManagers();
 
-  Set<Employee> getEmployees(long managerId) throws SubjectDoesNotExistException;
+  Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
 
-  void addEmployeeToManager(Employee employee, long managerId) throws SubjectDoesNotExistException;
+  void addEmployeeToManager(Employee employee, long subjectId) throws SubjectDoesNotExistException;
 }
