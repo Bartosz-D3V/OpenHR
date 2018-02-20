@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import 'hammerjs/hammer';
 
 import { SharedModule } from './modules/shared/shared.module';

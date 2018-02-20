@@ -7,6 +7,7 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import 'hammerjs/hammer';
 
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../../app-routing.module';
