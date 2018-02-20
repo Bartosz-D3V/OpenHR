@@ -7,10 +7,15 @@ import { JwtHelperService } from './jwt-helper.service';
 describe('JwtHelperService', () => {
   let service: JwtHelperService;
   const mockTokenString = `
-  eyJhbGciOiJIUzUxMiJ9.
-  eyJzdWIiOiJFeGFtcGxlIiwic2NvcGVzIjpbIlJPTEVfTUV
-  NQkVSIl0sImlhdCI6MTUxNzAwODIzMCwiZXhwIjoxNTE3MDA4MjMxfQ.
-  KaGUCKSC5M6QG61eZVQPcf31Db5LKWRvW90pikVlQ9M
+  eyJhbGciOiJIUzUxMiJ9
+  .eyJzdWJqZWN0SWQiOiI
+  xMiIsInN1YiI6IkV4YW1
+  wbGUiLCJzY29wZXMiOls
+  iUk9MRV9NRU1CRVIiXSw
+  iaWF0IjoxNTE3MDA4MjM
+  wLCJleHAiOjE1MTcwMDg
+  yMzF9.D9qQN9Ew9FrHPcS
+  WEYj9rCyQOc02RerdupTf1Vs-iRE
   `;
   const emptyJwt: Jwt = {
     sub: '',
@@ -117,6 +122,21 @@ describe('JwtHelperService', () => {
       const hasRole: boolean = service.hasRole('ROLE_ADMIN');
 
       expect(hasRole).toBeFalsy();
+    });
+  });
+
+  describe('getSubjectId', () => {
+    it('should return subject id', () => {
+      const subjectId: number = service.getSubjectId();
+
+      expect(subjectId).toEqual(12);
+    });
+
+    it('should return 0 if token is invalid', () => {
+      spyOn(service, 'parseToken').and.returnValue({});
+      const subjectId: number = service.getSubjectId();
+
+      expect(subjectId).toEqual(0);
     });
   });
 
