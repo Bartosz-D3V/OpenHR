@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.openhr.application.manager.facade.ManagerFacade;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.openhr.application.manager.facade.ManagerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -103,8 +102,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenReturn(employeeSet);
 
     final MvcResult result = mockMvc
-      .perform(get("/managers/employees")
-        .param("subjectId", "1"))
+      .perform(get("/managers/{subjectId}/employees", 1L))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
