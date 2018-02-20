@@ -87,8 +87,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
-      .perform(get("/managers/employees")
-        .param("subjectId", "1"))
+      .perform(get("/managers/{subjectId}/employees", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());

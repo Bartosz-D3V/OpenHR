@@ -8,7 +8,7 @@ import { Employee } from '../../employees/domain/employee';
 
 @Injectable()
 export class ManageEmployeesDataService {
-  private url: string = SystemVariables.API_URL + '/employees';
+  private url: string = SystemVariables.API_URL + '/managers';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -22,7 +22,7 @@ export class ManageEmployeesDataService {
 
   public getEmployees(): Observable<Array<Employee>> {
     return this._http
-      .get<Array<Employee>>(this.url, {
+      .get<Array<Employee>>(`this.url/${this._jwtHelper.getSubjectId()}/employees`, {
         headers: this.headers,
       })
       .catch((error: any) => {
