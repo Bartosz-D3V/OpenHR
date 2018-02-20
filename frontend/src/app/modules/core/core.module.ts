@@ -30,12 +30,11 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
 import { AboutComponent } from './pages/about/about.component';
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
-import { AccountComponent } from './pages/account/account.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -68,6 +67,7 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
     MatPaginatorModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -77,8 +77,6 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
     SidenavComponent,
     SidenavItemListComponent,
     PersonalDetailsComponent,
-    PageHeaderComponent,
-    CapitalizePipe,
     NamePipe,
     LeaveApplicationComponent,
     StaticModalComponent,
@@ -88,8 +86,6 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
     AvatarComponent,
     InitialsPipe,
     CoreWrapperComponent,
-    AccountComponent,
-    SettingsComponent,
     EmployeesComponent,
     AddEmployeeComponent,
     ManageLeaveApplicationsComponent,
