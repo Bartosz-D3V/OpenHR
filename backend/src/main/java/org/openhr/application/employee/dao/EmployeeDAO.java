@@ -28,20 +28,20 @@ public class EmployeeDAO extends BaseDAO {
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Employee updateEmployee(final long subjectId, final Employee employee) {
+    final Employee savedEmployee = getEmployee(subjectId);
+    BeanUtils.copyProperties(savedEmployee, employee);
+    super.merge(savedEmployee);
+
+    return savedEmployee;
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
     final Manager savedManager = (Manager) super.get(Manager.class, subjectId);
     employee.setManager(savedManager);
     super.merge(savedManager);
 
     return savedManager;
-  }
-
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Employee updateEmployee(final long subjectId, final Employee employee) {
-    Employee savedEmployee = getEmployee(subjectId);
-    BeanUtils.copyProperties(savedEmployee, employee);
-    super.merge(savedEmployee);
-
-    return savedEmployee;
   }
 }

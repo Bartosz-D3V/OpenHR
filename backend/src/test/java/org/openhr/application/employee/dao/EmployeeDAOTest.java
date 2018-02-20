@@ -16,17 +16,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class EmployeeDAOTest {
-  private final static Employee mockEmployee = new Employee("John", "Xavier", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("1", ""));
-  private final static Manager mockManager = new Manager("John", "Xavier", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("2", ""));
-
   @Autowired
   private SessionFactory sessionFactory;
 
@@ -34,7 +34,51 @@ public class EmployeeDAOTest {
   private EmployeeDAO employeeDAO;
 
   @Test
+  public void getEmployeeShouldReturnSingleEmployee() {
+    final Session session = sessionFactory.getCurrentSession();
+    final Employee mockEmployee = getMockEmployee();
+    session.save(mockEmployee);
+
+    final Employee actualEmployee = employeeDAO.getEmployee(mockEmployee.getSubjectId());
+
+    assertNotEquals(0, actualEmployee.getSubjectId());
+    assertSame(mockEmployee, actualEmployee);
+  }
+
+  @Test
+  public void createEmployeeShouldCreateEmployeeAndReturnIt() {
+    final Employee mockEmployee = getMockEmployee();
+    final Employee actualEmployee = employeeDAO.createEmployee(mockEmployee);
+    final Session session = sessionFactory.getCurrentSession();
+    final Employee employee = session.get(Employee.class, actualEmployee.getSubjectId());
+
+    assertNotEquals(0, actualEmployee.getSubjectId());
+    assertNotNull(employee);
+    assertSame(mockEmployee, actualEmployee);
+    assertSame(mockEmployee.getSubjectId(), employee.getSubjectId());
+  }
+
+  @Test
+  public void updateEmployeeShouldUpdateEmployeeAndReturnIt() {
+    final Employee mockEmployee = getMockEmployee();
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(mockEmployee);
+    session.flush();
+
+    mockEmployee.setLastName("UpdatedLastName");
+    final Employee employee = employeeDAO.updateEmployee(mockEmployee.getSubjectId(), mockEmployee);
+    final Employee savedEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
+
+    assertNotNull(employee);
+    assertNotNull(savedEmployee);
+    assertEquals(mockEmployee.getLastName(), employee.getLastName());
+    assertEquals(mockEmployee.getLastName(), savedEmployee.getLastName());
+  }
+
+  @Test
   public void setEmployeeManagerShouldSetManagerAndReturnIt() {
+    final Employee mockEmployee = getMockEmployee();
+    final Manager mockManager = getMockManager();
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockManager);
     session.save(mockEmployee);
@@ -45,5 +89,17 @@ public class EmployeeDAOTest {
 
     assertSame(mockManager.getSubjectId(), actualManager.getSubjectId());
     assertSame(mockManager.getSubjectId(), actualEmployee.getManager().getSubjectId());
+  }
+
+  private static Manager getMockManager() {
+    final String randomUsername = UUID.randomUUID().toString().subSequence(0, 19).toString();
+    return new Manager("John", "Xavier", new PersonalInformation(),
+      new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User(randomUsername, ""));
+  }
+
+  private static Employee getMockEmployee() {
+    final String randomUsername = UUID.randomUUID().toString().subSequence(0, 19).toString();
+    return new Employee("John", "Xavier", new PersonalInformation(),
+      new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User(randomUsername, ""));
   }
 }

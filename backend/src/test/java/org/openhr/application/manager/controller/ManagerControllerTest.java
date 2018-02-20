@@ -39,6 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("Not found");
+  private final static Manager manager = new Manager();
+  private final static Employee employee = new Employee();
 
   @Autowired
   private MockMvc mockMvc;
@@ -54,7 +56,6 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addManagerShouldAcceptManagerObject() throws Exception {
-    final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
@@ -69,7 +70,6 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void updateManagerShouldAcceptManagerObject() throws Exception {
-    final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
@@ -115,7 +115,6 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addEmployeeToManagerShouldHandleError() throws Exception {
-    final Employee employee = new Employee();
     employee.setManager(new Manager());
     final String employeeAsJson = objectMapper.writeValueAsString(employee);
     doThrow(mockException).when(managerFacade).addEmployeeToManager(anyObject(), anyLong());
@@ -133,7 +132,6 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
-    final Employee employee = new Employee();
     employee.setManager(new Manager());
     final String employeeAsJson = objectMapper.writeValueAsString(employee);
 
