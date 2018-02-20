@@ -3,12 +3,9 @@ package org.openhr.application.employee.facade;
 import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class EmployeeFacadeImpl implements EmployeeFacade {
@@ -19,6 +16,12 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Employee getEmployee(final long subjectId) {
+    return employeeService.getEmployee(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public Employee createEmployee(final Employee employee) {
     return employeeService.createEmployee(employee);
@@ -26,7 +29,13 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setEmployeeManager(final long subjectId, final Employee employee) {
-    return employeeService.setEmployeeManager(subjectId, employee);
+  public Employee updateEmployee(final long subjectId, final Employee employee) {
+    return employeeService.updateEmployee(subjectId, employee);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
+    return employeeService.setManagerToEmployee(subjectId, employee);
   }
 }

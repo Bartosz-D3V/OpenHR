@@ -64,13 +64,6 @@ public class SubjectDAOTest {
     session.flush();
   }
 
-  @After
-  public void tearDown() {
-    final Session session = sessionFactory.getCurrentSession();
-    session.delete(mockUser);
-    session.delete(mockSubject);
-  }
-
   @Test(expected = SubjectDoesNotExistException.class)
   public void getSubjectDetailsShouldThrowExceptionIfSubjectDoesNotExist() throws SubjectDoesNotExistException {
     subjectDAO.getSubjectDetails(123L);

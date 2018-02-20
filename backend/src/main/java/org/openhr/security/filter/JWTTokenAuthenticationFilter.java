@@ -2,7 +2,6 @@ package org.openhr.security.filter;
 
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAuthenticationToken;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Order(value = 2)
 public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
   private final AuthenticationFailureHandler failureHandler;
 

@@ -7,8 +7,11 @@ import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.repository.UserRepository;
 import org.openhr.application.authentication.service.AuthenticationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final AuthenticationService authenticationService;
@@ -20,6 +23,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public User findByUsername(final String username) throws UserDoesNotExist {
     final User user = userRepository.findByUsername(username);
     if (user == null) {
@@ -29,6 +33,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void registerUser(final User user) throws UserAlreadyExists {
     final boolean isUsernameFree = isUsernameFree(user.getUsername());
     if (!isUsernameFree) {
@@ -39,28 +44,20 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String getEncodedPassword(final long userId) throws UserDoesNotExist {
-    return userRepository.getEncodedPassword(userId);
-  }
-
-  @Override
-  public String getEncodedPassword(final String username) throws UserDoesNotExist {
-    final long userId = userRepository.findUserId(username);
-    return userRepository.getEncodedPassword(userId);
-  }
-
-  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public boolean validCredentials(final String username, final String password) {
     final User user = userRepository.findByUsername(username);
     return user != null && authenticationService.passwordsMatch(password, user.getPassword());
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public boolean isUsernameFree(final String username) {
     return !userRepository.retrieveUsernamesInUse().contains(username);
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     return userRepository.findSubjectId(username);
   }

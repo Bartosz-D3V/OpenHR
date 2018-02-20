@@ -24,6 +24,7 @@ import java.util.List;
 import static org.hibernate.criterion.Restrictions.eq;
 
 @Repository
+@Transactional
 public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -126,6 +127,7 @@ public class UserRepositoryImpl extends BaseDAO implements UserRepository {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     long subjectId;
     try {

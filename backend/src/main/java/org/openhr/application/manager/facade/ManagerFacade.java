@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface ManagerFacade {
+  Manager getManager(long subjectId);
+
   Manager addManager(Manager manager);
 
   void updateManager(Manager manager) throws SubjectDoesNotExistException;

@@ -32,11 +32,13 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
     return leaveApplicationService.getLeaveApplication(applicationId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
@@ -50,17 +52,20 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationService.updateLeaveApplication(leaveApplication);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final String processInstanceId) {
     leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByManager(final String processInstanceId) {
     leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId);
   }
@@ -72,12 +77,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
-  public final List<TaskDefinition> getProcessTasks(final String processInstanceId) {
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return leaveApplicationCommand.getProcessTasks(processInstanceId);
   }
 
   @Override
-  public final List<String> getActiveProcessesId() {
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<String> getActiveProcessesId() {
     return leaveApplicationCommand.getActiveProcessesId();
   }
 

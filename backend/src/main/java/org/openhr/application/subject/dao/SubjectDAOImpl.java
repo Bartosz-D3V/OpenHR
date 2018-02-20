@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(propagation = Propagation.SUPPORTS)
+@Transactional
 public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
 
   private final SessionFactory sessionFactory;

@@ -27,6 +27,13 @@ public class ManagerController {
     this.managerFacade = managerFacade;
   }
 
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public Manager getManager(@PathVariable final long subjectId) {
+    return managerFacade.getManager(subjectId);
+  }
+
   @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
