@@ -52,11 +52,12 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void addEmployeeToManager(final Employee employee, final long subjectId) {
-    final Manager manager = getManager(subjectId);
+  public void addEmployeeToManager(final Manager manager, final Employee employee) {
     final Set<Employee> employees = manager.getEmployees();
     employees.add(employee);
     manager.setEmployees(employees);
+    employee.setManager(manager);
+    super.merge(employee);
     super.merge(manager);
   }
 }

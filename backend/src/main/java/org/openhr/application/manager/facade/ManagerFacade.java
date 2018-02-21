@@ -18,5 +18,5 @@ public interface ManagerFacade {
 
   Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
 
-  void addEmployeeToManager(Employee employee, long subjectId) throws SubjectDoesNotExistException;
+  void addEmployeeToManager(long managerId, long subjectId) throws SubjectDoesNotExistException;
 }
