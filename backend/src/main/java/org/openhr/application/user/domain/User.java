@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -19,10 +20,13 @@ public class User implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long userId;
 
+
+  @NotNull(message = "Username cannot be empty")
+  @Size(max = 20, message = "Password cannot be greater than {max} characters long")
   @Column(unique = true, nullable = false)
-  @Size(max = 20)
   private String username;
 
+  @NotNull(message = "Password cannot be empty")
   @Column(nullable = false)
   private String password;
 

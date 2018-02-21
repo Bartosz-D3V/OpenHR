@@ -34,7 +34,7 @@ public abstract class Subject implements Serializable {
     parameters = {
       @Parameter(
         name = "sequence_name",
-        value = "JPWH_SEQUENCE"
+        value = "SUBJECT_SEQUENCE_ID"
       ),
       @Parameter(
         name = "initial_value",
@@ -45,14 +45,14 @@ public abstract class Subject implements Serializable {
   @GeneratedValue(generator = "ID_GENERATOR")
   private long subjectId;
 
-  @NotNull
+  @NotNull(message = "First name cannot be empty")
+  @Size(max = 255, message = "First name cannot be greater than {max} characters long")
   @Column(name = "FIRST_NAME")
-  @Size(max = 255)
   private String firstName;
 
-  @NotNull
+  @NotNull(message = "Last name cannot be empty")
+  @Size(max = 255, message = "Last name cannot be greater than {max} characters long")
   @Column(name = "LAST_NAME")
-  @Size(max = 255)
   private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
