@@ -12,7 +12,7 @@ public interface ManagerDAO {
 
   Manager addManager(Manager manager);
 
-  void updateManager(Manager manager) throws SubjectDoesNotExistException;
+  Manager updateManager(Manager manager) throws SubjectDoesNotExistException;
 
   Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
 

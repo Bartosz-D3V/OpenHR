@@ -50,8 +50,8 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void updateManager(final Manager manager) throws SubjectDoesNotExistException {
-    managerDAO.updateManager(manager);
+  public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
+    return managerDAO.updateManager(manager);
   }
 
   @Override
