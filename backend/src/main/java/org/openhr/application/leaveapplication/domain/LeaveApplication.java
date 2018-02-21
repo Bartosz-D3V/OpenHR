@@ -26,19 +26,19 @@ public class LeaveApplication implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long applicationId;
 
+  @NotNull(message = "Start date cannot be empty")
   @Column(name = "START_DATE")
-  @NotNull
   private LocalDate startDate;
 
+  @NotNull(message = "End date cannot be empty")
   @Column(name = "END_DATE")
-  @NotNull
   private LocalDate endDate;
 
-  @Size(max = 500)
+  @Size(max = 500, message = "Message cannot be greater than {max} characters long")
   @Column(length = 500)
   private String message;
 
-  @NotNull
+  @NotNull(message = "Leave type cannot be empty")
   @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
   @ManyToOne(optional = false)
   private LeaveType leaveType;
@@ -52,7 +52,7 @@ public class LeaveApplication implements Serializable {
   @Column(name = "PROCESS_INSTANCE_ID")
   private String processInstanceId;
 
-  @NotNull
+  @NotNull(message = "Subject cannot be empty")
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "SUBJECT_ID")
