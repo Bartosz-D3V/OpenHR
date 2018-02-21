@@ -3,7 +3,6 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ErrorResolverService } from '../error-resolver/error-resolver.service';
-
 import { Subject } from '../../domain/subject/subject';
 import { Address } from '../../domain/subject/address';
 import { PersonalInformation } from '../../domain/subject/personal-information';
@@ -11,8 +10,9 @@ import { ContactInformation } from '../../domain/subject/contact-information';
 import { EmployeeInformation } from '../../domain/subject/employee-information';
 import { SystemVariables } from '../../../config/system-variables';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
-import { SubjectDetailsService } from './subject-details.service';
 import { HrInformation } from '../../domain/subject/hr-information';
+import { Employee } from '../../domain/subject/employee';
+import { SubjectDetailsService } from './subject-details.service';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
@@ -21,7 +21,7 @@ describe('PersonalDetailsService', () => {
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester',
     '2020-02-08', '2020-02-08', '123AS');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation, mockHrInformation);
   let http: HttpTestingController;
   let personalDetailsService;

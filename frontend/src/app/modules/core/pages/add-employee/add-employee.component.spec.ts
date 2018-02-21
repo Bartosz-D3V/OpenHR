@@ -23,9 +23,10 @@ import { SubjectDetailsService } from '../../../../shared/services/subject/subje
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { HrInformation } from '../../../../shared/domain/subject/hr-information';
+import { Employee } from '../../../../shared/domain/subject/employee';
 import { AddEmployeeComponent } from './add-employee.component';
 import Spy = jasmine.Spy;
-import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -36,7 +37,7 @@ describe('AddEmployeeComponent', () => {
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core',
     '2020-02-08', '2020-02-08');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation, mockHrInformation);
   const mockContractTypes: Array<string> = ['Full time', 'Part time'];
 
