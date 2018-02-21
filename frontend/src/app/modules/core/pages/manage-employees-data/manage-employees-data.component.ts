@@ -1,14 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
-import { startWith } from 'rxjs/operator/startWith';
+import { ISubscription } from 'rxjs/Subscription';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
-import { Employee } from '../employees/domain/employee';
+import { Employee } from '../../../../shared/domain/subject/employee';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
@@ -26,7 +24,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   employees: Array<Employee>;
   subject: Subject;
   employeeForm: FormGroup;
-  employeesCtrl: FormControl;
+  employeesCtrl: FormControl = new FormControl();
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _subjectService: SubjectDetailsService,
@@ -56,7 +54,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
         email: [
           Validators.required,
           Validators.pattern(RegularExpressions.EMAIL)],
-        telephone: ['',
+        telephone: [
           Validators.required,
           Validators.pattern(RegularExpressions.NUMBERS_ONLY),
           Validators.minLength(7),
@@ -64,30 +62,29 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
         firstLineAddress: [],
         secondLineAddress: [],
         thirdLineAddress: [],
-        postcode: ['',
+        postcode: [
           Validators.required,
           Validators.pattern(RegularExpressions.UK_POSTCODE)],
         city: [],
         country: [],
       }),
       employeeInformation: this._fb.group({
-        nin: ['',
+        nin: [
           Validators.required,
           Validators.pattern(RegularExpressions.NIN)],
-        employeeId: ['', Validators.required],
+        employeeId: [Validators.required],
         startDate: [],
         endDate: [],
       }),
       hrInformation: this._fb.group({
-        allowance: ['', Validators.min(0)],
-        usedAllowance: ['', Validators.min(0)],
-        manager: ['', Validators.required],
+        allowance: [Validators.min(0)],
+        usedAllowance: [Validators.min(0)],
+        manager: [Validators.required],
       }),
     });
   }
 
   reduceEmployees(employees: Array<Employee>): Observable<Array<Employee>> {
-    this.employeesCtrl = new FormControl();
     return this.employeesCtrl
       .valueChanges
       .startWith(null)
@@ -96,7 +93,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
     return employees.filter(employee =>
-    employee.subject.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+    employee.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   fetchEmployees(): void {

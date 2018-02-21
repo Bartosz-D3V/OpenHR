@@ -5,7 +5,7 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { EmployeesService } from './service/employees.service';
 import { EmployeeDataObject } from './domain/employee-data-object';
-import { Employee } from './domain/employee';
+import { Employee } from '../../../../shared/domain/subject/employee';
 import { EmployeeData } from './employee-data';
 
 @Component({
@@ -62,7 +62,7 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   simplifyEmployeeObject(employee: Employee): EmployeeData {
-    const fullName: string = employee.subject.firstName + ' ' + employee.subject.lastName;
-    return new EmployeeDataObject(employee.employeeId, fullName, employee.subject.employeeInformation.position);
+    const fullName: string = employee.firstName + ' ' + employee.lastName;
+    return new EmployeeDataObject(employee.subjectId, fullName, employee.employeeInformation.position);
   }
 }

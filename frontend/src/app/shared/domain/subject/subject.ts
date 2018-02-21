@@ -3,7 +3,7 @@ import { ContactInformation } from './contact-information';
 import { EmployeeInformation } from './employee-information';
 import { HrInformation } from './hr-information';
 
-export class Subject {
+export abstract class Subject {
   public subjectId: number;
   public firstName: string;
   public lastName: string;

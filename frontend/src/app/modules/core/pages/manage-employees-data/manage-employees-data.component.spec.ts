@@ -4,8 +4,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
+  MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatNativeDateModule, MatToolbarModule
+  MatNativeDateModule, MatOptionModule, MatToolbarModule
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,8 +15,7 @@ import { PageHeaderComponent } from '../../../../shared/components/page-header/p
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { Employee } from '../employees/domain/employee';
+import { Employee } from '../../../../shared/domain/subject/employee';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 import { ManageEmployeesDataComponent } from './manage-employees-data.component';
 
@@ -58,6 +58,8 @@ describe('ManageEmployeesDataComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         MatIconModule,
+        MatAutocompleteModule,
+        MatOptionModule,
       ],
       providers: [
         JwtHelperService,
@@ -80,10 +82,8 @@ describe('ManageEmployeesDataComponent', () => {
   });
 
   describe('autocomplete methods', () => {
-    const employee1: Employee = new Employee();
-    employee1.subject = new Subject('Jack', 'Sparrow', null, null, null, null);
-    const employee2: Employee = new Employee();
-    employee2.subject = new Subject('Donnie', 'Darko', null, null, null, null);
+    const employee1: Employee = new Employee('Jack', 'Sparrow', null, null, null, null);
+    const employee2: Employee = new Employee('Donnie', 'Darko', null, null, null, null);
     const mockEmployees: Array<Employee> = [employee1, employee2];
 
     it('filterEmployees method should filter an array by last name of the employee', () => {

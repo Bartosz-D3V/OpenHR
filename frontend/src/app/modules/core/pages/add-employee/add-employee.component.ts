@@ -8,7 +8,7 @@ import { SubjectDetailsService } from '../../../../shared/services/subject/subje
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { RegisterDetails } from '../../../../shared/domain/register/register-details';
-import { Employee } from '../employees/domain/employee';
+import { Employee } from '../../../../shared/domain/subject/employee';
 
 @Component({
   selector: 'app-add-employee',
@@ -158,8 +158,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public assignEmployeeToManager(): void {
-    const employee: Employee = new Employee();
-    employee.subject = this.subject;
     /**
      * call a service
      */
