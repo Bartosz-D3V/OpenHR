@@ -6,6 +6,7 @@ import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,8 @@ import java.util.Set;
 @Repository
 @Transactional
 public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
-  private final SessionFactory sessionFactory;
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
-
   public ManagerDAOImpl(final SessionFactory sessionFactory) {
     super(sessionFactory);
-    this.sessionFactory = sessionFactory;
   }
 
   @Override
@@ -38,10 +35,12 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void updateManager(final Manager manager) {
+  public Manager updateManager(final Manager manager) {
     final Manager legacyManager = getManager(manager.getSubjectId());
-    legacyManager.setEmployees(manager.getEmployees());
+    BeanUtils.copyProperties(legacyManager, manager, "subjectId");
     super.merge(legacyManager);
+
+    return legacyManager;
   }
 
   @Override

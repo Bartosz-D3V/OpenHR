@@ -45,8 +45,8 @@ public class ManagerController {
   @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.OK)
-  public void updateManager(@RequestBody final Manager manager) throws SubjectDoesNotExistException {
-    managerFacade.updateManager(manager);
+  public Manager updateManager(@RequestBody final Manager manager) throws SubjectDoesNotExistException {
+    return managerFacade.updateManager(manager);
   }
 
   @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

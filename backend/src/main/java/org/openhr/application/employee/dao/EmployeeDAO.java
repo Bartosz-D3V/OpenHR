@@ -1,47 +1,14 @@
 package org.openhr.application.employee.dao;
 
-import org.hibernate.SessionFactory;
-import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@Transactional
-public class EmployeeDAO extends BaseDAO {
-  public EmployeeDAO(final SessionFactory sessionFactory) {
-    super(sessionFactory);
-  }
+public interface EmployeeDAO {
+  Employee getEmployee(long subjectId);
 
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Employee getEmployee(final long subjectId) {
-    return (Employee) super.get(Employee.class, subjectId);
-  }
+  Employee createEmployee(Employee employee);
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Employee createEmployee(final Employee employee) {
-    super.save(employee);
-    return employee;
-  }
+  Employee updateEmployee(long subjectId, Employee employee);
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Employee updateEmployee(final long subjectId, final Employee employee) {
-    final Employee savedEmployee = getEmployee(subjectId);
-    BeanUtils.copyProperties(savedEmployee, employee);
-    super.merge(savedEmployee);
-
-    return savedEmployee;
-  }
-
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
-    final Manager savedManager = (Manager) super.get(Manager.class, subjectId);
-    employee.setManager(savedManager);
-    super.merge(savedManager);
-
-    return savedManager;
-  }
+  Manager setManagerToEmployee(long subjectId, Employee employee);
 }

@@ -13,7 +13,7 @@ public interface ManagerService {
 
   Manager addManager(Manager manager);
 
-  void updateManager(Manager manager) throws SubjectDoesNotExistException;
+  Manager updateManager(Manager manager) throws SubjectDoesNotExistException;
 
   List<Manager> getManagers();
 
