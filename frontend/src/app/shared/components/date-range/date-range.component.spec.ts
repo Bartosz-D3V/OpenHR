@@ -3,13 +3,11 @@ import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { MatDatepickerModule, MatInputModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
-import moment = require('moment');
 import { MomentInput } from 'moment';
+import moment = require('moment');
 
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
@@ -292,6 +290,30 @@ describe('DateRangeComponent', () => {
       component.bankHolidaysEngland = mockBankHolidaysEngland;
 
       expect(component.isBankHoliday(moment('2020-01-11'))).toBeFalsy();
+    });
+  });
+
+  describe('reset method', () => {
+    let startDateCtrl: AbstractControl;
+    let endDateCtrl: AbstractControl;
+
+    beforeEach(() => {
+      startDateCtrl = component.dateRangeGroup.controls['startDate'];
+      endDateCtrl = component.dateRangeGroup.controls['endDate'];
+    });
+
+    afterEach(() => {
+      startDateCtrl.reset();
+      endDateCtrl.reset();
+    });
+
+    it('should reset all values', () => {
+      startDateCtrl.setValue('2020-01-11');
+      endDateCtrl.setValue('2020-01-20');
+      component.reset();
+
+      expect(startDateCtrl.value).toBeNull();
+      expect(endDateCtrl.value).toBeNull();
     });
   });
 
