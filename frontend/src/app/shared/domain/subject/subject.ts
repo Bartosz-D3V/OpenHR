@@ -7,6 +7,7 @@ export abstract class Subject {
   public subjectId: number;
   public firstName: string;
   public lastName: string;
+  public fullName?: string;
   public personalInformation: PersonalInformation;
   public contactInformation: ContactInformation;
   public employeeInformation: EmployeeInformation;
@@ -17,6 +18,7 @@ export abstract class Subject {
               hrInformation: HrInformation) {
     this.firstName = firstName;
     this.lastName = lastName;
+    this.fullName = firstName + ' ' + lastName;
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;

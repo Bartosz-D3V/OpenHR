@@ -38,7 +38,6 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$employees.unsubscribe();
-    this.$subject.unsubscribe();
   }
 
   private constructForm(): void {
