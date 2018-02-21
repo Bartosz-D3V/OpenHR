@@ -52,7 +52,7 @@ public class ManagerFacadeImpl implements ManagerFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void addEmployeeToManager(final Employee employee, final long subjectId) throws SubjectDoesNotExistException {
-    managerService.addEmployeeToManager(employee, subjectId);
+  public void addEmployeeToManager(final long managerId, final long subjectId) throws SubjectDoesNotExistException {
+    managerService.addEmployeeToManager(managerId, subjectId);
   }
 }

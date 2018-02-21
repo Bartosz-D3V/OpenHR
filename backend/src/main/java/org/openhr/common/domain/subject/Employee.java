@@ -1,5 +1,6 @@
 package org.openhr.common.domain.subject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
@@ -9,7 +10,8 @@ import java.io.Serializable;
 
 @Entity
 public class Employee extends Subject implements Serializable {
-  @ManyToOne(cascade = CascadeType.ALL)
+  @JsonBackReference(value = "employee-manager")
+  @ManyToOne(cascade = CascadeType.MERGE)
   private Manager manager;
 
   public Employee() {

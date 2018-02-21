@@ -1,6 +1,7 @@
 package org.openhr.application.manager.service;
 
 import org.openhr.application.authentication.service.AuthenticationService;
+import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.manager.dao.ManagerDAO;
 import org.openhr.application.manager.repository.ManagerRepository;
 import org.openhr.application.user.domain.User;
@@ -19,13 +20,16 @@ public class ManagerServiceImpl implements ManagerService {
   private final ManagerDAO managerDAO;
   private final ManagerRepository managerRepository;
   private final AuthenticationService authenticationService;
+  private final EmployeeService employeeService;
 
   public ManagerServiceImpl(final ManagerDAO managerDAO,
                             final ManagerRepository managerRepository,
-                            final AuthenticationService authenticationService) {
+                            final AuthenticationService authenticationService,
+                            final EmployeeService employeeService) {
     this.managerDAO = managerDAO;
     this.managerRepository = managerRepository;
     this.authenticationService = authenticationService;
+    this.employeeService = employeeService;
   }
 
   @Override
@@ -64,7 +68,11 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void addEmployeeToManager(final Employee employee, final long subjectId) throws SubjectDoesNotExistException {
-    managerDAO.addEmployeeToManager(employee, subjectId);
+  public void addEmployeeToManager(final long managerId, final long subjectId) throws SubjectDoesNotExistException {
+    final Manager manager = getManager(managerId);
+    final Employee employee = employeeService.getEmployee(subjectId);
+    employee.setManager(manager);
+    employeeService.updateEmployee(employee.getSubjectId(), employee);
+    managerDAO.addEmployeeToManager(manager, employee);
   }
 }

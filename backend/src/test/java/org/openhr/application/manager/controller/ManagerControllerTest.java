@@ -61,7 +61,7 @@ public class ManagerControllerTest {
       .perform(post("/managers")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andExpect(status().isOk())
+      .andExpect(status().isCreated())
       .andReturn();
     assertNull(result.getResolvedException());
   }
@@ -113,13 +113,12 @@ public class ManagerControllerTest {
   @WithMockUser()
   public void addEmployeeToManagerShouldHandleError() throws Exception {
     employee.setManager(new Manager());
-    final String employeeAsJson = objectMapper.writeValueAsString(employee);
-    doThrow(mockException).when(managerFacade).addEmployeeToManager(anyObject(), anyLong());
+    doThrow(mockException).when(managerFacade).addEmployeeToManager(3L, 1L);
 
     final MvcResult result = mockMvc
-      .perform(post("/managers/{subjectId}/employee-assignment", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(employeeAsJson))
+      .perform(post("/managers/employee-assignment")
+        .param("managerId", String.valueOf(3L))
+        .param("subjectId", String.valueOf(1L)))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -129,13 +128,10 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
-    employee.setManager(new Manager());
-    final String employeeAsJson = objectMapper.writeValueAsString(employee);
-
     final MvcResult result = mockMvc
-      .perform(post("/managers/{subjectId}/employee-assignment", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(employeeAsJson))
+      .perform(post("/managers/employee-assignment")
+        .param("managerId", String.valueOf(3L))
+        .param("subjectId", String.valueOf(1L)))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
