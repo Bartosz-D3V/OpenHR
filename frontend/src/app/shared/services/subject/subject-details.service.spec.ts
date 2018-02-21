@@ -67,15 +67,56 @@ describe('PersonalDetailsService', () => {
       expect(errorResolverService.createAlert).toHaveBeenCalledTimes(1);
       expect(errorResolverService.createAlert).toHaveBeenCalledWith(mockError);
     });
-
   });
 
   describe('API access method', () => {
-
     const apiLink: string = SystemVariables.API_URL + '/subjects';
 
-    describe('getCurrentSubject', () => {
+    describe('getSubjectById', () => {
+      it('should query current service URL', fakeAsync(() => {
+        personalDetailsService.getSubjectById(223).subscribe();
 
+        http.expectOne(`${apiLink}/223`);
+      }));
+
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        personalDetailsService.getSubjectById(223)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: `${apiLink}/223`,
+          method: 'GET',
+        }).flush(mockSubject);
+        tick();
+
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
+
+      it('should resolve error if server is down', fakeAsync(() => {
+        spyOn(personalDetailsService, 'handleError');
+
+        let result: Object;
+        let error: any;
+        personalDetailsService.getSubjectById(223)
+          .subscribe(
+            (res: Object) => result = res,
+            (err: any) => error = err);
+        http.expectOne({
+          url: `${apiLink}/223`,
+          method: 'GET',
+        }).error(new ErrorEvent('404'));
+        tick();
+
+        expect(personalDetailsService['handleError']).toHaveBeenCalled();
+      }));
+    });
+
+    describe('getCurrentSubject', () => {
       beforeEach(() => {
         spyOn(personalDetailsService['_jwtHelper'], 'getSubjectId').and.returnValue(1);
       });
@@ -121,11 +162,9 @@ describe('PersonalDetailsService', () => {
 
         expect(personalDetailsService['handleError']).toHaveBeenCalled();
       }));
-
     });
 
     describe('createSubject', () => {
-
       it('should query current service URL', fakeAsync(() => {
         personalDetailsService.createSubject().subscribe();
 
@@ -166,9 +205,7 @@ describe('PersonalDetailsService', () => {
 
         expect(personalDetailsService['handleError']).toHaveBeenCalled();
       }));
-
     });
-
   });
 
 });
