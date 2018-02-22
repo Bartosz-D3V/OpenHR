@@ -1,14 +1,16 @@
-<app-page-header [header]="'Manage employees\' data'"></app-page-header>
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Manage employees\' data'"></app-page-header>
 
-<mat-form-field class="example-full-width">
-  <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="auto"
-         [formControl]="employeesCtrl">
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let employee of employees" [value]="employee.fullName">
-      <span>{{employee.firstName}} {{ employee.lastName }}</span>
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+  <mat-form-field fxLayoutAlign="center" fxFlex="100">
+    <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="auto"
+           [formControl]="employeesCtrl">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let employee of employees" [value]="employee.firstName + ' ' + employee.lastName">
+        <span>{{employee.firstName}} {{ employee.lastName }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</section>
 
 <section class="c-drawer" *ngIf="subject">
   <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>

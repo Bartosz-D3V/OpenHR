@@ -91,6 +91,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
+    console.log(1)
     return employees.filter(employee =>
     employee.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
