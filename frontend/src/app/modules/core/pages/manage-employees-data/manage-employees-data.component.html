@@ -5,7 +5,7 @@
     <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="auto"
            [formControl]="employeesCtrl">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let employee of employees" [value]="employee.firstName + ' ' + employee.lastName">
+      <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.firstName + ' ' + employee.lastName">
         <span>{{employee.firstName}} {{ employee.lastName }}</span>
       </mat-option>
     </mat-autocomplete>
