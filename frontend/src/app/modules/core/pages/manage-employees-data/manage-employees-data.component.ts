@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
+import { map, startWith } from 'rxjs/operators';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
@@ -23,6 +24,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $subject: ISubscription;
   employees: Array<Employee>;
   subject: Subject;
+  filteredEmployees: Observable<Array<Subject>>;
   employeeForm: FormGroup;
   employeesCtrl: FormControl = new FormControl();
 
@@ -83,16 +85,19 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     });
   }
 
-  reduceEmployees(employees: Array<Employee>): Observable<Array<Employee>> {
-    return this.employeesCtrl
+  reduceEmployees(employees: Array<Employee>): Observable<Array<Subject>> {
+    this.filteredEmployees = this.employeesCtrl
       .valueChanges
-      .startWith(null)
-      .map(lastName => lastName ? this.filterEmployees(employees, lastName) : employees.slice());
+      .pipe(
+        startWith(''),
+        map(employee => employee ? this.filterEmployees(employees, employee) : employees.slice())
+      );
+    return this.filteredEmployees;
   }
 
   filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
     return employees.filter(employee =>
-    employee.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+      employee.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   fetchEmployees(): void {
