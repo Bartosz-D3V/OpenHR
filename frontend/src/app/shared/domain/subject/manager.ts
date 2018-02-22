@@ -4,14 +4,15 @@ import { PersonalInformation } from './personal-information';
 import { ContactInformation } from './contact-information';
 import { EmployeeInformation } from './employee-information';
 import { HrInformation } from './hr-information';
+import { Role } from './role';
 
 export class Manager extends Subject {
   public employees?: Set<Employee>;
 
   constructor(firstName: string, lastName: string, personalInformation: PersonalInformation,
               contactInformation: ContactInformation, employeeInformation: EmployeeInformation,
-              hrInformation: HrInformation, employees?: Set<Employee>) {
-    super(firstName, lastName, personalInformation, contactInformation, employeeInformation, hrInformation);
+              hrInformation: HrInformation, role: Role, employees?: Set<Employee>) {
+    super(firstName, lastName, personalInformation, contactInformation, employeeInformation, hrInformation, role);
     this.employees = employees;
   }
 }

@@ -13,6 +13,7 @@ import { JwtHelperService } from '../jwt/jwt-helper.service';
 import { HrInformation } from '../../domain/subject/hr-information';
 import { Employee } from '../../domain/subject/employee';
 import { SubjectDetailsService } from './subject-details.service';
+import { Role } from '../../domain/subject/role';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
@@ -22,7 +23,7 @@ describe('PersonalDetailsService', () => {
     '2020-02-08', '2020-02-08', '123AS');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation, mockHrInformation);
+    mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
   let http: HttpTestingController;
   let personalDetailsService;
   let errorResolverService: ErrorResolverService;

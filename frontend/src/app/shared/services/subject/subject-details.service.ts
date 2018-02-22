@@ -63,15 +63,4 @@ export class SubjectDetailsService {
         return Observable.of(error);
       });
   }
-
-  public saveSubject(subject: Subject): Observable<number> {
-    return this._http
-      .put(`${this.url}/${subject.subjectId}`, subject, {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
-  }
 }

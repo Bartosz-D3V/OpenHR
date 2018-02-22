@@ -1,7 +1,6 @@
 package org.openhr.common.domain.subject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.openhr.application.user.domain.User;
@@ -71,7 +70,6 @@ public abstract class Subject implements Serializable {
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
   private HrInformation hrInformation;
 
-  @JsonIgnore
   @Enumerated(EnumType.STRING)
   private Role role;
 

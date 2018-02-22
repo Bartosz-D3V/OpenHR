@@ -13,6 +13,7 @@ import { EmployeesService } from './service/employees.service';
 import { EmployeesComponent } from './employees.component';
 import { EmployeeData } from './employee-data';
 import { Employee } from '../../../../shared/domain/subject/employee';
+import { Role } from '../../../../shared/domain/subject/role';
 
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
@@ -104,7 +105,9 @@ describe('EmployeesComponent', () => {
   it('simplifyEmployeeObject method should create simplified object from Employee object', () => {
     let result: EmployeeData;
     let employee: Employee;
-    employee = new Employee('John', 'Xavier', null, null, new EmployeeInformation(null, 'Senior Tester', null, null, null), null);
+    employee = new Employee('John', 'Xavier', null, null,
+      new EmployeeInformation(null, 'Senior Tester', null, null, null), null,
+      Role.EMPLOYEE);
     employee.subjectId = 1;
     result = component.simplifyEmployeeObject(employee);
 
