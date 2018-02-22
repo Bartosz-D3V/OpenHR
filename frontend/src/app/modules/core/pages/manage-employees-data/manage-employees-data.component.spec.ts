@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatNativeDateModule, MatOptionModule, MatToolbarModule
+  MatNativeDateModule, MatOptionModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,6 +18,7 @@ import { ErrorResolverService } from '../../../../shared/services/error-resolver
 import { Employee } from '../../../../shared/domain/subject/employee';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 import { ManageEmployeesDataComponent } from './manage-employees-data.component';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 
 describe('ManageEmployeesDataComponent', () => {
   let component: ManageEmployeesDataComponent;
@@ -82,8 +83,8 @@ describe('ManageEmployeesDataComponent', () => {
   });
 
   describe('autocomplete methods', () => {
-    const employee1: Employee = new Employee('Jack', 'Sparrow', null, null, null, null, null);
-    const employee2: Employee = new Employee('Donnie', 'Darko', null, null, null, null, null);
+    const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, null), null, null, null, null, null);
+    const employee2: Employee = new Employee(new PersonalInformation('Donnie', 'Darko', null, null), null, null, null, null, null);
     const mockEmployees: Array<Employee> = [employee1, employee2];
 
     it('filterEmployees method should filter an array by last name of the employee', () => {

@@ -62,7 +62,7 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   simplifyEmployeeObject(employee: Employee): EmployeeData {
-    const fullName: string = employee.firstName + ' ' + employee.lastName;
+    const fullName = `${employee.personalInformation.firstName} ${employee.personalInformation.lastName}`;
     return new EmployeeDataObject(employee.subjectId, fullName, employee.employeeInformation.position);
   }
 }

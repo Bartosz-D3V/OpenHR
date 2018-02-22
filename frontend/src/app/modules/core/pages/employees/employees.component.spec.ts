@@ -14,6 +14,7 @@ import { EmployeesComponent } from './employees.component';
 import { EmployeeData } from './employee-data';
 import { Employee } from '../../../../shared/domain/subject/employee';
 import { Role } from '../../../../shared/domain/subject/role';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
@@ -82,8 +83,9 @@ describe('EmployeesComponent', () => {
   it('simplifyEmployeeArray method should convert array of Employee objects into array of EmployeeData object', () => {
     spyOn(component, 'simplifyEmployeeObject').and.callThrough();
     const mockArray: Array<Employee> = [];
-    const mockEmployee1 = new Employee('Jack', 'Strong', null, null, new EmployeeInformation(null, 'Spy', null, null, null), null, null);
-    const mockEmployee2 = new Employee('Mikolaj', 'Kopernik', null, null,
+    const mockEmployee1 = new Employee(new PersonalInformation('Jack', 'Strong', null, null), null,
+      new EmployeeInformation(null, 'Spy', null, null, null), null, null);
+    const mockEmployee2 = new Employee(new PersonalInformation('Mikolaj', 'Kopernik', null, null), null,
       new EmployeeInformation(null, 'Astronomic', null, null, null), null, null);
     mockEmployee1.subjectId = 1;
     mockEmployee2.subjectId = 2;
@@ -105,7 +107,7 @@ describe('EmployeesComponent', () => {
   it('simplifyEmployeeObject method should create simplified object from Employee object', () => {
     let result: EmployeeData;
     let employee: Employee;
-    employee = new Employee('John', 'Xavier', null, null,
+    employee = new Employee(new PersonalInformation('John', 'Xavier', null, null), null,
       new EmployeeInformation(null, 'Senior Tester', null, null, null), null,
       Role.EMPLOYEE);
     employee.subjectId = 1;

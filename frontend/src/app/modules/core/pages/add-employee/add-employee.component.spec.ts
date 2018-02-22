@@ -29,13 +29,13 @@ import { Role } from '../../../../shared/domain/subject/role';
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
   let fixture: ComponentFixture<AddEmployeeComponent>;
-  const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
+  const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core',
     '2020-02-08', '2020-02-08');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
   let subjectDetailsService: SubjectDetailsService;
 

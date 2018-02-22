@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -65,14 +66,14 @@ public class EmployeeDAOTest {
     session.save(mockEmployee);
     session.flush();
 
-    mockEmployee.setLastName("UpdatedLastName");
+    mockEmployee.getPersonalInformation().setLastName("UpdatedLastName");
     final Employee employee = employeeDAO.updateEmployee(mockEmployee.getSubjectId(), mockEmployee);
     final Employee savedEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertNotNull(employee);
     assertNotNull(savedEmployee);
-    assertEquals(mockEmployee.getLastName(), employee.getLastName());
-    assertEquals(mockEmployee.getLastName(), savedEmployee.getLastName());
+    assertEquals(mockEmployee.getPersonalInformation(), employee.getPersonalInformation());
+    assertEquals(mockEmployee.getPersonalInformation(), savedEmployee.getPersonalInformation());
   }
 
   @Test
@@ -93,13 +94,13 @@ public class EmployeeDAOTest {
 
   private static Manager getMockManager() {
     final String randomUsername = UUID.randomUUID().toString().subSequence(0, 19).toString();
-    return new Manager("John", "Xavier", new PersonalInformation(),
-      new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User(randomUsername, ""));
+    return new Manager(new PersonalInformation("John", "Black", "Alex", LocalDate.now()), new ContactInformation(), new EmployeeInformation(),
+      new HrInformation(), new User(randomUsername, ""));
   }
 
   private static Employee getMockEmployee() {
     final String randomUsername = UUID.randomUUID().toString().subSequence(0, 19).toString();
-    return new Employee("John", "Xavier", new PersonalInformation(),
+    return new Employee(new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
       new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User(randomUsername, ""));
   }
 }

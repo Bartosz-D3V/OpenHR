@@ -20,10 +20,9 @@ public class Manager extends Subject implements Serializable {
     super();
   }
 
-  public Manager(final String firstName, final String lastName, final PersonalInformation personalInformation,
-                 final ContactInformation contactInformation, final EmployeeInformation employeeInformation,
-                 final HrInformation hrInformation, final User user) {
-    super(firstName, lastName, personalInformation, contactInformation, employeeInformation, hrInformation, user);
+  public Manager(final PersonalInformation personalInformation, final ContactInformation contactInformation,
+                 final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
+    super(personalInformation, contactInformation, employeeInformation, hrInformation, user);
   }
 
   public Set<Employee> getEmployees() {

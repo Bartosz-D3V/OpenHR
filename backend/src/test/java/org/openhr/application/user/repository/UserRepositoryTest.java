@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -103,10 +104,8 @@ public class UserRepositoryTest {
   public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
     final User mockUser1 = new User("Kopernik", "password");
     final Subject subject = new Employee();
-    subject.setFirstName("Mikolaj");
-    subject.setLastName("Kopernik");
+    subject.setPersonalInformation(new PersonalInformation("John", "Black", "Alex", LocalDate.now()));
     subject.setUser(mockUser1);
-    subject.setPersonalInformation(new PersonalInformation());
     subject.setContactInformation(new ContactInformation());
     subject.setEmployeeInformation(new EmployeeInformation());
     subject.setHrInformation(new HrInformation());

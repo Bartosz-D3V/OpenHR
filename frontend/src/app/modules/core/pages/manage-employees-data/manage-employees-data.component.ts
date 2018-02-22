@@ -3,11 +3,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import { map, startWith } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { Employee } from '../../../../shared/domain/subject/employee';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
@@ -17,11 +19,13 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
   providers: [
     ManageEmployeesDataService,
     SubjectDetailsService,
+    ResponsiveHelperService,
   ],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
   private $subject: ISubscription;
+  stepNumber = 0;
   employees: Array<Employee>;
   subject: Subject;
   filteredEmployees: Observable<Array<Subject>>;
@@ -30,11 +34,11 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _subjectService: SubjectDetailsService,
+              private _responsiveHelper: ResponsiveHelperService,
               private _fb: FormBuilder) {
   }
 
   ngOnInit() {
-    this.constructForm();
     this.fetchEmployees();
   }
 
@@ -42,24 +46,36 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     this.$employees.unsubscribe();
   }
 
+  setStep(stepNumber: number): void {
+    this.stepNumber = stepNumber;
+  }
+
+  nextStep(): void {
+    this.stepNumber++;
+  }
+
+  prevStep(): void {
+    this.stepNumber--;
+  }
+
   private constructForm(): void {
     this.employeeForm = this._fb.group({
       personalInformation: this._fb.group({
         firstName: [Validators.required],
-        lastName: [Validators.required],
         middleName: [],
+        lastName: [Validators.required],
         dob: [Validators.required],
         position: [],
       }),
       contactInformation: this._fb.group({
-        email: [
-          Validators.required,
-          Validators.pattern(RegularExpressions.EMAIL)],
         telephone: [
           Validators.required,
           Validators.pattern(RegularExpressions.NUMBERS_ONLY),
           Validators.minLength(7),
           Validators.maxLength(11)],
+        email: [
+          Validators.required,
+          Validators.pattern(RegularExpressions.EMAIL)],
         firstLineAddress: [],
         secondLineAddress: [],
         thirdLineAddress: [],
@@ -90,6 +106,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .valueChanges
       .pipe(
         startWith(''),
+        map(lastName => typeof lastName === 'string' ? lastName : ''),
         map(employee => employee ? this.filterEmployees(employees, employee) : employees.slice())
       );
     return this.filteredEmployees;
@@ -97,7 +114,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
     return employees.filter(employee =>
-      employee.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+      employee.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   fetchEmployees(): void {
@@ -109,6 +126,16 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       });
   }
 
+  displayFullName(subject: Subject): string | undefined {
+    return subject && subject.personalInformation ?
+      `${subject.personalInformation.firstName} ${subject.personalInformation.lastName}` : undefined;
+  }
+
+  displaySubject($event: MatAutocompleteSelectedEvent): void {
+    this.subject = $event.option.value;
+    this.constructForm();
+  }
+
   fetchSubject(subjectId: number): void {
     this.$subject = this._subjectService
       .getSubjectById(subjectId)
@@ -117,5 +144,13 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   save(): void {
 
+  }
+
+  isMobile(): boolean {
+    return this._responsiveHelper.isMobile();
+  }
+
+  isValid(): boolean {
+    return true;
   }
 }

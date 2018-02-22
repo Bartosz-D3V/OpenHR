@@ -18,10 +18,9 @@ public class Employee extends Subject implements Serializable {
     super();
   }
 
-  public Employee(final String firstName, final String lastName, final PersonalInformation personalInformation,
-                  final ContactInformation contactInformation, final EmployeeInformation employeeInformation,
-                  final HrInformation hrInformation, final User user) {
-    super(firstName, lastName, personalInformation, contactInformation, employeeInformation, hrInformation, user);
+  public Employee(final PersonalInformation personalInformation, final ContactInformation contactInformation,
+                  final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
+    super(personalInformation, contactInformation, employeeInformation, hrInformation, user);
   }
 
   public Manager getManager() {

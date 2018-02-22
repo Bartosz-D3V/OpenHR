@@ -18,8 +18,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -43,16 +41,6 @@ public abstract class Subject implements Serializable {
   )
   @GeneratedValue(generator = "ID_GENERATOR")
   private long subjectId;
-
-  @NotNull(message = "First name cannot be empty")
-  @Size(max = 255, message = "First name cannot be greater than {max} characters long")
-  @Column(name = "FIRST_NAME")
-  private String firstName;
-
-  @NotNull(message = "Last name cannot be empty")
-  @Size(max = 255, message = "Last name cannot be greater than {max} characters long")
-  @Column(name = "LAST_NAME")
-  private String lastName;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
   @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -81,12 +69,9 @@ public abstract class Subject implements Serializable {
     super();
   }
 
-  public Subject(final String firstName, final String lastName, final PersonalInformation personalInformation,
-                 final ContactInformation contactInformation, final EmployeeInformation employeeInformation,
-                 final HrInformation hrInformation, final User user) {
+  public Subject(final PersonalInformation personalInformation, final ContactInformation contactInformation,
+                 final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
     super();
-    this.firstName = firstName;
-    this.lastName = lastName;
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;
@@ -100,22 +85,6 @@ public abstract class Subject implements Serializable {
 
   public void setSubjectId(final long subjectId) {
     this.subjectId = subjectId;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(final String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(final String lastName) {
-    this.lastName = lastName;
   }
 
   public PersonalInformation getPersonalInformation() {

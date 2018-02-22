@@ -1,7 +1,7 @@
 {
-  "firstName": "John",
-  "lastName": "Kendell",
   "personalInformation": {
+    "firstName": "John",
+    "lastName": "Kendell",
     "middleName": "Xavier",
     "dateOfBirth": null
   },
