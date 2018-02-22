@@ -5,11 +5,12 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { NAMED_DATE } from '../../../../config/datepicker-format';
-import { ConfigService } from '../../../../shared/services/config/config.service';
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
+import { PersonalDetailsService } from './service/personal-details.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -19,8 +20,9 @@ import { Subject } from '../../../../shared/domain/subject/subject';
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
     SubjectDetailsService,
-    ConfigService,
+    NotificationService,
     ResponsiveHelperService,
+    PersonalDetailsService,
   ],
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
@@ -104,8 +106,9 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   public subject: Subject;
 
   constructor(private _subjectDetailsService: SubjectDetailsService,
-              private _configService: ConfigService,
-              private _responsiveHelper: ResponsiveHelperService) {
+              private _personalDetailsService: PersonalDetailsService,
+              private _responsiveHelper: ResponsiveHelperService,
+              private _notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -119,9 +122,12 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
   save(): void {
     if (this.isValid()) {
-      this._subjectDetailsService
+      this._personalDetailsService
         .saveSubject(this.subject)
-        .subscribe();
+        .subscribe((result: Subject) => {
+          const msg = `Details of user with id ${result.subjectId} have been updated`;
+          this._notificationService.openSnackBar(msg, 'OK');
+        });
     }
   }
 

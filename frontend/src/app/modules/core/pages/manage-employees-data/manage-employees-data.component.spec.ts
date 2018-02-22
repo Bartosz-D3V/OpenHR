@@ -82,8 +82,8 @@ describe('ManageEmployeesDataComponent', () => {
   });
 
   describe('autocomplete methods', () => {
-    const employee1: Employee = new Employee('Jack', 'Sparrow', null, null, null, null);
-    const employee2: Employee = new Employee('Donnie', 'Darko', null, null, null, null);
+    const employee1: Employee = new Employee('Jack', 'Sparrow', null, null, null, null, null);
+    const employee2: Employee = new Employee('Donnie', 'Darko', null, null, null, null, null);
     const mockEmployees: Array<Employee> = [employee1, employee2];
 
     it('filterEmployees method should filter an array by last name of the employee', () => {

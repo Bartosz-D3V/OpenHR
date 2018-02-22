@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import {
   MatCheckboxModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
   MatToolbarModule,
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { Observable } from 'rxjs/Observable';
+import Spy = jasmine.Spy;
 
 import { Address } from '../../../../shared/domain/subject/address';
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
@@ -20,13 +19,12 @@ import { Subject } from '../../../../shared/domain/subject/subject';
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { Employee } from '../../../../shared/domain/subject/employee';
 import { AddEmployeeComponent } from './add-employee.component';
-import Spy = jasmine.Spy;
+import { Role } from '../../../../shared/domain/subject/role';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -38,17 +36,8 @@ describe('AddEmployeeComponent', () => {
     '2020-02-08', '2020-02-08');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation, mockHrInformation);
-  const mockContractTypes: Array<string> = ['Full time', 'Part time'];
-
+    mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
   let subjectDetailsService: SubjectDetailsService;
-
-  @Injectable()
-  class FakeConfigService {
-    public getContractTypes(): any {
-      return Observable.of(mockContractTypes);
-    }
-  }
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -92,9 +81,6 @@ describe('AddEmployeeComponent', () => {
       ],
       providers: [
         JwtHelperService,
-        {
-          provide: ConfigService, useClass: FakeConfigService,
-        },
         {
           provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
         },

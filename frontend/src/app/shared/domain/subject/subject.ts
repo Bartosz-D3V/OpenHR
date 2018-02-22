@@ -2,6 +2,7 @@ import { PersonalInformation } from './personal-information';
 import { ContactInformation } from './contact-information';
 import { EmployeeInformation } from './employee-information';
 import { HrInformation } from './hr-information';
+import { Role } from './role';
 
 export abstract class Subject {
   public subjectId: number;
@@ -12,10 +13,11 @@ export abstract class Subject {
   public contactInformation: ContactInformation;
   public employeeInformation: EmployeeInformation;
   public hrInformation: HrInformation;
+  public role: Role;
 
   constructor(firstName: string, lastName: string, personalInformation: PersonalInformation,
               contactInformation: ContactInformation, employeeInformation: EmployeeInformation,
-              hrInformation: HrInformation) {
+              hrInformation: HrInformation, role: Role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.fullName = firstName + ' ' + lastName;
@@ -23,5 +25,6 @@ export abstract class Subject {
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;
     this.hrInformation = hrInformation;
+    this.role = role;
   }
 }
