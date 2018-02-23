@@ -11,9 +11,9 @@ describe('EmployeesService', () => {
   let http: HttpTestingController;
   let service: EmployeesService;
   let errorResolverService: ErrorResolverService;
-  const employee1: Employee = new Employee(null, null, null, null, null, null);
+  const employee1: Employee = new Employee(null, null, null, null, null);
   employee1.subjectId = 1;
-  const employee2: Employee = new Employee(null, null, null, null, null, null);
+  const employee2: Employee = new Employee(null, null, null, null, null);
   employee2.subjectId = 2;
   const mockEmployees: Array<Employee> = [employee1, employee2];
 
