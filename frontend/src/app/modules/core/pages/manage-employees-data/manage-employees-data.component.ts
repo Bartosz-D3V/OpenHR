@@ -14,9 +14,9 @@ import { PersonalInformation } from '../../../../shared/domain/subject/personal-
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
-import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 import { EmployeeService } from '../../../../shared/services/employee/employee.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
   selector: 'app-manage-employees-data',
@@ -33,7 +33,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
   stepNumber = 0;
   employees: Array<Employee>;
-  subject: Subject;
+  subject: Employee;
   filteredEmployees: Observable<Array<Subject>>;
   employeeForm: FormGroup;
   employeesCtrl: FormControl = new FormControl();
@@ -66,7 +66,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     this.stepNumber--;
   }
 
-  private constructForm(): void {
+  constructForm(): void {
     const perInfo: PersonalInformation = this.subject.personalInformation;
     const contactInfo: ContactInformation = this.subject.contactInformation;
     const employeeInfo: EmployeeInformation = this.subject.employeeInformation;
@@ -78,32 +78,43 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
         middleName: [perInfo.middleName],
         lastName: [perInfo.lastName,
           Validators.required],
-        dob: [perInfo.dateOfBirth,
+        dateOfBirth: [perInfo.dateOfBirth,
           Validators.required],
       }),
       contactInformation: this._fb.group({
         telephone: [contactInfo.telephone,
-          Validators.required,
-          Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-          Validators.minLength(7),
-          Validators.maxLength(11)],
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(RegularExpressions.NUMBERS_ONLY),
+            Validators.minLength(7),
+            Validators.maxLength(11),
+          ])],
         email: [contactInfo.email,
-          Validators.required,
-          Validators.pattern(RegularExpressions.EMAIL)],
-        firstLineAddress: [contactInfo.address.firstLineAddress],
-        secondLineAddress: [contactInfo.address.secondLineAddress],
-        thirdLineAddress: [contactInfo.address.thirdLineAddress],
-        postcode: [contactInfo.address.postcode,
-          Validators.required,
-          Validators.pattern(RegularExpressions.UK_POSTCODE)],
-        city: [contactInfo.address.city],
-        country: [contactInfo.address.country],
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(RegularExpressions.EMAIL),
+          ])],
+        address: this._fb.group({
+          firstLineAddress: [contactInfo.address.firstLineAddress],
+          secondLineAddress: [contactInfo.address.secondLineAddress],
+          thirdLineAddress: [contactInfo.address.thirdLineAddress],
+          postcode: [contactInfo.address.postcode,
+            Validators.compose([
+              Validators.required,
+              Validators.pattern(RegularExpressions.UK_POSTCODE),
+            ])],
+          city: [contactInfo.address.city],
+          country: [contactInfo.address.country],
+        }),
       }),
       employeeInformation: this._fb.group({
-        nin: [employeeInfo.nationalInsuranceNumber,
-          Validators.required,
-          Validators.pattern(RegularExpressions.NIN)],
+        nationalInsuranceNumber: [employeeInfo.nationalInsuranceNumber,
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(RegularExpressions.NIN),
+          ])],
         position: [employeeInfo.position],
+        department: [employeeInfo.department],
         employeeNumber: [employeeInfo.employeeNumber,
           Validators.required],
         startDate: [employeeInfo.startDate],
@@ -114,8 +125,9 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
           Validators.min(0)],
         usedAllowance: [hrInfo.usedAllowance,
           Validators.min(0)],
-        manager: [Validators.required],
+        // manager: [''],
       }),
+      role: [this.subject.role],
     });
   }
 
@@ -144,22 +156,23 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       });
   }
 
-  displayFullName(subject: Subject): string | undefined {
+  displayFullName(subject?: Subject): string | undefined {
     return subject && subject.personalInformation ?
       `${subject.personalInformation.firstName} ${subject.personalInformation.lastName}` : undefined;
   }
 
   displaySubject($event: MatAutocompleteSelectedEvent): void {
-    this.subject = $event.option.value;
+    this.subject = <Employee> $event.option.value;
     this.constructForm();
   }
 
   save(): void {
-    this.subject = this.employeeForm.value;
-    this._employeeService.updateEmployee(this.subject)
+    const updatedSubject: Employee = <Employee> this.employeeForm.value;
+    this._employeeService.updateEmployee(updatedSubject)
       .subscribe((res: Employee) => {
         const msg = `Employee with id ${res.subjectId} has been updated`;
         this._notificationService.openSnackBar(msg, 'OK');
+        this.subject = res;
       }, (err: any) => {
         this._errorResolver.createAlert(err);
       });

@@ -110,47 +110,50 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-1st-line-address"></label>
-            <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
-                   id="employee-details-1st-line-address" name="firstLineAddress">
-          </mat-form-field>
+          <div formGroupName="address">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-1st-line-address"></label>
+              <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
+                     id="employee-details-1st-line-address" name="firstLineAddress">
+            </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-2nd-line-address"></label>
-            <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddress"
-                   id="employee-details-2nd-line-address" name="secondLineAddress">
-          </mat-form-field>
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-2nd-line-address"></label>
+              <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddress"
+                     id="employee-details-2nd-line-address" name="secondLineAddress">
+            </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-3rd-line-address"></label>
-            <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
-                   id="employee-details-3rd-line-address" name="thirdLineAddress">
-          </mat-form-field>
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-3rd-line-address"></label>
+              <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
+                     id="employee-details-3rd-line-address" name="thirdLineAddress">
+            </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-postcode"></label>
-            <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
-                   id="employee-details-postcode" name="postcode">
-            <mat-error *ngIf="employeeForm.get('contactInformation.postcode').hasError('pattern')">
-              Please enter a valid postcode
-            </mat-error>
-            <mat-error *ngIf="employeeForm.get('contactInformation.postcode').hasError('required')">
-              Postcode is required
-            </mat-error>
-          </mat-form-field>
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-postcode"></label>
+              <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
+                     id="employee-details-postcode" name="postcode">
+              <mat-error *ngIf="employeeForm.get('contactInformation.postcode').hasError('pattern')">
+                Please enter a valid postcode
+              </mat-error>
+              <mat-error *ngIf="employeeForm.get('contactInformation.postcode').hasError('required')">
+                Postcode is required
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-city"></label>
-            <input type="text" matInput placeholder="City" formControlName="city"
-                   id="employee-details-city" name="city">
-          </mat-form-field>
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-city"></label>
+              <input type="text" matInput placeholder="City" formControlName="city"
+                     id="employee-details-city" name="city">
+            </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-country"></label>
-            <input type="text" matInput placeholder="Country" formControlName="country"
-                   id="employee-details-country" name="country">
-          </mat-form-field>
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-country"></label>
+              <input type="text" matInput placeholder="Country" formControlName="country"
+                     id="employee-details-country" name="country">
+            </mat-form-field>
+          </div>
+
         </form>
         <mat-action-row>
           <button mat-button color="warn" (click)="prevStep()">Previous</button>
@@ -174,10 +177,10 @@
             <label for="employee-details-nin"></label>
             <input type="text" matInput placeholder="National Insurance Number" formControlName="nin"
                    id="employee-details-nin" name="nin">
-            <mat-error *ngIf="employeeForm.get('employeeInformation.nin').hasError('required')">
+            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
               NIN is required
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('employeeInformation.nin').hasError('pattern')">
+            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('pattern')">
               NIN is not correct
             </mat-error>
           </mat-form-field>
