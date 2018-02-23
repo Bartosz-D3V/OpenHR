@@ -51,7 +51,6 @@ describe('PersonalDetailsService', () => {
     http = TestBed.get(HttpTestingController);
     personalDetailsService = TestBed.get(SubjectDetailsService);
     errorResolverService = TestBed.get(ErrorResolverService);
-    spyOn(console, 'log');
   }));
 
   it('should be created', () => {
