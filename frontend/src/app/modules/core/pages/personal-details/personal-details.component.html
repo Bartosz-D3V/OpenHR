@@ -183,10 +183,10 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <label for="personal-details-employeeId"></label>
+          <label for="personal-details-employee-number"></label>
           <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
-                 id="personal-details-employeeId" name="employeeId"
-                 [(ngModel)]="subject.employeeInformation.employeeId">
+                 id="personal-details-employee-number" name="employeeNumber"
+                 [(ngModel)]="subject.employeeInformation.employeeNumber">
           <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
             Employee ID is required
           </mat-error>

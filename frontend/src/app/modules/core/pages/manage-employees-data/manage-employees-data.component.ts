@@ -6,11 +6,17 @@ import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { Employee } from '../../../../shared/domain/subject/employee';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
+import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
+import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { EmployeeService } from '../../../../shared/services/employee/employee.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 
 @Component({
   selector: 'app-manage-employees-data',
@@ -18,13 +24,13 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
   styleUrls: ['./manage-employees-data.component.scss'],
   providers: [
     ManageEmployeesDataService,
-    SubjectDetailsService,
+    EmployeeService,
     ResponsiveHelperService,
+    NotificationService,
   ],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
-  private $subject: ISubscription;
   stepNumber = 0;
   employees: Array<Employee>;
   subject: Subject;
@@ -33,8 +39,10 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   employeesCtrl: FormControl = new FormControl();
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
-              private _subjectService: SubjectDetailsService,
+              private _employeeService: EmployeeService,
               private _responsiveHelper: ResponsiveHelperService,
+              private _notificationService: NotificationService,
+              private _errorResolver: ErrorResolverService,
               private _fb: FormBuilder) {
   }
 
@@ -59,43 +67,53 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   private constructForm(): void {
+    const perInfo: PersonalInformation = this.subject.personalInformation;
+    const contactInfo: ContactInformation = this.subject.contactInformation;
+    const employeeInfo: EmployeeInformation = this.subject.employeeInformation;
+    const hrInfo: HrInformation = this.subject.hrInformation;
     this.employeeForm = this._fb.group({
       personalInformation: this._fb.group({
-        firstName: [Validators.required],
-        middleName: [],
-        lastName: [Validators.required],
-        dob: [Validators.required],
-        position: [],
+        firstName: [perInfo.firstName,
+          Validators.required],
+        middleName: [perInfo.middleName],
+        lastName: [perInfo.lastName,
+          Validators.required],
+        dob: [perInfo.dateOfBirth,
+          Validators.required],
       }),
       contactInformation: this._fb.group({
-        telephone: [
+        telephone: [contactInfo.telephone,
           Validators.required,
           Validators.pattern(RegularExpressions.NUMBERS_ONLY),
           Validators.minLength(7),
           Validators.maxLength(11)],
-        email: [
+        email: [contactInfo.email,
           Validators.required,
           Validators.pattern(RegularExpressions.EMAIL)],
-        firstLineAddress: [],
-        secondLineAddress: [],
-        thirdLineAddress: [],
-        postcode: [
+        firstLineAddress: [contactInfo.address.firstLineAddress],
+        secondLineAddress: [contactInfo.address.secondLineAddress],
+        thirdLineAddress: [contactInfo.address.thirdLineAddress],
+        postcode: [contactInfo.address.postcode,
           Validators.required,
           Validators.pattern(RegularExpressions.UK_POSTCODE)],
-        city: [],
-        country: [],
+        city: [contactInfo.address.city],
+        country: [contactInfo.address.country],
       }),
       employeeInformation: this._fb.group({
-        nin: [
+        nin: [employeeInfo.nationalInsuranceNumber,
           Validators.required,
           Validators.pattern(RegularExpressions.NIN)],
-        employeeId: [Validators.required],
-        startDate: [],
-        endDate: [],
+        position: [employeeInfo.position],
+        employeeNumber: [employeeInfo.employeeNumber,
+          Validators.required],
+        startDate: [employeeInfo.startDate],
+        endDate: [employeeInfo.endDate],
       }),
       hrInformation: this._fb.group({
-        allowance: [Validators.min(0)],
-        usedAllowance: [Validators.min(0)],
+        allowance: [hrInfo.allowance,
+          Validators.min(0)],
+        usedAllowance: [hrInfo.usedAllowance,
+          Validators.min(0)],
         manager: [Validators.required],
       }),
     });
@@ -114,7 +132,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
     return employees.filter(employee =>
-      employee.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+    employee.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   fetchEmployees(): void {
@@ -136,14 +154,15 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     this.constructForm();
   }
 
-  fetchSubject(subjectId: number): void {
-    this.$subject = this._subjectService
-      .getSubjectById(subjectId)
-      .subscribe((result: Subject) => this.subject = result);
-  }
-
   save(): void {
-
+    this.subject = this.employeeForm.value;
+    this._employeeService.updateEmployee(this.subject)
+      .subscribe((res: Employee) => {
+        const msg = `Employee with id ${res.subjectId} has been updated`;
+        this._notificationService.openSnackBar(msg, 'OK');
+      }, (err: any) => {
+        this._errorResolver.createAlert(err);
+      });
   }
 
   isMobile(): boolean {
@@ -151,6 +170,6 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   isValid(): boolean {
-    return true;
+    return this.employeeForm.valid;
   }
 }

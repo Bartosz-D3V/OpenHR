@@ -32,7 +32,7 @@ describe('AddEmployeeComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core',
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'Core', 'WOR923',
     '2020-02-08', '2020-02-08');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,

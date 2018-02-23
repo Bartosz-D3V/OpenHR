@@ -6,19 +6,19 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatNativeDateModule, MatOptionModule, MatToolbarModule,
+  MatNativeDateModule, MatOptionModule, MatSnackBarModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { Employee } from '../../../../shared/domain/subject/employee';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
+import { EmployeeService } from '../../../../shared/services/employee/employee.service';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 import { ManageEmployeesDataComponent } from './manage-employees-data.component';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 
 describe('ManageEmployeesDataComponent', () => {
   let component: ManageEmployeesDataComponent;
@@ -32,9 +32,9 @@ describe('ManageEmployeesDataComponent', () => {
   }
 
   @Injectable()
-  class FakeSubjectDetailsService {
-    getSubjectById(subjectId: number): Observable<any> {
-      return Observable.of(null);
+  class FakeEmployeeService {
+    updateEmployee(employee: Employee): Observable<Employee> {
+      return Observable.of(employee);
     }
   }
 
@@ -61,12 +61,13 @@ describe('ManageEmployeesDataComponent', () => {
         MatIconModule,
         MatAutocompleteModule,
         MatOptionModule,
+        MatSnackBarModule,
       ],
       providers: [
         JwtHelperService,
         ErrorResolverService,
         {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},
-        {provide: SubjectDetailsService, useClass: FakeSubjectDetailsService},
+        {provide: EmployeeService, useClass: FakeEmployeeService},
       ],
     })
       .compileComponents();

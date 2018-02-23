@@ -35,7 +35,7 @@ describe('PersonalDetailsComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', null, 'Xavier', new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '2020-02-08',
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'WOR123', '2020-02-08',
     '2020-02-08', '123AS');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
   const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,
@@ -368,7 +368,7 @@ describe('PersonalDetailsComponent', () => {
 
   });
 
-  describe('EmployeeID validator', () => {
+  describe('employeeNumber validator', () => {
     let employeeIdFormControl: AbstractControl;
 
     beforeEach(() => {
