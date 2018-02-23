@@ -128,12 +128,12 @@ describe('ManageEmployeesDataComponent', () => {
     const mockEmployees: Array<Employee> = [employee1, employee2];
 
     it('filterEmployees method should filter an array by last name of the employee', () => {
-      let filteredEmployees: Array<Employee> = component.filterEmployees(mockEmployees, 'Sp');
+      let filteredEmployees: Array<Employee> = component.filterSubjects(mockEmployees, 'Sp');
 
       expect(filteredEmployees.length).toEqual(1);
       expect(filteredEmployees[0]).toEqual(employee1);
 
-      filteredEmployees = component.filterEmployees(mockEmployees, 'Da');
+      filteredEmployees = component.filterSubjects(mockEmployees, 'Da');
 
       expect(filteredEmployees.length).toEqual(1);
       expect(filteredEmployees[0]).toEqual(employee2);
@@ -143,7 +143,7 @@ describe('ManageEmployeesDataComponent', () => {
       let result: Array<Employee>;
 
       it('should not filter results if input is empty', () => {
-        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceSubjects(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
         component.employeesCtrl.setValue('');
@@ -153,7 +153,7 @@ describe('ManageEmployeesDataComponent', () => {
       });
 
       it('should filter results accordingly to input value', () => {
-        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceSubjects(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
         component.employeesCtrl.setValue('Dar');

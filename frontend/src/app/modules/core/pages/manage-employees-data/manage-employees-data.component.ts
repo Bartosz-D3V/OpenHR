@@ -16,7 +16,9 @@ import { EmployeeInformation } from '../../../../shared/domain/subject/employee-
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { EmployeeService } from '../../../../shared/services/employee/employee.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ManagerService } from '../../../../shared/services/manager/manager.service';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { Manager } from '../../../../shared/domain/subject/manager';
 
 @Component({
   selector: 'app-manage-employees-data',
@@ -25,21 +27,26 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
   providers: [
     ManageEmployeesDataService,
     EmployeeService,
+    ManagerService,
     ResponsiveHelperService,
     NotificationService,
   ],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
-  stepNumber = 0;
-  employees: Array<Employee>;
-  subject: Employee;
-  filteredEmployees: Observable<Array<Subject>>;
-  employeeForm: FormGroup;
-  employeesCtrl: FormControl = new FormControl();
+  private $managers: ISubscription;
+  public stepNumber = 0;
+  public employees: Array<Employee>;
+  public managers: Array<Manager>;
+  public subject: Employee;
+  public filteredEmployees: Observable<Array<Employee>>;
+  public filteredManagers: Observable<Array<Manager>>;
+  public employeeForm: FormGroup;
+  public employeesCtrl: FormControl = new FormControl();
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _employeeService: EmployeeService,
+              private _managerService: ManagerService,
               private _responsiveHelper: ResponsiveHelperService,
               private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService,
@@ -52,26 +59,28 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$employees.unsubscribe();
+    this.$managers.unsubscribe();
   }
 
-  setStep(stepNumber: number): void {
+  public setStep(stepNumber: number): void {
     this.stepNumber = stepNumber;
   }
 
-  nextStep(): void {
+  public nextStep(): void {
     this.stepNumber++;
   }
 
-  prevStep(): void {
+  public prevStep(): void {
     this.stepNumber--;
   }
 
-  constructForm(): void {
+  public constructForm(): void {
     const perInfo: PersonalInformation = this.subject.personalInformation;
     const contactInfo: ContactInformation = this.subject.contactInformation;
     const employeeInfo: EmployeeInformation = this.subject.employeeInformation;
     const hrInfo: HrInformation = this.subject.hrInformation;
     this.employeeForm = this._fb.group({
+      subjectId: [this.subject.subjectId],
       personalInformation: this._fb.group({
         firstName: [perInfo.firstName,
           Validators.required],
@@ -131,42 +140,55 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     });
   }
 
-  reduceEmployees(employees: Array<Employee>): Observable<Array<Subject>> {
-    this.filteredEmployees = this.employeesCtrl
+  public reduceSubjects(subjects: Array<Subject>): Observable<Array<Subject>> {
+    return this.employeesCtrl
       .valueChanges
       .pipe(
         startWith(''),
         map(lastName => typeof lastName === 'string' ? lastName : ''),
-        map(employee => employee ? this.filterEmployees(employees, employee) : employees.slice())
+        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice()),
       );
-    return this.filteredEmployees;
   }
 
-  filterEmployees(employees: Array<Employee>, lastName: string): Array<Employee> {
-    return employees.filter(employee =>
-    employee.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+  public filterSubjects(subjects: Array<Subject>, lastName: string): Array<Subject> {
+    return subjects.filter(subject =>
+      subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
-  fetchEmployees(): void {
+  public fetchEmployees(): void {
     this.$employees = this._manageEmployeesDataService
       .getEmployees()
       .subscribe((response: Array<Employee>) => {
         this.employees = response;
-        this.reduceEmployees(response);
+        this.filteredEmployees = this.reduceSubjects(response);
+      }, (err: any) => {
+        this._errorResolver.createAlert(err);
       });
   }
 
-  displayFullName(subject?: Subject): string | undefined {
+  public fetchManagers(): void {
+    this.$managers = this._managerService
+      .getManagers()
+      .subscribe((response: Array<Manager>) => {
+        this.managers = response;
+        this.filteredManagers = this.reduceSubjects(response);
+      }, (err: any) => {
+        this._errorResolver.createAlert(err);
+      });
+  }
+
+  public displayFullName(subject?: Subject): string | undefined {
     return subject && subject.personalInformation ?
       `${subject.personalInformation.firstName} ${subject.personalInformation.lastName}` : undefined;
   }
 
-  displaySubject($event: MatAutocompleteSelectedEvent): void {
+  public displaySubject($event: MatAutocompleteSelectedEvent): void {
     this.subject = <Employee> $event.option.value;
     this.constructForm();
+    this.fetchManagers();
   }
 
-  save(): void {
+  public save(): void {
     const updatedSubject: Employee = <Employee> this.employeeForm.value;
     this._employeeService.updateEmployee(updatedSubject)
       .subscribe((res: Employee) => {
@@ -178,11 +200,11 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       });
   }
 
-  isMobile(): boolean {
+  public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
 
-  isValid(): boolean {
+  public isValid(): boolean {
     return this.employeeForm.valid;
   }
 }
