@@ -9,10 +9,13 @@ import { Role } from './role';
 export class Employee extends Subject {
   public manager?: Manager;
 
-  constructor(firstName: string, lastName: string, personalInformation: PersonalInformation,
-              contactInformation: ContactInformation, employeeInformation: EmployeeInformation,
-              hrInformation: HrInformation, role: Role, manager?: Manager) {
-    super(firstName, lastName, personalInformation, contactInformation, employeeInformation, hrInformation, role);
+  constructor(personalInformation: PersonalInformation,
+              contactInformation: ContactInformation,
+              employeeInformation: EmployeeInformation,
+              hrInformation: HrInformation,
+              role: Role,
+              manager?: Manager) {
+    super(personalInformation, contactInformation, employeeInformation, hrInformation, role);
     this.manager = manager;
   }
 }

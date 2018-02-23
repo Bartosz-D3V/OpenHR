@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,11 +28,13 @@ import static org.junit.Assert.assertNotEquals;
 @SpringBootTest
 @Transactional
 public class ManagerDAOTest {
-  private final static Employee mockEmployee1 = new Employee("John", "Xavier", new PersonalInformation(),
+  private final static Employee mockEmployee1 = new Employee(new PersonalInformation(),
     new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("1", ""));
-  private final static Employee mockEmployee2 = new Employee("Alex", "White", new PersonalInformation(),
+  private final static Employee mockEmployee2 = new Employee(
+    new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
     new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("2", ""));
-  private final static Manager mockManager = new Manager("John", "Xavier", new PersonalInformation(),
+  private final static Manager mockManager = new Manager(
+    new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
     new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("3", ""));
 
   @Autowired
@@ -41,7 +44,7 @@ public class ManagerDAOTest {
   private ManagerDAO managerDAO;
 
   @Test
-  public void getManagerShouldReturnManagerById() throws SubjectDoesNotExistException {
+  public void getManagerShouldReturnManagerById() {
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockManager);
     final Manager manager = managerDAO.getManager(mockManager.getSubjectId());
@@ -64,7 +67,8 @@ public class ManagerDAOTest {
 
   @Test
   public void addManagerShouldAddManagerToDB() {
-    final Manager mockManager2 = new Manager("Test", "Test", new PersonalInformation(),
+    final Manager mockManager2 = new Manager(
+      new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
       new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("4", ""));
     managerDAO.addManager(mockManager2);
     final Session session = sessionFactory.getCurrentSession();

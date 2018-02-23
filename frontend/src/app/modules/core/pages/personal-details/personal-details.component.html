@@ -16,7 +16,7 @@
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-first-name"></label>
           <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
-                 id="personal-details-first-name" name="firstName" [(ngModel)]="subject.firstName">
+                 id="personal-details-first-name" name="firstName" [(ngModel)]="subject.personalInformation.firstName">
           <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
             First name is required
           </mat-error>
@@ -32,7 +32,7 @@
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-last-name"></label>
           <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
-                 id="personal-details-last-name" name="lastName" [(ngModel)]="subject.lastName">
+                 id="personal-details-last-name" name="lastName" [(ngModel)]="subject.personalInformation.lastName">
           <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
             Last name is required
           </mat-error>

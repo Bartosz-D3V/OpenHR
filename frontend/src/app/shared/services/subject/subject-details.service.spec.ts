@@ -16,13 +16,13 @@ import { SubjectDetailsService } from './subject-details.service';
 import { Role } from '../../domain/subject/role';
 
 describe('PersonalDetailsService', () => {
-  const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
+  const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
   const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester',
     '2020-02-08', '2020-02-08', '123AS');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Employee('John', 'Xavier', mockPersonalInformation, mockContactInformation,
+  const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,
     mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
   let http: HttpTestingController;
   let personalDetailsService;
@@ -51,7 +51,6 @@ describe('PersonalDetailsService', () => {
     http = TestBed.get(HttpTestingController);
     personalDetailsService = TestBed.get(SubjectDetailsService);
     errorResolverService = TestBed.get(ErrorResolverService);
-    spyOn(console, 'log');
   }));
 
   it('should be created', () => {

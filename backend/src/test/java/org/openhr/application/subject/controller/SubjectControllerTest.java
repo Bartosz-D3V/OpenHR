@@ -47,14 +47,14 @@ public class SubjectControllerTest {
   private final static ErrorInfo mockError = new ErrorInfo(MOCK_URL, mockException);
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
+  private final static PersonalInformation mockPersonalInformation = new PersonalInformation();
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Subject mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User());
+  private final static Subject mockSubject = new Employee(mockPersonalInformation, mockContactInformation,
+    mockEmployeeInformation, mockHrInformation, new User());
 
   @Autowired
   private MockMvc mockMvc;

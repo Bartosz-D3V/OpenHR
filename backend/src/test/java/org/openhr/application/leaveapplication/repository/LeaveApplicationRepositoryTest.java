@@ -10,12 +10,10 @@ import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
-import org.openhr.common.domain.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,8 +33,9 @@ import static org.junit.Assert.assertTrue;
 public class LeaveApplicationRepositoryTest {
   private final static LeaveType leaveType1 = new LeaveType("Holiday", "Annual Leave");
   private final static LeaveType leaveType2 = new LeaveType("Maternity Leave", "One Year Maternity Leave");
-  private final static Manager mockSubject = new Manager("Alex", "White", new PersonalInformation(),
-    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("", ""));
+  private final static Manager mockSubject = new Manager(
+    new PersonalInformation("John", "Black", "Alex", LocalDate.now()), new ContactInformation(),
+    new EmployeeInformation(), new HrInformation(), new User("", ""));
   private static LeaveApplication leaveApplication1 = new LeaveApplication();
   private static LeaveApplication leaveApplication2 = new LeaveApplication();
 

@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
-import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -34,15 +32,15 @@ import static org.junit.Assert.assertNull;
 public class SubjectDAOTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
+  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
   private final static User mockUser = new User("Jhn13", "testPass");
-  private final static Employee mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, mockHrInformation, mockUser);
+  private final static Employee mockSubject = new Employee(mockPersonalInformation, mockContactInformation,
+    mockEmployeeInformation, mockHrInformation, mockUser);
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -74,8 +72,8 @@ public class SubjectDAOTest {
     final Subject actualSubject = subjectDAO.getSubjectDetails(mockSubject.getSubjectId());
 
     assertEquals(mockSubject.getSubjectId(), actualSubject.getSubjectId());
-    assertEquals(mockSubject.getFirstName(), actualSubject.getFirstName());
-    assertEquals(mockSubject.getLastName(), actualSubject.getLastName());
+    assertEquals(mockSubject.getPersonalInformation().getFirstName(), actualSubject.getPersonalInformation().getFirstName());
+    assertEquals(mockSubject.getPersonalInformation().getLastName(), actualSubject.getPersonalInformation().getLastName());
     assertEquals(mockSubject.getPersonalInformation().getMiddleName(),
       actualSubject.getPersonalInformation().getMiddleName());
     assertEquals(mockSubject.getPersonalInformation().getDateOfBirth(),

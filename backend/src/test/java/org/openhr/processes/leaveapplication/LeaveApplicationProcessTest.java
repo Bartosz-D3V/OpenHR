@@ -18,7 +18,6 @@ import org.openhr.application.subject.service.SubjectService;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Manager;
@@ -50,13 +49,13 @@ import static org.mockito.Mockito.when;
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
+  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Manager mockSubject = new Manager("John", "Xavier", mockPersonalInformation,
+  private final static Manager mockSubject = new Manager(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");

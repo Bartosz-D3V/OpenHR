@@ -30,13 +30,13 @@ import static org.junit.Assert.assertEquals;
 public class LeaveApplicationDAOTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", null);
+  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Alex", null, null);
   private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockSubject = new Employee("John", "Xavier", mockPersonalInformation,
+  private final static Employee mockSubject = new Employee(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
