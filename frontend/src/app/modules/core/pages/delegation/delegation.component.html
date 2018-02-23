@@ -14,7 +14,7 @@
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-first-name"></label>
           <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first"
-                 [ngModel]="subject?.firstName">
+                 [ngModel]="subject?.personalInformation?.firstName">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
@@ -26,7 +26,7 @@
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
           <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last"
-                 [ngModel]="subject?.lastName">
+                 [ngModel]="subject?.personalInformation?.lastName">
         </mat-form-field>
       </div>
 
