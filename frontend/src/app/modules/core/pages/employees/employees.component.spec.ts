@@ -84,9 +84,9 @@ describe('EmployeesComponent', () => {
     spyOn(component, 'simplifyEmployeeObject').and.callThrough();
     const mockArray: Array<Employee> = [];
     const mockEmployee1 = new Employee(new PersonalInformation('Jack', 'Strong', null, null), null,
-      new EmployeeInformation(null, 'Spy', null, null, null), null, null);
+      new EmployeeInformation(null, 'Spy', null, null, null, null), null, null);
     const mockEmployee2 = new Employee(new PersonalInformation('Mikolaj', 'Kopernik', null, null), null,
-      new EmployeeInformation(null, 'Astronomic', null, null, null), null, null);
+      new EmployeeInformation(null, 'Astronomic', null, null, null, null), null, null);
     mockEmployee1.subjectId = 1;
     mockEmployee2.subjectId = 2;
     mockArray.push(mockEmployee1);
@@ -108,7 +108,7 @@ describe('EmployeesComponent', () => {
     let result: EmployeeData;
     let employee: Employee;
     employee = new Employee(new PersonalInformation('John', 'Xavier', null, null), null,
-      new EmployeeInformation(null, 'Senior Tester', null, null, null), null,
+      new EmployeeInformation(null, 'Senior Tester', null, null, null, null), null,
       Role.EMPLOYEE);
     employee.subjectId = 1;
     result = component.simplifyEmployeeObject(employee);

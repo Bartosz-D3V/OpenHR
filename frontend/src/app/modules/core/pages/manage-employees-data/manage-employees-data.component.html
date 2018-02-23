@@ -61,12 +61,6 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker [touchUi]="isMobile()"></mat-datepicker>
           </mat-form-field>
-
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-position"></label>
-            <input matInput required="required" placeholder="Position" formControlName="position"
-                   id="employee-details-position" name="position">
-          </mat-form-field>
         </form>
         <mat-action-row>
           <button mat-button color="primary" (click)="nextStep()">Next</button>
@@ -189,10 +183,16 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <label for="employee-details-employeeId"></label>
-            <input type="text" matInput placeholder="Employee ID" formControlName="employeeId"
-                   id="employee-details-employeeId" name="employeeId">
-            <mat-error *ngIf="employeeForm.get('employeeInformation.employeeId').hasError('required')">
+            <label for="employee-details-position"></label>
+            <input matInput required="required" placeholder="Position" formControlName="position"
+                   id="employee-details-position" name="position">
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-employee-number"></label>
+            <input type="text" matInput placeholder="Employee ID" formControlName="employeeNumber"
+                   id="employee-details-employee-number" name="employeeNumber">
+            <mat-error *ngIf="employeeForm.get('employeeInformation.employeeNumber').hasError('required')">
               Employee ID is required
             </mat-error>
           </mat-form-field>
