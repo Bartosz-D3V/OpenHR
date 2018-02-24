@@ -146,7 +146,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .pipe(
         startWith(''),
         map(lastName => typeof lastName === 'string' ? lastName : ''),
-        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice()),
+        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice())
       );
   }
 
