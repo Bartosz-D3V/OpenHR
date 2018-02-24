@@ -3,22 +3,23 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import { map, startWith } from 'rxjs/operators';
+import 'rxjs/add/observable/zip';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { EmployeeService } from '../../../../shared/services/employee/employee.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ManagerService } from '../../../../shared/services/manager/manager.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { Employee } from '../../../../shared/domain/subject/employee';
 import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
-import { EmployeeService } from '../../../../shared/services/employee/employee.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { ManagerService } from '../../../../shared/services/manager/manager.service';
-import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 import { Manager } from '../../../../shared/domain/subject/manager';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
   selector: 'app-manage-employees-data',
@@ -34,6 +35,7 @@ import { Manager } from '../../../../shared/domain/subject/manager';
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
+  private $employee: ISubscription;
   private $managers: ISubscription;
   public stepNumber = 0;
   public employees: Array<Employee>;
@@ -43,6 +45,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public filteredManagers: Observable<Array<Manager>>;
   public employeeForm: FormGroup;
   public employeesCtrl: FormControl = new FormControl();
+  public managersCtrl: FormControl;
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _employeeService: EmployeeService,
@@ -59,7 +62,6 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$employees.unsubscribe();
-    this.$managers.unsubscribe();
   }
 
   public setStep(stepNumber: number): void {
@@ -134,14 +136,24 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
           Validators.min(0)],
         usedAllowance: [hrInfo.usedAllowance,
           Validators.min(0)],
-        // manager: [''],
       }),
       role: [this.subject.role],
     });
+    this.managersCtrl = new FormControl(this.subject.manager, Validators.required);
   }
 
-  public reduceSubjects(subjects: Array<Subject>): Observable<Array<Subject>> {
+  public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
     return this.employeesCtrl
+      .valueChanges
+      .pipe(
+        startWith(''),
+        map(lastName => typeof lastName === 'string' ? lastName : ''),
+        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice())
+      );
+  }
+
+  public reduceManagers(subjects: Array<Manager>): Observable<Array<Subject>> {
+    return this.managersCtrl
       .valueChanges
       .pipe(
         startWith(''),
@@ -160,7 +172,18 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .getEmployees()
       .subscribe((response: Array<Employee>) => {
         this.employees = response;
-        this.filteredEmployees = this.reduceSubjects(response);
+        this.filteredEmployees = this.reduceEmployees(response);
+      }, (err: any) => {
+        this._errorResolver.createAlert(err);
+      });
+  }
+
+  public fetchSelectedEmployee(employeeId: number): void {
+    this.$employee = this._employeeService
+      .getEmployee(employeeId)
+      .subscribe((response: Employee) => {
+        this.subject = response;
+        this.constructForm();
       }, (err: any) => {
         this._errorResolver.createAlert(err);
       });
@@ -171,7 +194,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .getManagers()
       .subscribe((response: Array<Manager>) => {
         this.managers = response;
-        this.filteredManagers = this.reduceSubjects(response);
+        this.filteredManagers = this.reduceManagers(response);
       }, (err: any) => {
         this._errorResolver.createAlert(err);
       });
@@ -183,21 +206,25 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
-    this.subject = <Employee> $event.option.value;
-    this.constructForm();
+    const employeeId: number = (<Employee> $event.option.value).subjectId;
+    this.fetchSelectedEmployee(employeeId);
     this.fetchManagers();
   }
 
   public save(): void {
-    const updatedSubject: Employee = <Employee> this.employeeForm.value;
-    this._employeeService.updateEmployee(updatedSubject)
-      .subscribe((res: Employee) => {
-        const msg = `Employee with id ${res.subjectId} has been updated`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.subject = res;
-      }, (err: any) => {
-        this._errorResolver.createAlert(err);
-      });
+    const updatedEmployee: Employee = <Employee> this.employeeForm.value;
+    const updatedManger: Manager = <Manager> this.managersCtrl.value;
+    Observable.zip(
+      this._employeeService.updateEmployee(updatedEmployee),
+      this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
+      (employee: Employee, manager: Manager) => ({employee, manager})
+    ).subscribe((pair) => {
+      const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
+      this._notificationService.openSnackBar(msg, 'OK');
+      this.subject = pair.employee;
+    }, (err: any) => {
+      this._errorResolver.createAlert(err);
+    });
   }
 
   public isMobile(): boolean {
@@ -205,6 +232,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.employeeForm.valid;
+    return this.employeeForm.valid &&
+      this.managersCtrl.valid;
   }
 }

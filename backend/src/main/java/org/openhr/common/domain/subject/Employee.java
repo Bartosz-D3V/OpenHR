@@ -1,17 +1,24 @@
 package org.openhr.common.domain.subject;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class,
+  property = "subjectId",
+  scope = Long.class)
 public class Employee extends Subject implements Serializable {
-  @JsonBackReference(value = "employee-manager")
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinColumn(name = "FK_MANAGER")
   private Manager manager;
 
   public Employee() {

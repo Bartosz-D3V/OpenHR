@@ -2,9 +2,10 @@
   <app-page-header [header]="'Manage employees\' data'"></app-page-header>
 
   <mat-form-field fxLayoutAlign="center" fxFlex="100">
-    <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="auto"
+    <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="autoEmployees"
            [formControl]="employeesCtrl">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFullName" (optionSelected)="displaySubject($event)">
+    <mat-autocomplete #autoEmployees="matAutocomplete" [displayWith]="displayFullName"
+                      (optionSelected)="displaySubject($event)">
       <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
         <span>{{employee.personalInformation.firstName}} {{ employee.personalInformation.lastName }}</span>
       </mat-option>
@@ -249,6 +250,19 @@
                    formControlName="usedAllowance">
             <mat-error *ngIf="employeeForm.get('hrInformation.usedAllowance').hasError('min')">
               Used allowance cannot be negative
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input matInput placeholder="Manager" aria-label="Manager" [matAutocomplete]="autoManagers"
+                   [formControl]="managersCtrl">
+            <mat-autocomplete #autoManagers="matAutocomplete" [displayWith]="displayFullName">
+              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager">
+                <span>{{manager.personalInformation.firstName}} {{ manager.personalInformation.lastName }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="managersCtrl.hasError('required')">
+              Employee must have a manager
             </mat-error>
           </mat-form-field>
         </form>

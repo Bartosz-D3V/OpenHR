@@ -85,11 +85,9 @@ public class EmployeeDAOTest {
     session.save(mockEmployee);
     session.flush();
 
-    final Manager actualManager = employeeDAO.setManagerToEmployee(mockManager.getSubjectId(), mockEmployee);
-    final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
+    final Manager actualManager = employeeDAO.setManagerToEmployee(mockEmployee.getSubjectId(), mockManager);
 
     assertSame(mockManager.getSubjectId(), actualManager.getSubjectId());
-    assertSame(mockManager.getSubjectId(), actualEmployee.getManager().getSubjectId());
   }
 
   private static Manager getMockManager() {

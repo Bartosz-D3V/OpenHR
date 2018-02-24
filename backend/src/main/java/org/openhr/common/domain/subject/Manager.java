@@ -1,6 +1,7 @@
 package org.openhr.common.domain.subject;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
@@ -11,8 +12,11 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class,
+  property = "subjectId",
+  scope = Long.class)
 public class Manager extends Subject implements Serializable {
-  @JsonManagedReference(value = "employee-manager")
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
   private Set<Employee> employees;
 

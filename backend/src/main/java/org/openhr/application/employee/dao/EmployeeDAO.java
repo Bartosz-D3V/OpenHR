@@ -8,7 +8,7 @@ public interface EmployeeDAO {
 
   Employee createEmployee(Employee employee);
 
-  Employee updateEmployee(long subjectId, Employee employee);
+  Employee updateEmployee(long employeeId, Employee employee);
 
-  Manager setManagerToEmployee(long subjectId, Employee employee);
+  Manager setManagerToEmployee(long employeeId, Manager manager);
 }

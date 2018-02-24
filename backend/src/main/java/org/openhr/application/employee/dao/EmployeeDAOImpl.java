@@ -12,13 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
+
   public EmployeeDAOImpl(final SessionFactory sessionFactory) {
     super(sessionFactory);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Employee getEmployee(final long subjectId) {
-    return (Employee) super.get(Employee.class, subjectId);
+    final Employee employee = (Employee) super.get(Employee.class, subjectId);
+    employee.setManager(employee.getManager());
+
+    return employee;
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -37,11 +41,12 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
-    final Manager savedManager = (Manager) super.get(Manager.class, subjectId);
-    employee.setManager(savedManager);
-    super.merge(savedManager);
+  public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
+    final Manager fetchedManager = (Manager) super.get(Manager.class, manager.getSubjectId());
+    final Employee savedEmployee = (Employee) super.get(Employee.class, employeeId);
+    savedEmployee.setManager(fetchedManager);
+    super.merge(savedEmployee);
 
-    return savedManager;
+    return fetchedManager;
   }
 }
