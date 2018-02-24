@@ -7,15 +7,15 @@ import { HrInformation } from './hr-information';
 import { Role } from './role';
 
 export class Employee extends Subject {
-  // public manager?: Manager;
+  public manager?: Manager;
 
   constructor(personalInformation: PersonalInformation,
               contactInformation: ContactInformation,
               employeeInformation: EmployeeInformation,
               hrInformation: HrInformation,
-              role: Role
-              /*manager?: Manager*/) {
+              role: Role,
+              manager?: Manager) {
     super(personalInformation, contactInformation, employeeInformation, hrInformation, role);
-    // this.manager = manager ? manager : null;
+    this.manager = manager;
   }
 }

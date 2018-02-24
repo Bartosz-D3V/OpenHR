@@ -72,7 +72,6 @@ public class ManagerServiceImpl implements ManagerService {
     final Manager manager = getManager(managerId);
     final Employee employee = employeeService.getEmployee(subjectId);
     employee.setManager(manager);
-    employeeService.updateEmployee(employee.getSubjectId(), employee);
     managerDAO.addEmployeeToManager(manager, employee);
   }
 }

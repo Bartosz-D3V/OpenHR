@@ -31,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
   private final static ObjectMapper objectMapper = new ObjectMapper();
-  private final static Manager manager = new Manager();
-  private final static Employee employee = new Employee();
 
   @Autowired
   private MockMvc mockMvc;
@@ -48,8 +46,8 @@ public class EmployeeControllerTest {
   @Test
   @WithMockUser
   public void getEmployeeShouldReturnSingleEmployee() throws Exception {
-    when(employeeFacade.getEmployee(1L)).thenReturn(employee);
-    final String employeesAsJSON = objectMapper.writeValueAsString(employee);
+    when(employeeFacade.getEmployee(1L)).thenReturn(new Employee());
+    final String employeesAsJSON = objectMapper.writeValueAsString(new Employee());
 
     final MvcResult result = mockMvc
       .perform(get("/employees/{subjectId}", 1L)
@@ -64,8 +62,8 @@ public class EmployeeControllerTest {
   @Test
   @WithMockUser
   public void createEmployeeShouldReturnCreatedEmployee() throws Exception {
-    when(employeeFacade.createEmployee(anyObject())).thenReturn(employee);
-    final String employeesAsJSON = objectMapper.writeValueAsString(employee);
+    when(employeeFacade.createEmployee(anyObject())).thenReturn(new Employee());
+    final String employeesAsJSON = objectMapper.writeValueAsString(new Employee());
 
     final MvcResult result = mockMvc
       .perform(post("/employees")
@@ -81,8 +79,8 @@ public class EmployeeControllerTest {
   @Test
   @WithMockUser
   public void updateEmployeeShouldReturnUpdatedEmployee() throws Exception {
-    when(employeeFacade.updateEmployee(anyLong(), anyObject())).thenReturn(employee);
-    final String employeesAsJSON = objectMapper.writeValueAsString(employee);
+    when(employeeFacade.updateEmployee(anyLong(), anyObject())).thenReturn(new Employee());
+    final String employeesAsJSON = objectMapper.writeValueAsString(new Employee());
 
     final MvcResult result = mockMvc
       .perform(put("/employees/{subjectId}", 1L)
@@ -98,15 +96,16 @@ public class EmployeeControllerTest {
   @Test
   @WithMockUser
   public void setEmployeeManagerShouldAssignAndReturnManger() throws Exception {
+    final Employee employee = new Employee();
+    final Manager manager = new Manager();
     employee.setManager(manager);
     final String managerAsJSON = objectMapper.writeValueAsString(manager);
-    final String employeesAsJSON = objectMapper.writeValueAsString(employee);
     when(employeeFacade.setManagerToEmployee(anyLong(), anyObject())).thenReturn(manager);
 
     final MvcResult result = mockMvc
-      .perform(put("/employees/{subjectId}/manager-assignment", 1L)
+      .perform(put("/employees/{employeeId}/manager-assignment", 1L)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(employeesAsJSON))
+        .content(managerAsJSON))
       .andExpect(status().isAccepted())
       .andReturn();
 
