@@ -45,7 +45,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public filteredManagers: Observable<Array<Manager>>;
   public employeeForm: FormGroup;
   public employeesCtrl: FormControl = new FormControl();
-  public managersCtrl: FormControl;
+  public managersCtrl: FormControl = new FormControl();
 
   constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
               private _employeeService: EmployeeService,
