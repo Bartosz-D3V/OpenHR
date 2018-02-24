@@ -1,21 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { ISubscription } from 'rxjs/Subscription';
 
 import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { RegisterDetails } from '../../../../shared/domain/register/register-details';
-import { Employee } from '../employees/domain/employee';
 
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.scss'],
   providers: [
-    ConfigService,
     SubjectDetailsService,
   ],
 })
@@ -101,8 +97,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   public stepNumber = 0;
 
-  constructor(private _configService: ConfigService,
-              private _subjectDetailsService: SubjectDetailsService) {
+  constructor(private _subjectDetailsService: SubjectDetailsService) {
   }
 
   ngOnInit(): void {
@@ -158,8 +153,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public assignEmployeeToManager(): void {
-    const employee: Employee = new Employee();
-    employee.subject = this.subject;
     /**
      * call a service
      */

@@ -13,32 +13,32 @@
       </mat-expansion-panel-header>
       <form [formGroup]="personalInformationFormGroup" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-first-name"></label>
           <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
-                 id="personal-details-first-name" name="firstName" [(ngModel)]="subject.firstName">
+                 id="personal-details-first-name" name="firstName" [(ngModel)]="subject.personalInformation.firstName">
           <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
             First name is required
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-middle-name"></label>
           <input matInput placeholder="Middle name" id="personal-details-middle-name"
                  formControlName="middleNameFormControl" name="middleName"
                  [(ngModel)]="subject.personalInformation.middleName">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-last-name"></label>
           <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
-                 id="personal-details-last-name" name="lastName" [(ngModel)]="subject.lastName">
+                 id="personal-details-last-name" name="lastName" [(ngModel)]="subject.personalInformation.lastName">
           <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
             Last name is required
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-date-of-birth"></label>
           <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dobFormControl"
                  id="personal-details-date-of-birth" name="dateOfBirth"
@@ -50,7 +50,7 @@
           <mat-datepicker #picker [touchUi]="isMobile()"></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-position"></label>
           <input matInput required="required" placeholder="Position" formControlName="positionFormControl"
                  id="personal-details-position" name="position" [(ngModel)]="subject.employeeInformation.position">
@@ -72,7 +72,7 @@
       </mat-expansion-panel-header>
       <form [formGroup]="contactInformationFormGroup" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <span matPrefix>+44 (0) &nbsp;</span>
           <label for="personal-details-telephone"></label>
           <input type="tel" matInput placeholder="Telephone" formControlName="telephoneFormControl"
@@ -92,7 +92,7 @@
           <mat-icon matSuffix>mode_edit</mat-icon>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-email"></label>
           <input type="email" matInput placeholder="Email" formControlName="emailFormControl"
                  id="personal-details-email" name="email" [(ngModel)]="subject.contactInformation.email">
@@ -104,28 +104,28 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-1st-line-address"></label>
           <input type="text" matInput placeholder="First line address" formControlName="firstLineAddressFormControl"
                  id="personal-details-1st-line-address" name="firstLineAddress"
                  [(ngModel)]="subject.contactInformation.address.firstLineAddress">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-2nd-line-address"></label>
           <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddressFormControl"
                  id="personal-details-2nd-line-address" name="secondLineAddress"
                  [(ngModel)]="subject.contactInformation.address.secondLineAddress">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-3rd-line-address"></label>
           <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddressFormControl"
                  id="personal-details-3rd-line-address" name="thirdLineAddress"
                  [(ngModel)]="subject.contactInformation.address.thirdLineAddress">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-postcode"></label>
           <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcodeFormControl"
                  id="personal-details-postcode" name="postcode"
@@ -138,13 +138,13 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-city"></label>
           <input type="text" matInput placeholder="City" formControlName="cityFormControl"
                  id="personal-details-city" name="city" [(ngModel)]="subject.contactInformation.address.city">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-country"></label>
           <input type="text" matInput placeholder="Country" formControlName="countryFormControl"
                  id="personal-details-country" name="country"
@@ -169,7 +169,7 @@
 
       <form [formGroup]="employeeDetailsFormGroup" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-nin"></label>
           <input type="text" matInput placeholder="National Insurance Number" formControlName="ninFormControl"
                  id="personal-details-nin" name="nin"
@@ -182,17 +182,17 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
-          <label for="personal-details-employeeId"></label>
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <label for="personal-details-employee-number"></label>
           <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
-                 id="personal-details-employeeId" name="employeeId"
-                 [(ngModel)]="subject.employeeInformation.employeeId">
+                 id="personal-details-employee-number" name="employeeNumber"
+                 [(ngModel)]="subject.employeeInformation.employeeNumber">
           <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
             Employee ID is required
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
                  formControlName="startDateFormControl" name="startDate"
                  [(ngModel)]="subject.employeeInformation.startDate">
@@ -200,11 +200,49 @@
           <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-sm="100">
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDateFormControl"
                  name="endDate" [(ngModel)]="subject.employeeInformation.endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #endDatePicker [touchUi]="isMobile()"></mat-datepicker>
+        </mat-form-field>
+      </form>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="stepNumber === 3" (opened)="setStep(3)" hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          HR Information
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>people_outline</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="hrInformationFormGroup" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+            fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <input type="number" matInput placeholder="Allowance"
+                 formControlName="allowanceFormControl" name="allowance"
+                 [ngModel]="subject.hrInformation.allowance">
+          <mat-error *ngIf="hrInformationFormGroup.controls['allowanceFormControl'].hasError('min')">
+            Allowance cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <input type="number" matInput placeholder="Used allowance"
+                 formControlName="usedAllowanceFormControl"
+                 name="usedAllowance" [ngModel]="subject.hrInformation.usedAllowance">
+          <mat-error *ngIf="hrInformationFormGroup.controls['usedAllowanceFormControl'].hasError('min')">
+            Used allowance cannot be negative
+          </mat-error>
         </mat-form-field>
       </form>
 

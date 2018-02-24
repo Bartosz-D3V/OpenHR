@@ -42,9 +42,9 @@ export class SubjectDetailsService {
       });
   }
 
-  public createSubject(subject: Subject): Observable<Subject> {
+  public getSubjectById(subjectId: number): Observable<Subject> {
     return this._http
-      .post(this.url, subject, {
+      .get<Subject>(`${this.url}/${subjectId}`, {
         headers: this.headers,
       })
       .catch((error: any) => {
@@ -53,9 +53,9 @@ export class SubjectDetailsService {
       });
   }
 
-  public saveSubject(subject: Subject): Observable<number> {
+  public createSubject(subject: Subject): Observable<Subject> {
     return this._http
-      .put(`${this.url}/${subject.subjectId}`, subject, {
+      .post(this.url, subject, {
         headers: this.headers,
       })
       .catch((error: any) => {

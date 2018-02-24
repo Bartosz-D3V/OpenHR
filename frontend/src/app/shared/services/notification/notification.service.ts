@@ -4,11 +4,11 @@ import { MatSnackBar } from '@angular/material';
 @Injectable()
 export class NotificationService {
 
-  constructor(public snackBar: MatSnackBar) {
+  constructor(private _snackBar: MatSnackBar) {
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
+  openSnackBar(message: string, action: string): void {
+    this._snackBar.open(message, action, {
       duration: 3500,
     });
   }

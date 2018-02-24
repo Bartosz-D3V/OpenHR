@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(propagation = Propagation.SUPPORTS)
+@Transactional
 public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
 
   private final SessionFactory sessionFactory;
@@ -55,18 +55,18 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
     LightweightSubjectDTO lightweightSubjectDTO;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       lightweightSubjectDTO = (LightweightSubjectDTO) criteria
+        .createAlias("personalInformation", "personalInfo")
         .add(Restrictions.eq("subjectId", subjectId))
         .setProjection(Projections.distinct(Projections.projectionList()
           .add(Projections.property("subjectId"), "subjectId")
-          .add(Projections.property("firstName"), "firstName")
-          .add(Projections.property("lastName"), "lastName")))
+          .add(Projections.property("personalInfo.firstName"), "firstName")
+          .add(Projections.property("personalInfo.lastName"), "lastName")))
         .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -80,29 +80,9 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
-  public void createSubject(final Subject subject) throws HibernateException {
-    super.save(subject);
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
-  public void updateSubject(final long subjectId, final Subject subject) throws HibernateException,
-    SubjectDoesNotExistException {
-    final Subject legacySubject = this.getSubjectDetails(subjectId);
-    legacySubject.setFirstName(subject.getFirstName());
-    legacySubject.setLastName(subject.getLastName());
-    legacySubject.setPersonalInformation(subject.getPersonalInformation());
-    legacySubject.setContactInformation(subject.getContactInformation());
-    legacySubject.setEmployeeInformation(subject.getEmployeeInformation());
-    legacySubject.setHrInformation(subject.getHrInformation());
-    super.merge(legacySubject);
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setPersonalInformation(personalInformation);
     super.merge(subject);
   }
@@ -111,7 +91,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setContactInformation(contactInformation);
     super.merge(subject);
   }
@@ -120,7 +100,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    final Subject subject = this.getSubjectDetails(subjectId);
+    final Subject subject = getSubjectDetails(subjectId);
     subject.setEmployeeInformation(employeeInformation);
     super.merge(subject);
   }
@@ -129,7 +109,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
     throws HibernateException {
-    final Subject subject = this.getExistingSubjectDetails(subjectId);
+    final Subject subject = getExistingSubjectDetails(subjectId);
     subject.setHrInformation(hrInformation);
     super.merge(subject);
   }
@@ -138,10 +118,9 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       session.delete(getSubjectDetails(subjectId));
       session.flush();
-      session.close();
     } catch (final HibernateException hibernateException) {
       log.error("Issue occurred during the deletion of the subject");
       log.error(hibernateException.getMessage());
@@ -157,7 +136,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public long getAllowance(final long subjectId) {
     long allowance;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       allowance = (long) criteria
         .createAlias("hrInformation", "hrInformation")
@@ -165,7 +144,6 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
         .setProjection(Projections.property("hrInformation.allowance"))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -178,7 +156,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   public long getUsedAllowance(final long subjectId) {
     long usedAllowance;
     try {
-      final Session session = sessionFactory.openSession();
+      final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       usedAllowance = (long) criteria
         .createAlias("hrInformation", "hrInformation")
@@ -186,7 +164,6 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
         .setProjection(Projections.property("hrInformation.usedAllowance"))
         .uniqueResult();
       session.flush();
-      session.close();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;

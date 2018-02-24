@@ -4,7 +4,6 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserContext;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.service.UserService;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Order(value = 1)
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
   private final UserService userService;
 

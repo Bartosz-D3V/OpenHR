@@ -1,20 +1,20 @@
+import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { MatFormFieldModule, MatInputModule, MatPaginatorModule, MatTableModule } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { EmployeesComponent } from './employees.component';
-import { Employee } from './domain/employee';
-import { Subject } from '../../../../shared/domain/subject/subject';
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
-import { EmployeeData } from './employee-data';
-import { EmployeesService } from './service/employees.service';
-import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { EmployeesService } from './service/employees.service';
+import { EmployeesComponent } from './employees.component';
+import { EmployeeData } from './employee-data';
+import { Employee } from '../../../../shared/domain/subject/employee';
+import { Role } from '../../../../shared/domain/subject/role';
+import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
@@ -83,11 +83,12 @@ describe('EmployeesComponent', () => {
   it('simplifyEmployeeArray method should convert array of Employee objects into array of EmployeeData object', () => {
     spyOn(component, 'simplifyEmployeeObject').and.callThrough();
     const mockArray: Array<Employee> = [];
-    const mockEmployee1 = new Employee(1);
-    const mockEmployee2 = new Employee(2);
-    mockEmployee1.subject = new Subject('Jack', 'Strong', null, null, new EmployeeInformation(null, 'Spy', null, null, null), null);
-    mockEmployee2.subject = new Subject('Mikolaj', 'Kopernik', null, null,
-      new EmployeeInformation(null, 'Astronomic', null, null, null), null);
+    const mockEmployee1 = new Employee(new PersonalInformation('Jack', 'Strong', null, null), null,
+      new EmployeeInformation(null, 'Spy', null, null, null, null), null, null);
+    const mockEmployee2 = new Employee(new PersonalInformation('Mikolaj', 'Kopernik', null, null), null,
+      new EmployeeInformation(null, 'Astronomic', null, null, null, null), null, null);
+    mockEmployee1.subjectId = 1;
+    mockEmployee2.subjectId = 2;
     mockArray.push(mockEmployee1);
     mockArray.push(mockEmployee2);
     const convertedArray: Array<EmployeeData> = component.simplifyEmployeeArray(mockArray);
@@ -104,9 +105,12 @@ describe('EmployeesComponent', () => {
   });
 
   it('simplifyEmployeeObject method should create simplified object from Employee object', () => {
-    const employee: Employee = new Employee(1);
     let result: EmployeeData;
-    employee.subject = new Subject('John', 'Xavier', null, null, new EmployeeInformation(null, 'Senior Tester', null, null, null), null);
+    let employee: Employee;
+    employee = new Employee(new PersonalInformation('John', 'Xavier', null, null), null,
+      new EmployeeInformation(null, 'Senior Tester', null, null, null, null), null,
+      Role.EMPLOYEE);
+    employee.subjectId = 1;
     result = component.simplifyEmployeeObject(employee);
 
     expect(result).toBeDefined();

@@ -5,13 +5,14 @@ import { LeaveApplicationComponent } from '../modules/core/pages/leave-applicati
 import { DelegationComponent } from '../modules/core/pages/delegation/delegation.component';
 import { AboutComponent } from '../modules/core/pages/about/about.component';
 import { CoreWrapperComponent } from '../modules/core/core-wrapper/core-wrapper.component';
-import { AccountComponent } from '../modules/core/pages/account/account.component';
-import { SettingsComponent } from '../modules/core/pages/settings/settings.component';
+import { AccountComponent } from '../modules/settings/pages/account/account.component';
+import { SettingsComponent } from '../modules/settings/pages/settings/settings.component';
 import { EmployeesComponent } from '../modules/core/pages/employees/employees.component';
 import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-employee.component';
 import { LoginComponent } from '../modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '../modules/core/pages/manage-leave-applications/manage-leave-applications.component';
 import { MainGuard } from '../shared/guards/main-guard/main.guard';
+import { ManageEmployeesDataComponent } from '../modules/core/pages/manage-employees-data/manage-employees-data.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -37,6 +38,11 @@ export const routeDefinitions: Routes = [
       {
         path: 'employees',
         component: EmployeesComponent,
+        outlet: 'core',
+      },
+      {
+        path: 'manage-employee-data',
+        component: ManageEmployeesDataComponent,
         outlet: 'core',
       },
       {

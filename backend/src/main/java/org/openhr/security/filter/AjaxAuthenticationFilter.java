@@ -2,7 +2,6 @@ package org.openhr.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openhr.application.user.domain.User;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Order(value = 1)
 public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
   private final AuthenticationSuccessHandler successHandler;
   private final AuthenticationFailureHandler failureHandler;

@@ -38,17 +38,25 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
+    validateLeaveApplication(leaveApplication);
+    validateLeftAllowance(subject);
+    subjectService.subtractDaysExcludingFreeDays(subject, leaveApplication);
+
+    return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
+  }
+
+  private void validateLeaveApplication(final LeaveApplication leaveApplication) throws ValidationException {
     final LocalDate startDate = leaveApplication.getStartDate();
     final LocalDate endDate = leaveApplication.getEndDate();
     if (startDate.isAfter(endDate)) {
       throw new ValidationException("Provided dates are not valid");
     }
+  }
+
+  private void validateLeftAllowance(final Subject subject) throws ValidationException {
     if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
       throw new ValidationException("No leave allowance left");
     }
-    subjectService.subtractDaysExcludingFreeDays(subject, startDate, endDate);
-
-    return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
   @Override
@@ -91,8 +99,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
-    return leaveApplicationRepository.getAwaitingForManagerLeaveApplications(managerId);
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
+    return leaveApplicationRepository.getAwaitingForManagerLeaveApplications(subjectId);
   }
 
   @Override

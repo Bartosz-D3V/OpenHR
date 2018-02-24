@@ -11,4 +11,6 @@ public interface AuthenticationService {
   boolean passwordsMatch(String rawPassword, String encodedPassword);
 
   List<UserRole> setBasicUserRoles(User user);
+
+  List<UserRole> setManagerUserRole(User user);
 }

@@ -1,64 +1,32 @@
 package org.openhr.common.domain.subject;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.openhr.application.user.domain.User;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Manager implements Serializable {
-  @Id
-  @Column(name = "MANAGER_ID")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long managerId;
-
-  @OneToOne(mappedBy = "manager")
-  @PrimaryKeyJoinColumn
-  private Subject subject;
-
-  @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @NotFound(action = NotFoundAction.IGNORE)
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class,
+  property = "subjectId",
+  scope = Long.class)
+public class Manager extends Subject implements Serializable {
+  @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
   private Set<Employee> employees;
-
-  @OneToOne
-  @JsonBackReference
-  private User user;
 
   public Manager() {
     super();
   }
 
-  public Manager(final Subject subject) {
-    this.subject = subject;
-  }
-
-  public long getManagerId() {
-    return managerId;
-  }
-
-  public void setManagerId(final long managerId) {
-    this.managerId = managerId;
-  }
-
-  public Subject getSubject() {
-    return subject;
-  }
-
-  public void setSubject(final Subject subject) {
-    this.subject = subject;
+  public Manager(final PersonalInformation personalInformation, final ContactInformation contactInformation,
+                 final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
+    super(personalInformation, contactInformation, employeeInformation, hrInformation, user);
   }
 
   public Set<Employee> getEmployees() {
@@ -67,13 +35,5 @@ public class Manager implements Serializable {
 
   public void setEmployees(final Set<Employee> employees) {
     this.employees = employees;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(final User user) {
-    this.user = user;
   }
 }

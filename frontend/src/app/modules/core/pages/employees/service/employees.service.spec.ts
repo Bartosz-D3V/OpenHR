@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
-import { TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
+import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { EmployeesService } from './employees.service';
 import { SystemVariables } from '../../../../../config/system-variables';
-import { Employee } from '../domain/employee';
+import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { Employee } from '../../../../../shared/domain/subject/employee';
+import { EmployeesService } from './employees.service';
 
 describe('EmployeesService', () => {
   let http: HttpTestingController;
   let service: EmployeesService;
   let errorResolverService: ErrorResolverService;
-  const mockEmployees: Array<Employee> = [new Employee(1), new Employee(2)];
+  const employee1: Employee = new Employee(null, null, null, null, null);
+  employee1.subjectId = 1;
+  const employee2: Employee = new Employee(null, null, null, null, null);
+  employee2.subjectId = 2;
+  const mockEmployees: Array<Employee> = [employee1, employee2];
 
   @Injectable()
   class FakeErrorResolverService {
@@ -70,9 +74,9 @@ describe('EmployeesService', () => {
         expect(error).toBeUndefined();
         expect(result).toBeDefined();
         expect(result[0]).toBeDefined();
-        expect(result[0].employeeId).toEqual(1);
+        expect(result[0].subjectId).toEqual(1);
         expect(result[1]).toBeDefined();
-        expect(result[1].employeeId).toEqual(2);
+        expect(result[1].subjectId).toEqual(2);
       }));
 
       it('should resolve error if server is down', fakeAsync(() => {

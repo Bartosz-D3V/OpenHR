@@ -1,0 +1,279 @@
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Manage employees\' data'"></app-page-header>
+
+  <mat-form-field fxLayoutAlign="center" fxFlex="100">
+    <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="autoEmployees"
+           [formControl]="employeesCtrl">
+    <mat-autocomplete #autoEmployees="matAutocomplete" [displayWith]="displayFullName"
+                      (optionSelected)="displaySubject($event)">
+      <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
+        <span>{{employee.personalInformation.firstName}} {{ employee.personalInformation.lastName }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</section>
+
+<section class="c-drawer" *ngIf="subject">
+  <form [formGroup]="employeeForm">
+    <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="stepNumber === 0" (opened)="setStep(0)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Personal information
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>account_circle</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form formGroupName="personalInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-first-name"></label>
+            <input matInput required="required" placeholder="First name" formControlName="firstName"
+                   id="employee-details-first-name" name="firstName">
+            <mat-error *ngIf="employeeForm.get('personalInformation.firstName').hasError('required')">
+              First name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-middle-name"></label>
+            <input matInput placeholder="Middle name" id="employee-details-middle-name"
+                   formControlName="middleName" name="middleName">
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-last-name"></label>
+            <input matInput required="required" placeholder="Last name" formControlName="lastName"
+                   id="employee-details-last-name" name="lastName">
+            <mat-error *ngIf="employeeForm.get('personalInformation.lastName').hasError('required')">
+              Last name is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-date-of-birth"></label>
+            <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth"
+                   id="employee-details-date-of-birth" name="dateOfBirth">
+            <mat-error *ngIf="employeeForm.get('personalInformation.dateOfBirth').hasError('required')">
+              Date of birth is required
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker [touchUi]="isMobile()"></mat-datepicker>
+          </mat-form-field>
+        </form>
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="stepNumber === 1" (opened)="setStep(1)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Contact information
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>phone</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form formGroupName="contactInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <span matPrefix>+44 (0) &nbsp;</span>
+            <label for="employee-details-telephone"></label>
+            <input type="tel" matInput placeholder="Telephone" formControlName="telephone"
+                   id="employee-details-telephone" name="telephone">
+            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('minlength')">
+              Telephone number must contains at least 7 digits
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('maxlength')">
+              Telephone number must contains maximum 11 digits
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('required')">
+              Telephone is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('pattern')">
+              Please enter a valid telephone
+            </mat-error>
+            <mat-icon matSuffix>mode_edit</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-email"></label>
+            <input type="email" matInput placeholder="Email" formControlName="email"
+                   id="employee-details-email" name="email">
+            <mat-error *ngIf="employeeForm.get('contactInformation.email').hasError('pattern')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('contactInformation.email').hasError('required')">
+              Email is required
+            </mat-error>
+          </mat-form-field>
+
+          <div formGroupName="address" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-1st-line-address"></label>
+              <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
+                     id="employee-details-1st-line-address" name="firstLineAddress">
+            </mat-form-field>
+
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-2nd-line-address"></label>
+              <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddress"
+                     id="employee-details-2nd-line-address" name="secondLineAddress">
+            </mat-form-field>
+
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-3rd-line-address"></label>
+              <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
+                     id="employee-details-3rd-line-address" name="thirdLineAddress">
+            </mat-form-field>
+
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-postcode"></label>
+              <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
+                     id="employee-details-postcode" name="postcode">
+              <mat-error *ngIf="employeeForm.get('contactInformation.address.postcode').hasError('pattern')">
+                Please enter a valid postcode
+              </mat-error>
+              <mat-error *ngIf="employeeForm.get('contactInformation.address.postcode').hasError('required')">
+                Postcode is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-city"></label>
+              <input type="text" matInput placeholder="City" formControlName="city"
+                     id="employee-details-city" name="city">
+            </mat-form-field>
+
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              <label for="employee-details-country"></label>
+              <input type="text" matInput placeholder="Country" formControlName="country"
+                     id="employee-details-country" name="country">
+            </mat-form-field>
+          </div>
+
+        </form>
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="stepNumber === 2" (opened)="setStep(2)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Employee details
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>perm_identity</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form formGroupName="employeeInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-nin"></label>
+            <input type="text" matInput placeholder="National Insurance Number"
+                   formControlName="nationalInsuranceNumber"
+                   id="employee-details-nin" name="nin">
+            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
+              NIN is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('pattern')">
+              NIN is not correct
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-position"></label>
+            <input matInput required="required" placeholder="Position" formControlName="position"
+                   id="employee-details-position" name="position">
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-employee-number"></label>
+            <input type="text" matInput placeholder="Employee ID" formControlName="employeeNumber"
+                   id="employee-details-employee-number" name="employeeNumber">
+            <mat-error *ngIf="employeeForm.get('employeeInformation.employeeNumber').hasError('required')">
+              Employee ID is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+                   formControlName="startDate" name="startDate">
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate"
+                   name="endDate">
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker [touchUi]="isMobile()"></mat-datepicker>
+          </mat-form-field>
+        </form>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="stepNumber === 3" (opened)="setStep(3)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            HR Information
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>people_outline</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form formGroupName="hrInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input type="number" matInput placeholder="Allowance"
+                   formControlName="allowance" name="allowance">
+            <mat-error *ngIf="employeeForm.get('hrInformation.allowance').hasError('min')">
+              Allowance cannot be negative
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
+                   formControlName="usedAllowance">
+            <mat-error *ngIf="employeeForm.get('hrInformation.usedAllowance').hasError('min')">
+              Used allowance cannot be negative
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input matInput placeholder="Manager" aria-label="Manager" [matAutocomplete]="autoManagers"
+                   [formControl]="managersCtrl">
+            <mat-autocomplete #autoManagers="matAutocomplete" [displayWith]="displayFullName">
+              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager">
+                <span>{{manager.personalInformation.firstName}} {{ manager.personalInformation.lastName }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="managersCtrl.hasError('required')">
+              Employee must have a manager
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextStep()">End</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()" (click)="save()">Save
+    </button>
+  </form>
+</section>

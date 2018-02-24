@@ -12,10 +12,6 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 public interface SubjectDAO {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
-  void createSubject(Subject subject) throws HibernateException;
-
-  void updateSubject(long subjectId, Subject subject) throws HibernateException, SubjectDoesNotExistException;
-
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException;
 

@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.openhr.application.manager.facade.ManagerFacade;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.openhr.application.manager.facade.ManagerFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -39,6 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final static SubjectDoesNotExistException mockException = new SubjectDoesNotExistException("Not found");
+  private final static Manager manager = new Manager();
+  private final static Employee employee = new Employee();
 
   @Autowired
   private MockMvc mockMvc;
@@ -54,14 +55,13 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addManagerShouldAcceptManagerObject() throws Exception {
-    final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
-      .perform(post("/manager")
+      .perform(post("/managers")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
-      .andExpect(status().isOk())
+      .andExpect(status().isCreated())
       .andReturn();
     assertNull(result.getResolvedException());
   }
@@ -69,11 +69,10 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void updateManagerShouldAcceptManagerObject() throws Exception {
-    final Manager manager = new Manager();
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
     final MvcResult result = mockMvc
-      .perform(put("/manager")
+      .perform(put("/managers")
         .contentType(MediaType.APPLICATION_JSON)
         .content(managerAsJson))
       .andExpect(status().isOk())
@@ -87,8 +86,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenThrow(mockException);
 
     final MvcResult result = mockMvc
-      .perform(get("/manager/employees")
-        .param("managerId", "1"))
+      .perform(get("/managers/{subjectId}/employees", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -104,8 +102,7 @@ public class ManagerControllerTest {
     when(managerFacade.getEmployees(1)).thenReturn(employeeSet);
 
     final MvcResult result = mockMvc
-      .perform(get("/manager/employees")
-        .param("managerId", "1"))
+      .perform(get("/managers/{subjectId}/employees", 1L))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -115,15 +112,13 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addEmployeeToManagerShouldHandleError() throws Exception {
-    final Employee employee = new Employee();
     employee.setManager(new Manager());
-    final String employeeAsJson = objectMapper.writeValueAsString(employee);
-    doThrow(mockException).when(managerFacade).addEmployeeToManager(anyObject(), anyLong());
+    doThrow(mockException).when(managerFacade).addEmployeeToManager(3L, 1L);
 
     final MvcResult result = mockMvc
-      .perform(post("/manager/{managerId}/employeeAssignment", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(employeeAsJson))
+      .perform(post("/managers/employee-assignment")
+        .param("managerId", String.valueOf(3L))
+        .param("subjectId", String.valueOf(1L)))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -133,14 +128,10 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
-    final Employee employee = new Employee();
-    employee.setManager(new Manager());
-    final String employeeAsJson = objectMapper.writeValueAsString(employee);
-
     final MvcResult result = mockMvc
-      .perform(post("/manager/{managerId}/employeeAssignment", 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(employeeAsJson))
+      .perform(post("/managers/employee-assignment")
+        .param("managerId", String.valueOf(3L))
+        .param("subjectId", String.valueOf(1L)))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());

@@ -10,10 +10,6 @@ public interface UserService {
 
   void registerUser(User user) throws UserAlreadyExists;
 
-  String getEncodedPassword(long userId) throws UserDoesNotExist;
-
-  String getEncodedPassword(String username) throws UserDoesNotExist;
-
   boolean validCredentials(String username, String password) throws UserDoesNotExist;
 
   boolean isUsernameFree(String username);

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,9 +38,8 @@ public class UserRepositoryTest {
   @Test
   public void findByUsernameShouldReturnUserObject() {
     final User mockUser = new User("username1", "password");
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(mockUser);
-    session.close();
     final User actualUser = userRepository.findByUsername(mockUser.getUsername());
 
     assertNotEquals(0, actualUser.getUserId());
@@ -49,9 +50,8 @@ public class UserRepositoryTest {
   @Test
   public void findUserIdShouldReturnIdOfUserByUsername() {
     final User mockUser = new User("John64", "password");
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(mockUser);
-    session.close();
     final long actualUserId = userRepository.findUserId(mockUser.getUsername());
 
     assertNotEquals(0, actualUserId);
@@ -62,9 +62,8 @@ public class UserRepositoryTest {
   public void registerUserShouldPersistUserObject() {
     final User mockUser = new User("username2", "password");
     userRepository.registerUser(mockUser);
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     final User actualUser = session.get(User.class, mockUser.getUserId());
-    session.close();
 
     assertNotEquals(0, actualUser.getUserId());
     assertEquals(mockUser.getUsername(), actualUser.getUsername());
@@ -74,9 +73,8 @@ public class UserRepositoryTest {
   @Test
   public void getEncodedPasswordShouldReturnEncodedPassword() throws UserDoesNotExist {
     final User mockUser = new User("username3", "password");
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(mockUser);
-    session.close();
     final String password = userRepository.getEncodedPassword(mockUser.getUserId());
 
     assertEquals(mockUser.getPassword(), password);
@@ -92,10 +90,9 @@ public class UserRepositoryTest {
   public void retrieveUsernamesInUseShouldReturnListOfUsernamesInUse() {
     final User mockUser1 = new User("Curie", "password");
     final User mockUser2 = new User("Heisenberg", "password");
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(mockUser1);
     session.save(mockUser2);
-    session.close();
     final List<String> actualUsernamesInUse = userRepository.retrieveUsernamesInUse();
 
     assertEquals(2, actualUsernamesInUse.size());
@@ -106,15 +103,15 @@ public class UserRepositoryTest {
   @Test
   public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
     final User mockUser1 = new User("Kopernik", "password");
-    final Subject subject = new Subject("Mikolaj", "Kopernik", mockUser1);
-    subject.setPersonalInformation(new PersonalInformation());
+    final Subject subject = new Employee();
+    subject.setPersonalInformation(new PersonalInformation("John", "Black", "Alex", LocalDate.now()));
+    subject.setUser(mockUser1);
     subject.setContactInformation(new ContactInformation());
     subject.setEmployeeInformation(new EmployeeInformation());
     subject.setHrInformation(new HrInformation());
-    final Session session = sessionFactory.openSession();
+    final Session session = sessionFactory.getCurrentSession();
     session.save(subject);
     session.flush();
-    session.close();
     final long subjectId = userRepository.findSubjectId(mockUser1.getUsername());
 
     assertNotEquals(0, mockUser1.getUsername());

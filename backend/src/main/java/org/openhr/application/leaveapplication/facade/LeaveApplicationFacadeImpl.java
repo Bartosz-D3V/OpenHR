@@ -10,13 +10,13 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   private final LeaveApplicationService leaveApplicationService;
@@ -32,13 +32,15 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
     return leaveApplicationService.getLeaveApplication(applicationId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
-    throws SubjectDoesNotExistException, ApplicationDoesNotExistException, ValidationException {
+    throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
@@ -50,34 +52,39 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationService.updateLeaveApplication(leaveApplication);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final String processInstanceId) {
     leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByManager(final String processInstanceId) {
     leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
-    return leaveApplicationService.getAwaitingForManagerLeaveApplications(managerId);
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
+    return leaveApplicationService.getAwaitingForManagerLeaveApplications(subjectId);
   }
 
   @Override
-  public final List<TaskDefinition> getProcessTasks(final String processInstanceId) {
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return leaveApplicationCommand.getProcessTasks(processInstanceId);
   }
 
   @Override
-  public final List<String> getActiveProcessesId() {
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<String> getActiveProcessesId() {
     return leaveApplicationCommand.getActiveProcessesId();
   }
 

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '../../../../../config/system-variables';
 import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { Employee } from '../domain/employee';
+import { Employee } from '../../../../../shared/domain/subject/employee';
 
 @Injectable()
 export class EmployeesService {

@@ -8,13 +8,13 @@ import java.util.Set;
 
 public interface ManagerDAO {
 
+  Manager getManager(long subjectId);
+
   Manager addManager(Manager manager);
 
-  Manager getManager(long managerId) throws SubjectDoesNotExistException;
+  Manager updateManager(Manager manager) throws SubjectDoesNotExistException;
 
-  void updateManager(Manager manager) throws SubjectDoesNotExistException;
+  Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
 
-  Set<Employee> getEmployees(long managerId) throws SubjectDoesNotExistException;
-
-  void addEmployeeToManager(Employee employee, long managerId) throws SubjectDoesNotExistException;
+  void addEmployeeToManager(Manager manager, Employee employee) throws SubjectDoesNotExistException;
 }

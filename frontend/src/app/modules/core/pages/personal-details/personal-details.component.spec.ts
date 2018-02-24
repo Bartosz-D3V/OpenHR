@@ -2,25 +2,19 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import {
-  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatToolbarModule,
+  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatSnackBarModule,
+  MatToolbarModule,
 } from '@angular/material';
-
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-
 import Spy = jasmine.Spy;
 
-import { PersonalDetailsComponent } from './personal-details.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-
 import { Subject } from '../../../../shared/domain/subject/subject';
 import { Address } from '../../../../shared/domain/subject/address';
 import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
@@ -30,30 +24,33 @@ import { SubjectDetailsService } from '../../../../shared/services/subject/subje
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
+import { Employee } from '../../../../shared/domain/subject/employee';
+import { PersonalDetailsComponent } from './personal-details.component';
+import { Role } from '../../../../shared/domain/subject/role';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
   let fixture: ComponentFixture<PersonalDetailsComponent>;
-  const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
+  const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', null, 'Xavier', new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', '2020-02-08',
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'WOR123', '2020-02-08',
     '2020-02-08', '123AS');
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation, mockHrInformation);
-  const mockContractTypes: Array<string> = ['Full time', 'Part time'];
+  const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,
+    mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
 
   @Injectable()
-  class FakeConfigService {
-    public getContractTypes(): any {
-      return Observable.of(mockContractTypes);
+  class FakeSubjectDetailsService {
+    public getCurrentSubject(): Observable<Subject> {
+      return Observable.of(mockSubject);
     }
   }
 
   @Injectable()
-  class FakeSubjectDetailsService {
-    public getCurrentSubject(): any {
+  class FakePersonalDetailsService {
+    public saveSubject(subject: Subject): Observable<Subject> {
       return Observable.of(mockSubject);
     }
   }
@@ -78,19 +75,19 @@ describe('PersonalDetailsComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
-        MatToolbarModule,
         MatExpansionModule,
         MatDatepickerModule,
         MatNativeDateModule,
         MatIconModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSnackBarModule,
       ],
       providers: [
         JwtHelperService,
         ResponsiveHelperService,
         {
-          provide: ConfigService, useClass: FakeConfigService,
+          provide: PersonalDetailsService, useClass: FakePersonalDetailsService,
         },
         {
           provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
@@ -371,7 +368,7 @@ describe('PersonalDetailsComponent', () => {
 
   });
 
-  describe('EmployeeID validator', () => {
+  describe('employeeNumber validator', () => {
     let employeeIdFormControl: AbstractControl;
 
     beforeEach(() => {

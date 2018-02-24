@@ -4,14 +4,19 @@ import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ManagerFacade {
+  Manager getManager(long subjectId);
+
   Manager addManager(Manager manager);
 
-  void updateManager(Manager manager) throws SubjectDoesNotExistException;
+  Manager updateManager(Manager manager) throws SubjectDoesNotExistException;
 
-  Set<Employee> getEmployees(long managerId) throws SubjectDoesNotExistException;
+  List<Manager> getManagers();
 
-  void addEmployeeToManager(Employee employee, long managerId) throws SubjectDoesNotExistException;
+  Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
+
+  void addEmployeeToManager(long managerId, long subjectId) throws SubjectDoesNotExistException;
 }

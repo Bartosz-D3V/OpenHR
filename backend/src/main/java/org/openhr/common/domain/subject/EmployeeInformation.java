@@ -30,9 +30,9 @@ public class EmployeeInformation implements Serializable {
   @Size(max = 255)
   private String department;
 
-  @Column(name = "EMPLOYEE_ID")
+  @Column(name = "EMPLOYEE_NUMBER")
   @Size(max = 255)
-  private String employeeId;
+  private String employeeNumber;
 
   @Column(name = "START_DATE")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -47,11 +47,11 @@ public class EmployeeInformation implements Serializable {
   }
 
   public EmployeeInformation(final String nationalInsuranceNumber, final String position, final String department,
-                             final String employeeId, final LocalDate startDate, final LocalDate endDate) {
+                             final String employeeNumber, final LocalDate startDate, final LocalDate endDate) {
     this.nationalInsuranceNumber = nationalInsuranceNumber;
     this.position = position;
     this.department = department;
-    this.employeeId = employeeId;
+    this.employeeNumber = employeeNumber;
     this.startDate = startDate;
     this.endDate = endDate;
   }
@@ -84,12 +84,12 @@ public class EmployeeInformation implements Serializable {
     this.department = department;
   }
 
-  public String getEmployeeId() {
-    return employeeId;
+  public String getEmployeeNumber() {
+    return employeeNumber;
   }
 
-  public void setEmployeeId(final String employeeId) {
-    this.employeeId = employeeId;
+  public void setEmployeeNumber(final String employeeNumber) {
+    this.employeeNumber = employeeNumber;
   }
 
   public LocalDate getStartDate() {
