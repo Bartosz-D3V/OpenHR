@@ -58,11 +58,12 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
       lightweightSubjectDTO = (LightweightSubjectDTO) criteria
+        .createAlias("personalInformation", "personalInfo")
         .add(Restrictions.eq("subjectId", subjectId))
         .setProjection(Projections.distinct(Projections.projectionList()
           .add(Projections.property("subjectId"), "subjectId")
-          .add(Projections.property("firstName"), "firstName")
-          .add(Projections.property("lastName"), "lastName")))
+          .add(Projections.property("personalInfo.firstName"), "firstName")
+          .add(Projections.property("personalInfo.lastName"), "lastName")))
         .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
         .uniqueResult();
       session.flush();

@@ -4,8 +4,6 @@ import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
