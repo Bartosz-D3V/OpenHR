@@ -45,11 +45,11 @@ public class EmployeeController {
     return employeeFacade.updateEmployee(subjectId, employee);
   }
 
-  @RequestMapping(value = "/{subjectId}/manager-assignment", method = RequestMethod.PUT,
+  @RequestMapping(value = "/{employeeId}/manager-assignment", method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public Manager setManagerToEmployee(@PathVariable final long subjectId, @RequestBody final Employee employee) {
-    return employeeFacade.setManagerToEmployee(subjectId, employee);
+  public Manager setManagerToEmployee(@PathVariable final long employeeId, @RequestBody final Manager manager) {
+    return employeeFacade.setManagerToEmployee(employeeId, manager);
   }
 }

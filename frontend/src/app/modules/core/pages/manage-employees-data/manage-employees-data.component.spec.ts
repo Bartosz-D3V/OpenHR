@@ -143,7 +143,7 @@ describe('ManageEmployeesDataComponent', () => {
       let result: Array<Employee>;
 
       it('should not filter results if input is empty', () => {
-        component.reduceSubjects(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
         component.employeesCtrl.setValue('');
@@ -153,7 +153,7 @@ describe('ManageEmployeesDataComponent', () => {
       });
 
       it('should filter results accordingly to input value', () => {
-        component.reduceSubjects(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
         component.employeesCtrl.setValue('Dar');
@@ -200,15 +200,17 @@ describe('ManageEmployeesDataComponent', () => {
     });
   });
 
-  it('displaySubject method should assign passed subject from event and call constructForm method', () => {
-    spyOn(component, 'constructForm');
+  it('displaySubject method should call fetchSelectEmployee with received selected subject id', () => {
+    spyOn(component, 'fetchSelectedEmployee');
+    spyOn(component, 'fetchManagers');
     const mockMatOption: MatOption = new MatOption(null, null, null, null);
+    employee1.subjectId = 1;
     mockMatOption.value = employee1;
     const $event: MatAutocompleteSelectedEvent = new MatAutocompleteSelectedEvent(null, mockMatOption);
     component.displaySubject($event);
 
-    expect(component.subject).toBe(employee1);
-    expect(component.constructForm).toHaveBeenCalled();
+    expect(component.fetchSelectedEmployee).toHaveBeenCalledWith(1);
+    expect(component.fetchManagers).toHaveBeenCalled();
   });
 
   describe('isMobile', () => {

@@ -47,7 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setManagerToEmployee(final long subjectId, final Employee employee) {
-    return employeeDAO.setManagerToEmployee(subjectId, employee);
+  public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
+    return employeeDAO.setManagerToEmployee(employeeId, manager);
   }
 }
