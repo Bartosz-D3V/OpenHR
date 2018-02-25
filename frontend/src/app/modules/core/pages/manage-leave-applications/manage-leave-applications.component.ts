@@ -5,6 +5,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 
 @Component({
   selector: 'app-manage-leave-applications',
@@ -29,7 +30,8 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<LeaveApplication>;
 
   constructor(private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
-              private _jwtHelper: JwtHelperService) {
+              private _jwtHelper: JwtHelperService,
+              private _errorResolver: ErrorResolverService) {
   }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
 
   private fetchLeaveApplications(): void {
     this.$leaveApplications = this._manageLeaveApplicationsService
-      .getUnacceptedLeaveApplications(this._jwtHelper.getSubjectId())
+      .getAwaitingForManagerLeaveApplications(this._jwtHelper.getSubjectId())
       .subscribe((result: Array<LeaveApplication>) => {
           this.leaveApplications = result;
           this.dataSource = new MatTableDataSource<LeaveApplication>(result);
@@ -52,6 +54,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
           this.resultsLength = result.length;
         },
         (error: any) => {
+          this._errorResolver.handleError(error);
         });
   }
 }

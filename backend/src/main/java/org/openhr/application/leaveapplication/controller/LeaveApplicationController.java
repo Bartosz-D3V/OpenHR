@@ -66,12 +66,12 @@ public class LeaveApplicationController {
     leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
   }
 
-  @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,
+  @RequestMapping(value = "/{managerId}/awaiting", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(@PathVariable("subjectId") final long subjectId) {
-    return leaveApplicationFacade.getAwaitingForManagerLeaveApplications(subjectId);
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(@PathVariable("managerId") final long managerId) {
+    return leaveApplicationFacade.getAwaitingForManagerLeaveApplications(managerId);
   }
 
   @RequestMapping(value = "/tasks/{processInstanceId}", method = RequestMethod.GET,

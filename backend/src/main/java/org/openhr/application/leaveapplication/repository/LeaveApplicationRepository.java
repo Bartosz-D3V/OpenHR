@@ -69,7 +69,7 @@ public class LeaveApplicationRepository {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
     List<LeaveApplication> filteredLeaveApplications;
     try {
       final Session session = sessionFactory.getCurrentSession();
@@ -78,7 +78,7 @@ public class LeaveApplicationRepository {
         .createAlias("subject", "subject")
         .add(Restrictions.eq("approvedByManager", false))
         .add(Restrictions.eq("approvedByHR", false))
-        .add(Restrictions.eq("subject.subjectId", subjectId))
+        .add(Restrictions.eq("subject.subjectId", managerId))
         .setReadOnly(true)
         .list();
     } catch (final HibernateException e) {

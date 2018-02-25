@@ -24,7 +24,7 @@ public interface LeaveApplicationService {
 
   void approveLeaveApplicationByHr(long applicationId) throws ApplicationDoesNotExistException;
 
-  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long subjectId);
+  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long managerId);
 
   List<LeaveType> getLeaveTypes();
 }

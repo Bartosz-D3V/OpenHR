@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
 import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
 
@@ -17,18 +16,13 @@ export class ManageLeaveApplicationsService {
   });
 
   constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
+              private _jwtHelper: JwtHelperService) {
   }
 
-  getUnacceptedLeaveApplications(managerId: number): Observable<Array<LeaveApplication>> {
+  public getAwaitingForManagerLeaveApplications(managerId: number): Observable<Array<LeaveApplication>> {
     return this._http
       .get<Array<LeaveApplication>>(`${this.url}/${managerId}/awaiting`, {
         headers: this.headers,
-      })
-      .catch((error: any) => {
-        this._errorResolver.createAlert(error);
-        return Observable.of(error);
       });
   }
 

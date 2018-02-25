@@ -4,7 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { MatDialogModule } from '@angular/material';
 
 import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
 import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './manage-leave-applications.service';
@@ -22,7 +21,6 @@ describe('ManageLeaveApplicationsService', () => {
         NoopAnimationsModule,
       ],
       providers: [
-        ErrorResolverService,
         JwtHelperService,
         ManageLeaveApplicationsService,
       ],
@@ -39,7 +37,7 @@ describe('ManageLeaveApplicationsService', () => {
     const apiLink: string = SystemVariables.API_URL + '/leave-application';
 
     it('should query current service URL', fakeAsync(() => {
-      service.getUnacceptedLeaveApplications(45).subscribe();
+      service.getAwaitingForManagerLeaveApplications(45).subscribe();
       http.expectOne(`${apiLink}/45/awaiting`);
     }));
 
@@ -47,7 +45,7 @@ describe('ManageLeaveApplicationsService', () => {
       it('should return an Observable of type Array of type LeaveApplication', fakeAsync(() => {
         let result: any;
         let error: any;
-        service.getUnacceptedLeaveApplications(45)
+        service.getAwaitingForManagerLeaveApplications(45)
           .subscribe(
             (res: Array<LeaveApplication>) => result = res,
             (err: any) => error = err);
@@ -65,7 +63,7 @@ describe('ManageLeaveApplicationsService', () => {
       it('should resolve error if server is down', fakeAsync(() => {
         let result: Object;
         let error: any;
-        service.getUnacceptedLeaveApplications(45)
+        service.getAwaitingForManagerLeaveApplications(45)
           .subscribe(
             (res: Array<LeaveApplication>) => result = res,
             (err: any) => error = err);

@@ -99,8 +99,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
-    return leaveApplicationRepository.getAwaitingForManagerLeaveApplications(subjectId);
+  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
+    return leaveApplicationRepository.getAwaitingForManagerLeaveApplications(managerId);
   }
 
   @Override
