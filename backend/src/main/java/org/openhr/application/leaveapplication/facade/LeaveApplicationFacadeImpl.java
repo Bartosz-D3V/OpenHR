@@ -42,6 +42,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
+    leaveApplication.setAssignee(subjectService.getSubjectSupervisor(subjectId));
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
     final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject.getRole(),

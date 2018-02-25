@@ -7,6 +7,7 @@ import org.openhr.application.manager.repository.ManagerRepository;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,6 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
     user.setPassword(encodedPassword);
     user.setUserRoles(authenticationService.setManagerUserRole(user));
+    manager.setRole(Role.MANAGER);
     return managerDAO.addManager(manager);
   }
 

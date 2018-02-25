@@ -6,6 +6,7 @@ import org.openhr.application.employee.repository.EmployeeRepository;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.Manager;
+import org.openhr.common.enumeration.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
     user.setPassword(encodedPassword);
     user.setUserRoles(authenticationService.setBasicUserRoles(user));
+    employee.setRole(Role.EMPLOYEE);
     return employeeDAO.createEmployee(employee);
   }
 

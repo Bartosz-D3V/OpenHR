@@ -35,7 +35,7 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
     leaveApplication.setSubject(subject);
