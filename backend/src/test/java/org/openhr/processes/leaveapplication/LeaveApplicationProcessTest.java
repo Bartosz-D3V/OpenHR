@@ -130,7 +130,6 @@ public class LeaveApplicationProcessTest {
     params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
-    params.put("rejectedByManager", true);
     params.put("approvedByManager", false);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -156,7 +155,6 @@ public class LeaveApplicationProcessTest {
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
-    params.put("rejectedByManager", false);
     params.put("approvedByHR", false);
     params.put("rejectedByHR", true);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
@@ -184,7 +182,6 @@ public class LeaveApplicationProcessTest {
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
-    params.put("rejectedByManager", false);
     params.put("approvedByHR", true);
     params.put("rejectedByHR", false);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
