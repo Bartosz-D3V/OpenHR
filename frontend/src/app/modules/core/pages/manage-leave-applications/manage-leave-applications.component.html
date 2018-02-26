@@ -28,13 +28,15 @@
 
       <ng-container matColumnDef="employeeName">
         <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.employeeNumber}}</mat-cell>
+        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.subject.personalInformation.firstName}}
+          {{leaveApplication.subject.personalInformation.lastName}}
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="reject">
         <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="rejectLeaveApplication(leaveApplication.processInstanceId)">
             <mat-icon class="mat-24">cancel</mat-icon>
           </button>
         </mat-cell>
@@ -43,7 +45,7 @@
       <ng-container matColumnDef="approve">
         <mat-header-cell *matHeaderCellDef> Approve</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="approveLeaveApplication(leaveApplication.processInstanceId)">
             <mat-icon class="mat-24">done</mat-icon>
           </button>
         </mat-cell>

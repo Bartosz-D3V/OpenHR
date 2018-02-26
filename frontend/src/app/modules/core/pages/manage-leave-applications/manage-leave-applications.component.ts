@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 @Component({
   selector: 'app-manage-leave-applications',
@@ -14,6 +15,7 @@ import { ErrorResolverService } from '../../../../shared/services/error-resolver
   providers: [
     ManageLeaveApplicationsService,
     JwtHelperService,
+    NotificationService,
   ],
 })
 export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
@@ -31,6 +33,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
 
   constructor(private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
               private _jwtHelper: JwtHelperService,
+              private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService) {
   }
 
@@ -44,6 +47,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   }
 
   private fetchLeaveApplications(): void {
+    this.isLoadingResults = true;
     this.$leaveApplications = this._manageLeaveApplicationsService
       .getAwaitingForManagerLeaveApplications(this._jwtHelper.getSubjectId())
       .subscribe((result: Array<LeaveApplication>) => {
@@ -56,5 +60,29 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         (error: any) => {
           this._errorResolver.handleError(error);
         });
+  }
+
+  public approveLeaveApplication(processInstanceId: string): void {
+    this._manageLeaveApplicationsService
+      .approveLeaveApplicationByManager(processInstanceId)
+      .subscribe(() => {
+        this.fetchLeaveApplications();
+        const message = 'Application has been accepted';
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
+      });
+  }
+
+  public rejectLeaveApplication(processInstanceId: string): void {
+    this._manageLeaveApplicationsService
+      .rejectLeaveApplicationByManager(processInstanceId)
+      .subscribe(() => {
+        this.fetchLeaveApplications();
+        const message = 'Application has been rejected';
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
+      });
   }
 }

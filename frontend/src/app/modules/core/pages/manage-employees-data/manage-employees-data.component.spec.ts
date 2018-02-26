@@ -26,6 +26,7 @@ import { EmployeeInformation } from '../../../../shared/domain/subject/employee-
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { Role } from '../../../../shared/domain/subject/role';
 import { Manager } from '../../../../shared/domain/subject/manager';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { ManageEmployeesDataComponent } from './manage-employees-data.component';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
@@ -87,6 +88,7 @@ describe('ManageEmployeesDataComponent', () => {
       ],
       providers: [
         JwtHelperService,
+        NotificationService,
         ErrorResolverService,
         ResponsiveHelperService,
         {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},

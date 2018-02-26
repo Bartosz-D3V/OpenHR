@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '../../../../../config/system-variables';
@@ -23,6 +23,26 @@ export class ManageLeaveApplicationsService {
     return this._http
       .get<Array<LeaveApplication>>(`${this.url}/${managerId}/awaiting`, {
         headers: this.headers,
+      });
+  }
+
+  public approveLeaveApplicationByManager(processInstanceId: string): Observable<Object> {
+    const params: HttpParams = new HttpParams()
+      .set('processInstanceId', processInstanceId);
+    return this._http
+      .put(`${this.url}/approve`, {
+        headers: this.headers,
+        params: params,
+      });
+  }
+
+  public rejectLeaveApplicationByManager(processInstanceId: string): Observable<Object> {
+    const params: HttpParams = new HttpParams()
+      .set('processInstanceId', processInstanceId);
+    return this._http
+      .put(`${this.url}/reject`, {
+        headers: this.headers,
+        params: params,
       });
   }
 

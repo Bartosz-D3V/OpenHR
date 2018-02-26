@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule,
   MatTableModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -11,10 +11,11 @@ import { Observable } from 'rxjs/Observable';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { InitialsPipe } from '../../../../shared/pipes/initials/initials.pipe';
-import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
-import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
+import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
@@ -51,10 +52,12 @@ describe('ManageLeaveApplicationsComponent', () => {
         MatPaginatorModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
       ],
       providers: [
         ErrorResolverService,
         JwtHelperService,
+        NotificationService,
         {
           provide: ManageLeaveApplicationsService, useClass: FakeManageLeaveApplicationsService,
         },
