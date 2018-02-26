@@ -31,11 +31,13 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
     return leaveApplicationDAO.getLeaveApplication(applicationId);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
     validateLeaveApplication(leaveApplication);
@@ -60,20 +62,23 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByManager(false);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
@@ -82,6 +87,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
@@ -90,10 +96,19 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByHR(true);
+    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException {
+    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    leaveApplication.setTerminated(true);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 

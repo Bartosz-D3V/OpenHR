@@ -1,15 +1,17 @@
 package org.openhr.application.subject.service;
 
 import org.hibernate.HibernateException;
-import org.openhr.application.authentication.service.AuthenticationService;
+import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.manager.service.ManagerService;
 import org.openhr.application.subject.dao.SubjectDAO;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.stereotype.Service;
@@ -18,16 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
-
   private final SubjectDAO subjectDAO;
-  private final AuthenticationService authenticationService;
+  private final EmployeeService employeeService;
+  private final ManagerService managerService;
   private final HolidayService holidayService;
 
   public SubjectServiceImpl(final SubjectDAO subjectDAO,
-                            final AuthenticationService authenticationService,
+                            final EmployeeService employeeService,
+                            final ManagerService managerService,
                             final HolidayService holidayService) {
     this.subjectDAO = subjectDAO;
-    this.authenticationService = authenticationService;
+    this.employeeService = employeeService;
+    this.managerService = managerService;
     this.holidayService = holidayService;
   }
 
@@ -77,7 +81,7 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void subtractDaysExcludingFreeDays(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
     final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
@@ -92,5 +96,21 @@ public class SubjectServiceImpl implements SubjectService {
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
     subjectDAO.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Role getSubjectRole(final long subjectId) throws SubjectDoesNotExistException {
+    return getSubjectDetails(subjectId).getRole();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getSubjectSupervisor(final long subjectId) throws SubjectDoesNotExistException {
+    final Role subjectRole = getSubjectRole(subjectId);
+    if(subjectRole == Role.EMPLOYEE) {
+      return employeeService.getEmployee(subjectId).getManager();
+    }
+    return null;
   }
 }

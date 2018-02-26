@@ -75,10 +75,11 @@ public class LeaveApplicationRepository {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
       filteredLeaveApplications = criteria
-        .createAlias("subject", "subject")
+        .createAlias("assignee", "subject")
         .add(Restrictions.eq("approvedByManager", false))
         .add(Restrictions.eq("approvedByHR", false))
-        .add(Restrictions.eq("subject.subjectId", managerId))
+        .add(Restrictions.eq("terminated", false))
+        .add(Restrictions.eq("assignee.subjectId", managerId))
         .setReadOnly(true)
         .list();
     } catch (final HibernateException e) {

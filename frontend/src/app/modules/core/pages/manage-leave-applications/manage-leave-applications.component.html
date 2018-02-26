@@ -34,14 +34,18 @@
       <ng-container matColumnDef="reject">
         <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
-          <mat-icon class="mat-24">cancel</mat-icon>
+          <button mat-icon-button color="accent">
+            <mat-icon class="mat-24">cancel</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="approve">
         <mat-header-cell *matHeaderCellDef> Approve</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
-          <mat-icon class="mat-24">done</mat-icon>
+          <button mat-icon-button color="accent">
+            <mat-icon class="mat-24">done</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 

@@ -7,6 +7,7 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 
@@ -29,4 +30,8 @@ public interface SubjectService {
   long getLeftAllowanceInDays(long subjectId);
 
   void subtractDaysExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
+
+  Role getSubjectRole(long subjectId) throws SubjectDoesNotExistException;
+
+  Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;
 }

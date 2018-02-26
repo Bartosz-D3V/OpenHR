@@ -19,10 +19,7 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Employee getEmployee(final long subjectId) {
-    final Employee employee = (Employee) super.get(Employee.class, subjectId);
-    employee.setManager(employee.getManager());
-
-    return employee;
+    return (Employee) super.get(Employee.class, subjectId);
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)

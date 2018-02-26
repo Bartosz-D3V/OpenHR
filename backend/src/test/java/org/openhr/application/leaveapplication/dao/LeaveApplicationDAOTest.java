@@ -13,7 +13,9 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
+import org.openhr.common.domain.subject.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,8 +38,10 @@ public class LeaveApplicationDAOTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockSubject = new Employee(mockPersonalInformation,
+  private final static Employee mockEmployee = new Employee(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck40", "testPass"));
+  private final static Manager mockManager = new Manager(mockPersonalInformation,
+    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck42", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
@@ -49,20 +53,25 @@ public class LeaveApplicationDAOTest {
 
   @Before
   public void setUp() {
+    mockEmployee.setRole(Role.EMPLOYEE);
+    mockManager.setRole(Role.MANAGER);
     final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setProcessInstanceId(String.valueOf(5L));
     mockLeaveApplication.setApprovedByManager(true);
     mockLeaveApplication.setApprovedByHR(false);
-    mockLeaveApplication.setSubject(mockSubject);
+    mockLeaveApplication.setTerminated(false);
+    mockLeaveApplication.setSubject(mockEmployee);
+    mockLeaveApplication.setAssignee(mockManager);
     mockLeaveApplication.setMessage("I am going to Vanuatu!");
     mockLeaveApplication.setLeaveType(leaveType);
     session.save(leaveType);
+    session.flush();
   }
 
   @Test
   public void getLeaveApplicationShouldReturnApplication() throws ApplicationDoesNotExistException {
     final Session session = sessionFactory.getCurrentSession();
-    mockLeaveApplication.setSubject(mockSubject);
+    mockLeaveApplication.setSubject(mockEmployee);
     session.save(mockLeaveApplication);
     final LeaveApplication actualLeaveApplication = leaveApplicationDAO.
       getLeaveApplication(mockLeaveApplication.getApplicationId());
@@ -82,8 +91,8 @@ public class LeaveApplicationDAOTest {
   @Test
   public void createLeaveApplicationShouldAddEntryToDB() {
     LeaveApplication actualLeaveApplication;
-    leaveApplicationDAO.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Session session = sessionFactory.getCurrentSession();
+    leaveApplicationDAO.createLeaveApplication(mockEmployee, mockLeaveApplication);
     actualLeaveApplication = session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
@@ -105,7 +114,7 @@ public class LeaveApplicationDAOTest {
     updatedLeaveApplication.setApprovedByHR(true);
 
     final Session session = sessionFactory.getCurrentSession();
-    mockLeaveApplication.setSubject(mockSubject);
+    mockLeaveApplication.setSubject(mockEmployee);
     session.save(mockLeaveApplication);
     final LeaveApplication actualUpdatedApplication = leaveApplicationDAO.updateLeaveApplication(updatedLeaveApplication);
 

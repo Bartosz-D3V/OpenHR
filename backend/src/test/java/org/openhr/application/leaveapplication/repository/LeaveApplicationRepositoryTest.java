@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 public class LeaveApplicationRepositoryTest {
   private final static LeaveType leaveType1 = new LeaveType("Holiday", "Annual Leave");
   private final static LeaveType leaveType2 = new LeaveType("Maternity Leave", "One Year Maternity Leave");
-  private final static Manager mockSubject = new Manager(
+  private final static Manager mockManager = new Manager(
     new PersonalInformation("John", "Black", "Alex", LocalDate.now()), new ContactInformation(),
     new EmployeeInformation(), new HrInformation(), new User("", ""));
   private static LeaveApplication leaveApplication1 = new LeaveApplication();
@@ -71,13 +71,13 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication1.setLeaveType(leaveType1);
     leaveApplication1.setApprovedByManager(true);
     leaveApplication1.setApprovedByHR(true);
-    leaveApplication1.setSubject(mockSubject);
+    leaveApplication1.setSubject(mockManager);
     leaveApplication2.setStartDate(LocalDate.of(2020, 5, 11));
     leaveApplication2.setEndDate(LocalDate.of(2020, 5, 13));
     leaveApplication2.setLeaveType(leaveType1);
     leaveApplication2.setApprovedByManager(true);
     leaveApplication2.setApprovedByHR(true);
-    leaveApplication2.setSubject(mockSubject);
+    leaveApplication2.setSubject(mockManager);
     final LeaveApplication actualLeaveApplication1 = new LeaveApplication();
     actualLeaveApplication1.setStartDate(LocalDate.of(2020, 5, 7));
     actualLeaveApplication1.setEndDate(LocalDate.of(2020, 5, 8));
@@ -90,9 +90,9 @@ public class LeaveApplicationRepositoryTest {
     session.save(leaveApplication1);
     session.save(leaveApplication2);
 
-    assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+    assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockManager.getSubjectId(),
       actualLeaveApplication1.getStartDate(), actualLeaveApplication1.getEndDate()));
-    assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+    assertTrue(leaveApplicationRepository.dateRangeAlreadyBooked(mockManager.getSubjectId(),
       actualLeaveApplication2.getStartDate(), actualLeaveApplication2.getEndDate()));
   }
 
@@ -103,31 +103,31 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication1.setLeaveType(leaveType1);
     leaveApplication1.setApprovedByManager(true);
     leaveApplication1.setApprovedByHR(true);
-    leaveApplication1.setSubject(mockSubject);
+    leaveApplication1.setSubject(mockManager);
     final LeaveApplication leaveApplication2 = new LeaveApplication();
     leaveApplication2.setStartDate(LocalDate.of(2020, 5, 11));
     leaveApplication2.setEndDate(LocalDate.of(2020, 5, 13));
     leaveApplication2.setLeaveType(leaveType1);
     leaveApplication2.setApprovedByManager(true);
     leaveApplication2.setApprovedByHR(true);
-    leaveApplication2.setSubject(mockSubject);
+    leaveApplication2.setSubject(mockManager);
     final LeaveApplication actualLeaveApplication1 = new LeaveApplication();
     actualLeaveApplication1.setStartDate(LocalDate.of(2020, 5, 14));
     actualLeaveApplication1.setEndDate(LocalDate.of(2020, 5, 15));
     actualLeaveApplication1.setLeaveType(leaveType1);
-    actualLeaveApplication1.setSubject(mockSubject);
+    actualLeaveApplication1.setSubject(mockManager);
     final LeaveApplication actualLeaveApplication2 = new LeaveApplication();
     actualLeaveApplication2.setStartDate(LocalDate.of(2020, 5, 3));
     actualLeaveApplication2.setEndDate(LocalDate.of(2020, 5, 4));
     actualLeaveApplication2.setLeaveType(leaveType1);
-    actualLeaveApplication2.setSubject(mockSubject);
+    actualLeaveApplication2.setSubject(mockManager);
     final Session session = sessionFactory.getCurrentSession();
     session.save(leaveApplication1);
     session.save(leaveApplication2);
 
-    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockManager.getSubjectId(),
       actualLeaveApplication1.getStartDate(), actualLeaveApplication1.getEndDate()));
-    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockSubject.getSubjectId(),
+    assertFalse(leaveApplicationRepository.dateRangeAlreadyBooked(mockManager.getSubjectId(),
       actualLeaveApplication2.getStartDate(), actualLeaveApplication2.getEndDate()));
   }
 
@@ -138,19 +138,21 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication1.setLeaveType(leaveType1);
     leaveApplication1.setApprovedByManager(false);
     leaveApplication1.setApprovedByHR(false);
-    leaveApplication1.setSubject(mockSubject);
+    leaveApplication1.setSubject(mockManager);
+    leaveApplication1.setAssignee(mockManager);
     leaveApplication2.setStartDate(LocalDate.of(2020, 5, 11));
     leaveApplication2.setEndDate(LocalDate.of(2020, 5, 15));
     leaveApplication2.setLeaveType(leaveType1);
     leaveApplication2.setApprovedByManager(true);
-    leaveApplication2.setSubject(mockSubject);
+    leaveApplication2.setSubject(mockManager);
+    leaveApplication2.setAssignee(mockManager);
     final Session session = sessionFactory.getCurrentSession();
-    session.save(mockSubject);
+    session.save(mockManager);
     session.save(leaveApplication1);
     session.save(leaveApplication2);
 
     final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
-      .getAwaitingForManagerLeaveApplications(mockSubject.getSubjectId());
+      .getAwaitingForManagerLeaveApplications(mockManager.getSubjectId());
 
     assertEquals(1, actualLeaveApplications.size());
     assertSame(actualLeaveApplications.get(0), leaveApplication1);
