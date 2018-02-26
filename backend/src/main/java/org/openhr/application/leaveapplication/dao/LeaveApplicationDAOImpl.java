@@ -1,7 +1,10 @@
 package org.openhr.application.leaveapplication.dao;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.Subject;
@@ -14,11 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplicationDAO {
-
+  private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public LeaveApplicationDAOImpl(final SessionFactory sessionFactory) {
     super(sessionFactory);
+    this.sessionFactory = sessionFactory;
   }
 
   @Override
@@ -59,5 +63,24 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
     super.merge(legacyLeaveApplication);
 
     return legacyLeaveApplication;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
+    long applicationId;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      applicationId = (long) session.createCriteria(LeaveApplication.class)
+        .add(Restrictions.eq("processInstanceId", processInstanceId))
+        .setProjection(Projections.property("applicationId"))
+        .setCacheable(true)
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return applicationId;
   }
 }

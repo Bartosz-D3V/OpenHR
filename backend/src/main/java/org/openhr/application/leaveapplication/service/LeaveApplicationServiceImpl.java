@@ -123,4 +123,10 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   public List<LeaveType> getLeaveTypes() {
     return leaveApplicationRepository.getLeaveTypes();
   }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
+    return leaveApplicationDAO.getLeaveApplicationIdByProcessId(processInstanceId);
+  }
 }

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
-import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
+import {SystemVariables} from '../../../../../config/system-variables';
+import {JwtHelperService} from '../../../../../shared/services/jwt/jwt-helper.service';
+import {LeaveApplication} from '../../../../../shared/domain/leave-application/leave-application';
 
 @Injectable()
 export class ManageLeaveApplicationsService {
@@ -26,21 +26,21 @@ export class ManageLeaveApplicationsService {
       });
   }
 
-  public approveLeaveApplicationByManager(processInstanceId: string): Observable<Object> {
+  public approveLeaveApplicationByManager(processInstanceId: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
     return this._http
-      .put(`${this.url}/approve`, {
-        headers: this.headers,
+      .put(`${this.url}/approve`, null, {
         params: params,
+        headers: this.headers,
       });
   }
 
-  public rejectLeaveApplicationByManager(processInstanceId: string): Observable<Object> {
+  public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
     return this._http
-      .put(`${this.url}/reject`, {
+      .put(`${this.url}/reject`, null, {
         headers: this.headers,
         params: params,
       });
