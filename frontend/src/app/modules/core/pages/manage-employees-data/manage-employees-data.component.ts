@@ -30,7 +30,6 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
     EmployeeService,
     ManagerService,
     ResponsiveHelperService,
-    NotificationService,
   ],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
