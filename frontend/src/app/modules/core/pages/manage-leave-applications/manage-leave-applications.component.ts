@@ -46,7 +46,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     this.$leaveApplications.unsubscribe();
   }
 
-  private fetchLeaveApplications(): void {
+  public fetchLeaveApplications(): void {
     this.isLoadingResults = true;
     this.$leaveApplications = this._manageLeaveApplicationsService
       .getAwaitingForManagerLeaveApplications(this._jwtHelper.getSubjectId())
@@ -56,8 +56,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
           this.dataSource.paginator = this.paginator;
           this.isLoadingResults = false;
           this.resultsLength = result.length;
-        },
-        (error: any) => {
+        }, (error: any) => {
           this._errorResolver.handleError(error);
         });
   }
@@ -70,7 +69,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         const message = 'Application has been accepted';
         this._notificationService.openSnackBar(message, 'OK');
       }, (error: any) => {
-        this._errorResolver.createAlert(error);
+        this._errorResolver.handleError(error);
       });
   }
 
@@ -82,7 +81,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         const message = 'Application has been rejected';
         this._notificationService.openSnackBar(message, 'OK');
       }, (error: any) => {
-        this._errorResolver.createAlert(error);
+        this._errorResolver.handleError(error);
       });
   }
 }
