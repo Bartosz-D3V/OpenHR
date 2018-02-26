@@ -25,7 +25,6 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = (LeaveApplication) super.get(LeaveApplication.class, applicationId);
-    leaveApplication.setSubject(leaveApplication.getSubject());
 
     if (leaveApplication == null) {
       log.error("Application could not be found");
