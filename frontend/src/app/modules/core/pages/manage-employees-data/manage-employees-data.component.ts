@@ -139,7 +139,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       }),
       role: [this.subject.role],
     });
-    this.managersCtrl = new FormControl(this.subject.manager, Validators.required);
+    this.managersCtrl.setValue(this.subject.manager);
+    this.managersCtrl.setValidators(Validators.required);
   }
 
   public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
@@ -164,7 +165,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   public filterSubjects(subjects: Array<Subject>, lastName: string): Array<Subject> {
     return subjects.filter(subject =>
-      subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+    subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   public fetchEmployees(): void {
