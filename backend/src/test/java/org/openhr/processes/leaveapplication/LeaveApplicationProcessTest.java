@@ -129,7 +129,7 @@ public class LeaveApplicationProcessTest {
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
-    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("applicationId", leaveApplication.getApplicationId());
     params.put("rejectedByManager", true);
     params.put("approvedByManager", false);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
@@ -154,7 +154,7 @@ public class LeaveApplicationProcessTest {
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
-    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("rejectedByManager", false);
     params.put("approvedByHR", false);
@@ -182,7 +182,7 @@ public class LeaveApplicationProcessTest {
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.EMPLOYEE);
     params.put("leaveApplication", leaveApplication);
-    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("rejectedByManager", false);
     params.put("approvedByHR", true);
@@ -209,7 +209,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.MANAGER);
-    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("applicationId", leaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService
       .startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -226,7 +226,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.HRTEAMMEMBER);
-    params.put("leaveApplicationId", leaveApplication.getApplicationId());
+    params.put("applicationId", leaveApplication.getApplicationId());
     runtimeService.startProcessInstanceByKey("leave-application", params);
 
     assertEquals(1, historyService.createHistoricProcessInstanceQuery().finished().count());

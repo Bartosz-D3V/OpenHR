@@ -12,4 +12,5 @@ public interface LeaveApplicationDAO {
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
 
+  long getLeaveApplicationIdByProcessId(String processInstanceId);
 }

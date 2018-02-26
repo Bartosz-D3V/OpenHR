@@ -35,20 +35,22 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void rejectLeaveApplicationByManager(final String processInstanceId) {
+  public void rejectLeaveApplicationByManager(final String processInstanceId, final long applicationId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("rejectedByManager", true);
     args.put("approvedByManager", false);
+    args.put("applicationId", applicationId);
     taskService.complete(task.getId(), args);
   }
 
   @Override
-  public void approveLeaveApplicationByManager(final String processInstanceId) {
+  public void approveLeaveApplicationByManager(final String processInstanceId, final long applicationId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("rejectedByManager", false);
     args.put("approvedByManager", true);
+    args.put("applicationId", applicationId);
     taskService.complete(task.getId(), args);
   }
 

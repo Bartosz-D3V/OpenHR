@@ -62,13 +62,15 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final String processInstanceId) {
-    leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId, applicationId);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByManager(final String processInstanceId) {
-    leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId, applicationId);
   }
 
   @Override
