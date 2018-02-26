@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '../../../../../config/system-variables';
 import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveType } from '../../../../../shared/domain/leave-application/leave-type';
 import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
 
@@ -19,23 +17,14 @@ export class LeaveApplicationService {
     'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  private handleError(error: any): void {
-    this._errorResolver.createAlert(error);
-  }
-
   constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
+              private _jwtHelper: JwtHelperService) {
   }
 
   public getLeaveTypes(): Observable<Array<LeaveType>> {
     return this._http
       .get<Array<LeaveType>>(`${this.url}/types`, {
         headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of([]);
       });
   }
 
@@ -44,11 +33,7 @@ export class LeaveApplicationService {
       .post<LeaveApplication>(`${this.url}/${this._jwtHelper.getSubjectId()}`,
         leaveApplication, {
           headers: this.headers,
-        })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
+        });
   }
 
 }
