@@ -11,10 +11,11 @@ import { Observable } from 'rxjs/Observable';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { InitialsPipe } from '../../../../shared/pipes/initials/initials.pipe';
-import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
-import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
+import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
@@ -55,6 +56,7 @@ describe('ManageLeaveApplicationsComponent', () => {
       providers: [
         ErrorResolverService,
         JwtHelperService,
+        NotificationService,
         {
           provide: ManageLeaveApplicationsService, useClass: FakeManageLeaveApplicationsService,
         },
