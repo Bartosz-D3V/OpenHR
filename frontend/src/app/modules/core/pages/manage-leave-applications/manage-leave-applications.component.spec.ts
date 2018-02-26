@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule,
   MatTableModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -52,6 +52,7 @@ describe('ManageLeaveApplicationsComponent', () => {
         MatPaginatorModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
       ],
       providers: [
         ErrorResolverService,
