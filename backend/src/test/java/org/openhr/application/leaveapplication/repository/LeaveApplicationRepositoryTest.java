@@ -12,7 +12,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

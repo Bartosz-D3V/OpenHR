@@ -1,0 +1,34 @@
+package org.openhr.application.hr.facade;
+
+import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.application.hr.service.HrService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class HrFacadeImpl implements HrFacade {
+  private final HrService hrService;
+
+  public HrFacadeImpl(final HrService hrService) {
+    this.hrService = hrService;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public HrTeamMember getHrTeamMember(final long subjectId) {
+    return hrService.getHrTeamMember(subjectId);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) {
+    return hrService.addHrTeamMember(hrTeamMember);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
+    return hrService.updateHrTeamMember(subjectId, hrTeamMember);
+  }
+}

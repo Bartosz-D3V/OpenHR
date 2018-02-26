@@ -1,8 +1,14 @@
-package org.openhr.common.domain.subject;
+package org.openhr.application.employee.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.user.domain.User;
+import org.openhr.common.domain.subject.ContactInformation;
+import org.openhr.common.domain.subject.EmployeeInformation;
+import org.openhr.common.domain.subject.HrInformation;
+import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.domain.subject.Subject;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
