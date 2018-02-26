@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -56,5 +56,29 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         (error: any) => {
           this._errorResolver.handleError(error);
         });
+  }
+
+  public approveLeaveApplication(processInstanceId: string): void {
+    this._leaveApplicationService
+      .approveLeaveApplicationByManager(processInstanceId)
+      .subscribe(() => {
+        this.fetchLeaveApplications();
+        const message = 'Application has been accepted';
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
+      });
+  }
+
+  public rejectLeaveApplication(processInstanceId: string): void {
+    this._leaveApplicationService
+      .rejectLeaveApplicationByManager(processInstanceId)
+      .subscribe(() => {
+        this.fetchLeaveApplications();
+        const message = 'Application has been rejected';
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
+      });
   }
 }
