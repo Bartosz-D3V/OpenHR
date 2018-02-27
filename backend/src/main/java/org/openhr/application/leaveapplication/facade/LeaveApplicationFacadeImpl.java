@@ -75,8 +75,8 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
-    return leaveApplicationService.getAwaitingForManagerLeaveApplications(managerId);
+  public List<LeaveApplication> getAwaitingForActionLeaveApplications(final long subjectId) {
+    return leaveApplicationService.getAwaitingForActionLeaveApplications(subjectId);
   }
 
   @Override

@@ -37,7 +37,7 @@ describe('ManageLeaveApplicationsService', () => {
     const apiLink: string = SystemVariables.API_URL + '/leave-application';
 
     it('should query current service URL', fakeAsync(() => {
-      service.getAwaitingForManagerLeaveApplications(45).subscribe();
+      service.getAwaitingForActionLeaveApplications(45).subscribe();
       http.expectOne(`${apiLink}/45/awaiting`);
     }));
 
@@ -45,7 +45,7 @@ describe('ManageLeaveApplicationsService', () => {
       it('should return an Observable of type Array of type LeaveApplication', fakeAsync(() => {
         let result: any;
         let error: any;
-        service.getAwaitingForManagerLeaveApplications(45)
+        service.getAwaitingForActionLeaveApplications(45)
           .subscribe(
             (res: Array<LeaveApplication>) => result = res,
             (err: any) => error = err);
@@ -63,7 +63,7 @@ describe('ManageLeaveApplicationsService', () => {
       it('should resolve error if server is down', fakeAsync(() => {
         let result: Object;
         let error: any;
-        service.getAwaitingForManagerLeaveApplications(45)
+        service.getAwaitingForActionLeaveApplications(45)
           .subscribe(
             (res: Array<LeaveApplication>) => result = res,
             (err: any) => error = err);

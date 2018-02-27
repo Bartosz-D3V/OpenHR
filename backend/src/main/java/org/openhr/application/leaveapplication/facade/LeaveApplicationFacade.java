@@ -22,7 +22,7 @@ public interface LeaveApplicationFacade {
 
   void approveLeaveApplicationByManager(String processInstanceId);
 
-  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long managerId);
+  List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
 
   List<TaskDefinition> getProcessTasks(String processInstanceId);
 

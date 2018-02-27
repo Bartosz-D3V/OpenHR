@@ -145,14 +145,14 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication2.setLeaveType(leaveType1);
     leaveApplication2.setApprovedByManager(true);
     leaveApplication2.setSubject(mockManager);
-    leaveApplication2.setAssignee(mockManager);
+    leaveApplication2.setAssignee(null);
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockManager);
     session.save(leaveApplication1);
     session.save(leaveApplication2);
 
     final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
-      .getAwaitingForManagerLeaveApplications(mockManager.getSubjectId());
+      .getAwaitingForActionLeaveApplications(mockManager.getSubjectId());
 
     assertEquals(1, actualLeaveApplications.size());
     assertSame(actualLeaveApplications.get(0), leaveApplication1);
