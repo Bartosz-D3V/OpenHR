@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dao.SubjectDAO;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;

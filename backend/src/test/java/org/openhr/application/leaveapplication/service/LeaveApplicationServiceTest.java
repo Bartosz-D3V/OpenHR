@@ -8,7 +8,7 @@ import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
 import org.openhr.application.subject.service.SubjectService;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

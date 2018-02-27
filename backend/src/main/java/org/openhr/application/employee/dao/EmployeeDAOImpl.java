@@ -2,8 +2,8 @@ package org.openhr.application.employee.dao;
 
 import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;

@@ -1,7 +1,7 @@
 package org.openhr.application.manager.facade;
 
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.manager.service.ManagerService;
 import org.springframework.stereotype.Component;

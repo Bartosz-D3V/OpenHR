@@ -20,7 +20,7 @@ import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.ValidationException;

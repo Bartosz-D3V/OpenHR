@@ -3,7 +3,7 @@ package org.openhr.application.manager.repository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.manager.domain.Manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
