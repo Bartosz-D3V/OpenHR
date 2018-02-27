@@ -26,7 +26,7 @@ public interface LeaveApplicationService {
 
   void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
-  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long managerId);
+  List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
 
   Subject getApplicationApplicant(long applicationId);
 

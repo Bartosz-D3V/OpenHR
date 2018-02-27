@@ -49,7 +49,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   public fetchLeaveApplications(): void {
     this.isLoadingResults = true;
     this.$leaveApplications = this._manageLeaveApplicationsService
-      .getAwaitingForManagerLeaveApplications(this._jwtHelper.getSubjectId())
+      .getAwaitingForActionLeaveApplications(this._jwtHelper.getSubjectId())
       .subscribe((result: Array<LeaveApplication>) => {
           this.leaveApplications = result;
           this.dataSource = new MatTableDataSource<LeaveApplication>(result);

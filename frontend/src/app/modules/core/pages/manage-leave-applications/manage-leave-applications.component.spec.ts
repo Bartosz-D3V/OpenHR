@@ -84,7 +84,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   describe('fetchLeaveApplications method', () => {
     it('should set loading to true', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForManagerLeaveApplications')
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
         .and.returnValue(Observable.of({}));
 
       expect(component.isLoadingResults).toBeTruthy();
@@ -93,7 +93,7 @@ describe('ManageLeaveApplicationsComponent', () => {
     });
 
     it('should set leave applications field', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForManagerLeaveApplications')
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
         .and.returnValue(Observable.of([mockLeave]));
       component.fetchLeaveApplications();
 
@@ -101,7 +101,7 @@ describe('ManageLeaveApplicationsComponent', () => {
     });
 
     it('should set the dataSource', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForManagerLeaveApplications')
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
         .and.returnValue(Observable.of([mockLeave]));
       component.fetchLeaveApplications();
 
@@ -109,7 +109,7 @@ describe('ManageLeaveApplicationsComponent', () => {
     });
 
     it('should set the results length field', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForManagerLeaveApplications')
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
         .and.returnValue(Observable.of([mockLeave]));
       component.fetchLeaveApplications();
 
@@ -118,7 +118,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
     it('should call errorResolver in case of an error', () => {
       spyOn(component['_errorResolver'], 'handleError');
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForManagerLeaveApplications')
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
         .and.returnValue(_throw('Error'));
       component.fetchLeaveApplications();
 

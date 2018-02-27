@@ -19,9 +19,9 @@ export class ManageLeaveApplicationsService {
               private _jwtHelper: JwtHelperService) {
   }
 
-  public getAwaitingForManagerLeaveApplications(managerId: number): Observable<Array<LeaveApplication>> {
+  public getAwaitingForActionLeaveApplications(subjectId: number): Observable<Array<LeaveApplication>> {
     return this._http
-      .get<Array<LeaveApplication>>(`${this.url}/${managerId}/awaiting`, {
+      .get<Array<LeaveApplication>>(`${this.url}/${subjectId}/awaiting`, {
         headers: this.headers,
       });
   }
