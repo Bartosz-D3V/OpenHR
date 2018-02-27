@@ -93,7 +93,7 @@ public class LeaveApplicationRepository {
     LeaveType leaveType;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      final Criteria criteria = session.createCriteria(LeaveType.class);
       leaveType = (LeaveType) criteria
         .add(Restrictions.eq("leaveTypeId", leaveTypeId))
         .setReadOnly(true)
