@@ -3,6 +3,7 @@ package org.openhr.application.subject.service;
 import org.hibernate.HibernateException;
 import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.holiday.service.HolidayService;
+import org.openhr.application.hr.service.HrService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.manager.service.ManagerService;
 import org.openhr.application.subject.dao.SubjectDAO;
@@ -23,15 +24,18 @@ public class SubjectServiceImpl implements SubjectService {
   private final SubjectDAO subjectDAO;
   private final EmployeeService employeeService;
   private final ManagerService managerService;
+  private final HrService hrService;
   private final HolidayService holidayService;
 
   public SubjectServiceImpl(final SubjectDAO subjectDAO,
                             final EmployeeService employeeService,
                             final ManagerService managerService,
+                            final HrService hrService,
                             final HolidayService holidayService) {
     this.subjectDAO = subjectDAO;
     this.employeeService = employeeService;
     this.managerService = managerService;
+    this.hrService = hrService;
     this.holidayService = holidayService;
   }
 
@@ -82,7 +86,7 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void subtractDaysExcludingFreeDays(final Subject subject, final LeaveApplication leaveApplication)
+  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
     final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
       leaveApplication.getEndDate());
@@ -108,9 +112,15 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectSupervisor(final long subjectId) throws SubjectDoesNotExistException {
     final Role subjectRole = getSubjectRole(subjectId);
-    if(subjectRole == Role.EMPLOYEE) {
-      return employeeService.getEmployee(subjectId).getManager();
+    switch (subjectRole) {
+      case EMPLOYEE:
+        return employeeService.getEmployee(subjectId).getManager();
+      case MANAGER:
+        return managerService.getManager(subjectId).getHrTeamMember();
+      case HRTEAMMEMBER:
+        return hrService.getHrTeamMember(subjectId);
+      default:
+        return null;
     }
-    return null;
   }
 }
