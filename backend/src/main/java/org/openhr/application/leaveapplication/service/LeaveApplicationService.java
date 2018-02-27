@@ -32,5 +32,7 @@ public interface LeaveApplicationService {
 
   List<LeaveType> getLeaveTypes();
 
+  LeaveType getLeaveTypeById(long leaveTypeId);
+
   long getLeaveApplicationIdByProcessId(String processInstanceId);
 }

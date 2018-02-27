@@ -37,7 +37,7 @@ public class LeaveApplication implements Serializable {
   private String message;
 
   @NotNull(message = "Leave type cannot be empty")
-  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
+  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID")
   @ManyToOne(optional = false)
   private LeaveType leaveType;
 

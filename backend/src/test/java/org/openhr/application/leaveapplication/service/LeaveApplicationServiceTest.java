@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 public class LeaveApplicationServiceTest {
 
   private final LeaveApplication mockLeaveApplication = new LeaveApplication();
-  private LeaveApplicationServiceImpl leaveApplicationServiceImpl;
 
   @Autowired
   private LeaveApplicationService leaveApplicationService;
@@ -42,8 +41,6 @@ public class LeaveApplicationServiceTest {
   @Before()
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    leaveApplicationServiceImpl = new LeaveApplicationServiceImpl(leaveApplicationDAO, leaveApplicationRepository,
-      subjectService);
     mockLeaveApplication.setApplicationId(1L);
   }
 

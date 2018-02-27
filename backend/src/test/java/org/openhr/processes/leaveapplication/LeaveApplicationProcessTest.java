@@ -100,6 +100,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void processShouldStartWithoutRoleUsingDefaultRoute() {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     final Map<String, Object> params = new HashMap<>();
     params.put("application", mockLeaveApplication);
     params.put("role", null);
@@ -110,6 +111,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void reviewShouldBeTheFirstStep() {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     final Map<String, Object> params = new HashMap<>();
     params.put("role", Role.EMPLOYEE);
     params.put("application", mockLeaveApplication);
@@ -121,6 +123,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void managerShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
@@ -145,6 +148,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void hrTeamShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
@@ -172,6 +176,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws ValidationException {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
@@ -199,6 +204,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void processShouldStartAndSetApprovedByManagerIfManagerMadeAnApplication() throws ValidationException {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
@@ -216,6 +222,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void workflowShouldEndIfHrTeamMemberAppliedForLeave() throws ValidationException {
+    when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
