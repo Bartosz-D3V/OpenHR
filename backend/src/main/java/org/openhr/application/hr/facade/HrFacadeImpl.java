@@ -2,6 +2,7 @@ package org.openhr.application.hr.facade;
 
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.service.HrService;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +31,11 @@ public class HrFacadeImpl implements HrFacade {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
     return hrService.updateHrTeamMember(subjectId, hrTeamMember);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
+    hrService.deleteHrTeamMember(subjectId);
   }
 }

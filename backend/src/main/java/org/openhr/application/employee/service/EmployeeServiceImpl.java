@@ -14,14 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeDAO employeeDAO;
-  private final EmployeeRepository employeeRepository;
   private final AuthenticationService authenticationService;
 
   public EmployeeServiceImpl(final EmployeeDAO employeeDAO,
-                             final EmployeeRepository employeeRepository,
                              final AuthenticationService authenticationService) {
     this.employeeDAO = employeeDAO;
-    this.employeeRepository = employeeRepository;
     this.authenticationService = authenticationService;
   }
 
@@ -31,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Employee createEmployee(final Employee employee) {
     final User user = employee.getUser();
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
@@ -42,13 +39,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     return employeeDAO.updateEmployee(subjectId, employee);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     return employeeDAO.setManagerToEmployee(employeeId, manager);
   }

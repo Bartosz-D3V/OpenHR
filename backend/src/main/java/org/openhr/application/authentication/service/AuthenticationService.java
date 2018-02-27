@@ -13,4 +13,6 @@ public interface AuthenticationService {
   List<UserRole> setBasicUserRoles(User user);
 
   List<UserRole> setManagerUserRole(User user);
+
+  List<UserRole> setHrUserRole(User user);
 }
