@@ -99,6 +99,17 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void revertSubtractedDaysForApplication(final Subject subject, final LeaveApplication leaveApplication) {
+    final long allowanceSubtracted = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
+      leaveApplication.getEndDate());
+    final long currentlyUsedAllowance = subject.getHrInformation().getUsedAllowance();
+    final long newUsedAllowance = currentlyUsedAllowance + allowanceSubtracted;
+    subject.getHrInformation().setUsedAllowance(newUsedAllowance);
+    subjectDAO.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+  }
+
+  @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Role getSubjectRole(final long subjectId) throws SubjectDoesNotExistException {
     return getSubjectDetails(subjectId).getRole();
@@ -108,7 +119,7 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectSupervisor(final long subjectId) throws SubjectDoesNotExistException {
     final Role subjectRole = getSubjectRole(subjectId);
-    if(subjectRole == Role.EMPLOYEE) {
+    if (subjectRole == Role.EMPLOYEE) {
       return employeeService.getEmployee(subjectId).getManager();
     }
     return null;

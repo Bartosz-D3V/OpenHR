@@ -3,6 +3,7 @@ package org.openhr.application.leaveapplication.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -82,5 +83,22 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
     }
 
     return applicationId;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationApplicant(final long applicationId) {
+    Subject applicant = null;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      applicant = (Subject) session.createCriteria(LeaveApplication.class)
+        .add(Restrictions.eq("applicationId", applicationId))
+        .setProjection(Projections.property("subject"))
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+    }
+
+    return applicant;
   }
 }

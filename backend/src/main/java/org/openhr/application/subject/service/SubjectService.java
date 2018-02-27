@@ -31,6 +31,8 @@ public interface SubjectService {
 
   void subtractDaysExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
+  void revertSubtractedDaysForApplication(Subject subject, LeaveApplication leaveApplication);
+
   Role getSubjectRole(long subjectId) throws SubjectDoesNotExistException;
 
   Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;

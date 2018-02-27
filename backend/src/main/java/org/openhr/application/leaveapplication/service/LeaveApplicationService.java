@@ -28,6 +28,8 @@ public interface LeaveApplicationService {
 
   List<LeaveApplication> getAwaitingForManagerLeaveApplications(long managerId);
 
+  Subject getApplicationApplicant(long applicationId);
+
   List<LeaveType> getLeaveTypes();
 
   long getLeaveApplicationIdByProcessId(String processInstanceId);
