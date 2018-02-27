@@ -1,6 +1,7 @@
 package org.openhr.application.hr.service;
 
 import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 
 public interface HrService {
   HrTeamMember getHrTeamMember(long subjectId);
@@ -8,4 +9,6 @@ public interface HrService {
   HrTeamMember addHrTeamMember(HrTeamMember hrTeamMember);
 
   HrTeamMember updateHrTeamMember(long subjectId, HrTeamMember hrTeamMember);
+
+  void deleteHrTeamMember(long subjectId) throws SubjectDoesNotExistException;
 }

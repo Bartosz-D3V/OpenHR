@@ -1,8 +1,11 @@
 package org.openhr.common.dao;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,7 +23,7 @@ public abstract class BaseDAO {
     this.sessionFactory = sessionFactory;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   protected void save(final Object object) throws HibernateException {
     try {
       final Session session = sessionFactory.getCurrentSession();
@@ -47,7 +50,7 @@ public abstract class BaseDAO {
     return object;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   protected void merge(final Object object) throws HibernateException {
     try {
       final Session session = sessionFactory.getCurrentSession();

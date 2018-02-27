@@ -40,8 +40,16 @@ public class HrController {
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
   public HrTeamMember updateHrTeamMember(@PathVariable final long subjectId,
                                          @RequestBody final HrTeamMember hrTeamMember) throws SubjectDoesNotExistException {
     return hrFacade.updateHrTeamMember(subjectId, hrTeamMember);
+  }
+
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  @ResponseBody
+  public void deleteHrTeamMember(@PathVariable final long subjectId) throws SubjectDoesNotExistException {
+    hrFacade.deleteHrTeamMember(subjectId);
   }
 }
