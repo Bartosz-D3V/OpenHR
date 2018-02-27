@@ -29,7 +29,7 @@ public interface SubjectService {
 
   long getLeftAllowanceInDays(long subjectId);
 
-  void subtractDaysExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
+  void subtractDaysFromSubjectAllowanceExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
   void revertSubtractedDaysForApplication(Subject subject, LeaveApplication leaveApplication);
 

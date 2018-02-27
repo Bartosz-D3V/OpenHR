@@ -42,7 +42,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     throws ValidationException {
     validateLeaveApplication(leaveApplication);
     validateLeftAllowance(subject);
-    subjectService.subtractDaysExcludingFreeDays(subject, leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
 
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
