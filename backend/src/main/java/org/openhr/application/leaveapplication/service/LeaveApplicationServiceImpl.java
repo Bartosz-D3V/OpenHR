@@ -42,6 +42,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     throws ValidationException {
     validateLeaveApplication(leaveApplication);
     validateLeftAllowance(subject);
+    final long leaveTypeId = leaveApplication.getLeaveType().getLeaveTypeId();
+    leaveApplication.setLeaveType(getLeaveTypeById(leaveTypeId));
     subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
 
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
@@ -132,6 +134,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveType> getLeaveTypes() {
     return leaveApplicationRepository.getLeaveTypes();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public LeaveType getLeaveTypeById(final long leaveTypeId) {
+    return leaveApplicationRepository.getLeaveType(leaveTypeId);
   }
 
   @Override

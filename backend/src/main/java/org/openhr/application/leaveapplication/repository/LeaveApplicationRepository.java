@@ -87,4 +87,23 @@ public class LeaveApplicationRepository {
 
     return filteredLeaveApplications;
   }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public LeaveType getLeaveType(final long leaveTypeId) {
+    LeaveType leaveType;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      leaveType = (LeaveType) criteria
+        .add(Restrictions.eq("leaveTypeId", leaveTypeId))
+        .setReadOnly(true)
+        .setCacheable(true)
+        .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return leaveType;
+  }
 }
