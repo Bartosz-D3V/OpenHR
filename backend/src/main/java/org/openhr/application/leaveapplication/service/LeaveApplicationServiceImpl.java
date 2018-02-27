@@ -73,7 +73,9 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   public void rejectLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByManager(false);
+    subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
@@ -90,8 +92,10 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByHR(false);
+    subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
 
@@ -99,7 +103,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByHR(true);
     leaveApplicationDAO.updateLeaveApplication(leaveApplication);
   }
@@ -116,6 +120,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long managerId) {
     return leaveApplicationRepository.getAwaitingForManagerLeaveApplications(managerId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationApplicant(final long applicationId) {
+    return leaveApplicationDAO.getApplicationApplicant(applicationId);
   }
 
   @Override
