@@ -50,7 +50,7 @@ public class SubjectServiceTest {
     when(subjectDAO.getUsedAllowance(anyLong())).thenReturn(17L);
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
   }
 
   @Test(expected = ValidationException.class)
@@ -66,6 +66,6 @@ public class SubjectServiceTest {
     subject.setHrInformation(hrInformation);
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
   }
 }
