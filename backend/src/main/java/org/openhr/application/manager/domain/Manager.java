@@ -29,7 +29,7 @@ public class Manager extends Subject implements Serializable {
   @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
   private Set<Employee> employees;
 
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "FK_HR_TEAM_MEMBER")
   private HrTeamMember hrTeamMember;
 

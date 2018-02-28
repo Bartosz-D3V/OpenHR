@@ -38,4 +38,10 @@ public class HrFacadeImpl implements HrFacade {
   public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
     hrService.deleteHrTeamMember(subjectId);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void addManagerToHr(final long hrTeamMemberId, final long managerId) throws SubjectDoesNotExistException {
+    hrService.addManagerToHr(hrTeamMemberId, managerId);
+  }
 }
