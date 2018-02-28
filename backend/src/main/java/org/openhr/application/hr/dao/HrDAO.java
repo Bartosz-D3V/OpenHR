@@ -9,6 +9,4 @@ public interface HrDAO {
   HrTeamMember addHrTeamMember(HrTeamMember hrTeamMember);
 
   HrTeamMember updateHrTeamMember(long subjectId, HrTeamMember hrTeamMember);
-
-  void deleteHrTeamMember(long subjectId) throws SubjectDoesNotExistException;
 }

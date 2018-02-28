@@ -210,23 +210,4 @@ public class SubjectDAOTest {
 
     assertNull(actualSubject);
   }
-
-  @Test
-  public void getAllowanceShouldReturnAllowance() throws HibernateException {
-    final long actualAllowance = subjectDAO.getAllowance(mockSubject.getSubjectId());
-
-    assertEquals(mockHrInformation.getAllowance(), actualAllowance);
-  }
-
-  @Test
-  public void getUsedAllowanceShouldReturnUsedAllowance() throws HibernateException {
-    final Session session = sessionFactory.getCurrentSession();
-    final HrInformation mockHrInformation2 = new HrInformation(20L);
-    mockHrInformation2.setUsedAllowance(10L);
-    mockSubject.setHrInformation(mockHrInformation2);
-    session.merge(mockSubject);
-    final long actualUsedAllowance = subjectDAO.getUsedAllowance(mockSubject.getSubjectId());
-
-    assertEquals(mockHrInformation.getUsedAllowance(), actualUsedAllowance);
-  }
 }

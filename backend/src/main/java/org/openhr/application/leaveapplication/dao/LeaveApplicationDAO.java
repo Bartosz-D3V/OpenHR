@@ -1,8 +1,11 @@
 package org.openhr.application.leaveapplication.dao;
 
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
+
+import java.util.List;
 
 public interface LeaveApplicationDAO {
 
@@ -15,4 +18,6 @@ public interface LeaveApplicationDAO {
   long getLeaveApplicationIdByProcessId(String processInstanceId);
 
   Subject getApplicationApplicant(long applicationId);
+
+  List<LeaveType> getLeaveTypes();
 }

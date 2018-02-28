@@ -5,8 +5,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
+import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -18,26 +21,16 @@ import java.util.List;
 
 @Repository
 public class LeaveApplicationRepository {
+
+  private final LeaveApplicationDAO leaveApplicationDAO;
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public LeaveApplicationRepository(final SessionFactory sessionFactory) {
+  public LeaveApplicationRepository(final LeaveApplicationDAO leaveApplicationDAO,
+                                    final SessionFactory sessionFactory) {
+
+    this.leaveApplicationDAO = leaveApplicationDAO;
     this.sessionFactory = sessionFactory;
-  }
-
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  @SuppressWarnings("unchecked")
-  public List<LeaveType> getLeaveTypes() throws HibernateException {
-    List<LeaveType> leaveTypes;
-    try {
-      final Session session = sessionFactory.getCurrentSession();
-      leaveTypes = session.createCriteria(LeaveType.class).list();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getLocalizedMessage());
-      throw hibernateException;
-    }
-
-    return leaveTypes;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -105,5 +98,36 @@ public class LeaveApplicationRepository {
     }
 
     return leaveType;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationDAO.getLeaveApplication(applicationId);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+    return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException {
+    return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationApplicant(final long applicationId) {
+    return leaveApplicationDAO.getApplicationApplicant(applicationId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
+    return leaveApplicationDAO.getLeaveApplicationIdByProcessId(processInstanceId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveType> getLeaveTypes() throws HibernateException {
+    return leaveApplicationDAO.getLeaveTypes();
   }
 }

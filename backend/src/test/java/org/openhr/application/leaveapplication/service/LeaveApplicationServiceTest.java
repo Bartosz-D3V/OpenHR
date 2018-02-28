@@ -29,14 +29,8 @@ public class LeaveApplicationServiceTest {
   @Autowired
   private LeaveApplicationService leaveApplicationService;
 
-  @Autowired
-  private LeaveApplicationRepository leaveApplicationRepository;
-
   @MockBean
   private SubjectService subjectService;
-
-  @MockBean
-  private LeaveApplicationDAO leaveApplicationDAO;
 
   @Before()
   public void setUp() {
