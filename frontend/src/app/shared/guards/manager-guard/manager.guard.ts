@@ -10,8 +10,8 @@ export class ManagerGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    return !this._jwtHelper.isTokenExpired() &&
+    return (!this._jwtHelper.isTokenExpired() &&
       (this._jwtHelper.hasRole(Role.MANAGER) ||
-      this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
+      this._jwtHelper.hasRole(Role.HRTEAMMEMBER)));
   }
 }

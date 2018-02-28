@@ -10,7 +10,7 @@ export class HrTeamMemberGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    return !this._jwtHelper.isTokenExpired() &&
-      this._jwtHelper.hasRole(Role.HRTEAMMEMBER);
+    return (!this._jwtHelper.isTokenExpired() &&
+      this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
   }
 }
