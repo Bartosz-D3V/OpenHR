@@ -11,7 +11,7 @@ export class MainGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    if (!this._jwtHelper.isTokenExpired() ||
+    if (!this._jwtHelper.isTokenExpired() &&
       this._jwtHelper.hasRole('ROLE_MEMBER')) {
       return true;
     }
