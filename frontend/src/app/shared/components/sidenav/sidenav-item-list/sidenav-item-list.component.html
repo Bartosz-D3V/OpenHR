@@ -19,7 +19,8 @@
     Delegation
   </button>
 
-  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['report'] } }]">
+  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')"
+          class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['report'] } }]">
     <i class="material-icons c-sidenav__icon">show_chart</i>
     Report
   </button>
@@ -30,12 +31,13 @@
     Employees
   </button>
 
-  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['manage-employee-data'] } }]">
+  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')"
+          class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['manage-employee-data'] } }]">
     <i class="material-icons c-sidenav__icon">group</i>
     Manage employees' data
   </button>
 
-  <button mat-button class="c-sidenav__item"
+  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['manage-leave-applications'] } }]">
     <i class="material-icons c-sidenav__icon">view_list</i>
     Manage leave applications

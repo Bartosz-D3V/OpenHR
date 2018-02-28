@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { MainGuard } from '../shared/guards/main-guard/main.guard';
+import { ManagerGuard } from '../shared/guards/manager-guard/manager.guard';
 import { PersonalDetailsComponent } from '../modules/core/pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from '../modules/core/pages/leave-application/leave-application.component';
 import { DelegationComponent } from '../modules/core/pages/delegation/delegation.component';
@@ -11,8 +13,8 @@ import { EmployeesComponent } from '../modules/core/pages/employees/employees.co
 import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-employee.component';
 import { LoginComponent } from '../modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '../modules/core/pages/manage-leave-applications/manage-leave-applications.component';
-import { MainGuard } from '../shared/guards/main-guard/main.guard';
 import { ManageEmployeesDataComponent } from '../modules/core/pages/manage-employees-data/manage-employees-data.component';
+import { HrTeamMemberGuard } from '../shared/guards/hr-team-member-guard/hr-team-member.guard';
 
 export const routeDefinitions: Routes = [
   {
@@ -44,16 +46,19 @@ export const routeDefinitions: Routes = [
         path: 'manage-employee-data',
         component: ManageEmployeesDataComponent,
         outlet: 'core',
+        canActivate: [ManagerGuard],
       },
       {
         path: 'add-employee',
         component: AddEmployeeComponent,
         outlet: 'core',
+        canActivate: [HrTeamMemberGuard],
       },
       {
         path: 'manage-leave-applications',
         component: ManageLeaveApplicationsComponent,
         outlet: 'core',
+        canActivate: [ManagerGuard],
       },
       {
         path: 'about',
