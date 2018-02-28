@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 import { User } from '../../domain/user/user';
@@ -12,7 +11,7 @@ describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let jwtHelper: JwtHelperService;
-  const mockUser = new User(2199, 'John', 'Test');
+  const mockUser: User = new User(2199, 'John', 'Test');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,6 +37,8 @@ describe('AvatarComponent', () => {
     component.user = mockUser;
     fixture.detectChanges();
     jwtHelper = TestBed.get(JwtHelperService);
+
+    spyOn(component['_router'], 'navigate');
   });
 
   it('should be created', () => {
