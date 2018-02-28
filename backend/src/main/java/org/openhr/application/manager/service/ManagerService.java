@@ -20,4 +20,6 @@ public interface ManagerService {
   Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
 
   void addEmployeeToManager(long managerId, long subjectId) throws SubjectDoesNotExistException;
+
+  Manager setHrToManager(long managerId, long hrTeamMemberId) throws SubjectDoesNotExistException;
 }

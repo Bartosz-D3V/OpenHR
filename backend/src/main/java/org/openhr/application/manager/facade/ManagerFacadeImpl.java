@@ -55,4 +55,10 @@ public class ManagerFacadeImpl implements ManagerFacade {
   public void addEmployeeToManager(final long managerId, final long subjectId) throws SubjectDoesNotExistException {
     managerService.addEmployeeToManager(managerId, subjectId);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Manager setHrToManager(final long managerId, final long hrTeamMemberId) throws SubjectDoesNotExistException {
+    return managerService.setHrToManager(managerId, hrTeamMemberId);
+  }
 }
