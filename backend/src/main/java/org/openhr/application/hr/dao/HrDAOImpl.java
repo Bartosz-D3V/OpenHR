@@ -2,6 +2,7 @@ package org.openhr.application.hr.dao;
 
 import org.hibernate.SessionFactory;
 import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.dao.BaseDAO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
@@ -37,5 +38,14 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
     super.merge(savedHrTeamMember);
 
     return savedHrTeamMember;
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void addManagerToHr(final HrTeamMember hrTeamMember, final Manager manager) {
+    hrTeamMember.getManagers().add(manager);
+    manager.setHrTeamMember(hrTeamMember);
+    super.merge(hrTeamMember);
+    super.merge(manager);
   }
 }

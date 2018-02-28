@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openhr.application.hr.dao.HrDAO;
 import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,5 +56,10 @@ public class HrRepository {
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
     }
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void addManagerToHr(final HrTeamMember hrTeamMember, final Manager manager) {
+    hrDAO.addManagerToHr(hrTeamMember, manager);
   }
 }

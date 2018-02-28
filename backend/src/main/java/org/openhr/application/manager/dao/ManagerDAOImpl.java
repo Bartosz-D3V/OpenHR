@@ -62,7 +62,8 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember) throws SubjectDoesNotExistException {
+  public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
+    throws SubjectDoesNotExistException {
     final Set<Manager> managers = hrTeamMember.getManagers();
     manager.setHrTeamMember(hrTeamMember);
     managers.add(manager);

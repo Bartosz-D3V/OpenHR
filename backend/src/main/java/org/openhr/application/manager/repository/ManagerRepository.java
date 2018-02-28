@@ -4,6 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.dao.ManagerDAO;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -69,5 +70,11 @@ public class ManagerRepository {
   @Transactional(propagation = Propagation.REQUIRED)
   public void addEmployeeToManager(final Manager manager, final Employee employee) throws SubjectDoesNotExistException {
     managerDAO.addEmployeeToManager(manager, employee);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
+    throws SubjectDoesNotExistException {
+    return managerDAO.setHrToManager(manager, hrTeamMember);
   }
 }
