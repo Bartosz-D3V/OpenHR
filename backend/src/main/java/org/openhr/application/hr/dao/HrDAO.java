@@ -11,7 +11,5 @@ public interface HrDAO {
 
   HrTeamMember updateHrTeamMember(long subjectId, HrTeamMember hrTeamMember);
 
-  void deleteHrTeamMember(long subjectId) throws SubjectDoesNotExistException;
-
-  void addManagerToHr(HrTeamMember hrTeamMember, Manager manager) throws SubjectDoesNotExistException;
+  void addManagerToHr(HrTeamMember hrTeamMember, Manager manager);
 }

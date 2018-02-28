@@ -1,6 +1,5 @@
 package org.openhr.application.leaveapplication.service;
 
-import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -18,14 +17,11 @@ import java.util.List;
 @Service
 public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
-  private final LeaveApplicationDAO leaveApplicationDAO;
   private final LeaveApplicationRepository leaveApplicationRepository;
   private final SubjectService subjectService;
 
-  public LeaveApplicationServiceImpl(final LeaveApplicationDAO leaveApplicationDAO,
-                                     final LeaveApplicationRepository leaveApplicationRepository,
+  public LeaveApplicationServiceImpl(final LeaveApplicationRepository leaveApplicationRepository,
                                      final SubjectService subjectService) {
-    this.leaveApplicationDAO = leaveApplicationDAO;
     this.leaveApplicationRepository = leaveApplicationRepository;
     this.subjectService = subjectService;
   }
@@ -33,7 +29,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.getLeaveApplication(applicationId);
+    return leaveApplicationRepository.getLeaveApplication(applicationId);
   }
 
   @Override
@@ -46,7 +42,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     leaveApplication.setLeaveType(getLeaveTypeById(leaveTypeId));
     subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
 
-    return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
+    return leaveApplicationRepository.createLeaveApplication(subject, leaveApplication);
   }
 
   private void validateLeaveApplication(final LeaveApplication leaveApplication) throws ValidationException {
@@ -67,55 +63,55 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    return leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByManager(false);
     subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByManager(true);
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByHR(false);
     subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByHR(true);
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = leaveApplicationDAO.getLeaveApplication(applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setTerminated(true);
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
@@ -127,7 +123,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getApplicationApplicant(final long applicationId) {
-    return leaveApplicationDAO.getApplicationApplicant(applicationId);
+    return leaveApplicationRepository.getApplicationApplicant(applicationId);
   }
 
   @Override
@@ -145,6 +141,6 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
-    return leaveApplicationDAO.getLeaveApplicationIdByProcessId(processInstanceId);
+    return leaveApplicationRepository.getLeaveApplicationIdByProcessId(processInstanceId);
   }
 }

@@ -1,10 +1,9 @@
 package org.openhr.application.hr.service;
 
 import org.openhr.application.authentication.service.AuthenticationService;
-import org.openhr.application.hr.dao.HrDAO;
 import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.application.hr.repository.HrRepository;
 import org.openhr.application.manager.domain.Manager;
-import org.openhr.application.manager.service.ManagerService;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -16,21 +15,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class HrServiceImpl implements HrService {
   private final AuthenticationService authenticationService;
-  private final HrDAO hrDAO;
+  private final HrRepository hrRepository;
   private final WorkerProxy workerProxy;
 
   public HrServiceImpl(final AuthenticationService authenticationService,
-                       final HrDAO hrDAO,
+                       final HrRepository hrRepository,
                        final WorkerProxy workerProxy) {
     this.authenticationService = authenticationService;
-    this.hrDAO = hrDAO;
+    this.hrRepository = hrRepository;
     this.workerProxy = workerProxy;
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public HrTeamMember getHrTeamMember(final long subjectId) {
-    return hrDAO.getHrTeamMember(subjectId);
+    return hrRepository.getHrTeamMember(subjectId);
   }
 
   @Override
@@ -42,19 +41,19 @@ public class HrServiceImpl implements HrService {
     user.setUserRoles(authenticationService.setHrUserRole(user));
     hrTeamMember.setRole(Role.HRTEAMMEMBER);
 
-    return hrDAO.addHrTeamMember(hrTeamMember);
+    return hrRepository.addHrTeamMember(hrTeamMember);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
-    return hrDAO.updateHrTeamMember(subjectId, hrTeamMember);
+    return hrRepository.updateHrTeamMember(subjectId, hrTeamMember);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
-    hrDAO.deleteHrTeamMember(subjectId);
+    hrRepository.deleteHrTeamMember(subjectId);
   }
 
   @Override
@@ -62,6 +61,6 @@ public class HrServiceImpl implements HrService {
   public void addManagerToHr(final long hrTeamMemberId, final long managerId) throws SubjectDoesNotExistException {
     final HrTeamMember hrTeamMember = getHrTeamMember(hrTeamMemberId);
     final Manager manager = workerProxy.getManager(managerId);
-    hrDAO.addManagerToHr(hrTeamMember, manager);
+    hrRepository.addManagerToHr(hrTeamMember, manager);
   }
 }

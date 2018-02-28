@@ -1,30 +1,19 @@
 package org.openhr.application.hr.dao;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.dao.BaseDAO;
-import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 @Repository
 public class HrDAOImpl extends BaseDAO implements HrDAO {
-  private final SessionFactory sessionFactory;
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public HrDAOImpl(final SessionFactory sessionFactory) {
     super(sessionFactory);
-    this.sessionFactory = sessionFactory;
   }
 
   @Override
@@ -53,27 +42,8 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
-    try {
-      final Session session = sessionFactory.getCurrentSession();
-      final HrTeamMember hrTeamMember = (HrTeamMember) session.createCriteria(HrTeamMember.class)
-        .add(Restrictions.eq("subjectId", subjectId))
-        .uniqueResult();
-      if (hrTeamMember == null) {
-        throw new SubjectDoesNotExistException("Subject does not exist");
-      }
-      session.delete(hrTeamMember);
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-    }
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public void addManagerToHr(final HrTeamMember hrTeamMember, final Manager manager) throws SubjectDoesNotExistException {
-    final Set<Manager> managers = hrTeamMember.getManagers();
-    managers.add(manager);
-    hrTeamMember.setManagers(managers);
+  public void addManagerToHr(final HrTeamMember hrTeamMember, final Manager manager) {
+    hrTeamMember.getManagers().add(manager);
     manager.setHrTeamMember(hrTeamMember);
     super.merge(hrTeamMember);
     super.merge(manager);

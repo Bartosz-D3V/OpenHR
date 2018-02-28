@@ -1,18 +1,38 @@
 package org.openhr.application.employee.repository;
 
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openhr.application.employee.dao.EmployeeDAO;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
 public class EmployeeRepository {
-  private final SessionFactory sessionFactory;
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
+  private final EmployeeDAO employeeDAO;
 
-  public EmployeeRepository(final SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
+  public EmployeeRepository(final EmployeeDAO employeeDAO) {
+    this.employeeDAO = employeeDAO;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Employee getEmployee(final long subjectId) {
+    return employeeDAO.getEmployee(subjectId);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Employee createEmployee(final Employee employee) {
+    return employeeDAO.createEmployee(employee);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Employee updateEmployee(final long subjectId, final Employee employee) {
+    return employeeDAO.updateEmployee(subjectId, employee);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
+    return employeeDAO.setManagerToEmployee(employeeId, manager);
   }
 }

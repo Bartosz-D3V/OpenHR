@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -27,6 +28,7 @@ import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +68,7 @@ public class LeaveApplicationProcessTest {
   @MockBean
   private SubjectService subjectService;
 
-  @MockBean
+  @SpyBean
   private LeaveApplicationRepository leaveApplicationRepository;
 
   @Autowired

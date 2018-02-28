@@ -6,8 +6,8 @@ import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.hr.service.HrService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.manager.service.ManagerService;
-import org.openhr.application.subject.dao.SubjectDAO;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
+import org.openhr.application.subject.repository.SubjectRepository;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -21,18 +21,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
-  private final SubjectDAO subjectDAO;
+  private final SubjectRepository subjectRepository;
   private final EmployeeService employeeService;
   private final ManagerService managerService;
   private final HrService hrService;
   private final HolidayService holidayService;
 
-  public SubjectServiceImpl(final SubjectDAO subjectDAO,
+  public SubjectServiceImpl(final SubjectRepository subjectRepository,
                             final EmployeeService employeeService,
                             final ManagerService managerService,
                             final HrService hrService,
                             final HolidayService holidayService) {
-    this.subjectDAO = subjectDAO;
+    this.subjectRepository = subjectRepository;
     this.employeeService = employeeService;
     this.managerService = managerService;
     this.hrService = hrService;
@@ -42,46 +42,46 @@ public class SubjectServiceImpl implements SubjectService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
-    return subjectDAO.getSubjectDetails(subjectId);
+    return subjectRepository.getSubjectDetails(subjectId);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    subjectDAO.updateSubjectPersonalInformation(subjectId, personalInformation);
+    subjectRepository.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    subjectDAO.updateSubjectContactInformation(subjectId, contactInformation);
+    subjectRepository.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
-    subjectDAO.updateSubjectEmployeeInformation(subjectId, employeeInformation);
+    subjectRepository.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
-    subjectDAO.deleteSubject(subjectId);
+    subjectRepository.deleteSubject(subjectId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
-    return subjectDAO.getLightweightSubject(subjectId);
+    return subjectRepository.getLightweightSubject(subjectId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeftAllowanceInDays(final long subjectId) {
-    return subjectDAO.getAllowance(subjectId) - subjectDAO.getUsedAllowance(subjectId);
+    return subjectRepository.getAllowance(subjectId) - subjectRepository.getUsedAllowance(subjectId);
   }
 
   @Override
@@ -99,7 +99,7 @@ public class SubjectServiceImpl implements SubjectService {
       throw new ValidationException("Leave is too long");
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
-    subjectDAO.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+    subjectRepository.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
   }
 
   @Override
@@ -110,7 +110,7 @@ public class SubjectServiceImpl implements SubjectService {
     final long currentlyUsedAllowance = subject.getHrInformation().getUsedAllowance();
     final long newUsedAllowance = currentlyUsedAllowance + allowanceSubtracted;
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
-    subjectDAO.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+    subjectRepository.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
   }
 
   @Override

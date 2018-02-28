@@ -44,15 +44,6 @@ public class ManagerDAOTest {
   private ManagerDAO managerDAO;
 
   @Test
-  public void getManagerShouldReturnManagerById() {
-    final Session session = sessionFactory.getCurrentSession();
-    session.save(mockManager);
-    final Manager manager = managerDAO.getManager(mockManager.getSubjectId());
-
-    assertEquals(mockManager.getSubjectId(), manager.getSubjectId());
-  }
-
-  @Test
   public void getEmployeesShouldReturnSetOfEmployeesForParticularManager() throws SubjectDoesNotExistException {
     final Set<Employee> employees = new HashSet<>();
     employees.add(mockEmployee1);
