@@ -1,6 +1,7 @@
 package org.openhr.application.manager.controller;
 
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.manager.facade.ManagerFacade;
@@ -69,5 +70,14 @@ public class ManagerController {
   public void addEmployeeToManager(@RequestParam final long managerId, @RequestParam final long subjectId)
     throws SubjectDoesNotExistException {
     managerFacade.addEmployeeToManager(managerId, subjectId);
+  }
+
+  @RequestMapping(value = "/hr-assignment", method = RequestMethod.PUT,
+    consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  public Manager setManagerToEmployee(@PathVariable final long managerId, @RequestParam final long hrTeamMemberId)
+    throws SubjectDoesNotExistException {
+    return managerFacade.setHrToManager(managerId, hrTeamMemberId);
   }
 }

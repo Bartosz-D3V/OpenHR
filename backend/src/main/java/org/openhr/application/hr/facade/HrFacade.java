@@ -11,4 +11,6 @@ public interface HrFacade {
   HrTeamMember updateHrTeamMember(long subjectId, HrTeamMember hrTeamMember);
 
   void deleteHrTeamMember(long subjectId) throws SubjectDoesNotExistException;
+
+  void addManagerToHr(long hrTeamMemberId, long managerId) throws SubjectDoesNotExistException;
 }
