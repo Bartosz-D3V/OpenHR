@@ -48,6 +48,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("approvedByManager", true);
+    args.put("approvedByHR", false);
     args.put("applicationId", applicationId);
     taskService.complete(task.getId(), args);
   }
@@ -56,6 +57,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public void rejectLeaveApplicationByHr(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    args.put("approvedByManager", false);
     args.put("approvedByHr", false);
     taskService.complete(task.getId(), args);
   }
@@ -64,6 +66,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public void approveLeaveApplicationByHr(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    args.put("approvedByManager", true);
     args.put("approvedByHr", true);
     taskService.complete(task.getId(), args);
   }

@@ -10,6 +10,8 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SubjectService {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
@@ -28,6 +30,9 @@ public interface SubjectService {
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
 
   long getLeftAllowanceInDays(long subjectId);
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  long getUsedAllowance(long subjectId);
 
   void subtractDaysFromSubjectAllowanceExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
