@@ -1,11 +1,8 @@
 package org.openhr.application.subject.service;
 
 import org.hibernate.HibernateException;
-import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.holiday.service.HolidayService;
-import org.openhr.application.hr.service.HrService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.manager.service.ManagerService;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.repository.SubjectRepository;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -15,6 +12,7 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.openhr.common.proxy.worker.WorkerProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,20 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SubjectServiceImpl implements SubjectService {
   private final SubjectRepository subjectRepository;
-  private final EmployeeService employeeService;
-  private final ManagerService managerService;
-  private final HrService hrService;
+  private final WorkerProxy workerProxy;
   private final HolidayService holidayService;
 
   public SubjectServiceImpl(final SubjectRepository subjectRepository,
-                            final EmployeeService employeeService,
-                            final ManagerService managerService,
-                            final HrService hrService,
+                            final WorkerProxy workerProxy,
                             final HolidayService holidayService) {
     this.subjectRepository = subjectRepository;
-    this.employeeService = employeeService;
-    this.managerService = managerService;
-    this.hrService = hrService;
+    this.workerProxy = workerProxy;
     this.holidayService = holidayService;
   }
 
@@ -92,13 +84,14 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject, final LeaveApplication leaveApplication)
+  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject,
+                                                                final LeaveApplication leaveApplication)
     throws ValidationException {
     final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
       leaveApplication.getEndDate());
-    final long currentlyUsedAllowance = getLeftAllowanceInDays(subject.getSubjectId());
-    final long newUsedAllowance = currentlyUsedAllowance + allowanceToSubtract;
-    if (newUsedAllowance < 0) {
+    final long leftAllowanceInDays = getUsedAllowance(subject.getSubjectId());
+    final long newUsedAllowance = leftAllowanceInDays + allowanceToSubtract;
+    if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException("Not enough leave allowance");
     }
     if (allowanceToSubtract > getLeftAllowanceInDays(subject.getSubjectId())) {
@@ -131,11 +124,11 @@ public class SubjectServiceImpl implements SubjectService {
     final Role subjectRole = getSubjectRole(subjectId);
     switch (subjectRole) {
       case EMPLOYEE:
-        return employeeService.getEmployee(subjectId).getManager();
+        return workerProxy.getEmployee(subjectId).getManager();
       case MANAGER:
-        return managerService.getManager(subjectId).getHrTeamMember();
+        return workerProxy.getManager(subjectId).getHrTeamMember();
       case HRTEAMMEMBER:
-        return hrService.getHrTeamMember(subjectId);
+        return workerProxy.getHrTeamMember(subjectId);
       default:
         return null;
     }
