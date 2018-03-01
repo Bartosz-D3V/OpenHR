@@ -28,7 +28,6 @@ public class LeaveApplicationRepository {
 
   public LeaveApplicationRepository(final LeaveApplicationDAO leaveApplicationDAO,
                                     final SessionFactory sessionFactory) {
-
     this.leaveApplicationDAO = leaveApplicationDAO;
     this.sessionFactory = sessionFactory;
   }

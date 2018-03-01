@@ -85,17 +85,23 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public long getUsedAllowance(final long subjectId) {
+    return subjectRepository.getUsedAllowance(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
     final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
       leaveApplication.getEndDate());
     final long currentlyUsedAllowance = getLeftAllowanceInDays(subject.getSubjectId());
-    final long newUsedAllowance = currentlyUsedAllowance - allowanceToSubtract;
+    final long newUsedAllowance = currentlyUsedAllowance + allowanceToSubtract;
     if (newUsedAllowance < 0) {
       throw new ValidationException("Not enough leave allowance");
     }
-    if (allowanceToSubtract > subject.getHrInformation().getAllowance()) {
+    if (allowanceToSubtract > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException("Leave is too long");
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
