@@ -101,7 +101,7 @@ public class SubjectServiceImpl implements SubjectService {
     if (newUsedAllowance < 0) {
       throw new ValidationException("Not enough leave allowance");
     }
-    if (allowanceToSubtract > subject.getHrInformation().getAllowance()) {
+    if (allowanceToSubtract > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException("Leave is too long");
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
