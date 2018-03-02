@@ -38,6 +38,12 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveApplication> getSubjectsLeaveApplications(final long subjectId) {
+    return leaveApplicationService.getSubjectsLeaveApplications(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {

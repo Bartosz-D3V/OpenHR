@@ -4,8 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.user.domain.User;
@@ -36,6 +38,9 @@ public class LeaveApplicationRepositoryTest {
   private final static Manager mockManager = new Manager(
     new PersonalInformation("John", "Black", "Alex", LocalDate.now()), new ContactInformation(),
     new EmployeeInformation(), new HrInformation(), new User("", ""));
+  private final static Employee mockEmployee = new Employee(
+    new PersonalInformation("John", "Black", "Alex", LocalDate.now()), new ContactInformation(),
+    new EmployeeInformation(), new HrInformation(), new User("1", ""));
   private static LeaveApplication leaveApplication1 = new LeaveApplication();
   private static LeaveApplication leaveApplication2 = new LeaveApplication();
 
@@ -57,6 +62,42 @@ public class LeaveApplicationRepositoryTest {
     final Session session = sessionFactory.getCurrentSession();
     session.delete(leaveApplication1);
     session.delete(leaveApplication2);
+  }
+
+  @Test
+  @Ignore
+  public void getSubjectsLeaveApplicationsShouldReturnSubjectsApplications() {
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockManager);
+    leaveApplication1.setLeaveType(leaveType1);
+    leaveApplication1.setStartDate(LocalDate.now());
+    leaveApplication1.setEndDate(LocalDate.now());
+    leaveApplication1.setSubject(mockManager);
+    session.saveOrUpdate(leaveApplication1);
+    session.flush();
+    final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
+      .getSubjectsLeaveApplications(mockManager.getSubjectId());
+
+    assertEquals(1, actualLeaveApplications.size());
+    assertSame(leaveApplication1, actualLeaveApplications.get(0));
+  }
+
+  @Test
+  @Ignore
+  public void getSubjectsLeaveApplicationsShouldReturnEmptyListIfNoApplicationCreatedBySubjectFound() {
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(mockManager);
+    session.save(mockEmployee);
+    leaveApplication1.setLeaveType(leaveType1);
+    leaveApplication1.setStartDate(LocalDate.now());
+    leaveApplication1.setEndDate(LocalDate.now());
+    leaveApplication1.setSubject(mockEmployee);
+    session.saveOrUpdate(leaveApplication1);
+    session.flush();
+    final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
+      .getSubjectsLeaveApplications(mockManager.getSubjectId());
+
+    assertEquals(0, actualLeaveApplications.size());
   }
 
   @Test

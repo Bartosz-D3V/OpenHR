@@ -12,6 +12,8 @@ public interface LeaveApplicationService {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
+  List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
+
   LeaveApplication createLeaveApplication(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;

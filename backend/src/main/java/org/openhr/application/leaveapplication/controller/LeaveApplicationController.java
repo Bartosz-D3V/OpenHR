@@ -38,6 +38,13 @@ public class LeaveApplicationController {
     return leaveApplicationFacade.getLeaveApplication(applicationId);
   }
 
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<LeaveApplication> getSubjectsLeaveApplications(@RequestParam final long subjectId) {
+    return leaveApplicationFacade.getSubjectsLeaveApplications(subjectId);
+  }
+
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.CREATED)

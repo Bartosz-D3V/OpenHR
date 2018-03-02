@@ -13,6 +13,8 @@ public interface LeaveApplicationFacade {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
+  List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
+
   LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException;
 

@@ -54,11 +54,11 @@ public class LeaveApplication implements Serializable {
   private String processInstanceId;
 
   @NotNull(message = "Subject cannot be empty")
-  @ManyToOne(cascade = CascadeType.ALL, optional = false)
+  @ManyToOne(optional = false)
   @JoinColumn(name = "APPLICANT_ID")
   private Subject subject;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "CURRENT_ASSIGNEE_ID")
   private Subject assignee;
 

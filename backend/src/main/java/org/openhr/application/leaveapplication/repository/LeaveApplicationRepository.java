@@ -104,6 +104,25 @@ public class LeaveApplicationRepository {
     return leaveApplicationDAO.getLeaveApplication(applicationId);
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LeaveApplication> getSubjectsLeaveApplications(final long subjectId) {
+    List<LeaveApplication> leaveApplications;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      leaveApplications = criteria.createAlias("subject", "subject")
+        .add(Restrictions.eq("subject.subjectId", subjectId))
+        .setReadOnly(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return leaveApplications;
+  }
+
   @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);

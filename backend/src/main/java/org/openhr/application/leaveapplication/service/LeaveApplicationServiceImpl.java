@@ -33,6 +33,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveApplication> getSubjectsLeaveApplications(final long subjectId) {
+    return leaveApplicationRepository.getSubjectsLeaveApplications(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
