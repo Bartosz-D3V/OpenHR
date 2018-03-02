@@ -10,7 +10,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openhr.application.leaveapplication.dao.LeaveApplicationDAO;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -21,7 +21,6 @@ import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
-import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.ValidationException;
@@ -57,7 +56,7 @@ public class LeaveApplicationProcessTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Manager mockSubject = new Manager(mockPersonalInformation,
+  private final static Employee mockSubject = new Employee(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
   private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
   private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
@@ -87,14 +86,17 @@ public class LeaveApplicationProcessTest {
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
     session.save(leaveType);
+    session.saveOrUpdate(mockSubject);
+    session.flush();
     mockLeaveApplication.setLeaveType(leaveType);
   }
 
   @Test
   public void processShouldStart() {
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.EMPLOYEE);
-    params.put("application", mockLeaveApplication);
+    params.put("subject", mockSubject);
+    params.put("leaveApplication", mockLeaveApplication);
+    params.put("applicationId", mockLeaveApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
     assertFalse(processInstance.isSuspended());
@@ -104,8 +106,11 @@ public class LeaveApplicationProcessTest {
   public void processShouldStartWithoutRoleUsingDefaultRoute() {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     final Map<String, Object> params = new HashMap<>();
-    params.put("application", mockLeaveApplication);
-    params.put("role", null);
+
+    mockSubject.setRole(null);
+    params.put("subject", mockSubject);
+    params.put("leaveApplication", mockLeaveApplication);
+    params.put("applicationId", 1);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
     assertFalse(processInstance.isSuspended());
@@ -115,8 +120,9 @@ public class LeaveApplicationProcessTest {
   public void reviewShouldBeTheFirstStep() {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.EMPLOYEE);
-    params.put("application", mockLeaveApplication);
+    params.put("subject", mockSubject);
+    params.put("leaveApplication", mockLeaveApplication);
+    params.put("applicationId", mockLeaveApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -132,7 +138,7 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.EMPLOYEE);
+    params.put("subject", mockSubject);
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", false);
@@ -157,12 +163,11 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.EMPLOYEE);
+    params.put("subject", mockSubject);
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("approvedByHR", false);
-    params.put("rejectedByHR", true);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId(), params);
@@ -185,12 +190,11 @@ public class LeaveApplicationProcessTest {
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.EMPLOYEE);
+    params.put("subject", mockSubject);
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
     params.put("approvedByHR", true);
-    params.put("rejectedByHR", false);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId(), params);
@@ -210,10 +214,11 @@ public class LeaveApplicationProcessTest {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
+    mockSubject.setRole(Role.MANAGER);
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.MANAGER);
+    params.put("subject", mockSubject);
     params.put("applicationId", leaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService
       .startProcessInstanceByKey("leave-application", params);
@@ -228,10 +233,11 @@ public class LeaveApplicationProcessTest {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
+    mockSubject.setRole(Role.HRTEAMMEMBER);
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
-    params.put("role", Role.HRTEAMMEMBER);
+    params.put("subject", mockSubject);
     params.put("applicationId", leaveApplication.getApplicationId());
     runtimeService.startProcessInstanceByKey("leave-application", params);
 

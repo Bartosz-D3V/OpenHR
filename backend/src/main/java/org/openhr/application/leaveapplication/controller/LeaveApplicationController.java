@@ -40,8 +40,8 @@ public class LeaveApplicationController {
 
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
-  @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
+  @ResponseBody
   public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
     throws HibernateException, SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {

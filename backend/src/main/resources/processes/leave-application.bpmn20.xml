@@ -23,10 +23,10 @@
     <endEvent id="sid-2C539FD2-0F35-4B40-99A5-AFD472CB0FE1"/>
     <sequenceFlow id="sid-2C4EB4C1-6EA2-461A-9859-E36166C2C2B7" sourceRef="sid-379A3B1C-3859-450F-A505-4F0A67A0A8FA" targetRef="sid-2C539FD2-0F35-4B40-99A5-AFD472CB0FE1"/>
     <sequenceFlow id="sid-CCCF894B-7BC0-43B3-B7FF-59401231AACA" name="HR Member" sourceRef="sid-C86A37E3-3C0E-42D9-9FBD-286F20E2D759" targetRef="sid-0461F094-B896-4734-84E0-4BA3D684BB6B">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${role == "HRTEAMMEMBER"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${subject.role == "HRTEAMMEMBER"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-7172DFFF-DF18-45D9-9179-762AF16B2EE0" name="Manager" sourceRef="sid-C86A37E3-3C0E-42D9-9FBD-286F20E2D759" targetRef="sid-D2BFCAD6-FCA5-4FE5-8B63-16C30C423273">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${role == "MANAGER"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${subject.role == "MANAGER"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-D4861E45-774A-434E-B6A6-F86F9BDCB538" sourceRef="sid-5A508ADC-C959-4F82-9AB1-D5AF50E87135" targetRef="sid-22DABFDC-033A-4B20-9F2A-8FBE66E2D79A"/>
     <sequenceFlow id="sid-8628F8A5-628A-4189-AD00-81856C7121D7" name="Rejected" sourceRef="sid-22DABFDC-033A-4B20-9F2A-8FBE66E2D79A" targetRef="sid-ED493EB6-19CB-4509-A07E-1ADECA136EE5">

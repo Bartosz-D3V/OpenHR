@@ -2,13 +2,13 @@ package org.openhr.application.leaveapplication.command;
 
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.common.enumeration.Role;
+import org.openhr.common.domain.subject.Subject;
 
 import java.util.List;
 
 public interface LeaveApplicationCommand {
 
-  String startLeaveApplicationProcess(Role role, LeaveApplication leaveApplication);
+  String startLeaveApplicationProcess(Subject subject, LeaveApplication leaveApplication);
 
   void rejectLeaveApplicationByManager(String processInstanceId, long applicationId);
 

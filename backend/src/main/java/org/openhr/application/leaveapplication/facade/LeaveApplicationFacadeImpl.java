@@ -45,8 +45,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     leaveApplication.setAssignee(subjectService.getSubjectSupervisor(subjectId));
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
-    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject.getRole(),
-      savedLeaveApplication);
+    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject, savedLeaveApplication);
     savedLeaveApplication.setProcessInstanceId(processInstanceId);
 
     return leaveApplicationService.updateLeaveApplication(savedLeaveApplication);
