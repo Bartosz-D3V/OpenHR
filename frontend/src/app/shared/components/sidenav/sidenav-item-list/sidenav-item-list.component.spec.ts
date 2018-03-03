@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
 import { SidenavItemListComponent } from './sidenav-item-list.component';
+import { Role } from '../../../domain/subject/role';
 
 describe('SidenavItemListComponent', () => {
   let component: SidenavItemListComponent;
@@ -27,16 +28,11 @@ describe('SidenavItemListComponent', () => {
     fixture = TestBed.createComponent(SidenavItemListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    spyOn(component['_jwtHelper'], 'getUsersRole').and.returnValue([Role.MANAGER]);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('hasRole should call the JWT Helper Service', () => {
-    spyOn(component['_jwtHelper'], 'hasRole');
-    component.hasRole('Admin');
-
-    expect(component['_jwtHelper'].hasRole).toHaveBeenCalled();
   });
 });

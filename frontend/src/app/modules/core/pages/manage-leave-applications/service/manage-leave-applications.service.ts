@@ -39,18 +39,18 @@ export class ManageLeaveApplicationsService {
   }
 
   public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
-    const role: Role = this._jwtHelper.getUsersRole();
+    const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
     return this._http
-      .put(`${this.url}/${role === Role.MANAGER ? 'manager' : 'hr'}-reject`, null, {
+      .put(`${this.url}/${url}-reject`, null, {
         headers: this.headers,
         params: params,
       });
   }
 
   private getUrlByRole(): string {
-    const role: Role = this._jwtHelper.getUsersRole();
+    const role: Role = this._jwtHelper.getUsersRole()[0];
     switch (role[0]) {
       case Role.MANAGER:
         return 'manager';

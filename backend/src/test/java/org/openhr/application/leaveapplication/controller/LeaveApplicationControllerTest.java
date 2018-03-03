@@ -8,9 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
-import org.openhr.common.enumeration.Role;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
 import org.openhr.common.domain.error.ErrorInfo;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
@@ -28,7 +28,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(LeaveApplicationController.class)
 public class LeaveApplicationControllerTest {
-
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final static String MOCK_URL = "localhost:8080/api/leave-application";
   private final static ApplicationDoesNotExistException mock404Exception =
@@ -225,11 +223,11 @@ public class LeaveApplicationControllerTest {
 
   @Test
   @WithMockUser()
-  public void rejectLeaveApplicationShouldCreateAnApplication() throws Exception {
+  public void rejectLeaveApplicationByManagerShouldRejectAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application/reject")
+      .perform(put("/leave-application/manager-reject")
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
@@ -240,53 +238,17 @@ public class LeaveApplicationControllerTest {
 
   @Test
   @WithMockUser()
-  public void rejectLeaveApplicationShouldHandleHibernateError() throws Exception {
-    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
-    doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .rejectLeaveApplicationByManager(anyString());
-
-    final MvcResult result = mockMvc
-      .perform(put("/leave-application/reject")
-        .param("processInstanceId", "1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(roleAsJson))
-      .andExpect(status().isInternalServerError())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mockHibernateError.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  @WithMockUser()
-  public void approveLeaveApplicationShouldCreateAnApplication() throws Exception {
+  public void approveLeaveApplicationByManagerShouldApproveAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application/approve")
+      .perform(put("/leave-application/manager-approve")
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
-  }
-
-  @Test
-  @WithMockUser()
-  public void approveLeaveApplicationShouldHandleHibernateError() throws Exception {
-    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
-    doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .approveLeaveApplicationByManager(anyString());
-
-    final MvcResult result = mockMvc
-      .perform(put("/leave-application/approve")
-        .param("processInstanceId", "1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(roleAsJson))
-      .andExpect(status().isInternalServerError())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mockHibernateError.getMessage(), result.getResolvedException().getMessage());
   }
 
 }

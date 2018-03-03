@@ -2,7 +2,7 @@ import {Role} from '../subject/role';
 
 export interface Jwt {
   sub: string;
-  scopes: Role;
+  scopes: Array<Role>;
   subjectId: number;
   iat: number;
   exp: number;
