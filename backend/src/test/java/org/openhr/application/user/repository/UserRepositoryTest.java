@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -56,18 +56,6 @@ public class UserRepositoryTest {
 
     assertNotEquals(0, actualUserId);
     assertEquals(mockUser.getUserId(), actualUserId);
-  }
-
-  @Test
-  public void registerUserShouldPersistUserObject() {
-    final User mockUser = new User("username2", "password");
-    userRepository.registerUser(mockUser);
-    final Session session = sessionFactory.getCurrentSession();
-    final User actualUser = session.get(User.class, mockUser.getUserId());
-
-    assertNotEquals(0, actualUser.getUserId());
-    assertEquals(mockUser.getUsername(), actualUser.getUsername());
-    assertEquals(mockUser.getPassword(), actualUser.getPassword());
   }
 
   @Test

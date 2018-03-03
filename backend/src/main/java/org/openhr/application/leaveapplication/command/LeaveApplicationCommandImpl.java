@@ -5,7 +5,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
-import org.openhr.common.enumeration.Role;
+import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,28 +27,29 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public String startLeaveApplicationProcess(final Role role, final LeaveApplication leaveApplication) {
+  public String startLeaveApplicationProcess(final Subject subject, final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
-    parameters.put("role", role);
+    parameters.put("subject", subject);
     parameters.put("leaveApplication", leaveApplication);
+    parameters.put("applicationId", leaveApplication.getApplicationId());
     return runtimeService.startProcessInstanceByKey("leave-application", parameters).getProcessInstanceId();
   }
 
   @Override
-  public void rejectLeaveApplicationByManager(final String processInstanceId) {
+  public void rejectLeaveApplicationByManager(final String processInstanceId, final long applicationId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("rejectedByManager", true);
     args.put("approvedByManager", false);
+    args.put("applicationId", applicationId);
     taskService.complete(task.getId(), args);
   }
 
   @Override
-  public void approveLeaveApplicationByManager(final String processInstanceId) {
+  public void approveLeaveApplicationByManager(final String processInstanceId, final long applicationId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("rejectedByManager", false);
     args.put("approvedByManager", true);
+    args.put("applicationId", applicationId);
     taskService.complete(task.getId(), args);
   }
 
@@ -56,8 +57,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public void rejectLeaveApplicationByHr(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("rejectedByHr", true);
-    args.put("approvedByHr", false);
+    args.put("approvedByHR", false);
     taskService.complete(task.getId(), args);
   }
 
@@ -65,8 +65,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public void approveLeaveApplicationByHr(final String processInstanceId) {
     final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-    args.put("rejectedByHr", false);
-    args.put("approvedByHr", true);
+    args.put("approvedByHR", true);
     taskService.complete(task.getId(), args);
   }
 

@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -209,24 +209,5 @@ public class SubjectDAOTest {
     session.flush();
 
     assertNull(actualSubject);
-  }
-
-  @Test
-  public void getAllowanceShouldReturnAllowance() throws HibernateException {
-    final long actualAllowance = subjectDAO.getAllowance(mockSubject.getSubjectId());
-
-    assertEquals(mockHrInformation.getAllowance(), actualAllowance);
-  }
-
-  @Test
-  public void getUsedAllowanceShouldReturnUsedAllowance() throws HibernateException {
-    final Session session = sessionFactory.getCurrentSession();
-    final HrInformation mockHrInformation2 = new HrInformation(20L);
-    mockHrInformation2.setUsedAllowance(10L);
-    mockSubject.setHrInformation(mockHrInformation2);
-    session.merge(mockSubject);
-    final long actualUsedAllowance = subjectDAO.getUsedAllowance(mockSubject.getSubjectId());
-
-    assertEquals(mockHrInformation.getUsedAllowance(), actualUsedAllowance);
   }
 }

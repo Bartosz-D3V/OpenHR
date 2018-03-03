@@ -2,8 +2,8 @@ package org.openhr.application.employee.dao;
 
 import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,19 +19,16 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Employee getEmployee(final long subjectId) {
-    final Employee employee = (Employee) super.get(Employee.class, subjectId);
-    employee.setManager(employee.getManager());
-
-    return employee;
+    return (Employee) super.get(Employee.class, subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Employee createEmployee(final Employee employee) {
     super.save(employee);
     return employee;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     final Employee savedEmployee = getEmployee(subjectId);
     BeanUtils.copyProperties(savedEmployee, employee, "subjectId");
@@ -40,7 +37,7 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
     return savedEmployee;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     final Manager fetchedManager = (Manager) super.get(Manager.class, manager.getSubjectId());
     final Employee savedEmployee = (Employee) super.get(Employee.class, employeeId);

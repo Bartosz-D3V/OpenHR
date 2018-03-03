@@ -51,4 +51,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     return managerUserRoles;
   }
 
+  @Override
+  public List<UserRole> setHrUserRole(final User user) {
+    final List<UserRole> hrUserRoles = new ArrayList<>();
+    final UserRole userRole = new UserRole(Role.HRTEAMMEMBER);
+    userRole.setUser(user);
+    hrUserRoles.add(userRole);
+    return hrUserRoles;
+  }
+
 }

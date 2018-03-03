@@ -1,7 +1,7 @@
 package org.openhr.application.employee.service;
 
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 
 public interface EmployeeService {
   Employee getEmployee(long subjectId);

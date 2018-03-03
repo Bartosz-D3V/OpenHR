@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.subject.dao.SubjectDAO;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.subject.repository.SubjectRepository;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
@@ -29,15 +29,15 @@ public class SubjectServiceTest {
   private SubjectService subjectService;
 
   @MockBean
-  private SubjectDAO subjectDAO;
+  private SubjectRepository subjectRepository;
 
   @MockBean
   private HolidayService holidayService;
 
   @Test
   public void getLeftAllowanceInDaysShouldReturnDiffBetweenAllowedLeaveAndUsedLeave() {
-    when(subjectDAO.getAllowance(100L)).thenReturn(25L);
-    when(subjectDAO.getUsedAllowance(100L)).thenReturn(10L);
+    when(subjectRepository.getAllowance(100L)).thenReturn(25L);
+    when(subjectRepository.getUsedAllowance(100L)).thenReturn(10L);
 
     assertEquals(15L, subjectService.getLeftAllowanceInDays(100L));
   }
@@ -46,19 +46,19 @@ public class SubjectServiceTest {
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeftLeaveAllowance()
     throws ValidationException {
     when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
-    when(subjectDAO.getAllowance(anyLong())).thenReturn(20L);
-    when(subjectDAO.getUsedAllowance(anyLong())).thenReturn(17L);
+    when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
+    when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
   }
 
   @Test(expected = ValidationException.class)
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
     throws ValidationException {
     when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
-    when(subjectDAO.getAllowance(anyLong())).thenReturn(20L);
-    when(subjectDAO.getUsedAllowance(anyLong())).thenReturn(17L);
+    when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
+    when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
 
     final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
@@ -66,6 +66,6 @@ public class SubjectServiceTest {
     subject.setHrInformation(hrInformation);
     final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
   }
 }

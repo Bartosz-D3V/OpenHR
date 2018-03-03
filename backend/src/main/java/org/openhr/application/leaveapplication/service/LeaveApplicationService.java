@@ -12,6 +12,8 @@ public interface LeaveApplicationService {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
+  List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
+
   LeaveApplication createLeaveApplication(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
   LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
@@ -24,7 +26,17 @@ public interface LeaveApplicationService {
 
   void approveLeaveApplicationByHr(long applicationId) throws ApplicationDoesNotExistException;
 
-  List<LeaveApplication> getAwaitingForManagerLeaveApplications(long subjectId);
+  void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
+
+  List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
+
+  Subject getApplicationApplicant(long applicationId);
+
+  Subject getApplicationAssignee(long applicationId);
 
   List<LeaveType> getLeaveTypes();
+
+  LeaveType getLeaveTypeById(long leaveTypeId);
+
+  long getLeaveApplicationIdByProcessId(String processInstanceId);
 }

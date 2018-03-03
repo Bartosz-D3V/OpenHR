@@ -3,24 +3,25 @@ import { TestBed } from '@angular/core/testing';
 import { SystemVariables } from '../../../config/system-variables';
 import { Jwt } from '../../domain/auth/jwt';
 import { JwtHelperService } from './jwt-helper.service';
+import { Role } from '../../domain/subject/role';
 
 describe('JwtHelperService', () => {
   let service: JwtHelperService;
   const mockTokenString = `
-  eyJhbGciOiJIUzUxMiJ9
-  .eyJzdWJqZWN0SWQiOiI
-  xMiIsInN1YiI6IkV4YW1
-  wbGUiLCJzY29wZXMiOls
-  iUk9MRV9NRU1CRVIiXSw
-  iaWF0IjoxNTE3MDA4MjM
-  wLCJleHAiOjE1MTcwMDg
-  yMzF9.D9qQN9Ew9FrHPcS
-  WEYj9rCyQOc02RerdupTf1Vs-iRE
+  eyJhbGciOiJIUzUxMiJ9.
+  eyJzdWJqZWN0SWQiOiIxM
+  iIsInN1YiI6IkV4YW1wbG
+  UiLCJzY29wZXMiOlsiUk9
+  MRV9FTVBMT1lFRSJdLCJp
+  YXQiOjE1MTcwMDgyMzAsI
+  mV4cCI6MTUxNzAwODIzMX
+  0.D_1ZaeIY-w9UZOfEKKW
+  exHx0YnwK1vMmAotQczppG10
   `;
   const emptyJwt: Jwt = {
     sub: '',
     subjectId: 0,
-    scopes: [],
+    scopes: null,
     iat: 0,
     exp: 0,
   };
@@ -76,7 +77,7 @@ describe('JwtHelperService', () => {
       const parsedJwt: Jwt = service.parseToken(mockTokenString);
 
       expect(parsedJwt.sub).toEqual('Example');
-      expect(parsedJwt.scopes).toEqual(['ROLE_MEMBER']);
+      expect(parsedJwt.scopes).toEqual([Role.EMPLOYEE]);
       expect(parsedJwt.iat).toEqual(1517008230);
       expect(parsedJwt.exp).toEqual(1517008231);
     });
@@ -87,7 +88,7 @@ describe('JwtHelperService', () => {
       const roles: Array<string> = service.getUsersRole();
 
       expect(roles).toBeDefined();
-      expect(roles).toEqual(['ROLE_MEMBER']);
+      expect(roles).toEqual([Role.EMPLOYEE]);
     });
   });
 
@@ -113,13 +114,13 @@ describe('JwtHelperService', () => {
 
   describe('hasRole', () => {
     it('should return true if user has appropriate role', () => {
-      const hasRole: boolean = service.hasRole('ROLE_MEMBER');
+      const hasRole: boolean = service.hasRole(Role.EMPLOYEE);
 
       expect(hasRole).toBeTruthy();
     });
 
     it('should return false if user does not have appropriate role', () => {
-      const hasRole: boolean = service.hasRole('ROLE_ADMIN');
+      const hasRole: boolean = service.hasRole(Role.HRTEAMMEMBER);
 
       expect(hasRole).toBeFalsy();
     });

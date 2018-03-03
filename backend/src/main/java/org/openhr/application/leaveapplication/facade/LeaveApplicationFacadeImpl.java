@@ -38,14 +38,20 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveApplication> getSubjectsLeaveApplications(final long subjectId) {
+    return leaveApplicationService.getSubjectsLeaveApplications(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public LeaveApplication createLeaveApplication(final long subjectId, final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
+    leaveApplication.setAssignee(subjectService.getSubjectSupervisor(subjectId));
     final LeaveApplication savedLeaveApplication = leaveApplicationService.createLeaveApplication(subject,
       leaveApplication);
-    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject.getRole(),
-      savedLeaveApplication);
+    final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject, savedLeaveApplication);
     savedLeaveApplication.setProcessInstanceId(processInstanceId);
 
     return leaveApplicationService.updateLeaveApplication(savedLeaveApplication);
@@ -61,19 +67,47 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void rejectLeaveApplicationByManager(final String processInstanceId) {
-    leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId, applicationId);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void approveLeaveApplicationByManager(final String processInstanceId) {
-    leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId);
+  public void approveLeaveApplicationByManager(final String processInstanceId) throws ApplicationDoesNotExistException,
+    SubjectDoesNotExistException {
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final Subject currentAssignee = leaveApplicationService.getApplicationAssignee(applicationId);
+    final Subject supervisor = subjectService.getSubjectSupervisor(currentAssignee.getSubjectId());
+    leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId, applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(supervisor);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void rejectLeaveApplicationByHR(final String processInstanceId) throws ApplicationDoesNotExistException {
+    leaveApplicationCommand.rejectLeaveApplicationByHr(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(null);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void approveLeaveApplicationByHR(final String processInstanceId) throws ApplicationDoesNotExistException {
+    leaveApplicationCommand.approveLeaveApplicationByHr(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(null);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<LeaveApplication> getAwaitingForManagerLeaveApplications(final long subjectId) {
-    return leaveApplicationService.getAwaitingForManagerLeaveApplications(subjectId);
+  public List<LeaveApplication> getAwaitingForActionLeaveApplications(final long subjectId) {
+    return leaveApplicationService.getAwaitingForActionLeaveApplications(subjectId);
   }
 
   @Override

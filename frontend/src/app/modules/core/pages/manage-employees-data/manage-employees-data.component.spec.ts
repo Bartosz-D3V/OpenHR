@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatAutocompleteModule, MatAutocompleteSelectedEvent,
@@ -9,7 +9,7 @@ import {
   MatNativeDateModule, MatOption, MatOptionModule, MatSnackBarModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
-import Spy = jasmine.Spy;
+import { _throw } from 'rxjs/observable/throw';
 import moment = require('moment');
 
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
@@ -19,14 +19,16 @@ import { ErrorResolverService } from '../../../../shared/services/error-resolver
 import { Employee } from '../../../../shared/domain/subject/employee';
 import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
 import { EmployeeService } from '../../../../shared/services/employee/employee.service';
-import { ManageEmployeesDataService } from './service/manage-employees-data.service';
-import { ManageEmployeesDataComponent } from './manage-employees-data.component';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
 import { Address } from '../../../../shared/domain/subject/address';
 import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
 import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { Role } from '../../../../shared/domain/subject/role';
+import { Manager } from '../../../../shared/domain/subject/manager';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { ManageEmployeesDataComponent } from './manage-employees-data.component';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 describe('ManageEmployeesDataComponent', () => {
   const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
@@ -37,6 +39,10 @@ describe('ManageEmployeesDataComponent', () => {
     new ContactInformation('987654321', 'test2@test.com', new Address('First line 1', 'Second line 2', 'Third line 3',
       'SB2 92B', 'NYC', 'US')), new EmployeeInformation('KZ 44 09 71 B', 'Java Developer', 'Development Team',
       '13HJ', '2011-02-02', '2013-02-02'), new HrInformation(30, 15), Role.EMPLOYEE);
+  const manager1: Manager = new Manager(new PersonalInformation('Jim', 'Smith', null, '1999-05-01'),
+    new ContactInformation('987654321', 'test2@test.com', new Address('First line 1', 'Second line 2', 'Third line 3',
+      'SB2 92B', 'NYC', 'US')), new EmployeeInformation('KZ 54 09 74 C', 'Java Developer', 'Development Team',
+      '13HJ', '2011-02-02', '2013-02-02'), new HrInformation(30, 15), Role.MANAGER);
   let fakeEmployeeService: EmployeeService;
   let component: ManageEmployeesDataComponent;
   let fixture: ComponentFixture<ManageEmployeesDataComponent>;
@@ -82,6 +88,7 @@ describe('ManageEmployeesDataComponent', () => {
       ],
       providers: [
         JwtHelperService,
+        NotificationService,
         ErrorResolverService,
         ResponsiveHelperService,
         {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},
@@ -164,22 +171,6 @@ describe('ManageEmployeesDataComponent', () => {
     });
   });
 
-  xdescribe('save method', () => {
-    beforeEach(() => {
-      component.subject = employee1;
-      component.constructForm();
-      component['_employeeService'] = fakeEmployeeService;
-    });
-
-    it('should assign subject to forms properties', () => {
-      spyOn(component['_employeeService'], 'updateEmployee').and.callThrough();
-      component.employeeForm.setValue(employee2);
-      component.save();
-
-      expect(component.subject).toEqual(employee2);
-    });
-  });
-
   describe('displayFullName method', () => {
     it('should return undefined if no parameter was provided', () => {
       expect(component.displayFullName()).toBeUndefined();
@@ -213,6 +204,46 @@ describe('ManageEmployeesDataComponent', () => {
     expect(component.fetchManagers).toHaveBeenCalled();
   });
 
+  describe('fetchSelectedEmployee method', () => {
+    it('should call employeeService with employeeId as an argument', () => {
+      const mockEmployeeId: number = employee1.subjectId;
+      spyOn(component, 'constructForm').and.callThrough();
+      spyOn(component['_employeeService'], 'getEmployee').and.returnValue(Observable.of(employee1));
+      component.fetchSelectedEmployee(mockEmployeeId);
+
+      expect(component['_employeeService'].getEmployee).toHaveBeenCalledWith(mockEmployeeId);
+      expect(component.constructForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver in case of an error', () => {
+      const mockEmployeeId: number = employee1.subjectId;
+      spyOn(component['_errorResolver'], 'createAlert');
+      spyOn(component['_employeeService'], 'getEmployee').and.returnValue(_throw('Error'));
+      component.fetchSelectedEmployee(mockEmployeeId);
+
+      expect(component['_errorResolver'].createAlert).toHaveBeenCalledWith('Error');
+    });
+  });
+
+  describe('fetchManagers method', () => {
+    it('should call managerService and immediately invoke reducer method', () => {
+      spyOn(component, 'reduceManagers');
+      spyOn(component['_managerService'], 'getManagers').and.returnValue(Observable.of([manager1]));
+      component.fetchManagers();
+
+      expect(component.managers).toEqual([manager1]);
+      expect(component.reduceManagers).toHaveBeenCalledWith([manager1]);
+    });
+
+    it('should call errorResolver in case of an error', () => {
+      spyOn(component['_errorResolver'], 'createAlert');
+      spyOn(component['_managerService'], 'getManagers').and.returnValue(_throw('Error'));
+      component.fetchManagers();
+
+      expect(component['_errorResolver'].createAlert).toHaveBeenCalledWith('Error');
+    });
+  });
+
   describe('isMobile', () => {
     it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
       (service: ResponsiveHelperService) => {
@@ -231,11 +262,37 @@ describe('ManageEmployeesDataComponent', () => {
       }));
   });
 
-  it('isValid method should get FormGroup property', () => {
-    component.employeeForm = new FormGroup({});
-    const spy: Spy = spyOnProperty(component.employeeForm, 'valid', 'get');
-    component.isValid();
+  describe('isValid method', () => {
+    it('should return true if all form controls are valid', () => {
+      component.employeeForm = new FormGroup({});
+      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(true);
 
-    expect(spy).toHaveBeenCalled();
+      expect(component.isValid()).toBeTruthy();
+    });
+
+    it('should return false if employeeForm form control is invalid', () => {
+      component.employeeForm = new FormGroup({});
+      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
+      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(true);
+
+      expect(component.isValid()).toBeFalsy();
+    });
+
+    it('should return false if managerFormSpy form control is invalid', () => {
+      component.employeeForm = new FormGroup({});
+      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(false);
+
+      expect(component.isValid()).toBeFalsy();
+    });
+
+    it('should return false if both form controls are invalid', () => {
+      component.employeeForm = new FormGroup({});
+      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
+      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(false);
+
+      expect(component.isValid()).toBeFalsy();
+    });
   });
 });

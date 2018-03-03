@@ -1,8 +1,8 @@
 package org.openhr.application.employee.controller;
 
 import org.openhr.application.employee.facade.EmployeeFacade;
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

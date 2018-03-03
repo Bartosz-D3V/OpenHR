@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.common.domain.subject.Employee;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +42,6 @@ public class ManagerDAOTest {
 
   @Autowired
   private ManagerDAO managerDAO;
-
-  @Test
-  public void getManagerShouldReturnManagerById() {
-    final Session session = sessionFactory.getCurrentSession();
-    session.save(mockManager);
-    final Manager manager = managerDAO.getManager(mockManager.getSubjectId());
-
-    assertEquals(mockManager.getSubjectId(), manager.getSubjectId());
-  }
 
   @Test
   public void getEmployeesShouldReturnSetOfEmployeesForParticularManager() throws SubjectDoesNotExistException {

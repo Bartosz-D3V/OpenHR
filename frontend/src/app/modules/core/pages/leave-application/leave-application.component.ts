@@ -1,16 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-
 import { ISubscription } from 'rxjs/Subscription';
-
 import { MomentInput } from 'moment';
 
 import { NAMED_DATE } from '../../../../config/datepicker-format';
 import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
 import { LeaveType } from '../../../../shared/domain/leave-application/leave-type';
 import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
@@ -27,6 +25,7 @@ import { LeaveApplicationService } from './service/leave-application.service';
     LeaveApplicationService,
     ResponsiveHelperService,
     NotificationService,
+    ErrorResolverService,
   ],
 })
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
@@ -38,7 +37,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   private $leaveTypes: ISubscription;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication();
-
   public selectorType: DateSelectorType = DateSelectorType.RANGE;
 
   public leaveApplicationFormGroup: FormGroup = new FormGroup({
@@ -54,12 +52,13 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   constructor(private _leaveApplicationService: LeaveApplicationService,
               private _responsiveHelper: ResponsiveHelperService,
-              private _notificationService: NotificationService) {
+              private _notificationService: NotificationService,
+              private _errorResolver: ErrorResolverService) {
   }
 
   private setConditionalValidators(): void {
     if (this.selectorType === DateSelectorType.SINGLE) {
-      this.leaveApplicationFormGroup.controls['singleDateController']
+      this.leaveApplicationFormGroup.get('singleDateController')
         .setValidators(Validators.required);
     }
   }
@@ -97,6 +96,25 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
       .subscribe((response: Array<LeaveType>) => {
         this.leaveTypes = response;
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
+      });
+  }
+
+  public isDateRangePickerValid(isValid: boolean): void {
+    this.dateRangePickerIsValid = isValid;
+  }
+
+  public submitForm(): void {
+    this._leaveApplicationService
+      .submitLeaveApplication(this.leaveApplication)
+      .subscribe((response: LeaveApplication) => {
+        const message = `Application with id ${response.applicationId} has been created`;
+        this.leaveApplicationFormGroup.reset();
+        this.dateRangeComponent.reset();
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (error: any) => {
+        this._errorResolver.createAlert(error);
       });
   }
 
@@ -112,20 +130,5 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
       default:
         return this.leaveApplicationFormGroup.valid && this.dateRangePickerIsValid;
     }
-  }
-
-  public isDateRangePickerValid(isValid: boolean): void {
-    this.dateRangePickerIsValid = isValid;
-  }
-
-  public submitForm(): void {
-    this._leaveApplicationService
-      .submitLeaveApplication(this.leaveApplication)
-      .subscribe((response: LeaveApplication) => {
-        const message = `Application with id ${response.applicationId} has been created`;
-        this.leaveApplicationFormGroup.reset();
-        this.dateRangeComponent.reset();
-        this._notificationService.openSnackBar(message, 'OK');
-      });
   }
 }

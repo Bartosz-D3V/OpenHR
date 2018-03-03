@@ -7,8 +7,11 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SubjectService {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
@@ -28,5 +31,14 @@ public interface SubjectService {
 
   long getLeftAllowanceInDays(long subjectId);
 
-  void subtractDaysExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  long getUsedAllowance(long subjectId);
+
+  void subtractDaysFromSubjectAllowanceExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
+
+  void revertSubtractedDaysForApplication(Subject subject, LeaveApplication leaveApplication);
+
+  Role getSubjectRole(long subjectId) throws SubjectDoesNotExistException;
+
+  Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;
 }

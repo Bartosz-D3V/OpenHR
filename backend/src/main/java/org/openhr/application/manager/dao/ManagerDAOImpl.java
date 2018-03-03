@@ -1,9 +1,11 @@
 package org.openhr.application.manager.dao;
 
 import org.hibernate.SessionFactory;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.common.dao.BaseDAO;
-import org.openhr.common.domain.subject.Employee;
-import org.openhr.common.domain.subject.Manager;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -56,5 +58,19 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
     employee.setManager(manager);
     super.merge(employee);
     super.merge(manager);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
+    throws SubjectDoesNotExistException {
+    final Set<Manager> managers = hrTeamMember.getManagers();
+    manager.setHrTeamMember(hrTeamMember);
+    managers.add(manager);
+    hrTeamMember.setManagers(managers);
+    super.merge(manager);
+    super.merge(hrTeamMember);
+
+    return manager;
   }
 }

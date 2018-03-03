@@ -1,12 +1,10 @@
 package org.openhr.application.leaveapplication.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openhr.common.domain.subject.Subject;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +37,7 @@ public class LeaveApplication implements Serializable {
   private String message;
 
   @NotNull(message = "Leave type cannot be empty")
-  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID", updatable = false)
+  @JoinColumn(name = "LEAVE_TYPE_LEAVE_TYPE_ID")
   @ManyToOne(optional = false)
   private LeaveType leaveType;
 
@@ -49,14 +47,20 @@ public class LeaveApplication implements Serializable {
   @Column(name = "APPROVED_BY_HR")
   private boolean approvedByHR;
 
+  @Column(name = "APPLICATION_TERMINATED")
+  private boolean terminated;
+
   @Column(name = "PROCESS_INSTANCE_ID")
   private String processInstanceId;
 
   @NotNull(message = "Subject cannot be empty")
-  @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
-  @JoinColumn(name = "SUBJECT_ID")
+  @JoinColumn(name = "APPLICANT_ID")
   private Subject subject;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "CURRENT_ASSIGNEE_ID")
+  private Subject assignee;
 
   public LeaveApplication() {
     super();
@@ -129,6 +133,14 @@ public class LeaveApplication implements Serializable {
     this.approvedByHR = approvedByHR;
   }
 
+  public boolean isTerminated() {
+    return terminated;
+  }
+
+  public void setTerminated(final boolean terminated) {
+    this.terminated = terminated;
+  }
+
   public String getProcessInstanceId() {
     return processInstanceId;
   }
@@ -143,5 +155,13 @@ public class LeaveApplication implements Serializable {
 
   public void setSubject(final Subject subject) {
     this.subject = subject;
+  }
+
+  public Subject getAssignee() {
+    return assignee;
+  }
+
+  public void setAssignee(final Subject assignee) {
+    this.assignee = assignee;
   }
 }
