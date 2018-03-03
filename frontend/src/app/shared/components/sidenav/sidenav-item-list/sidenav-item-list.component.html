@@ -19,31 +19,31 @@
     Delegation
   </button>
 
-  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')"
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'"
           class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['report'] } }]">
     <i class="material-icons c-sidenav__icon">show_chart</i>
     Report
   </button>
 
-  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['employees'] } }]">
     <i class="material-icons c-sidenav__icon">people</i>
     Employees
   </button>
 
-  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')"
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'"
           class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['manage-employee-data'] } }]">
     <i class="material-icons c-sidenav__icon">group</i>
     Manage employees' data
   </button>
 
-  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['manage-leave-applications'] } }]">
     <i class="material-icons c-sidenav__icon">view_list</i>
     Manage leave applications
   </button>
 
-  <button mat-button *ngIf="hasRole('ROLE_MANAGER') || hasRole('ROLE_HRTEAMMEMBER')" class="c-sidenav__item"
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
     <i class="material-icons c-sidenav__icon">person_add</i>
     Add employee

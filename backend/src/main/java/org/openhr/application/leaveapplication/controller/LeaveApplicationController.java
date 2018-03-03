@@ -51,7 +51,7 @@ public class LeaveApplicationController {
   @ResponseBody
   public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
-    throws HibernateException, SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
+    throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
@@ -59,18 +59,31 @@ public class LeaveApplicationController {
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   public LeaveApplication updateLeaveApplication(@RequestBody final LeaveApplication leaveApplication)
-    throws HibernateException, ApplicationDoesNotExistException {
+    throws ApplicationDoesNotExistException {
     return leaveApplicationFacade.updateLeaveApplication(leaveApplication);
   }
 
-  @RequestMapping(value = "/reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void rejectLeaveApplicationByManager(@RequestParam final String processInstanceId) throws HibernateException {
+  @RequestMapping(value = "/manager-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void rejectLeaveApplicationByManager(@RequestParam final String processInstanceId) {
     leaveApplicationFacade.rejectLeaveApplicationByManager(processInstanceId);
   }
 
-  @RequestMapping(value = "/approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId) throws HibernateException {
+  @RequestMapping(value = "/manager-approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId)
+    throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
+  }
+
+  @RequestMapping(value = "/hr-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void rejectLeaveApplicationByHR(@RequestParam final String processInstanceId)
+    throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
+    leaveApplicationFacade.rejectLeaveApplicationByHR(processInstanceId);
+  }
+
+  @RequestMapping(value = "/hr-approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  public void approveLeaveApplicationByHR(@RequestParam final String processInstanceId)
+    throws ApplicationDoesNotExistException {
+    leaveApplicationFacade.approveLeaveApplicationByHR(processInstanceId);
   }
 
   @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,

@@ -19,5 +19,7 @@ public interface LeaveApplicationDAO {
 
   Subject getApplicationApplicant(long applicationId);
 
+  Subject getApplicationAssignee(long applicationId);
+
   List<LeaveType> getLeaveTypes();
 }
