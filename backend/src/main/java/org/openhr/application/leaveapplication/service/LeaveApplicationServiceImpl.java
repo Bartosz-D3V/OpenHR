@@ -33,6 +33,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveApplication> getSubjectsLeaveApplications(final long subjectId) {
+    return leaveApplicationRepository.getSubjectsLeaveApplications(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
@@ -124,6 +130,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getApplicationApplicant(final long applicationId) {
     return leaveApplicationRepository.getApplicationApplicant(applicationId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationAssignee(final long applicationId) {
+    return leaveApplicationRepository.getApplicationAssignee(applicationId);
   }
 
   @Override

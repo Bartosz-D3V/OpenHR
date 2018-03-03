@@ -13,6 +13,8 @@ public interface LeaveApplicationFacade {
 
   LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
 
+  List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
+
   LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException;
 
@@ -20,7 +22,11 @@ public interface LeaveApplicationFacade {
 
   void rejectLeaveApplicationByManager(String processInstanceId);
 
-  void approveLeaveApplicationByManager(String processInstanceId);
+  void approveLeaveApplicationByManager(String processInstanceId) throws ApplicationDoesNotExistException, SubjectDoesNotExistException;
+
+  void rejectLeaveApplicationByHR(String processInstanceId) throws SubjectDoesNotExistException, ApplicationDoesNotExistException;
+
+  void approveLeaveApplicationByHR(String processInstanceId) throws ApplicationDoesNotExistException;
 
   List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
 
