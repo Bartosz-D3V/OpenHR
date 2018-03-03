@@ -51,7 +51,7 @@ export class ManageLeaveApplicationsService {
 
   private getUrlByRole(): string {
     const role: Role = this._jwtHelper.getUsersRole()[0];
-    switch (role[0]) {
+    switch (role) {
       case Role.MANAGER:
         return 'manager';
       case Role.HRTEAMMEMBER:
