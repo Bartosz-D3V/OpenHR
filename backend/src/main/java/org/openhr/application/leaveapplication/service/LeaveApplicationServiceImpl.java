@@ -134,6 +134,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationAssignee(final long applicationId) {
+    return leaveApplicationRepository.getApplicationAssignee(applicationId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveType> getLeaveTypes() {
     return leaveApplicationRepository.getLeaveTypes();
   }

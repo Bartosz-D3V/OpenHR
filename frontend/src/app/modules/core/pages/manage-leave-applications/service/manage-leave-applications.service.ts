@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {SystemVariables} from '../../../../../config/system-variables';
 import {JwtHelperService} from '../../../../../shared/services/jwt/jwt-helper.service';
 import {LeaveApplication} from '../../../../../shared/domain/leave-application/leave-application';
+import {Role} from '../../../../../shared/domain/subject/role';
 
 @Injectable()
 export class ManageLeaveApplicationsService {
@@ -27,23 +28,35 @@ export class ManageLeaveApplicationsService {
   }
 
   public approveLeaveApplicationByManager(processInstanceId: string): Observable<any> {
+    const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
     return this._http
-      .put(`${this.url}/approve`, null, {
+      .put(`${this.url}/${url}-approve`, null, {
         params: params,
         headers: this.headers,
       });
   }
 
   public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
+    const role: Role = this._jwtHelper.getUsersRole();
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
     return this._http
-      .put(`${this.url}/reject`, null, {
+      .put(`${this.url}/${role === Role.MANAGER ? 'manager' : 'hr'}-reject`, null, {
         headers: this.headers,
         params: params,
       });
+  }
+
+  private getUrlByRole(): string {
+    const role: Role = this._jwtHelper.getUsersRole();
+    switch (role[0]) {
+      case Role.MANAGER:
+        return 'manager';
+      case Role.HRTEAMMEMBER:
+        return 'hr';
+    }
   }
 
 }

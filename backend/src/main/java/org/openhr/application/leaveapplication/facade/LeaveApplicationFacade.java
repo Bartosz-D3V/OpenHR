@@ -22,7 +22,11 @@ public interface LeaveApplicationFacade {
 
   void rejectLeaveApplicationByManager(String processInstanceId);
 
-  void approveLeaveApplicationByManager(String processInstanceId);
+  void approveLeaveApplicationByManager(String processInstanceId) throws ApplicationDoesNotExistException, SubjectDoesNotExistException;
+
+  void rejectLeaveApplicationByHR(String processInstanceId) throws SubjectDoesNotExistException, ApplicationDoesNotExistException;
+
+  void approveLeaveApplicationByHR(String processInstanceId) throws ApplicationDoesNotExistException;
 
   List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
 

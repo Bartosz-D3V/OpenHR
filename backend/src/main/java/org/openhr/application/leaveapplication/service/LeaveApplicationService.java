@@ -32,6 +32,8 @@ public interface LeaveApplicationService {
 
   Subject getApplicationApplicant(long applicationId);
 
+  Subject getApplicationAssignee(long applicationId);
+
   List<LeaveType> getLeaveTypes();
 
   LeaveType getLeaveTypeById(long leaveTypeId);

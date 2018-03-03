@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import { SystemVariables } from '../../../config/system-variables';
 import { Jwt } from '../../domain/auth/jwt';
+import {Role} from '../../domain/subject/role';
 
 @Injectable()
 export class JwtHelperService {
@@ -27,7 +28,7 @@ export class JwtHelperService {
     return expirationDate.isBefore(moment());
   }
 
-  public getUsersRole(): Array<string> {
+  public getUsersRole(): Role {
     const jwt: Jwt = this.parseToken(this.getToken());
     return jwt.scopes;
   }
@@ -55,7 +56,7 @@ export class JwtHelperService {
   public validateToken(token: string): Jwt {
     const emptyJwt: Jwt = {
       sub: '',
-      scopes: [],
+      scopes: null,
       subjectId: 0,
       iat: 0,
       exp: 0,

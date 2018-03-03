@@ -140,6 +140,11 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getApplicationAssignee(final long applicationId) {
+    return leaveApplicationDAO.getApplicationAssignee(applicationId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
     return leaveApplicationDAO.getLeaveApplicationIdByProcessId(processInstanceId);
   }

@@ -73,9 +73,35 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void approveLeaveApplicationByManager(final String processInstanceId) {
+  public void approveLeaveApplicationByManager(final String processInstanceId) throws ApplicationDoesNotExistException,
+    SubjectDoesNotExistException {
     final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final Subject currentAssignee = leaveApplicationService.getApplicationAssignee(applicationId);
+    final Subject supervisor = subjectService.getSubjectSupervisor(currentAssignee.getSubjectId());
     leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId, applicationId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(supervisor);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void rejectLeaveApplicationByHR(final String processInstanceId) throws ApplicationDoesNotExistException {
+    leaveApplicationCommand.rejectLeaveApplicationByHr(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(null);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void approveLeaveApplicationByHR(final String processInstanceId) throws ApplicationDoesNotExistException {
+    leaveApplicationCommand.approveLeaveApplicationByHr(processInstanceId);
+    final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(null);
+    leaveApplicationService.updateLeaveApplication(leaveApplication);
   }
 
   @Override
