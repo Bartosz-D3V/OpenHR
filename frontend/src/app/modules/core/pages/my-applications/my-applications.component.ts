@@ -20,14 +20,13 @@ import { MyApplicationsService } from './service/my-applications.service';
 })
 export class MyApplicationsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
-  private paginator: MatPaginator;
+  paginator: MatPaginator;
 
   private $leaveApplications: ISubscription;
-  public leaveApplications: Array<LeaveApplication>;
   public isLoadingResults: boolean;
   public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'status', 'ics'];
   public resultsLength = 0;
-  public dataSource: MatTableDataSource<LeaveApplication>;
+  public dataSource: MatTableDataSource<LeaveApplication> = new MatTableDataSource<LeaveApplication>();
 
   constructor(private _myApplications: MyApplicationsService,
               private _jwtHelper: JwtHelperService,
@@ -51,10 +50,9 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     this._myApplications
       .getSubmittedLeaveApplications(subjectId)
       .subscribe((res: Array<LeaveApplication>) => {
-        this.leaveApplications = res;
         this.isLoadingResults = false;
         this.resultsLength = res.length;
-        this.dataSource = new MatTableDataSource<LeaveApplication>(res);
+        this.dataSource.data = res;
         this.dataSource.paginator = this.paginator;
       }, (error: any) => {
         this._errorResolver.handleError(error);
