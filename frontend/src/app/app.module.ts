@@ -15,11 +15,13 @@ import { StaticModalComponent } from './shared/components/static-modal/static-mo
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ErrorResolverService } from './shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from './shared/services/notification/notification.service';
+import { EnableElementByBooleanDirective } from './shared/directives/enable-element-by-boolean/enable-element-by-boolean.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
+    EnableElementByBooleanDirective,
   ],
   imports: [
     BrowserModule,

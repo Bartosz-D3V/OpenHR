@@ -19,6 +19,11 @@
     Delegation
   </button>
 
+  <button mat-button class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['my-applications'] } }]">
+    <i class="material-icons c-sidenav__icon">view_day</i>
+    My applications
+  </button>
+
   <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'"
           class="c-sidenav__item" [routerLink]="[{ outlets: { core: ['report'] } }]">
     <i class="material-icons c-sidenav__icon">show_chart</i>

@@ -41,7 +41,7 @@ public class LeaveApplicationController {
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<LeaveApplication> getSubjectsLeaveApplications(@RequestParam final long subjectId) {
+  public List<LeaveApplication> getSubjectsLeaveApplications(@PathVariable final long subjectId) {
     return leaveApplicationFacade.getSubjectsLeaveApplications(subjectId);
   }
 

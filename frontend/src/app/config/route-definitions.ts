@@ -15,6 +15,7 @@ import { LoginComponent } from '../modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '../modules/core/pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from '../modules/core/pages/manage-employees-data/manage-employees-data.component';
 import { HrTeamMemberGuard } from '../shared/guards/hr-team-member-guard/hr-team-member.guard';
+import { MyApplicationsComponent } from '../modules/core/pages/my-applications/my-applications.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -35,6 +36,11 @@ export const routeDefinitions: Routes = [
       {
         path: 'delegation',
         component: DelegationComponent,
+        outlet: 'core',
+      },
+      {
+        path: 'my-applications',
+        component: MyApplicationsComponent,
         outlet: 'core',
       },
       {
