@@ -31,6 +31,8 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 import { SharedModule } from '../shared/shared.module';
+import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
+import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-application-status.pipe';
 
 @NgModule({
   imports: [
@@ -86,6 +88,8 @@ import { SharedModule } from '../shared/shared.module';
     AddEmployeeComponent,
     ManageLeaveApplicationsComponent,
     ManageEmployeesDataComponent,
+    MyApplicationsComponent,
+    LeaveApplicationStatusPipe,
   ],
   providers: [
     JwtHelperService,

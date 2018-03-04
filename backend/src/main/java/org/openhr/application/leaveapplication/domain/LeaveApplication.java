@@ -1,5 +1,6 @@
 package org.openhr.application.leaveapplication.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openhr.common.domain.subject.Subject;
 
 import javax.persistence.CascadeType;
@@ -56,10 +57,12 @@ public class LeaveApplication implements Serializable {
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "APPLICANT_ID")
+  @JsonIgnore
   private Subject subject;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "CURRENT_ASSIGNEE_ID")
+  @JsonIgnore
   private Subject assignee;
 
   public LeaveApplication() {
