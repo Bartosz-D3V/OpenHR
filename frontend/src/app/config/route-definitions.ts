@@ -25,6 +25,11 @@ export const routeDefinitions: Routes = [
     canActivate: [MainGuard],
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
         outlet: 'core',
