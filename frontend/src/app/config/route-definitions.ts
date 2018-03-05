@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { MainGuard } from '../shared/guards/main-guard/main.guard';
 import { ManagerGuard } from '../shared/guards/manager-guard/manager.guard';
+import { HrTeamMemberGuard } from '../shared/guards/hr-team-member-guard/hr-team-member.guard';
 import { PersonalDetailsComponent } from '../modules/core/pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from '../modules/core/pages/leave-application/leave-application.component';
 import { DelegationComponent } from '../modules/core/pages/delegation/delegation.component';
@@ -14,8 +15,8 @@ import { AddEmployeeComponent } from '../modules/core/pages/add-employee/add-emp
 import { LoginComponent } from '../modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '../modules/core/pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from '../modules/core/pages/manage-employees-data/manage-employees-data.component';
-import { HrTeamMemberGuard } from '../shared/guards/hr-team-member-guard/hr-team-member.guard';
 import { MyApplicationsComponent } from '../modules/core/pages/my-applications/my-applications.component';
+import { DashboardComponent } from '../modules/core/pages/dashboard/dashboard.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -23,6 +24,11 @@ export const routeDefinitions: Routes = [
     component: CoreWrapperComponent,
     canActivate: [MainGuard],
     children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        outlet: 'core',
+      },
       {
         path: 'personal-details',
         component: PersonalDetailsComponent,
