@@ -8,7 +8,6 @@ import {
   MatToolbarModule,
 } from '@angular/material';
 
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
@@ -59,7 +58,6 @@ describe('MyApplicationsComponent', () => {
       providers: [
         ErrorResolverService,
         JwtHelperService,
-        NotificationService,
         {
           provide: MyApplicationsService, useClass: FakeMyApplicationsService,
         },
