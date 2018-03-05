@@ -1,3 +1,4 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -14,6 +15,7 @@ describe('DashboardComponent', () => {
         DashboardComponent,
       ],
       imports: [
+        NoopAnimationsModule,
         FlexLayoutModule,
         NgxChartsModule,
       ],

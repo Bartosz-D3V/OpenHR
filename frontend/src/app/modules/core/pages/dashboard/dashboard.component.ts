@@ -8,7 +8,7 @@ import { SingleChartData } from './domain/single-chart-data';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  public allowanceData: Array<SingleChartData>;
+  public allowanceData: Array<SingleChartData> = [];
 
   constructor() {
   }
