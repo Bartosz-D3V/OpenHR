@@ -4,13 +4,13 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { NAMED_DATE } from '../../../../config/datepicker-format';
-import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
-import { Subject } from '../../../../shared/domain/subject/subject';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { Subject } from '@shared/domain/subject/subject';
 import { PersonalDetailsService } from './service/personal-details.service';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-personal-details',

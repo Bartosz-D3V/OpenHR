@@ -3,10 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { User } from '../../../../shared/domain/user/user';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { SystemVariables } from '../../../../config/system-variables';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { User } from '@shared/domain/user/user';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 
 @Injectable()
 export class LightweightSubjectService {

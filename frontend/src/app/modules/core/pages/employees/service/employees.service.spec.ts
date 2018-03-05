@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { Employee } from '../../../../../shared/domain/subject/employee';
+import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
+import { Employee } from '@shared//domain/subject/employee';
 import { EmployeesService } from './employees.service';
 
 describe('EmployeesService', () => {

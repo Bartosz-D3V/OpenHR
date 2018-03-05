@@ -3,9 +3,9 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MatDialogModule } from '@angular/material';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
-import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
+import { SystemVariables } from '@config/system-variables';
+import { LeaveApplication } from '@shared//domain/leave-application/leave-application';
+import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './manage-leave-applications.service';
 
 describe('ManageLeaveApplicationsService', () => {

@@ -8,12 +8,12 @@ import {
   MatToolbarModule,
 } from '@angular/material';
 
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { InitialsPipe } from '../../../../shared/pipes/initials/initials.pipe';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { LeaveApplicationStatusPipe } from './pipe/leave-application-status.pipe';
 import { MyApplicationsService } from './service/my-applications.service';
 import { MyApplicationsComponent } from './my-applications.component';

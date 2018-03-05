@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
-import { Subject } from '../../../../../shared/domain/subject/subject';
-import { Role } from '../../../../../shared/domain/subject/role';
+import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
+import { Subject } from '@shared//domain/subject/subject';
+import { Role } from '@shared//domain/subject/role';
 
 @Injectable()
 export class PersonalDetailsService {

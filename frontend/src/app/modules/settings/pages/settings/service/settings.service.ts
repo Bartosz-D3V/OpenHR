@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
 
 @Injectable()
 export class SettingsService {

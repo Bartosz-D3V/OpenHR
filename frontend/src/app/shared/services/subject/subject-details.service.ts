@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { ErrorResolverService } from '../error-resolver/error-resolver.service';
-import { SystemVariables } from '../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { Subject } from '../../domain/subject/subject';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
 

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ISubscription } from 'rxjs/Subscription';
 
-import { User } from '../../../shared/domain/user/user';
-import { JwtHelperService } from '../../../shared/services/jwt/jwt-helper.service';
+import { User } from '@shared/domain/user/user';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
 
 @Component({

@@ -8,7 +8,7 @@ import { Address } from '../../domain/subject/address';
 import { PersonalInformation } from '../../domain/subject/personal-information';
 import { ContactInformation } from '../../domain/subject/contact-information';
 import { EmployeeInformation } from '../../domain/subject/employee-information';
-import { SystemVariables } from '../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
 import { HrInformation } from '../../domain/subject/hr-information';
 import { Employee } from '../../domain/subject/employee';

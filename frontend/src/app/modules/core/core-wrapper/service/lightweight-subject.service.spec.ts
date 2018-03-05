@@ -3,10 +3,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { MatDialogModule } from '@angular/material';
 
-import { SystemVariables } from '../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { User } from '../../../../shared/domain/user/user';
+import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { User } from '@shared/domain/user/user';
 import { LightweightSubjectService } from './lightweight-subject.service';
 
 describe('LightweightSubjectService', () => {

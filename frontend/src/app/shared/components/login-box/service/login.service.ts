@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { Credentials } from '../domain/credentials';
 
 @Injectable()
