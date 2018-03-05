@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { ISubscription } from 'rxjs/Subscription';
 
 import { User } from '../../../shared/domain/user/user';

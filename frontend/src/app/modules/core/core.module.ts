@@ -11,6 +11,7 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '../../shared/pipes/initials/initials.pipe';
@@ -33,6 +34,7 @@ import { ManageEmployeesDataComponent } from './pages/manage-employees-data/mana
 import { SharedModule } from '../shared/shared.module';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-application-status.pipe';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -70,6 +72,7 @@ import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-a
     ReactiveFormsModule,
     RouterModule,
     AppRoutingModule,
+    NgxChartsModule,
   ],
   declarations: [
     SidenavComponent,
@@ -90,6 +93,7 @@ import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-a
     ManageEmployeesDataComponent,
     MyApplicationsComponent,
     LeaveApplicationStatusPipe,
+    DashboardComponent,
   ],
   providers: [
     JwtHelperService,
