@@ -1,11 +1,13 @@
-<section fxLayout.gt-md="row" fxLayout.md="row" fxLayout.lt-md="column" fxLayoutAlign.gt-md="start"
+<section class="c-dashboard" fxLayout.gt-md="row" fxLayout.md="row" fxLayout.lt-md="column" fxLayoutAlign.gt-md="start"
          fxLayoutAlign.md="space-between" fxLayoutAlign.lt-md="space-around">
-  <ngx-charts-pie-chart
-    [results]="allowanceData"
-    [animations]="true"
-    [legend]="true"
-    [explodeSlices]="true"
-    [labels]="false"
-    [doughnut]="false">
-  </ngx-charts-pie-chart>
+  <div class="c-dashboard__chart" fxFlex.gt-md="25" fxFlex.lt-md="50" fxFlex.lt-md="100">
+    <ngx-charts-pie-chart
+      [results]="allowanceData"
+      [animations]="true"
+      [legend]="true"
+      [explodeSlices]="true"
+      [labels]="false"
+      [doughnut]="false">
+    </ngx-charts-pie-chart>
+  </div>
 </section>
