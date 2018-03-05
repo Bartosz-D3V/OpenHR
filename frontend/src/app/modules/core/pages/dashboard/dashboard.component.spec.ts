@@ -10,6 +10,8 @@ import { ErrorResolverService } from '../../../../shared/services/error-resolver
 import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
 import { DashboardComponent } from './dashboard.component';
 import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { HrInformation } from '../../../../shared/domain/subject/hr-information';
+import { SingleChartData } from './domain/single-chart-data';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -60,5 +62,16 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('prepareAllowanceData method should return array of SingleChartData with leave information', () => {
+    const mockHrInformation: HrInformation = new HrInformation(25, 5);
+    const result: Array<SingleChartData> = component.prepareAllowanceData(mockHrInformation);
+
+    expect(result).toBeDefined();
+    expect(result[0]).toBeDefined();
+    expect(result[0]).toEqual({'name': 'Total allowance', 'value': 25});
+    expect(result[1]).toBeDefined();
+    expect(result[1]).toEqual({'name': 'Used allowance', 'value': 5});
   });
 });
