@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 
 @Component({
   selector: 'app-account',

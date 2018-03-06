@@ -9,13 +9,13 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
 
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { InitialsPipe } from '../../../../shared/pipes/initials/initials.pipe';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
 import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 

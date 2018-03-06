@@ -5,9 +5,9 @@ import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } fr
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
 
-import { LoginBoxComponent } from '../../shared/components/login-box/login-box.component';
+import { SharedModule } from '@modules/shared/shared.module';
+import { LoginBoxComponent } from '@shared/components/login-box/login-box.component';
 import { LoginComponent } from './pages/login/login.component';
-import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [

@@ -7,9 +7,9 @@ import { MatCardModule, MatSlideToggleModule, MatToolbarModule } from '@angular/
 
 import { Observable } from 'rxjs/Observable';
 
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { SettingsComponent } from './settings.component';
 import { SettingsService } from './service/settings.service';
 

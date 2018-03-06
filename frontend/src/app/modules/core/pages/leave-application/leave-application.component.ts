@@ -5,13 +5,13 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 import { MomentInput } from 'moment';
 
-import { NAMED_DATE } from '../../../../config/datepicker-format';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
-import { LeaveType } from '../../../../shared/domain/leave-application/leave-type';
-import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveType } from '@shared/domain/leave-application/leave-type';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplicationService } from './service/leave-application.service';
 

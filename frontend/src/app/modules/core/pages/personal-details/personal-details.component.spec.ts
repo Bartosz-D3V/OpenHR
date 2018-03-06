@@ -11,22 +11,22 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import Spy = jasmine.Spy;
 
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { Address } from '../../../../shared/domain/subject/address';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
-import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
-import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
-import { HrInformation } from '../../../../shared/domain/subject/hr-information';
-import { Employee } from '../../../../shared/domain/subject/employee';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { Address } from '@shared/domain/subject/address';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Employee } from '@shared/domain/subject/employee';
 import { PersonalDetailsComponent } from './personal-details.component';
-import { Role } from '../../../../shared/domain/subject/role';
+import { Role } from '@shared/domain/subject/role';
 import { PersonalDetailsService } from './service/personal-details.service';
 
 describe('PersonalDetailsComponent', () => {

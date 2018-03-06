@@ -10,11 +10,11 @@ import {
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {

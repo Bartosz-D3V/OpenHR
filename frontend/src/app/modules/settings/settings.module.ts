@@ -9,7 +9,7 @@ import {
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
 
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@modules/shared/shared.module';
 import { AppRoutingModule } from '../../app-routing.module';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountComponent } from './pages/account/account.component';
