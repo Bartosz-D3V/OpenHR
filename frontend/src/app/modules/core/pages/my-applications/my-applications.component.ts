@@ -30,7 +30,6 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
 
   constructor(private _myApplications: MyApplicationsService,
               private _jwtHelper: JwtHelperService,
-              private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService) {
   }
 

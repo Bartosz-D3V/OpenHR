@@ -59,7 +59,6 @@ describe('MyApplicationsComponent', () => {
       providers: [
         ErrorResolverService,
         JwtHelperService,
-        NotificationService,
         {
           provide: MyApplicationsService, useClass: FakeMyApplicationsService,
         },

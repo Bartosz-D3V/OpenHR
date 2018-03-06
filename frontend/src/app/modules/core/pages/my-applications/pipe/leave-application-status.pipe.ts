@@ -10,10 +10,10 @@ export class LeaveApplicationStatusPipe implements PipeTransform {
 
   transform(leaveApplication: LeaveApplication): LeaveApplicationStatuses {
     if (leaveApplication.terminated) {
-      return !leaveApplication.approvedByHR ?
-        LeaveApplicationStatuses.REJECTEDBYHR :
-        !leaveApplication.approvedByManager ?
-          LeaveApplicationStatuses.REJECTEDBYMANAGER :
+      return !leaveApplication.approvedByManager ?
+        LeaveApplicationStatuses.REJECTEDBYMANAGER :
+        !leaveApplication.approvedByHR ?
+          LeaveApplicationStatuses.REJECTEDBYHR :
           LeaveApplicationStatuses.ACCEPTED;
     }
     return LeaveApplicationStatuses.AWAITING;
