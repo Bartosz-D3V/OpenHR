@@ -6,11 +6,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable } from 'rxjs/Observable';
 
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { HrInformation } from '@shared/domain/subject/hr-information';
 import { DashboardComponent } from './dashboard.component';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { HrInformation } from '../../../../shared/domain/subject/hr-information';
 import { SingleChartData } from './domain/single-chart-data';
 
 describe('DashboardComponent', () => {
@@ -70,8 +70,8 @@ describe('DashboardComponent', () => {
 
     expect(result).toBeDefined();
     expect(result[0]).toBeDefined();
-    expect(result[0]).toEqual({'name': 'Total allowance', 'value': 25});
+    expect(result[0]).toEqual({'name': 'Total', 'value': 25});
     expect(result[1]).toBeDefined();
-    expect(result[1]).toEqual({'name': 'Used allowance', 'value': 5});
+    expect(result[1]).toEqual({'name': 'Used', 'value': 5});
   });
 });
