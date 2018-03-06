@@ -4,8 +4,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule } from '@angular/material';
 
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { AccountComponent } from './account.component';
 
 describe('AccountComponent', () => {

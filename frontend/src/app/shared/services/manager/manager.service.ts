@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { SystemVariables } from '../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { Observable } from 'rxjs/Observable';
 import { Manager } from '../../domain/subject/manager';
 

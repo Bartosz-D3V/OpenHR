@@ -10,21 +10,21 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import Spy = jasmine.Spy;
 
-import { Address } from '../../../../shared/domain/subject/address';
-import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { HrInformation } from '../../../../shared/domain/subject/hr-information';
-import { Employee } from '../../../../shared/domain/subject/employee';
+import { Address } from '@shared/domain/subject/address';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { Subject } from '@shared/domain/subject/subject';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Employee } from '@shared/domain/subject/employee';
 import { AddEmployeeComponent } from './add-employee.component';
-import { Role } from '../../../../shared/domain/subject/role';
+import { Role } from '@shared/domain/subject/role';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;

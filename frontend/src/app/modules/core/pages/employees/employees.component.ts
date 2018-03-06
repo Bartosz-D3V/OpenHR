@@ -5,7 +5,7 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { EmployeesService } from './service/employees.service';
 import { EmployeeDataObject } from './domain/employee-data-object';
-import { Employee } from '../../../../shared/domain/subject/employee';
+import { Employee } from '@shared/domain/subject/employee';
 import { EmployeeData } from './employee-data';
 
 @Component({

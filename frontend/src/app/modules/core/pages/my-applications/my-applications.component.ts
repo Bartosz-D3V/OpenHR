@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { MyApplicationsService } from './service/my-applications.service';
 
 @Component({

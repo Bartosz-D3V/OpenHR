@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { ErrorResolverService } from '../../../services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
 import { BankHolidayEngland } from '../domain/bank-holiday/england/bank-holiday-england';

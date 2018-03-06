@@ -6,7 +6,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
-import { NAMED_DATE } from '../../../config/datepicker-format';
+import { NAMED_DATE } from '@config/datepicker-format';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../services/jwt/jwt-helper.service';

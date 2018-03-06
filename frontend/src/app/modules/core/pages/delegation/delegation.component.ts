@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 
 import { MomentInput } from 'moment';
 
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-import { Subject } from '../../../../shared/domain/subject/subject';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { Subject } from '@shared/domain/subject/subject';
 import { DelegationApplication } from './domain/delegation-application';
 import { ISubscription } from 'rxjs/Subscription';
 

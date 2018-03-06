@@ -16,18 +16,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { Observable } from 'rxjs/Observable';
 
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { ResponsiveHelperService } from '../../../../shared/services/responsive-helper/responsive-helper.service';
-import { NotificationService } from '../../../../shared/services/notification/notification.service';
-import { JwtHelperService } from '../../../../shared/services/jwt/jwt-helper.service';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
-import { LeaveApplication } from '../../../../shared/domain/leave-application/leave-application';
-import { LeaveType } from '../../../../shared/domain/leave-application/leave-type';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveType } from '@shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;

@@ -3,9 +3,9 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LeaveApplicationService } from './leave-application.service';
-import { JwtHelperService } from '../../../../../shared/services/jwt/jwt-helper.service';
-import { SystemVariables } from '../../../../../config/system-variables';
-import { LeaveType } from '../../../../../shared/domain/leave-application/leave-type';
+import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
+import { SystemVariables } from '@config/system-variables';
+import { LeaveType } from '@shared//domain/leave-application/leave-type';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];

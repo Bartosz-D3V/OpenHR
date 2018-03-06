@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { RegularExpressions } from '../../../../shared/constants/regexps/regular-expressions';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { RegisterDetails } from '../../../../shared/domain/register/register-details';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { RegisterDetails } from '@shared/domain/register/register-details';
 
 @Component({
   selector: 'app-add-employee',

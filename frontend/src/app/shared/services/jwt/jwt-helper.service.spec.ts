@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SystemVariables } from '../../../config/system-variables';
+import { SystemVariables } from '@config/system-variables';
 import { Jwt } from '../../domain/auth/jwt';
 import { JwtHelperService } from './jwt-helper.service';
 import { Role } from '../../domain/subject/role';
