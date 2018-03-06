@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { HrInformation } from '../../../../shared/domain/subject/hr-information';
+import { Subject } from '@shared/domain/subject/subject';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { HrInformation } from '@shared/domain/subject/hr-information';
 import { SingleChartData } from './domain/single-chart-data';
 
 @Component({
@@ -51,11 +51,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public prepareAllowanceData(hrInformation: HrInformation): Array<SingleChartData> {
     const allowanceDataOne: SingleChartData = {
-      'name': 'Total allowance',
+      'name': 'Total',
       'value': hrInformation.allowance,
     };
     const allowanceDataTwo: SingleChartData = {
-      'name': 'Used allowance',
+      'name': 'Used',
       'value': hrInformation.usedAllowance,
     };
     return [allowanceDataOne, allowanceDataTwo];
