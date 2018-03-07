@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { User } from '@shared/domain/user/user';
@@ -19,7 +20,9 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
   private $user: ISubscription;
 
   constructor(private _lightweightSubject: LightweightSubjectService,
-              private _jwtHelper: JwtHelperService) {
+              private _jwtHelper: JwtHelperService,
+              private _router: Router,
+              private _activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -27,6 +30,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
       .getUser(this._jwtHelper.getSubjectId())
       .subscribe((value: User) => {
         this.user = new User(value.subjectId, value.firstName, value.lastName);
+        this._router.navigate([{outlets: {core: ['dashboard']}}], {relativeTo: this._activatedRoute});
       });
   }
 
