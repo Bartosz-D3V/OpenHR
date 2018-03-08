@@ -10,6 +10,7 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { HrInformation } from '@shared/domain/subject/hr-information';
+import { NumberIndicatorComponent } from '@shared/components/number-indicator/number-indicator.component';
 import { DashboardComponent } from './dashboard.component';
 import { SingleChartData } from './domain/single-chart-data';
 
@@ -34,6 +35,7 @@ describe('DashboardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         DashboardComponent,
+        NumberIndicatorComponent,
       ],
       imports: [
         NoopAnimationsModule,

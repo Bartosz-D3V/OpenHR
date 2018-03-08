@@ -1,0 +1,14 @@
+@import 'variables';
+
+.c-number-indicator {
+  &__num {
+    font-size: $dashboard-main-font;
+    text-align: center;
+  }
+
+  &__txt {
+    font-size: $dashboard-secondary-font;
+    margin-top: 20px;
+    text-align: center;
+  }
+}
