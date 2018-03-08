@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private $subject: ISubscription;
   private subject: Subject;
   public allowanceData: Array<SingleChartData> = [];
+  public usedAllowance: number;
+  public allowanceLeft: number;
 
   constructor(private _subjectService: SubjectDetailsService,
               private _errorResolver: ErrorResolverService) {
@@ -46,6 +48,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public buildCharts(subject: Subject): void {
+    this.allowanceLeft = subject.hrInformation.allowance - subject.hrInformation.usedAllowance;
+    this.usedAllowance = this.convertUsedAllowanceToPercent(subject.hrInformation.allowance,
+      subject.hrInformation.usedAllowance);
     this.allowanceData = this.prepareAllowanceData(subject.hrInformation);
   }
 
@@ -59,5 +64,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       'value': hrInformation.usedAllowance,
     };
     return [allowanceDataOne, allowanceDataTwo];
+  }
+
+  private convertUsedAllowanceToPercent(allowance: number, usedAllowance: number): number {
+    return ((usedAllowance / allowance) * 100);
   }
 }

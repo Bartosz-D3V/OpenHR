@@ -89,8 +89,7 @@ public class SubjectServiceImpl implements SubjectService {
     throws ValidationException {
     final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
       leaveApplication.getEndDate());
-    final long leftAllowanceInDays = getUsedAllowance(subject.getSubjectId());
-    final long newUsedAllowance = leftAllowanceInDays + allowanceToSubtract;
+    final long newUsedAllowance = getUsedAllowance(subject.getSubjectId()) + allowanceToSubtract;
     if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException("Not enough leave allowance");
     }

@@ -1,13 +1,18 @@
-<section class="c-dashboard" fxLayout.gt-md="row" fxLayout.md="row" fxLayout.lt-md="column" fxLayoutAlign.gt-md="start start"
-         fxLayoutAlign.md="space-between start" fxLayoutAlign.lt-md="space-around start">
-  <div class="c-dashboard__chart" fxFlex.gt-md="30" fxFlex.md="40" fxFlex.sm="45" fxFlex.xs="100">
-    <ngx-charts-pie-chart
-      [results]="allowanceData"
-      [animations]="true"
-      [legend]="false"
-      [explodeSlices]="false"
-      [labels]="true"
-      [doughnut]="false">
-    </ngx-charts-pie-chart>
+<section class="c-dashboard" fxLayout.gt-md="row" fxLayout.md="row" fxLayout.lt-md="column"
+         fxLayoutAlign.gt-md="start start" fxLayoutAlign.md="space-between start"
+         fxLayoutAlign.lt-md="space-around start">
+  <div class="c-dashboard__chart" fxFlex.gt-md="30" fxFlex.md="40" fxFlex.sm="45"
+       fxFlex.xs="100">
+    <app-number-indicator [number]="subject?.hrInformation?.allowance"
+                          [description]="'Total allowance'"></app-number-indicator>
+  </div>
+  <div class="c-dashboard__chart" fxFlex.gt-md="30" fxFlex.md="40" fxFlex.sm="45"
+       fxFlex.xs="100">
+    <app-number-indicator [number]="subject?.hrInformation?.usedAllowance"
+                          [description]="'Used allowance'"></app-number-indicator>
+  </div>
+  <div class="c-dashboard__chart" fxFlex.gt-md="30" fxFlex.md="40" fxFlex.sm="45"
+       fxFlex.xs="100">
+    <app-number-indicator [number]="allowanceLeft" [description]="'Allowance left'"></app-number-indicator>
   </div>
 </section>
