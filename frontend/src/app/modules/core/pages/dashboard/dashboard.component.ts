@@ -17,7 +17,7 @@ import { SingleChartData } from './domain/single-chart-data';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private $subject: ISubscription;
-  private subject: Subject;
+  public subject: Subject;
   public allowanceData: Array<SingleChartData> = [];
   public usedAllowance: number;
   public allowanceLeft: number;

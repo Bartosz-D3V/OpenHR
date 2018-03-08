@@ -11,7 +11,6 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
@@ -72,7 +71,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     ReactiveFormsModule,
     RouterModule,
     AppRoutingModule,
-    NgxChartsModule,
   ],
   declarations: [
     SidenavComponent,

@@ -3,7 +3,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable } from 'rxjs/Observable';
 
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -41,7 +40,6 @@ describe('DashboardComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         FlexLayoutModule,
-        NgxChartsModule,
       ],
       providers: [
         JwtHelperService,
