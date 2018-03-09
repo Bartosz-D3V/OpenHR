@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.dashboard.dto.MonthSummaryDTO;
+import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.repository.DashboardRepository;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,16 @@ public class DashboardServiceTest {
   public void setUp() {
     final LeaveApplication leaveApplication1 = new LeaveApplication();
     leaveApplication1.setStartDate(LocalDate.of(2018, Month.MAY, 5));
+    leaveApplication1.setTerminated(true);
+    leaveApplication1.setApprovedByHR(true);
     final LeaveApplication leaveApplication2 = new LeaveApplication();
     leaveApplication2.setStartDate(LocalDate.of(2018, Month.MAY, 27));
+    leaveApplication2.setTerminated(true);
+    leaveApplication2.setApprovedByHR(true);
     final LeaveApplication leaveApplication3 = new LeaveApplication();
     leaveApplication3.setStartDate(LocalDate.of(2018, Month.AUGUST, 1));
+    leaveApplication3.setTerminated(true);
+    leaveApplication3.setApprovedByHR(false);
 
     leaveApplications.add(leaveApplication1);
     leaveApplications.add(leaveApplication2);
@@ -73,5 +80,14 @@ public class DashboardServiceTest {
     assertEquals(Month.MAY, result.get(4).getMonth());
     assertEquals(1, result.get(7).getNumberOfApplications());
     assertEquals(Month.AUGUST, result.get(7).getMonth());
+  }
+
+  @Test
+  public void getCurrentYearStatusRatioShouldConvertLeaveApplicationsToStatusRatioDTO() {
+    when(dashboardRepository.getCurrentYearStatusRatio()).thenReturn(leaveApplications);
+    final StatusRatioDTO result = dashboardService.getCurrentYearStatusRatio();
+
+    assertEquals(2, result.getAccepted());
+    assertEquals(1, result.getRejected());
   }
 }

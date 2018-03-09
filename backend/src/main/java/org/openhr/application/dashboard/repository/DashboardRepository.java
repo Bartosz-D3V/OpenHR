@@ -45,7 +45,29 @@ public class DashboardRepository {
             LocalDate.of(31, 12, LocalDate.now().getYear()))))
         .setProjection(Projections.groupProperty("startDate"))
         .setReadOnly(true)
-        .setCacheable(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return monthlyReport;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LeaveApplication> getCurrentYearStatusRatio() {
+    final List<LeaveApplication> monthlyReport;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      monthlyReport = criteria
+        .add(Restrictions.conjunction()
+          .add(Restrictions.eq("terminated", true))
+          .add(Restrictions.between("startDate", LocalDate.of(1, 1, LocalDate.now().getYear()),
+            LocalDate.of(31, 12, LocalDate.now().getYear()))))
+        .setProjection(Projections.groupProperty("startDate"))
+        .setReadOnly(true)
         .list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());

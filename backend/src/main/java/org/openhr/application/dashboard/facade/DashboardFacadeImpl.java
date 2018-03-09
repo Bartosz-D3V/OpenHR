@@ -1,6 +1,7 @@
 package org.openhr.application.dashboard.facade;
 
 import org.openhr.application.dashboard.dto.MonthSummaryDTO;
+import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.service.DashboardService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,5 +21,11 @@ public class DashboardFacadeImpl implements DashboardFacade {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<MonthSummaryDTO> getMonthlySummaryReport(final long subjectId) {
     return dashboardService.getMonthlySummaryReport(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public StatusRatioDTO getCurrentYearStatusRatio() {
+    return dashboardService.getCurrentYearStatusRatio();
   }
 }
