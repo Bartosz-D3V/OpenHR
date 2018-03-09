@@ -5,17 +5,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable } from 'rxjs/Observable';
 
+import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { HrInformation } from '@shared/domain/subject/hr-information';
 import { NumberIndicatorComponent } from '@shared/components/number-indicator/number-indicator.component';
 import { DashboardComponent } from './dashboard.component';
-import { SingleChartData } from './domain/single-chart-data';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+
+  @Injectable()
+  class FakeDashboardService {
+  }
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -44,6 +47,9 @@ describe('DashboardComponent', () => {
       providers: [
         JwtHelperService,
         {
+          provide: DashboardService, useClass: FakeDashboardService,
+        },
+        {
           provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
         },
         {
@@ -62,16 +68,5 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('prepareAllowanceData method should return array of SingleChartData with leave information', () => {
-    const mockHrInformation: HrInformation = new HrInformation(25, 5);
-    const result: Array<SingleChartData> = component.prepareAllowanceData(mockHrInformation);
-
-    expect(result).toBeDefined();
-    expect(result[0]).toBeDefined();
-    expect(result[0]).toEqual({'name': 'Total', 'value': 25});
-    expect(result[1]).toBeDefined();
-    expect(result[1]).toEqual({'name': 'Used', 'value': 5});
   });
 });
