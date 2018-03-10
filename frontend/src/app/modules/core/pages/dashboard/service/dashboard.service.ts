@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { Observable } from 'rxjs/Observable';
+import { Subject } from '@shared/domain/subject/subject';
 import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
 
 @Injectable()
@@ -22,6 +23,13 @@ export class DashboardService {
   public getMonthlyReport(): Observable<Array<MonthSummary>> {
     return this._http
       .get<Array<MonthSummary>>(`${this.url}/${this._jwtHelper.getSubjectId()}/monthly-report`, {
+        headers: this.headers,
+      });
+  }
+
+  public getSubjectsOnLeave(): Observable<Array<Subject>> {
+    return this._http
+      .get<Array<Subject>>(`${this.url}/on-leave-today`, {
         headers: this.headers,
       });
   }

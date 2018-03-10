@@ -4,6 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable } from 'rxjs/Observable';
+import { MatPaginatorModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
 
 import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -43,6 +44,9 @@ describe('DashboardComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         FlexLayoutModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
       ],
       providers: [
         JwtHelperService,
