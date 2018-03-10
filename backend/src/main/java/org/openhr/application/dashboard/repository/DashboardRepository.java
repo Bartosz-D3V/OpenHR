@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.common.domain.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,6 @@ public class DashboardRepository {
       log.error(e.getLocalizedMessage());
       throw e;
     }
-
     return monthlyReport;
   }
 
@@ -69,8 +69,29 @@ public class DashboardRepository {
       log.error(e.getLocalizedMessage());
       throw e;
     }
-
     return monthlyReport;
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<Subject> retrieveSubjectsOnLeaveToday() {
+    final List<Subject> subjects;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      subjects = criteria
+        .add(Restrictions.ge("endDate", LocalDate.now()))
+        .add(Restrictions.le("startDate", LocalDate.now()))
+        .add(Restrictions.eq("terminated", true))
+        .add(Restrictions.eq("approvedByHR", true))
+        .setProjection(Projections.property("subject"))
+        .setReadOnly(true)
+        .setCacheable(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return subjects;
+  }
 }

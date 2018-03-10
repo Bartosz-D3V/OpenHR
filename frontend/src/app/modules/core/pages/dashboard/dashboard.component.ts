@@ -10,6 +10,8 @@ import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary
 import { Subject } from '@shared/domain/subject/subject';
 import { Month } from '@shared/constants/enumeration/month';
 import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,24 +25,40 @@ import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
   private $monthlySummary: ISubscription;
-  public monthlySummariesChart;
+  private $subjectsOnLeave: ISubscription;
   public subject: Subject;
+  public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
+  public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
+  public isLoadingResults: boolean;
   public usedAllowance: number;
   public allowanceLeft: number;
 
   @ViewChild('monthlySummariesChart')
   public monthlySummariesCanvas: ElementRef;
 
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
+
   constructor(private _dashboardService: DashboardService,
               private _subjectService: SubjectDetailsService,
               private _errorResolver: ErrorResolverService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.isLoadingResults = true;
     this.fetchChartsData();
   }
 
   ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.createMonthlySummaryChart();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
+  }
+
+  public createMonthlySummaryChart(): void {
     this.$monthlySummary = this._dashboardService
       .getMonthlyReport()
       .subscribe((val: Array<MonthSummary>) => {
@@ -51,21 +69,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    if (this.$dashboardService !== undefined) {
-      this.$dashboardService.unsubscribe();
-    }
-    if (this.$monthlySummary !== undefined) {
-      this.$monthlySummary.unsubscribe();
-    }
-  }
-
   public fetchChartsData(): void {
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
-      (subject: Subject) => ({subject})
+      this._dashboardService.getSubjectsOnLeave(),
+      (subject: Subject, subjectsOnLeave: Array<Subject>) => ({subject, subjectsOnLeave})
     ).subscribe((pair) => {
       this.subject = pair.subject;
+      this.dataSource.data = pair.subjectsOnLeave;
+      this.isLoadingResults = false;
       this.buildCharts(pair.subject);
     }, (err: any) => {
       this._errorResolver.handleError(err);
@@ -74,11 +86,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public buildCharts(subject: Subject): void {
     this.allowanceLeft = subject.hrInformation.allowance - subject.hrInformation.usedAllowance;
-    this.usedAllowance = this.convertUsedAllowanceToPercent(subject.hrInformation.allowance,
+    this.usedAllowance = this.convertUsedAllowanceToRatio(subject.hrInformation.allowance,
       subject.hrInformation.usedAllowance);
   }
 
-  public convertUsedAllowanceToPercent(allowance: number, usedAllowance: number): number {
+  public convertUsedAllowanceToRatio(allowance: number, usedAllowance: number): number {
     return ((usedAllowance / allowance) * 100);
   }
 
@@ -134,5 +146,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
     });
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$dashboardService !== undefined) {
+      this.$dashboardService.unsubscribe();
+    }
+    if (this.$monthlySummary !== undefined) {
+      this.$monthlySummary.unsubscribe();
+    }
+    if (this.$subjectsOnLeave !== undefined) {
+      this.$subjectsOnLeave.unsubscribe();
+    }
   }
 }

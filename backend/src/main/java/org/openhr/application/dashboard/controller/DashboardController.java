@@ -3,6 +3,7 @@ package org.openhr.application.dashboard.controller;
 import org.openhr.application.dashboard.dto.MonthSummaryDTO;
 import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.facade.DashboardFacade;
+import org.openhr.common.domain.subject.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,5 +38,13 @@ public class DashboardController {
   @ResponseBody
   public StatusRatioDTO getApplicationsStatusRatio() {
     return dashboardFacade.getCurrentYearStatusRatio();
+  }
+
+  @RequestMapping(value = "/on-leave-today", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<Subject> retrieveSubjectsOnLeaveToday() {
+    return dashboardFacade.retrieveSubjectsOnLeaveToday();
   }
 }

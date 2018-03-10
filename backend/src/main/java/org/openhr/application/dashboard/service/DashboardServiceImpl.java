@@ -4,6 +4,7 @@ import org.openhr.application.dashboard.dto.MonthSummaryDTO;
 import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.repository.DashboardRepository;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,12 @@ public class DashboardServiceImpl implements DashboardService {
   public StatusRatioDTO getCurrentYearStatusRatio() {
     final List<LeaveApplication> leaveApplications = dashboardRepository.getCurrentYearStatusRatio();
     return convertToStatusRatio(leaveApplications);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Subject> retrieveSubjectsOnLeaveToday() {
+    return dashboardRepository.retrieveSubjectsOnLeaveToday();
   }
 
   private List<MonthSummaryDTO> convertToMonthSummary(final List<LeaveApplication> leaveApplications) {
