@@ -11,7 +11,7 @@
   <div class="c-dashboard__chart" fxFlex.gt-md="33" fxFlex.md="40" fxFlex.sm="45" fxFlex.xs="100">
     <app-number-indicator [number]="allowanceLeft" [description]="'Allowance left'"></app-number-indicator>
   </div>
-  <div class="c-dashboard__chart" fxFlex.gt-md="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
-    <canvas #canvas id="canvas">{{ monthlySummariesChart }}</canvas>
+  <div class="c-dashboard__chart" fxFlex.gt-md="50" fxFlex.md="100" fxFlex.lt-sm="100">
+    <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
   </div>
 </section>
