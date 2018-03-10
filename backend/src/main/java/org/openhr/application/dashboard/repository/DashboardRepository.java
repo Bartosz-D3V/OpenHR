@@ -60,8 +60,8 @@ public class DashboardRepository {
       monthlyReport = criteria
         .add(Restrictions.conjunction()
           .add(Restrictions.eq("terminated", true))
-          .add(Restrictions.between("startDate", LocalDate.of(1, 1, LocalDate.now().getYear()),
-            LocalDate.of(31, 12, LocalDate.now().getYear()))))
+          .add(Restrictions.between("startDate", LocalDate.of(LocalDate.now().getYear(), 1, 1),
+            LocalDate.of(LocalDate.now().getYear(), 12, 31))))
         .setProjection(Projections.groupProperty("startDate"))
         .setReadOnly(true)
         .list();
