@@ -24,6 +24,7 @@ import { Month } from '@shared/constants/enumeration/month';
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
+  private chartOptions: Object;
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
   public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
@@ -38,15 +39,35 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public applicationsStatusRatioCanvas: ElementRef;
 
   @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  public paginator: MatPaginator;
 
   constructor(private _dashboardService: DashboardService,
               private _subjectService: SubjectDetailsService,
               private _errorResolver: ErrorResolverService) {
   }
 
+  public static convertNumbersToRatio(fraction: number, base: number): number {
+    return ((base / fraction) * 100);
+  }
+
+  public static splitMonthlySummaries(monthlySummaries: Array<MonthSummary>): ChartData {
+    const monthLabels: Array<Month> = monthlySummaries
+      .map((element: MonthSummary) => {
+        return element.month;
+      });
+    const dataSet: Array<number> = monthlySummaries
+      .map((element: MonthSummary) => {
+        return element.numberOfApplications;
+      });
+    return {
+      labels: monthLabels,
+      data: dataSet,
+    };
+  }
+
   ngOnInit(): void {
     this.isLoadingResults = true;
+    this.chartOptions = this.getChartOptions();
     this.fetchChartsData();
   }
 
@@ -66,7 +87,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.$dashboardService = this._dashboardService
       .getMonthlyReport()
       .subscribe((val: Array<MonthSummary>) => {
-        const chartData: ChartData = this.splitArrayByFields(val);
+        const chartData: ChartData = DashboardComponent.splitMonthlySummaries(val);
         this.buildMonthlySummariesChart(chartData);
       }, (err: any) => {
         this._errorResolver.handleError(err);
@@ -93,35 +114,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.subject = pair.subject;
       this.dataSource.data = pair.subjectsOnLeave;
       this.isLoadingResults = false;
-      this.buildCharts(pair.subject);
+      this.setAllowanceInfo(pair.subject);
     }, (err: any) => {
       this._errorResolver.handleError(err);
     });
   }
 
-  public buildCharts(subject: Subject): void {
+  public setAllowanceInfo(subject: Subject): void {
     this.allowanceLeft = subject.hrInformation.allowance - subject.hrInformation.usedAllowance;
-    this.usedAllowance = this.convertUsedAllowanceToRatio(subject.hrInformation.allowance,
+    this.usedAllowance = DashboardComponent.convertNumbersToRatio(subject.hrInformation.allowance,
       subject.hrInformation.usedAllowance);
-  }
-
-  public convertUsedAllowanceToRatio(allowance: number, usedAllowance: number): number {
-    return ((usedAllowance / allowance) * 100);
-  }
-
-  public splitArrayByFields(monthlySummaries: Array<MonthSummary>): ChartData {
-    const monthLabels: Array<Month> = monthlySummaries
-      .map((element: MonthSummary) => {
-        return element.month;
-      });
-    const dataSet: Array<number> = monthlySummaries
-      .map((element: MonthSummary) => {
-        return element.numberOfApplications;
-      });
-    return {
-      labels: monthLabels,
-      data: dataSet,
-    };
   }
 
   private buildMonthlySummariesChart(chartData: ChartData): void {
@@ -137,29 +139,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           },
         ],
       },
-      options: {
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-          yAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true,
-              fixedStepSize: 1,
-              userCallback: (label) => {
-                return Math.floor(label);
-              },
-            },
-          }],
-        },
-      },
+      options: this.chartOptions,
     });
   }
 
@@ -176,29 +156,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           },
         ],
       },
-      options: {
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-          yAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true,
-              fixedStepSize: 1,
-              userCallback: (label) => {
-                return Math.floor(label);
-              },
-            },
-          }],
-        },
-      },
+      options: this.chartOptions,
     });
+  }
+
+  private getChartOptions(): Object {
+    return {
+      legend: {
+        display: false,
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          ticks: {
+            beginAtZero: true,
+          },
+        }],
+        yAxes: [{
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            fixedStepSize: 1,
+            userCallback: (label) => {
+              return Math.floor(label);
+            },
+          },
+        }],
+      },
+    };
   }
 }

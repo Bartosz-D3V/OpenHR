@@ -1,9 +1,11 @@
 import { Month } from '@shared/constants/enumeration/month';
 
 export class MonthSummary {
-  public readonly month: Month;
-  public readonly numberOfApplications: number;
+  public month: Month;
+  public numberOfApplications: number;
 
-  constructor() {
+  constructor(month: Month, numberOfApplications: number) {
+    this.month = month;
+    this.numberOfApplications = numberOfApplications;
   }
 }
