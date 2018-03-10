@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public usedAllowance: number;
   public allowanceLeft: number;
 
-  @ViewChild('canvas')
-  public canvas: ElementRef;
+  @ViewChild('monthlySummariesChart')
+  public monthlySummariesCanvas: ElementRef;
 
   constructor(private _dashboardService: DashboardService,
               private _subjectService: SubjectDetailsService,
@@ -55,12 +55,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.$dashboardService !== undefined) {
       this.$dashboardService.unsubscribe();
     }
+    if (this.$monthlySummary !== undefined) {
+      this.$monthlySummary.unsubscribe();
+    }
   }
 
   public fetchChartsData(): void {
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
-      (subject: Subject) => ({subject}),
+      (subject: Subject) => ({subject})
     ).subscribe((pair) => {
       this.subject = pair.subject;
       this.buildCharts(pair.subject);
@@ -95,7 +98,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private buildMonthlySummariesChart(chartData: ChartData) {
-    this.monthlySummariesChart = new Chart(this.canvas.nativeElement.getContext('2d'), {
+    this.monthlySummariesCanvas = new Chart(this.monthlySummariesCanvas.nativeElement.getContext('2d'), {
       type: 'line',
       data: {
         labels: chartData.labels,
@@ -123,7 +126,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             ticks: {
               beginAtZero: true,
               fixedStepSize: 1,
-              userCallback: (label, index, labels) => {
+              userCallback: (label) => {
                 return Math.floor(label);
               },
             },
