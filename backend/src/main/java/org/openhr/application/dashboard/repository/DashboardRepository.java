@@ -6,9 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
-import org.openhr.application.dashboard.dto.MonthSummaryDTO;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +38,8 @@ public class DashboardRepository {
           .add(Restrictions.eq("subject.subjectId", subjectId))
           .add(Restrictions.eq("terminated", true))
           .add(Restrictions.eq("approvedByHR", true))
-          .add(Restrictions.between("startDate", LocalDate.of(1, 1, LocalDate.now().getYear()),
-            LocalDate.of(31, 12, LocalDate.now().getYear()))))
-        .setProjection(Projections.groupProperty("startDate"))
+          .add(Restrictions.between("startDate", LocalDate.of(LocalDate.now().getYear(), 1, 1),
+            LocalDate.of(LocalDate.now().getYear(), 12, 31))))
         .setReadOnly(true)
         .list();
     } catch (final HibernateException e) {
