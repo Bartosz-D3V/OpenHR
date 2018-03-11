@@ -18,6 +18,7 @@ import { CoreWrapperComponent } from './core-wrapper.component';
 describe('CoreComponent', () => {
   let component: CoreWrapperComponent;
   let fixture: ComponentFixture<CoreWrapperComponent>;
+  const mockUser: User = new User(1, 'John', 'Test');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -51,6 +52,8 @@ describe('CoreComponent', () => {
     fixture = TestBed.createComponent(CoreWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    spyOn(component['_router'], 'navigate');
   });
 
   it('should create', () => {
@@ -58,10 +61,12 @@ describe('CoreComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should fetch and assign all values to the User object', () => {
-      const mockUser: User = new User(1, 'John', 'Test');
+    beforeEach(() => {
       spyOn(component['_lightweightSubject'], 'getUser').and.returnValue(Observable.of(mockUser));
       spyOn(component['_jwtHelper'], 'getSubjectId');
+    });
+
+    it('should fetch and assign all values to the User object', () => {
       component.ngOnInit();
       const actualUser: User = component.user;
 
@@ -70,6 +75,12 @@ describe('CoreComponent', () => {
       expect(actualUser.firstName).toBe(mockUser.firstName);
       expect(actualUser.lastName).toBe(mockUser.lastName);
       expect(actualUser.fullName).toBe(mockUser.firstName + ' ' + mockUser.lastName);
+    });
+
+    it('should navigate to dashboard page', () => {
+      component.ngOnInit();
+
+      expect(component['_router'].navigate).toHaveBeenCalled();
     });
   });
 });

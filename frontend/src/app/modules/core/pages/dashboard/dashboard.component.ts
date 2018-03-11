@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
   public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
   public isLoadingResults: boolean;
-  public usedAllowance: number;
   public allowanceLeft: number;
 
   @ViewChild('monthlySummariesChart')
@@ -44,10 +43,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private _dashboardService: DashboardService,
               private _subjectService: SubjectDetailsService,
               private _errorResolver: ErrorResolverService) {
-  }
-
-  public static convertNumbersToRatio(fraction: number, base: number): number {
-    return ((base / fraction) * 100);
   }
 
   public static splitMonthlySummaries(monthlySummaries: Array<MonthSummary>): ChartData {
@@ -122,8 +117,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public setAllowanceInfo(subject: Subject): void {
     this.allowanceLeft = subject.hrInformation.allowance - subject.hrInformation.usedAllowance;
-    this.usedAllowance = DashboardComponent.convertNumbersToRatio(subject.hrInformation.allowance,
-      subject.hrInformation.usedAllowance);
   }
 
   private buildMonthlySummariesChart(chartData: ChartData): void {
