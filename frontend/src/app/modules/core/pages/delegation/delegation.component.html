@@ -1,5 +1,12 @@
-<app-page-header [header]="'Delegation'"></app-page-header>
-<section class="c-drawer">
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Delegation'"></app-page-header>
+
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults">
   <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
   <mat-card>
     <form [formGroup]="applicationForm">
@@ -8,25 +15,23 @@
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-subject-id"></label>
           <input matInput placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
-                 formControlName="subjectId" [ngModel]="subject?.subjectId">
+                 formControlName="subjectId">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-first-name"></label>
-          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first"
-                 [ngModel]="subject?.personalInformation?.firstName">
+          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-middle-name"></label>
           <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
-                 formControlName="middle" [ngModel]="subject?.personalInformation?.middleName">
+                 formControlName="middle">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
-          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last"
-                 [ngModel]="subject?.personalInformation?.lastName">
+          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last">
         </mat-form-field>
       </div>
 
@@ -34,14 +39,13 @@
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-position"></label>
-          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position"
-                 [ngModel]="subject?.employeeInformation?.position">
+          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
           <input matInput placeholder="Department" id="delegation-department" name="department"
-                 formControlName="department" [ngModel]="subject?.employeeInformation?.department">
+                 formControlName="department">
         </mat-form-field>
       </div>
 
@@ -49,7 +53,7 @@
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <input #country matInput placeholder="Country" aria-label="Country" [matAutocomplete]="'auto'"
-                 [formControl]="countryCtrl">
+                 formControlName="country">
           <mat-autocomplete #auto="matAutocomplete">
           </mat-autocomplete>
         </mat-form-field>

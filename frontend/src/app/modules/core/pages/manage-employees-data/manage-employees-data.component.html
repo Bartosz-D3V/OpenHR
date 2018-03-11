@@ -13,7 +13,13 @@
   </mat-form-field>
 </section>
 
-<section class="c-drawer" *ngIf="subject">
+<section fxLayout="row wrap">
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults && subject">
   <form [formGroup]="employeeForm">
     <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>
     <mat-accordion>

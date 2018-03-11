@@ -1,18 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-
-import { MomentInput } from 'moment';
+import 'rxjs/add/operator/filter';
 
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { Subject } from '@shared/domain/subject/subject';
-import { DelegationApplication } from './domain/delegation-application';
-import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-delegation',
@@ -21,49 +17,53 @@ import { ISubscription } from 'rxjs/Subscription';
   providers: [SubjectDetailsService],
 })
 export class DelegationComponent implements OnInit, OnDestroy {
-
+  private $currentSubject: ISubscription;
+  public subject: Subject;
+  public isLoadingResults: boolean;
   public applicationForm: FormGroup;
-  public countryCtrl: FormControl;
-  public delegationApplication: DelegationApplication;
   public filteredCountries: Observable<Array<string>>;
-  public readonly countries: Array<string>;
-  $currentSubject: ISubscription;
-  subject: Subject;
+  public countries: Array<string>;
 
   constructor(private _fb: FormBuilder,
               private _subjectDetails: SubjectDetailsService) {
   }
 
-  ngOnInit() {
-    this.delegationApplication = new DelegationApplication();
-    this.constructForm();
+  ngOnInit(): void {
     this.getCurrentSubject();
   }
 
   ngOnDestroy(): void {
-    this.$currentSubject.unsubscribe();
+    if (this.$currentSubject !== undefined) {
+      this.$currentSubject.unsubscribe();
+    }
   }
 
   public constructForm(): void {
-    this.countryCtrl = new FormControl();
     this.applicationForm = this._fb.group({
       name: this._fb.group({
-        subjectId: [this.delegationApplication.subjectId, [
+        subjectId: [this.subject.subjectId, [
           Validators.required,
           Validators.pattern(RegularExpressions.NUMBERS_ONLY),
         ]],
-        first: ['', Validators.required],
-        middle: [''],
-        last: ['', Validators.required],
+        first: [this.subject.personalInformation.firstName,
+          Validators.required,
+        ],
+        middle: [this.subject.personalInformation.middleName],
+        last: [this.subject.personalInformation.lastName,
+          Validators.required,
+        ],
       }),
       organisation: this._fb.group({
-        position: ['', Validators.required],
-        department: [''],
+        position: [this.subject.employeeInformation.position,
+          Validators.required,
+        ],
+        department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
+        country: [''],
         city: [''],
         objective: ['', Validators.required],
-        budget: ['0', [
+        budget: [0, [
           Validators.required,
           Validators.min(0),
         ]],
@@ -75,41 +75,30 @@ export class DelegationComponent implements OnInit, OnDestroy {
     this.applicationForm.get('organisation').disable();
   }
 
+  public getCurrentSubject(): void {
+    this.isLoadingResults = true;
+    this.$currentSubject = this._subjectDetails
+      .getCurrentSubject()
+      .subscribe((response: Subject) => {
+        this.subject = response;
+        this.isLoadingResults = false;
+        this.constructForm();
+      });
+  }
+
   public filterCountries(countries: Array<string>, name: string): Array<string> {
     return countries.filter(country =>
       country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<string>): Observable<Array<string>> {
-    return this.countryCtrl
+    return this.applicationForm.get(['delegation', 'country'])
       .valueChanges
       .startWith(null)
       .map(country => country ? this.filterCountries(countries, country) : countries.slice());
   }
 
-  public clearForm(): void {
-    this.applicationForm.get('delegation').reset();
-    this.countryCtrl.reset();
-  }
-
   public isValid(): boolean {
     return this.applicationForm.valid;
   }
-
-  public setStartDate(startDate: MomentInput): void {
-    this.delegationApplication.startDate = startDate;
-  }
-
-  public setEndDate(endDate: MomentInput): void {
-    this.delegationApplication.endDate = endDate;
-  }
-
-  getCurrentSubject(): void {
-    this.$currentSubject = this._subjectDetails
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
-        this.subject = response;
-      });
-  }
-
 }

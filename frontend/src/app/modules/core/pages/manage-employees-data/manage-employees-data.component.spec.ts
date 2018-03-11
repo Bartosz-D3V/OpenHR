@@ -6,11 +6,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatAutocompleteModule, MatAutocompleteSelectedEvent,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatNativeDateModule, MatOption, MatOptionModule, MatSnackBarModule, MatToolbarModule,
+  MatNativeDateModule, MatOption, MatOptionModule, MatProgressSpinnerModule, MatSnackBarModule, MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
-import moment = require('moment');
 
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
@@ -85,6 +84,7 @@ describe('ManageEmployeesDataComponent', () => {
         MatAutocompleteModule,
         MatOptionModule,
         MatSnackBarModule,
+        MatProgressSpinnerModule,
       ],
       providers: [
         JwtHelperService,

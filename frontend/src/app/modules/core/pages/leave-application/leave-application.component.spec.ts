@@ -173,7 +173,7 @@ describe('LeaveApplicationComponent', () => {
       });
 
       it('should be marked invalid if it exceed 500 characters', () => {
-        messageCtrl.setValue('m'.repeat(501));
+        messageCtrl.setValue('X'.repeat(501));
 
         expect(messageCtrl.valid).toBeFalsy();
       });
