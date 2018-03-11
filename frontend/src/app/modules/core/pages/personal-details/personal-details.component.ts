@@ -9,8 +9,8 @@ import { RegularExpressions } from '@shared/constants/regexps/regular-expression
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
-import { PersonalDetailsService } from './service/personal-details.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -26,8 +26,8 @@ import { NotificationService } from '@shared/services/notification/notification.
   ],
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
-
   private $currentSubject: ISubscription;
+  public isLoadingResults: boolean;
 
   public personalInformationFormGroup: FormGroup = new FormGroup({
     firstNameFormControl: new FormControl('', [
@@ -121,9 +121,11 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getCurrentSubject(): void {
+    this.isLoadingResults = true;
     this.$currentSubject = this._subjectDetailsService
       .getCurrentSubject()
       .subscribe((response: Subject) => {
+        this.isLoadingResults = false;
         this.subject = response;
       });
   }

@@ -1,4 +1,11 @@
-<app-page-header [header]="'Personal details'"></app-page-header>
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Personal details'"></app-page-header>
+
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
 <section class="c-drawer" *ngIf="subject">
   <mat-toolbar [color]="'primary'">My details</mat-toolbar>
   <mat-accordion>

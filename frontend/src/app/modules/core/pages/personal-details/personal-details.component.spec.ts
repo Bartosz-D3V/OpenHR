@@ -4,7 +4,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatSnackBarModule,
+  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatProgressSpinnerModule,
+  MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -82,6 +83,7 @@ describe('PersonalDetailsComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatSnackBarModule,
+        MatProgressSpinnerModule,
       ],
       providers: [
         JwtHelperService,

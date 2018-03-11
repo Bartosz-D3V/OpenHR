@@ -36,6 +36,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
   private $employee: ISubscription;
   private $managers: ISubscription;
+  public isLoadingResults: boolean;
   public stepNumber = 0;
   public employees: Array<Employee>;
   public managers: Array<Manager>;
@@ -55,12 +56,12 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
               private _fb: FormBuilder) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchEmployees();
   }
 
   ngOnDestroy(): void {
-    this.$employees.unsubscribe();
+    this.unsubscribeAll();
   }
 
   public setStep(stepNumber: number): void {
@@ -80,16 +81,20 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     const contactInfo: ContactInformation = this.subject.contactInformation;
     const employeeInfo: EmployeeInformation = this.subject.employeeInformation;
     const hrInfo: HrInformation = this.subject.hrInformation;
+
     this.employeeForm = this._fb.group({
       subjectId: [this.subject.subjectId],
       personalInformation: this._fb.group({
         firstName: [perInfo.firstName,
-          Validators.required],
+          Validators.required,
+        ],
         middleName: [perInfo.middleName],
         lastName: [perInfo.lastName,
-          Validators.required],
+          Validators.required,
+        ],
         dateOfBirth: [perInfo.dateOfBirth,
-          Validators.required],
+          Validators.required,
+        ],
       }),
       contactInformation: this._fb.group({
         telephone: [contactInfo.telephone,
@@ -126,15 +131,18 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
         position: [employeeInfo.position],
         department: [employeeInfo.department],
         employeeNumber: [employeeInfo.employeeNumber,
-          Validators.required],
+          Validators.required,
+        ],
         startDate: [employeeInfo.startDate],
         endDate: [employeeInfo.endDate],
       }),
       hrInformation: this._fb.group({
         allowance: [hrInfo.allowance,
-          Validators.min(0)],
+          Validators.min(0),
+        ],
         usedAllowance: [hrInfo.usedAllowance,
-          Validators.min(0)],
+          Validators.min(0),
+        ],
       }),
       role: [this.subject.role],
     });
@@ -164,7 +172,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
 
   public filterSubjects(subjects: Array<Subject>, lastName: string): Array<Subject> {
     return subjects.filter(subject =>
-    subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+      subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   public fetchEmployees(): void {
@@ -179,11 +187,13 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public fetchSelectedEmployee(employeeId: number): void {
+    this.isLoadingResults = true;
     this.$employee = this._employeeService
       .getEmployee(employeeId)
       .subscribe((response: Employee) => {
         this.subject = response;
         this.constructForm();
+        this.isLoadingResults = false;
       }, (err: any) => {
         this._errorResolver.createAlert(err);
       });
@@ -234,5 +244,17 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public isValid(): boolean {
     return this.employeeForm.valid &&
       this.managersCtrl.valid;
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$employees !== undefined) {
+      this.$employees.unsubscribe();
+    }
+    if (this.$employee !== undefined) {
+      this.$employee.unsubscribe();
+    }
+    if (this.$managers !== undefined) {
+      this.$managers.unsubscribe();
+    }
   }
 }
