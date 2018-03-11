@@ -9,15 +9,14 @@ import { LightweightSubjectService } from './service/lightweight-subject.service
 @Component({
   selector: 'app-core-wrapper',
   templateUrl: './core-wrapper.component.html',
-  styleUrls: ['./core-wrapper.component.scss'],
   providers: [
     LightweightSubjectService,
     JwtHelperService,
   ],
 })
 export class CoreWrapperComponent implements OnInit, OnDestroy {
-  public user: User;
   private $user: ISubscription;
+  public user: User;
 
   constructor(private _lightweightSubject: LightweightSubjectService,
               private _jwtHelper: JwtHelperService,

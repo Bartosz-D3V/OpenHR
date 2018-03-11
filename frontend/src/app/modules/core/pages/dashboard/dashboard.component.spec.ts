@@ -77,10 +77,6 @@ describe('DashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('convertNumbersToRatio should return percentage result', () => {
-    expect(DashboardComponent.convertNumbersToRatio(10, 5)).toEqual(50);
-  });
-
   describe('splitMonthlySummaries method', () => {
     const mockMonthSummary1: MonthSummary = new MonthSummary(Month.APRIL, 14);
     const mockMonthSummary2: MonthSummary = new MonthSummary(Month.MAY, 1);
