@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule,
-  MatTableModule, MatToolbarModule,
+  MatTableModule, MatToolbarModule, MatTooltipModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
@@ -56,6 +56,7 @@ describe('ManageLeaveApplicationsComponent', () => {
         MatTableModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        MatTooltipModule,
       ],
       providers: [
         ErrorResolverService,

@@ -7,7 +7,7 @@ import {
   MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
   MatExpansionModule, MatStepperModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatCheckboxModule, MatSnackBarModule,
-  MatProgressSpinnerModule,
+  MatProgressSpinnerModule, MatTooltipModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -66,6 +66,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     MatPaginatorModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,

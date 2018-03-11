@@ -24,7 +24,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
 
   private $leaveApplications: ISubscription;
   public isLoadingResults: boolean;
-  public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'status', 'ics'];
+  public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'status', 'ics', 'info'];
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication> = new MatTableDataSource<LeaveApplication>();
 
