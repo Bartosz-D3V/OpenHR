@@ -7,7 +7,8 @@
       <mat-form-field fxFlex="100">
         <label for="login-page-username"></label>
         <input matInput required="required" placeholder="Username"
-               id="login-page-username" name="username" formControlName="username">
+               id="login-page-username" name="username" formControlName="username"
+               (keydown.enter)="login()">
       </mat-form-field>
       <mat-error *ngIf="loginBoxForm.controls['username'].hasError('required') &&
         loginBoxForm.controls['username'].touched">
@@ -17,7 +18,8 @@
       <mat-form-field fxFlex="100">
         <label for="login-page-password"></label>
         <input matInput required="required" type="password" placeholder="Password"
-               id="login-page-password" name="password" formControlName="password">
+               id="login-page-password" name="password" formControlName="password"
+               (keydown.enter)="login()">
       </mat-form-field>
       <mat-error *ngIf="loginBoxForm.controls['password'].hasError('required') &&
         loginBoxForm.controls['password'].touched">
@@ -29,6 +31,6 @@
     </form>
   </mat-card-content>
   <mat-card-actions class="c-login-box__actions">
-    <button mat-raised-button color="primary" (click)="login()">Login</button>
+    <button mat-raised-button color="primary" (keydown.enter)="login()" (click)="login()">Login</button>
   </mat-card-actions>
 </mat-card>

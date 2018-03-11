@@ -1,10 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 
 import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { Credentials } from './domain/credentials';
 import { LoginService } from './service/login.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-login-box',
@@ -12,7 +13,9 @@ import { LoginService } from './service/login.service';
   styleUrls: ['./login-box.component.scss'],
   providers: [JwtHelperService],
 })
-export class LoginBoxComponent implements OnInit {
+export class LoginBoxComponent implements OnInit, OnDestroy {
+  private $loginService: ISubscription;
+
   @Output()
   public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -27,6 +30,12 @@ export class LoginBoxComponent implements OnInit {
     this.createForm();
   }
 
+  ngOnDestroy(): void {
+    if (this.$loginService !== undefined) {
+      this.$loginService.unsubscribe();
+    }
+  }
+
   public createForm(): void {
     this.loginBoxForm = this._fb.group({
       username: ['', Validators.required],
@@ -35,11 +44,8 @@ export class LoginBoxComponent implements OnInit {
   }
 
   public login(): void {
-    const credentials: Credentials = new Credentials(
-      this.loginBoxForm.controls['username'].value,
-      this.loginBoxForm.controls['password'].value
-    );
-    this._loginService
+    const credentials: Credentials = <Credentials> this.loginBoxForm.value;
+    this.$loginService = this._loginService
       .login(credentials)
       .subscribe((response: HttpResponse<null>) => {
         const token: string = response.headers.get('Authorization');
@@ -50,7 +56,7 @@ export class LoginBoxComponent implements OnInit {
       });
   }
 
-  handleErrorResponse(err: HttpResponse<null>): void {
+  public handleErrorResponse(err: HttpResponse<null>): void {
     switch (err.status) {
       case 401:
         this.loginBoxForm.controls['password'].setErrors({unauthorized: true});

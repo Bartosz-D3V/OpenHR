@@ -2,9 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import {
-  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatTableModule,
+  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatTableModule,
   MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
@@ -15,11 +14,22 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { Employee } from '@shared/domain/subject/employee';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Address } from '@shared/domain/subject/address';
+import { Role } from '@shared/domain/subject/role';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
   let fixture: ComponentFixture<DelegationComponent>;
+  const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
+    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line',
+      'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
+      '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,6 +53,7 @@ describe('DelegationComponent', () => {
         MatInputModule,
         MatTableModule,
         MatAutocompleteModule,
+        MatProgressSpinnerModule,
       ],
       providers: [
         JwtHelperService,
@@ -56,6 +67,9 @@ describe('DelegationComponent', () => {
     fixture = TestBed.createComponent(DelegationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    component.subject = employee1;
+    component.constructForm();
   });
 
   it('should be created', () => {
@@ -63,13 +77,8 @@ describe('DelegationComponent', () => {
   });
 
   describe('constructForm', () => {
-    beforeEach(() => {
-      component.constructForm();
-    });
-
     it('should instantiate application form', () => {
       expect(component.applicationForm).toBeDefined();
-      expect(component.countryCtrl).toBeDefined();
     });
 
     it('should disable appropriate groups', () => {
@@ -81,13 +90,9 @@ describe('DelegationComponent', () => {
   describe('name form group', () => {
     let nameValidator: AbstractControl;
 
-    beforeEach(() => {
-      component.constructForm();
-    });
-
     describe('subjectId controller', () => {
       beforeEach(() => {
-        nameValidator = component.applicationForm.get('name.subjectId');
+        nameValidator = component.applicationForm.get(['name', 'subjectId']);
         nameValidator.enable();
       });
 
@@ -116,7 +121,7 @@ describe('DelegationComponent', () => {
 
     describe('first (name) controller', () => {
       beforeEach(() => {
-        nameValidator = component.applicationForm.get('name.first');
+        nameValidator = component.applicationForm.get(['name', 'first']);
         nameValidator.enable();
       });
 
@@ -139,7 +144,7 @@ describe('DelegationComponent', () => {
 
     describe('last (name) controller', () => {
       beforeEach(() => {
-        nameValidator = component.applicationForm.get('name.last');
+        nameValidator = component.applicationForm.get(['name', 'last']);
         nameValidator.enable();
       });
 
@@ -165,13 +170,9 @@ describe('DelegationComponent', () => {
   describe('organisation form group', () => {
     let positionValidator: AbstractControl;
 
-    beforeEach(() => {
-      component.constructForm();
-    });
-
     describe('position controller', () => {
       beforeEach(() => {
-        positionValidator = component.applicationForm.get('organisation.position');
+        positionValidator = component.applicationForm.get(['organisation', 'position']);
         positionValidator.enable();
       });
 
@@ -196,13 +197,9 @@ describe('DelegationComponent', () => {
   describe('delegation form group', () => {
     let delegationValidator: AbstractControl;
 
-    beforeEach(() => {
-      component.constructForm();
-    });
-
     describe('objective controller', () => {
       beforeEach(() => {
-        delegationValidator = component.applicationForm.get('delegation.objective');
+        delegationValidator = component.applicationForm.get(['delegation', 'objective']);
       });
 
       afterEach(() => {
@@ -224,7 +221,7 @@ describe('DelegationComponent', () => {
 
     describe('budget controller', () => {
       beforeEach(() => {
-        delegationValidator = component.applicationForm.get('delegation.budget');
+        delegationValidator = component.applicationForm.get(['delegation', 'budget']);
         delegationValidator.enable();
       });
 
@@ -233,7 +230,7 @@ describe('DelegationComponent', () => {
       });
 
       it('should be zero by default', () => {
-        expect(delegationValidator.value).toEqual('0');
+        expect(delegationValidator.value).toBe(0);
       });
 
       it('should mark input as invalid if it is empty', () => {
@@ -292,12 +289,17 @@ describe('DelegationComponent', () => {
 
     describe('reduceCountries method', () => {
       let result: Array<string>;
+      let countryCtrl: AbstractControl;
+
+      beforeEach(() => {
+        countryCtrl = component.applicationForm.get(['delegation', 'country']);
+      });
 
       it('should not filter results if input is empty', () => {
         component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
           result = data;
         });
-        component.countryCtrl.setValue('');
+        countryCtrl.setValue('');
 
         expect(result).toBeDefined();
         expect(result).toEqual(mockCountries);
@@ -307,7 +309,7 @@ describe('DelegationComponent', () => {
         component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
           result = data;
         });
-        component.countryCtrl.setValue('Ger');
+        countryCtrl.setValue('Ger');
 
         expect(result).toBeDefined();
         expect(result[0]).toEqual('Germany');
@@ -317,46 +319,18 @@ describe('DelegationComponent', () => {
 
   });
 
-  it('clearForm should clear all fields within delegation form group', () => {
-    const formGroup: AbstractControl = component.applicationForm.get('delegation');
-    component.countryCtrl.setValue('Belgium');
-    formGroup.get('city').setValue('Hamburg');
-    formGroup.get('budget').setValue('1000');
-    component.clearForm();
-
-    expect(component.countryCtrl.value).toBeNull();
-    expect(formGroup.get('city').value).toBeNull();
-    expect(formGroup.get('budget').value).toBeNull();
-  });
-
   describe('isValid', () => {
     it('should return false if form is dirty', () => {
-      component.applicationForm.setErrors({'error': 'invalid'});
+      component.applicationForm.get('delegation').setErrors({'error': 'invalid'});
 
       expect(component.isValid()).toBeFalsy();
     });
 
     it('should return true if form does not have any errors', () => {
-      component.applicationForm.get('delegation')
-        .get('objective')
-        .setValue('Example value');
+      component.applicationForm.get(['delegation', 'objective']).setValue('Example value');
 
       expect(component.isValid()).toBeTruthy();
     });
-  });
-
-  it('setStartDate should set the application property', () => {
-    component.setStartDate('2020-05-05');
-
-    expect(component.delegationApplication.startDate).toBeDefined();
-    expect(component.delegationApplication.startDate).toEqual('2020-05-05');
-  });
-
-  it('setEndDate should set the application property', () => {
-    component.setEndDate('2020-05-05');
-
-    expect(component.delegationApplication.endDate).toBeDefined();
-    expect(component.delegationApplication.endDate).toEqual('2020-05-05');
   });
 
 });
