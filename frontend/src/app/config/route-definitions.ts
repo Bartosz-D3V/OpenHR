@@ -16,6 +16,7 @@ import { LoginComponent } from '@modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '@modules/core/pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from '@modules/core/pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from '@modules/core/pages/my-applications/my-applications.component';
+import { DashboardComponent } from '@modules/core/pages/dashboard/dashboard.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -23,6 +24,16 @@ export const routeDefinitions: Routes = [
     component: CoreWrapperComponent,
     canActivate: [MainGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        outlet: 'core',
+      },
       {
         path: 'personal-details',
         component: PersonalDetailsComponent,

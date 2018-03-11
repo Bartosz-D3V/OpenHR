@@ -120,7 +120,15 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     this.$currentSubject.unsubscribe();
   }
 
-  save(): void {
+  public getCurrentSubject(): void {
+    this.$currentSubject = this._subjectDetailsService
+      .getCurrentSubject()
+      .subscribe((response: Subject) => {
+        this.subject = response;
+      });
+  }
+
+  public save(): void {
     if (this.isValid()) {
       this._personalDetailsService
         .saveSubject(this.subject)
@@ -153,15 +161,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
       this.employeeDetailsFormGroup.valid;
   }
 
-  getCurrentSubject(): void {
-    this.$currentSubject = this._subjectDetailsService
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
-        this.subject = response;
-      });
-  }
-
-  isMobile(): boolean {
+  public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
 }

@@ -33,6 +33,7 @@ import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applicati
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-application-status.pipe';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -90,6 +91,7 @@ import { LeaveApplicationStatusPipe } from './pages/my-applications/pipe/leave-a
     ManageEmployeesDataComponent,
     MyApplicationsComponent,
     LeaveApplicationStatusPipe,
+    DashboardComponent,
   ],
   providers: [
     JwtHelperService,
