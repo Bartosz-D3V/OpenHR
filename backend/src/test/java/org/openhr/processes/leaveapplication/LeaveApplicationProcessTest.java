@@ -48,18 +48,18 @@ import static org.mockito.Mockito.when;
 @WebAppConfiguration
 @Transactional
 public class LeaveApplicationProcessTest {
-  private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
+  private final Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
-  private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
+  private final PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
+  private final ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
-  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
+  private final EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
-  private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockSubject = new Employee(mockPersonalInformation,
+  private final HrInformation mockHrInformation = new HrInformation(25L);
+  private final Employee mockSubject = new Employee(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
-  private final static LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
-  private final static LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
+  private final LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
+  private final LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
   @Autowired
   private LeaveApplicationService leaveApplicationService;
@@ -86,7 +86,6 @@ public class LeaveApplicationProcessTest {
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
     session.save(leaveType);
-    session.saveOrUpdate(mockSubject);
     session.flush();
     mockLeaveApplication.setLeaveType(leaveType);
   }

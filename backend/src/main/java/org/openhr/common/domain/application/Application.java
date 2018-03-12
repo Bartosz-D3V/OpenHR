@@ -59,11 +59,11 @@ public abstract class Application implements Serializable {
   private String processInstanceId;
 
   @NotNull(message = "Subject cannot be empty")
-  @ManyToOne(optional = false)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "APPLICANT_ID")
   private Subject subject;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "CURRENT_ASSIGNEE_ID")
   @JsonIgnore
   private Subject assignee;
