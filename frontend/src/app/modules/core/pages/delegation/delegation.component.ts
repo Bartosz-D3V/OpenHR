@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
@@ -9,6 +10,7 @@ import 'rxjs/add/operator/filter';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { Subject } from '@shared/domain/subject/subject';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 
 @Component({
   selector: 'app-delegation',
@@ -24,8 +26,9 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public filteredCountries: Observable<Array<string>>;
   public countries: Array<string>;
 
-  constructor(private _fb: FormBuilder,
-              private _subjectDetails: SubjectDetailsService) {
+  constructor(private _subjectDetails: SubjectDetailsService,
+              private _errorResolver: ErrorResolverService,
+              private _fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -83,6 +86,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
         this.subject = response;
         this.isLoadingResults = false;
         this.constructForm();
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 

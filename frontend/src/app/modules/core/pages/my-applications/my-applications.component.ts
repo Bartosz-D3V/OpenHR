@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -53,8 +54,8 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
         this.resultsLength = res.length;
         this.dataSource.data = res;
         this.dataSource.paginator = this.paginator;
-      }, (error: any) => {
-        this._errorResolver.handleError(error);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 

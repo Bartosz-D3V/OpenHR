@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
@@ -9,9 +10,9 @@ import { NAMED_DATE } from '@config/datepicker-format';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
-import { LeaveType } from '@shared/domain/leave-application/leave-type';
 import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { LeaveType } from '@shared/domain/leave-application/leave-type';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
 import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplicationService } from './service/leave-application.service';
 
@@ -56,37 +57,30 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
               private _errorResolver: ErrorResolverService) {
   }
 
-  private setConditionalValidators(): void {
-    if (this.selectorType === DateSelectorType.SINGLE) {
-      this.leaveApplicationFormGroup.get('singleDateController')
-        .setValidators(Validators.required);
-    }
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.getLeaveTypes();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.$leaveTypes.unsubscribe();
   }
 
-  setStartDate(startDate: MomentInput): void {
+  public setStartDate(startDate: MomentInput): void {
     this.leaveApplication.startDate = startDate;
   }
 
-  setEndDate(endDate: MomentInput): void {
+  public setEndDate(endDate: MomentInput): void {
     this.leaveApplication.endDate = endDate;
   }
 
-  setSelector(selector: MatRadioChange): void {
+  public setSelector(selector: MatRadioChange): void {
     this.selectorType = selector.value === 'Range' ?
       DateSelectorType.RANGE :
       DateSelectorType.SINGLE;
     this.setConditionalValidators();
   }
 
-  setLeaveType(leaveTypeCategory: string): void {
+  public setLeaveType(leaveTypeCategory: string): void {
     this.leaveApplication.leaveType = this.leaveTypes.find((element: LeaveType) => {
       return element.leaveCategory === leaveTypeCategory;
     });
@@ -96,8 +90,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
       .subscribe((response: Array<LeaveType>) => {
         this.leaveTypes = response;
-      }, (error: any) => {
-        this._errorResolver.createAlert(error);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -113,8 +107,8 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
         this.leaveApplicationFormGroup.reset();
         this.dateRangeComponent.reset();
         this._notificationService.openSnackBar(message, 'OK');
-      }, (error: any) => {
-        this._errorResolver.createAlert(error);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -129,6 +123,13 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
       case DateSelectorType.RANGE:
       default:
         return this.leaveApplicationFormGroup.valid && this.dateRangePickerIsValid;
+    }
+  }
+
+  private setConditionalValidators(): void {
+    if (this.selectorType === DateSelectorType.SINGLE) {
+      this.leaveApplicationFormGroup.get('singleDateController')
+        .setValidators(Validators.required);
     }
   }
 }

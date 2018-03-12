@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
@@ -181,8 +182,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .subscribe((response: Array<Employee>) => {
         this.employees = response;
         this.filteredEmployees = this.reduceEmployees(response);
-      }, (err: any) => {
-        this._errorResolver.createAlert(err);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -194,8 +195,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
         this.subject = response;
         this.constructForm();
         this.isLoadingResults = false;
-      }, (err: any) => {
-        this._errorResolver.createAlert(err);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -205,8 +206,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       .subscribe((response: Array<Manager>) => {
         this.managers = response;
         this.filteredManagers = this.reduceManagers(response);
-      }, (err: any) => {
-        this._errorResolver.createAlert(err);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -232,8 +233,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
       this._notificationService.openSnackBar(msg, 'OK');
       this.subject = pair.employee;
-    }, (err: any) => {
-      this._errorResolver.createAlert(err);
+    }, (httpErrorResponse: HttpErrorResponse) => {
+      this._errorResolver.handleError(httpErrorResponse.error);
     });
   }
 
