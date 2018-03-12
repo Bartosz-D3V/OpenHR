@@ -200,4 +200,4 @@ INSERT INTO COUNTRY (COUNTRY_ID, COUNTRY_NAME, FLAG_URL) VALUES
   (193, 'Vietnam', null),
   (194, 'Yemen', null),
   (195, 'Zambia', null),
-  (196, 'Zimbabwe', null)
+  (196, 'Zimbabwe', null);
