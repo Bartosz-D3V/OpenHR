@@ -57,7 +57,6 @@ public class LeaveApplication implements Serializable {
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "APPLICANT_ID")
-  @JsonIgnore
   private Subject subject;
 
   @ManyToOne(cascade = CascadeType.ALL)
