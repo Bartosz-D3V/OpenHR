@@ -6,7 +6,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.openhr.application.user.domain.UserContext;
 import org.openhr.application.user.service.UserService;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAccessToken;
 import org.openhr.security.enumeration.Scope;

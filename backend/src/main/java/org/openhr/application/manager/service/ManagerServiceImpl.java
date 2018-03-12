@@ -1,7 +1,6 @@
 package org.openhr.application.manager.service;
 
 import org.openhr.application.authentication.service.AuthenticationService;
-import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.repository.ManagerRepository;
 import org.openhr.application.user.domain.User;
