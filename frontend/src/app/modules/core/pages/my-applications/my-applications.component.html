@@ -12,32 +12,41 @@
     <mat-table #table [dataSource]="dataSource">
 
       <ng-container matColumnDef="applicationId">
-        <mat-header-cell *matHeaderCellDef> Application ID</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Application ID</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.applicationId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
-        <mat-header-cell *matHeaderCellDef> From</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.startDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="to">
-        <mat-header-cell *matHeaderCellDef> To</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>To</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.endDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef> Status</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication | leaveApplicationStatus}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="ics">
-        <mat-header-cell *matHeaderCellDef> ICS</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>ICS</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
           <button mat-icon-button color="accent" [disabled]="!leaveApplication.terminated">
             <mat-icon class="mat-24">event</mat-icon>
           </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication">
+          <mat-icon class="mat-24" [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
+                    matTooltip="{{leaveApplication.message}}" [matTooltipPosition]="'above'">mode_comment
+          </mat-icon>
         </mat-cell>
       </ng-container>
 

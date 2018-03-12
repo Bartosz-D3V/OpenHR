@@ -33,6 +33,15 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication">
+          <mat-icon class="mat-24" [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
+                    matTooltip="{{leaveApplication.message}}" [matTooltipPosition]="'above'">mode_comment
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="reject">
         <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">

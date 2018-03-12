@@ -5,10 +5,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
 import {
   MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule,
-  MatToolbarModule,
+  MatToolbarModule, MatTooltipModule,
 } from '@angular/material';
 
-import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
@@ -55,6 +54,7 @@ describe('MyApplicationsComponent', () => {
         MatTableModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        MatTooltipModule,
       ],
       providers: [
         ErrorResolverService,
