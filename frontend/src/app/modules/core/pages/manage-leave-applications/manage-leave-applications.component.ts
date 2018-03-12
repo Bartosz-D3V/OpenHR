@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -51,14 +52,14 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     this.$leaveApplications = this._manageLeaveApplicationsService
       .getAwaitingForActionLeaveApplications(this._jwtHelper.getSubjectId())
       .subscribe((result: Array<LeaveApplication>) => {
-          this.leaveApplications = result;
-          this.dataSource = new MatTableDataSource<LeaveApplication>(result);
-          this.dataSource.paginator = this.paginator;
-          this.isLoadingResults = false;
-          this.resultsLength = result.length;
-        }, (error: any) => {
-          this._errorResolver.handleError(error);
-        });
+        this.leaveApplications = result;
+        this.dataSource = new MatTableDataSource<LeaveApplication>(result);
+        this.dataSource.paginator = this.paginator;
+        this.isLoadingResults = false;
+        this.resultsLength = result.length;
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      });
   }
 
   public approveLeaveApplication(processInstanceId: string): void {
@@ -68,8 +69,8 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         this.fetchLeaveApplications();
         const message = 'Application has been accepted';
         this._notificationService.openSnackBar(message, 'OK');
-      }, (error: any) => {
-        this._errorResolver.handleError(error);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -80,8 +81,8 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         this.fetchLeaveApplications();
         const message = 'Application has been rejected';
         this._notificationService.openSnackBar(message, 'OK');
-      }, (error: any) => {
-        this._errorResolver.handleError(error);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 }

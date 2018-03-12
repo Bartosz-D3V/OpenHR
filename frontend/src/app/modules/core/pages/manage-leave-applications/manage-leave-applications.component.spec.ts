@@ -123,7 +123,7 @@ describe('ManageLeaveApplicationsComponent', () => {
         .and.returnValue(_throw('Error'));
       component.fetchLeaveApplications();
 
-      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith('Error');
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
   });
 
@@ -151,7 +151,7 @@ describe('ManageLeaveApplicationsComponent', () => {
         .and.returnValue(_throw('Error'));
       component.approveLeaveApplication('12A');
 
-      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith('Error');
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
   });
 
@@ -179,7 +179,7 @@ describe('ManageLeaveApplicationsComponent', () => {
         .and.returnValue(_throw('Error'));
       component.rejectLeaveApplication('12A');
 
-      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith('Error');
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
   });
 });
