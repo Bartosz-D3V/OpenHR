@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Chart } from 'chart.js';
@@ -94,8 +95,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       .getApplicationsStatusRatio()
       .subscribe((val: ApplicationsStatusRadio) => {
         this.buildApplicationsStatusRatio(val);
-      }, (err: any) => {
-        this._errorResolver.handleError(err);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -110,8 +111,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.data = pair.subjectsOnLeave;
       this.isLoadingResults = false;
       this.setAllowanceInfo(pair.subject);
-    }, (err: any) => {
-      this._errorResolver.handleError(err);
+    }, (httpErrorResponse: HttpErrorResponse) => {
+      this._errorResolver.handleError(httpErrorResponse.error);
     });
   }
 

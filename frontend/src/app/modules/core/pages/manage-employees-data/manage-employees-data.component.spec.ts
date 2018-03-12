@@ -217,11 +217,11 @@ describe('ManageEmployeesDataComponent', () => {
 
     it('should call errorResolver in case of an error', () => {
       const mockEmployeeId: number = employee1.subjectId;
-      spyOn(component['_errorResolver'], 'createAlert');
+      spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_employeeService'], 'getEmployee').and.returnValue(_throw('Error'));
       component.fetchSelectedEmployee(mockEmployeeId);
 
-      expect(component['_errorResolver'].createAlert).toHaveBeenCalledWith('Error');
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
   });
 
@@ -236,11 +236,11 @@ describe('ManageEmployeesDataComponent', () => {
     });
 
     it('should call errorResolver in case of an error', () => {
-      spyOn(component['_errorResolver'], 'createAlert');
+      spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_managerService'], 'getManagers').and.returnValue(_throw('Error'));
       component.fetchManagers();
 
-      expect(component['_errorResolver'].createAlert).toHaveBeenCalledWith('Error');
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
   });
 

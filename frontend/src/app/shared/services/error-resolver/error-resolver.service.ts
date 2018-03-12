@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { ErrorInfo } from '@shared/domain/error/error-info';
 import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
+import { MatDialogRef } from '@angular/material';
 
 @Injectable()
 export class ErrorResolverService {
@@ -19,16 +21,16 @@ export class ErrorResolverService {
       .subscribe(() => this.dialogOpened = true);
   }
 
-  public handleError(error: any): void {
-    this.createAlert(error);
+  public handleError(errorInfo: ErrorInfo): void {
+    this.createAlert(errorInfo.message);
   }
 
-  public createAlert(error: any): void {
+  public createAlert(message: string): void {
     if (!this.dialogOpened) {
-      const dialogRef = this.dialog.open(StaticModalComponent, {
+      const dialogRef: MatDialogRef<StaticModalComponent> = this.dialog.open(StaticModalComponent, {
         width: '250px',
         data: {
-          text: error.message,
+          text: message,
           header: this.header,
         },
       });

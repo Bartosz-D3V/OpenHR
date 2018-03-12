@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -10,6 +11,7 @@ import { SubjectDetailsService } from '@shared/services/subject/subject-details.
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
 import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { PersonalDetailsService } from './service/personal-details.service';
 
 @Component({
@@ -108,6 +110,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   constructor(private _subjectDetailsService: SubjectDetailsService,
               private _personalDetailsService: PersonalDetailsService,
               private _responsiveHelper: ResponsiveHelperService,
+              private _errorResolver: ErrorResolverService,
               private _notificationService: NotificationService) {
   }
 
@@ -127,6 +130,8 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
       .subscribe((response: Subject) => {
         this.isLoadingResults = false;
         this.subject = response;
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
       });
   }
 
@@ -137,6 +142,8 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
         .subscribe((result: Subject) => {
           const msg = `Details of user with id ${result.subjectId} have been updated`;
           this._notificationService.openSnackBar(msg, 'OK');
+        }, (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
         });
     }
   }
