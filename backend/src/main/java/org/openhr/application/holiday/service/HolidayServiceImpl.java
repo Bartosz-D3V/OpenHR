@@ -5,7 +5,6 @@ import org.openhr.api.bankholidays.service.BankHolidaysService;
 import org.openhr.common.util.date.LocalDateUtil;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Set;
 

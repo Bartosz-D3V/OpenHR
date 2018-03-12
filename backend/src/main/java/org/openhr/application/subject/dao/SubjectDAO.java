@@ -1,7 +1,6 @@
 package org.openhr.application.subject.dao;
 
 import org.hibernate.HibernateException;
-import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;

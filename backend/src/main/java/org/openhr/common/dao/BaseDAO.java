@@ -1,11 +1,8 @@
 package org.openhr.common.dao;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.openhr.application.hr.domain.HrTeamMember;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,7 +32,7 @@ public abstract class BaseDAO {
     }
   }
 
-  @Transactional(propagation = Propagation.SUPPORTS)
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
   protected Object get(final Class objectClass, final long id) throws HibernateException {
     Object object;
