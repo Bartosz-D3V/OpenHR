@@ -148,4 +148,36 @@ public abstract class Application implements Serializable {
   public void setAssignee(final Subject assignee) {
     this.assignee = assignee;
   }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Application)) return false;
+
+    final Application that = (Application) o;
+
+    return getApplicationId() == that.getApplicationId() && isApprovedByManager() == that.isApprovedByManager() &&
+      isApprovedByHR() == that.isApprovedByHR() && isTerminated() == that.isTerminated() &&
+      (getStartDate() != null ? getStartDate().equals(that.getStartDate()) :
+        that.getStartDate() == null) && (getEndDate() != null ? getEndDate().equals(that.getEndDate()) :
+      that.getEndDate() == null) && (getProcessInstanceId() != null ?
+      getProcessInstanceId().equals(that.getProcessInstanceId()) :
+      that.getProcessInstanceId() == null) && getSubject().equals(that.getSubject()) && (getAssignee() != null ?
+      getAssignee().equals(that.getAssignee()) :
+      that.getAssignee() == null);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = (int) (getApplicationId() ^ (getApplicationId() >>> 32));
+    result = 31 * result + (getStartDate() != null ? getStartDate().hashCode() : 0);
+    result = 31 * result + (getEndDate() != null ? getEndDate().hashCode() : 0);
+    result = 31 * result + (isApprovedByManager() ? 1 : 0);
+    result = 31 * result + (isApprovedByHR() ? 1 : 0);
+    result = 31 * result + (isTerminated() ? 1 : 0);
+    result = 31 * result + (getProcessInstanceId() != null ? getProcessInstanceId().hashCode() : 0);
+    result = 31 * result + getSubject().hashCode();
+    result = 31 * result + (getAssignee() != null ? getAssignee().hashCode() : 0);
+    return result;
+  }
 }
