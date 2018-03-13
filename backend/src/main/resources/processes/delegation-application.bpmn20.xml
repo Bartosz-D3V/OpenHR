@@ -20,7 +20,7 @@
                   targetRef="sid-19369DA4-09AD-47D0-BBBD-58B0A7D2E0EE"/>
     <serviceTask id="sid-E92E9809-CC66-4347-B468-3DF417A1E753" name="Assign back to applicant" activiti:async="true"
                  activiti:expression="${delegationApplicationServiceImpl.assignToApplicant(delegationApplication.applicationId)}"/>
-    <userTask id="sid-E3546F7B-E291-455E-9612-BBBF0C58467B" name="Ammend the application"/>
+    <userTask id="sid-E3546F7B-E291-455E-9612-BBBF0C58467B" name="Amend the application"/>
     <sequenceFlow id="sid-37E0B370-851E-43AE-AA4F-89EA960A5936" sourceRef="sid-E3546F7B-E291-455E-9612-BBBF0C58467B"
                   targetRef="sid-F12ACCA4-7BBF-46CA-8A39-172658E4D0DA"/>
     <serviceTask id="sid-160491E7-819F-45A7-9EA2-F74BC5D78B16" name="Mark as rejected by manager" activiti:async="true"

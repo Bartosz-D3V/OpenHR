@@ -58,6 +58,7 @@ public class LeaveApplicationController {
   @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
   public LeaveApplication updateLeaveApplication(@RequestBody final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationFacade.updateLeaveApplication(leaveApplication);
