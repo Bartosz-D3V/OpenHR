@@ -18,9 +18,10 @@ public class DelegationApplication extends Application implements Serializable {
   private BigDecimal budget;
 
   public DelegationApplication() {
+    super();
   }
 
-  public DelegationApplication(LocalDate startDate, LocalDate endDate) {
+  public DelegationApplication(final LocalDate startDate, final LocalDate endDate) {
     super(startDate, endDate);
   }
 
@@ -28,7 +29,7 @@ public class DelegationApplication extends Application implements Serializable {
     return country;
   }
 
-  public void setCountry(Country country) {
+  public void setCountry(final Country country) {
     this.country = country;
   }
 
@@ -36,7 +37,7 @@ public class DelegationApplication extends Application implements Serializable {
     return city;
   }
 
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -44,7 +45,7 @@ public class DelegationApplication extends Application implements Serializable {
     return objective;
   }
 
-  public void setObjective(String objective) {
+  public void setObjective(final String objective) {
     this.objective = objective;
   }
 
@@ -52,7 +53,7 @@ public class DelegationApplication extends Application implements Serializable {
     return budget;
   }
 
-  public void setBudget(BigDecimal budget) {
+  public void setBudget(final BigDecimal budget) {
     this.budget = budget;
   }
 
