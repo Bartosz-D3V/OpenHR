@@ -5,6 +5,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -31,7 +32,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional
 public class LeaveApplicationProcessTest {
   private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
@@ -88,16 +88,17 @@ public class LeaveApplicationProcessTest {
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
     session.save(leaveType);
-    session.saveOrUpdate(mockSubject);
     session.flush();
+    session.clear();
     mockLeaveApplication.setLeaveType(leaveType);
   }
 
   @After
   public void tearDown() {
     final Session session = sessionFactory.getCurrentSession();
-    session.delete(mockLeaveApplication);
-    session.flush();
+    final String sql = "TRUNCATE TABLE LEAVE_APPLICATION";
+    final SQLQuery query = session.createSQLQuery(sql);
+    query.executeUpdate();
   }
 
   @Test
@@ -116,10 +117,16 @@ public class LeaveApplicationProcessTest {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     final Map<String, Object> params = new HashMap<>();
 
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.save(mockLeaveApplication);
+    session.flush();
+    session.clear();
+
     mockSubject.setRole(null);
     params.put("subject", mockSubject);
     params.put("leaveApplication", mockLeaveApplication);
-    params.put("applicationId", 1);
+    params.put("applicationId", mockLeaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
     assertFalse(processInstance.isSuspended());
@@ -128,10 +135,16 @@ public class LeaveApplicationProcessTest {
   @Test
   public void reviewShouldBeTheFirstStep() {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
+
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
+
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
     params.put("leaveApplication", mockLeaveApplication);
-    params.put("applicationId", mockLeaveApplication);
+    params.put("applicationId", mockLeaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -143,6 +156,11 @@ public class LeaveApplicationProcessTest {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
 
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
@@ -168,6 +186,11 @@ public class LeaveApplicationProcessTest {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
 
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
@@ -195,6 +218,11 @@ public class LeaveApplicationProcessTest {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
 
     final LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
     mockLeaveApplication.setLeaveType(leaveType);
@@ -226,6 +254,11 @@ public class LeaveApplicationProcessTest {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
 
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
+
     mockSubject.setRole(Role.MANAGER);
     final LeaveApplication leaveApplication = leaveApplicationService
       .createLeaveApplication(mockSubject, mockLeaveApplication);
@@ -244,6 +277,11 @@ public class LeaveApplicationProcessTest {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
+
+    final Session session = sessionFactory.getCurrentSession();
+    session.saveOrUpdate(mockSubject);
+    session.flush();
+    session.clear();
 
     mockSubject.setRole(Role.HRTEAMMEMBER);
     final LeaveApplication leaveApplication = leaveApplicationService
