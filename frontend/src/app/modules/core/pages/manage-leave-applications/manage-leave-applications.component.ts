@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
