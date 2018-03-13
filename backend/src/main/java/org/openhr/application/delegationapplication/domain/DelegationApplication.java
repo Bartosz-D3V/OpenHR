@@ -55,4 +55,27 @@ public class DelegationApplication extends Application implements Serializable {
   public void setBudget(BigDecimal budget) {
     this.budget = budget;
   }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (!(o instanceof DelegationApplication)) return false;
+
+    final DelegationApplication that = (DelegationApplication) o;
+
+    return (getCountry() != null ? getCountry().equals(that.getCountry()) :
+      that.getCountry() == null) && (getCity() != null ? getCity().equals(that.getCity()) :
+      that.getCity() == null) && (getObjective() != null ? getObjective().equals(that.getObjective()) :
+      that.getObjective() == null) && (getBudget() != null ? getBudget().equals(that.getBudget()) :
+      that.getBudget() == null);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getCountry() != null ? getCountry().hashCode() : 0;
+    result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
+    result = 31 * result + (getObjective() != null ? getObjective().hashCode() : 0);
+    result = 31 * result + (getBudget() != null ? getBudget().hashCode() : 0);
+    return result;
+  }
 }
