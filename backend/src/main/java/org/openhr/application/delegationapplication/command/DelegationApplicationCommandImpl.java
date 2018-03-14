@@ -38,32 +38,32 @@ public class DelegationApplicationCommandImpl implements DelegationApplicationCo
 
   @Override
   public void approveByManager(final String processInstanceId) {
-    final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    final Map<String, Object> args = new HashMap<>();
     args.put("approvedByManager", true);
     taskService.complete(task.getId(), args);
   }
 
   @Override
   public void rejectByManager(final String processInstanceId) {
-    final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    final Map<String, Object> args = new HashMap<>();
     args.put("approvedByManager", false);
     taskService.complete(task.getId(), args);
   }
 
   @Override
   public void approveByHr(final String processInstanceId) {
-    final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    final Map<String, Object> args = new HashMap<>();
     args.put("approvedByHR", true);
     taskService.complete(task.getId(), args);
   }
 
   @Override
   public void rejectByHr(final String processInstanceId) {
-    final Map<String, Object> args = new HashMap<>();
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    final Map<String, Object> args = new HashMap<>();
     args.put("approvedByHR", false);
     taskService.complete(task.getId(), args);
   }

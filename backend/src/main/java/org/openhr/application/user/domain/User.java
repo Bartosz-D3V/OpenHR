@@ -20,7 +20,6 @@ public class User implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long userId;
 
-
   @NotNull(message = "Username cannot be empty")
   @Size(max = 20, message = "Password cannot be greater than {max} characters long")
   @Column(unique = true, nullable = false)

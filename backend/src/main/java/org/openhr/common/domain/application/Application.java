@@ -168,33 +168,4 @@ public abstract class Application implements Serializable {
       getAssignee().equals(that.getAssignee()) :
       that.getAssignee() == null);
   }
-
-  @Override
-  public int hashCode() {
-    int result = (int) (getApplicationId() ^ (getApplicationId() >>> 32));
-    result = 31 * result + (getStartDate() != null ? getStartDate().hashCode() : 0);
-    result = 31 * result + (getEndDate() != null ? getEndDate().hashCode() : 0);
-    result = 31 * result + (isApprovedByManager() ? 1 : 0);
-    result = 31 * result + (isApprovedByHR() ? 1 : 0);
-    result = 31 * result + (isTerminated() ? 1 : 0);
-    result = 31 * result + (getProcessInstanceId() != null ? getProcessInstanceId().hashCode() : 0);
-    result = 31 * result + getSubject().hashCode();
-    result = 31 * result + (getAssignee() != null ? getAssignee().hashCode() : 0);
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "Application{" +
-      "applicationId=" + applicationId +
-      ", startDate=" + startDate +
-      ", endDate=" + endDate +
-      ", approvedByManager=" + approvedByManager +
-      ", approvedByHR=" + approvedByHR +
-      ", terminated=" + terminated +
-      ", processInstanceId='" + processInstanceId + '\'' +
-      ", subject=" + subject +
-      ", assignee=" + assignee +
-      '}';
-  }
 }

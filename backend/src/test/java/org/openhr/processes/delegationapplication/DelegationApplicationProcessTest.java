@@ -4,13 +4,17 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.user.domain.User;
@@ -19,6 +23,7 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.enumeration.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,7 +34,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -44,7 +51,7 @@ public class DelegationApplicationProcessTest {
   private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
   private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockSubject = new Employee(mockPersonalInformation,
+  private final static Employee mockEmployee = new Employee(mockPersonalInformation,
     mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
   private final static DelegationApplication mockDelegationApplication = new DelegationApplication(LocalDate.now(),
     LocalDate.now().plusDays(10));
@@ -64,7 +71,8 @@ public class DelegationApplicationProcessTest {
   @Before
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
-    mockDelegationApplication.setSubject(mockSubject);
+    mockEmployee.setRole(Role.EMPLOYEE);
+    mockDelegationApplication.setSubject(mockEmployee);
     session.save(mockDelegationApplication);
     session.flush();
     session.clear();
@@ -72,19 +80,52 @@ public class DelegationApplicationProcessTest {
 
   @After
   public void tearDown() {
-    final Session session = sessionFactory.getCurrentSession();
-    final String sql = "TRUNCATE TABLE DELEGATION_APPLICATION";
-    final SQLQuery query = session.createSQLQuery(sql);
-    query.executeUpdate();
+//    final Session session = sessionFactory.getCurrentSession();
+//    final String sql = "TRUNCATE TABLE DELEGATION_APPLICATION";
+//    final SQLQuery query = session.createSQLQuery(sql);
+//    query.executeUpdate();
   }
 
   @Test
   public void processShouldStart() {
     final Map<String, Object> params = new HashMap<>();
-    params.put("subject", mockSubject);
+    params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
 
     assertFalse(processInstance.isSuspended());
+  }
+
+  @Test
+  public void managerReviewsApplicationShouldBeTheFirstStepForEmployee() {
+    final Map<String, Object> params = new HashMap<>();
+    params.put("subject", mockEmployee);
+
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+    assertEquals("Manager reviews application", task.getName());
+  }
+
+  @Test
+  public void afterApplicationIsBeingRejectedByManagerItShouldBeMarkedAsRejectedAndAssignedBack() {
+    Map<String, Object> params = new HashMap<>();
+    params.put("subject", mockEmployee);
+
+    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    params = new HashMap<>();
+    params.put("approvedByManager", false);
+    params.put("delegationApplication", mockDelegationApplication);
+    taskService.complete(task.getId(), params);
+    final Task task2 = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+    final Session session = sessionFactory.getCurrentSession();
+    final DelegationApplication actualDelegationApplication = session.get(DelegationApplication.class,
+      mockDelegationApplication.getApplicationId());
+
+    assertEquals("Amend the application", task2.getName());
+    assertFalse(actualDelegationApplication.isApprovedByManager());
+    Assert.assertThat(mockEmployee, Mockito.refEq(actualDelegationApplication.getAssignee()));
   }
 }

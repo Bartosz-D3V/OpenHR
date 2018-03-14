@@ -45,12 +45,12 @@ public class DelegationApplicationRepository {
     return countries;
   }
 
-  @Transactional(propagation = Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.REQUIRED)
   public DelegationApplication createDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
   }
 
-  @Transactional(propagation = Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.REQUIRED)
   public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
   }
