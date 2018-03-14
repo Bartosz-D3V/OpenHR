@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "LEAVE_TYPE")
@@ -57,5 +58,29 @@ public class LeaveType implements Serializable {
 
   public void setDescription(final String description) {
     this.description = description;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (!(o instanceof LeaveType)) return false;
+    final LeaveType leaveType = (LeaveType) o;
+    return getLeaveTypeId() == leaveType.getLeaveTypeId() &&
+      Objects.equals(getLeaveCategory(), leaveType.getLeaveCategory()) &&
+      Objects.equals(getDescription(), leaveType.getDescription());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getLeaveTypeId(), getLeaveCategory(), getDescription());
+  }
+
+  @Override
+  public String toString() {
+    return "LeaveType{" +
+      "leaveTypeId=" + leaveTypeId +
+      ", leaveCategory='" + leaveCategory + '\'' +
+      ", description='" + description + '\'' +
+      '}';
   }
 }

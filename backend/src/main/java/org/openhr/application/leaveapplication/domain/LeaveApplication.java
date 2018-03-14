@@ -63,4 +63,12 @@ public class LeaveApplication extends Application implements Serializable {
   public int hashCode() {
     return Objects.hash(getMessage(), getLeaveType());
   }
+
+  @Override
+  public String toString() {
+    return "LeaveApplication{" +
+      "message='" + message + '\'' +
+      ", leaveType=" + leaveType +
+      '}';
+  }
 }

@@ -8,6 +8,7 @@ import org.openhr.common.domain.subject.Subject;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -36,6 +37,7 @@ public abstract class Application implements Serializable {
       )
     }
   )
+  @GeneratedValue(generator = "APP_ID_GENERATOR")
   private long applicationId;
 
   @NotNull(message = "Start date cannot be empty")
@@ -179,5 +181,20 @@ public abstract class Application implements Serializable {
     result = 31 * result + getSubject().hashCode();
     result = 31 * result + (getAssignee() != null ? getAssignee().hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Application{" +
+      "applicationId=" + applicationId +
+      ", startDate=" + startDate +
+      ", endDate=" + endDate +
+      ", approvedByManager=" + approvedByManager +
+      ", approvedByHR=" + approvedByHR +
+      ", terminated=" + terminated +
+      ", processInstanceId='" + processInstanceId + '\'' +
+      ", subject=" + subject +
+      ", assignee=" + assignee +
+      '}';
   }
 }
