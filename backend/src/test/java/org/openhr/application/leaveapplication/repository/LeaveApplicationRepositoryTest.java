@@ -195,6 +195,6 @@ public class LeaveApplicationRepositoryTest {
       .getAwaitingForActionLeaveApplications(mockManager.getSubjectId());
 
     assertEquals(1, actualLeaveApplications.size());
-    assertEquals(actualLeaveApplications.get(0), leaveApplication1);
+    assertEquals(leaveApplication1, actualLeaveApplications.get(0));
   }
 }

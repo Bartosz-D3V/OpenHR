@@ -67,7 +67,7 @@ public class LeaveApplicationRepository {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
       filteredLeaveApplications = criteria
-        .createAlias("assignee", "subject")
+        .createAlias("assignee", "assignee")
         .add(Restrictions.eq("terminated", false))
         .add(Restrictions.eq("assignee.subjectId", subjectId))
         .setReadOnly(true)
