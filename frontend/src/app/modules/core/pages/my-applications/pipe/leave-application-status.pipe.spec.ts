@@ -1,6 +1,8 @@
-import { LeaveApplicationStatusPipe } from './leave-application-status.pipe';
-import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
+import { MomentInput } from 'moment';
+
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { LeaveApplicationStatuses } from '../enumeration/leave-application-statuses.enum';
+import { LeaveApplicationStatusPipe } from './leave-application-status.pipe';
 
 describe('LeaveApplicationStatusPipe', () => {
   it('create an instance', () => {
@@ -14,7 +16,9 @@ describe('LeaveApplicationStatusPipe', () => {
 
     beforeEach(() => {
       pipe = new LeaveApplicationStatusPipe();
-      mockLeaveApplication = new LeaveApplication();
+      const mockStartDate: MomentInput = '2020-05-05';
+      const mockEndDate: MomentInput = '2020-05-10';
+      mockLeaveApplication = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
     });
 
     it('should return AWAITING status if application was not terminated', () => {

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -20,14 +20,14 @@ import { MyApplicationsService } from './service/my-applications.service';
   ],
 })
 export class MyApplicationsComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
-
   private $leaveApplications: ISubscription;
   public isLoadingResults: boolean;
   public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'status', 'ics', 'info'];
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication> = new MatTableDataSource<LeaveApplication>();
+
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
 
   constructor(private _myApplications: MyApplicationsService,
               private _jwtHelper: JwtHelperService,
