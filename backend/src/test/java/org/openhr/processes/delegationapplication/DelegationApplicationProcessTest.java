@@ -5,16 +5,11 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.user.domain.User;
@@ -36,7 +31,6 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -78,14 +72,6 @@ public class DelegationApplicationProcessTest {
     session.clear();
   }
 
-  @After
-  public void tearDown() {
-//    final Session session = sessionFactory.getCurrentSession();
-//    final String sql = "TRUNCATE TABLE DELEGATION_APPLICATION";
-//    final SQLQuery query = session.createSQLQuery(sql);
-//    query.executeUpdate();
-  }
-
   @Test
   public void processShouldStart() {
     final Map<String, Object> params = new HashMap<>();
@@ -124,8 +110,10 @@ public class DelegationApplicationProcessTest {
     final DelegationApplication actualDelegationApplication = session.get(DelegationApplication.class,
       mockDelegationApplication.getApplicationId());
 
+    final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
+
     assertEquals("Amend the application", task2.getName());
     assertFalse(actualDelegationApplication.isApprovedByManager());
-    Assert.assertThat(mockEmployee, Mockito.refEq(actualDelegationApplication.getAssignee()));
+    assertEquals(actualEmployee, actualDelegationApplication.getAssignee());
   }
 }
