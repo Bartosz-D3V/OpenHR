@@ -22,6 +22,10 @@ import { Address } from '@shared/domain/subject/address';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { DelegationComponent } from './delegation.component';
+import { Country } from '@shared/domain/country/country';
+import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { DelegationService } from '@modules/core/pages/delegation/service/delegation.service';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -30,6 +34,13 @@ describe('DelegationComponent', () => {
     new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line',
       'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
       '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
+
+  @Injectable()
+  class FakeDelegationService {
+    getCountries(): Observable<Array<Country>> {
+      return Observable.of([]);
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +69,7 @@ describe('DelegationComponent', () => {
       providers: [
         JwtHelperService,
         ErrorResolverService,
+        {provide: DelegationService, useClass: FakeDelegationService},
       ],
     })
       .compileComponents();
@@ -260,14 +272,14 @@ describe('DelegationComponent', () => {
   });
 
   describe('autocomplete', () => {
-    let filteredCountries;
-    const mockCountries: Array<string> = [
-      'Algeria',
-      'South Korea',
-      'Germany',
-      'Poland',
-      'Portugal',
-      'Zanzibar',
+    let filteredCountries: Array<Country>;
+    const mockCountries: Array<Country> = [
+      new Country('Algeria', ''),
+      new Country('South Korea', ''),
+      new Country('Germany', ''),
+      new Country('Poland', ''),
+      new Country('Portugal', ''),
+      new Country('Zanzibar', ''),
     ];
 
     afterEach(() => {
@@ -278,17 +290,17 @@ describe('DelegationComponent', () => {
       filteredCountries = component.filterCountries(mockCountries, 'Pol');
 
       expect(filteredCountries.length).toEqual(1);
-      expect(filteredCountries[0]).toEqual('Poland');
+      expect(filteredCountries[0].countryName).toEqual('Poland');
 
       filteredCountries = component.filterCountries(mockCountries, 'Po');
 
       expect(filteredCountries.length).toEqual(2);
-      expect(filteredCountries[0]).toEqual('Poland');
-      expect(filteredCountries[1]).toEqual('Portugal');
+      expect(filteredCountries[0].countryName).toEqual('Poland');
+      expect(filteredCountries[1].countryName).toEqual('Portugal');
     });
 
     describe('reduceCountries method', () => {
-      let result: Array<string>;
+      let result: Array<Country>;
       let countryCtrl: AbstractControl;
 
       beforeEach(() => {
@@ -296,7 +308,7 @@ describe('DelegationComponent', () => {
       });
 
       it('should not filter results if input is empty', () => {
-        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<Country>) => {
           result = data;
         });
         countryCtrl.setValue('');
@@ -306,13 +318,13 @@ describe('DelegationComponent', () => {
       });
 
       it('should filter results accordingly to input value', () => {
-        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<Country>) => {
           result = data;
         });
         countryCtrl.setValue('Ger');
 
         expect(result).toBeDefined();
-        expect(result[0]).toEqual('Germany');
+        expect(result[0].countryName).toEqual('Germany');
       });
 
     });

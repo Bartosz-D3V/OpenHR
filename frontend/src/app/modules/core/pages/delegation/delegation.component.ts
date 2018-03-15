@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
@@ -11,33 +11,40 @@ import { SubjectDetailsService } from '@shared/services/subject/subject-details.
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { Subject } from '@shared/domain/subject/subject';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { DelegationService } from '@modules/core/pages/delegation/service/delegation.service';
+import { Country } from '@shared/domain/country/country';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delegation',
   templateUrl: './delegation.component.html',
   styleUrls: ['./delegation.component.scss'],
-  providers: [SubjectDetailsService],
+  providers: [
+    SubjectDetailsService,
+    DelegationService,
+  ],
 })
 export class DelegationComponent implements OnInit, OnDestroy {
-  private $currentSubject: ISubscription;
+  private $delegation: ISubscription;
   public subject: Subject;
   public isLoadingResults: boolean;
   public applicationForm: FormGroup;
-  public filteredCountries: Observable<Array<string>>;
-  public countries: Array<string>;
+  public filteredCountries: Observable<Array<Country>>;
+  public countries: Array<Country>;
 
-  constructor(private _subjectDetails: SubjectDetailsService,
+  constructor(private _delegationService: DelegationService,
+              private _subjectDetails: SubjectDetailsService,
               private _errorResolver: ErrorResolverService,
               private _fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.getCurrentSubject();
+    this.fetchData();
   }
 
   ngOnDestroy(): void {
-    if (this.$currentSubject !== undefined) {
-      this.$currentSubject.unsubscribe();
+    if (this.$delegation !== undefined) {
+      this.$delegation.unsubscribe();
     }
   }
 
@@ -78,12 +85,15 @@ export class DelegationComponent implements OnInit, OnDestroy {
     this.applicationForm.get('organisation').disable();
   }
 
-  public getCurrentSubject(): void {
+  public fetchData(): void {
     this.isLoadingResults = true;
-    this.$currentSubject = this._subjectDetails
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
-        this.subject = response;
+    this.$delegation = Observable.zip(
+      this._subjectDetails.getCurrentSubject(),
+      this._delegationService.getCountries(),
+      (subject: Subject, countries: Array<Country>) => ({subject, countries}))
+      .subscribe((pair) => {
+        this.subject = pair.subject;
+        this.countries = pair.countries;
         this.isLoadingResults = false;
         this.constructForm();
       }, (httpErrorResponse: HttpErrorResponse) => {
@@ -91,16 +101,18 @@ export class DelegationComponent implements OnInit, OnDestroy {
       });
   }
 
-  public filterCountries(countries: Array<string>, name: string): Array<string> {
+  public filterCountries(countries: Array<Country>, name: string): Array<Country> {
     return countries.filter(country =>
-      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+      country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
-  public reduceCountries(countries: Array<string>): Observable<Array<string>> {
+  public reduceCountries(countries: Array<Country>): Observable<Array<Country>> {
     return this.applicationForm.get(['delegation', 'country'])
       .valueChanges
-      .startWith(null)
-      .map(country => country ? this.filterCountries(countries, country) : countries.slice());
+      .pipe(
+        startWith(''),
+        map(name => name ? this.filterCountries(countries, name) : countries.slice())
+      );
   }
 
   public isValid(): boolean {
