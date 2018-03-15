@@ -3,6 +3,8 @@ export class Country {
   public countryName: string;
   public flagUrl: string;
 
-  constructor() {
+  constructor(countryName: string, flagUrl: string) {
+    this.countryName = countryName;
+    this.flagUrl = flagUrl;
   }
 }
