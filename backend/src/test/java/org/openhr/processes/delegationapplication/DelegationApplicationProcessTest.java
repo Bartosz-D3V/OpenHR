@@ -86,6 +86,7 @@ public class DelegationApplicationProcessTest {
   public void managerReviewsApplicationShouldBeTheFirstStepForEmployee() {
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockEmployee);
+    params.put("delegationApplication", mockDelegationApplication);
 
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -97,6 +98,7 @@ public class DelegationApplicationProcessTest {
   public void afterApplicationIsBeingRejectedByManagerItShouldBeMarkedAsRejectedAndAssignedBack() {
     Map<String, Object> params = new HashMap<>();
     params.put("subject", mockEmployee);
+    params.put("delegationApplication", mockDelegationApplication);
 
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();

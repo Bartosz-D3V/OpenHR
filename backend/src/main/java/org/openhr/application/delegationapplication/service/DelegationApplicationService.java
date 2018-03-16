@@ -15,6 +15,10 @@ public interface DelegationApplicationService {
 
   void assignToApplicant(DelegationApplication delegationApplication);
 
+  void assignToManager(DelegationApplication delegationApplication);
+
+  void assignToHr(DelegationApplication delegationApplication);
+
   void approveByManager(DelegationApplication delegationApplication);
 
   void rejectByManager(DelegationApplication delegationApplication);
