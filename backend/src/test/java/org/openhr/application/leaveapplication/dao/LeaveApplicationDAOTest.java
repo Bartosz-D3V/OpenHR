@@ -64,13 +64,14 @@ public class LeaveApplicationDAOTest {
     mockLeaveApplication.setMessage("I am going to Vanuatu!");
     mockLeaveApplication.setLeaveType(leaveType);
     session.save(leaveType);
+    session.save(mockEmployee);
+    session.save(mockManager);
   }
 
   @Test
   public void getLeaveApplicationShouldReturnApplication() throws ApplicationDoesNotExistException {
     final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setSubject(mockEmployee);
-    session.save(mockEmployee);
     session.save(mockLeaveApplication);
     final LeaveApplication actualLeaveApplication = leaveApplicationDAO.
       getLeaveApplication(mockLeaveApplication.getApplicationId());
