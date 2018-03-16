@@ -2,6 +2,11 @@ package org.openhr.application.delegationapplication.service;
 
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.application.delegationapplication.repository.DelegationApplicationRepository;
+import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.employee.service.EmployeeService;
+import org.openhr.application.hr.domain.HrTeamMember;
+import org.openhr.application.manager.domain.Manager;
+import org.openhr.application.manager.service.ManagerService;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -13,9 +18,15 @@ import java.util.List;
 @Service
 public class DelegationApplicationServiceImpl implements DelegationApplicationService {
   private final DelegationApplicationRepository delegationApplicationRepository;
+  private final EmployeeService employeeService;
+  private final ManagerService managerService;
 
-  public DelegationApplicationServiceImpl(final DelegationApplicationRepository delegationApplicationRepository) {
+  public DelegationApplicationServiceImpl(final DelegationApplicationRepository delegationApplicationRepository,
+                                          final EmployeeService employeeService,
+                                          final ManagerService managerService) {
     this.delegationApplicationRepository = delegationApplicationRepository;
+    this.employeeService = employeeService;
+    this.managerService = managerService;
   }
 
   @Override
@@ -45,6 +56,26 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   public void assignToApplicant(final DelegationApplication delegationApplication) {
     final Subject applicant = delegationApplication.getSubject();
     delegationApplication.setAssignee(applicant);
+    delegationApplicationRepository.updateDelegationApplication(delegationApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void assignToManager(final DelegationApplication delegationApplication) {
+    final Subject applicant = delegationApplication.getSubject();
+    final Employee employee = employeeService.getEmployee(applicant.getSubjectId());
+    final Manager manager = employee.getManager();
+    delegationApplication.setAssignee(manager);
+    delegationApplicationRepository.updateDelegationApplication(delegationApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void assignToHr(final DelegationApplication delegationApplication) {
+    final Subject applicant = delegationApplication.getSubject();
+    final Manager manager = managerService.getManager(applicant.getSubjectId());
+    final HrTeamMember hrTeamMember = manager.getHrTeamMember();
+    delegationApplication.setAssignee(hrTeamMember);
     delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
 
