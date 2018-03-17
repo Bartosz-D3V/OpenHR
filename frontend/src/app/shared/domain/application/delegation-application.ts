@@ -9,7 +9,6 @@ export class DelegationApplication extends Application {
   public objective: string;
   public budget: number;
 
-
   constructor(applicationId: number, startDate: MomentInput,
               endDate: MomentInput, approvedByManager: boolean,
               approvedByHR: boolean, terminated: boolean, processInstanceId: string,
