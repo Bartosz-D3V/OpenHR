@@ -1,6 +1,5 @@
 package org.openhr.processes.leaveapplication;
 
-import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -80,9 +79,6 @@ public class LeaveApplicationProcessTest {
 
   @Autowired
   private TaskService taskService;
-
-  @Autowired
-  private HistoryService historyService;
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -180,10 +176,9 @@ public class LeaveApplicationProcessTest {
     final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
     final LeaveApplication updatedLeaveApplication = leaveApplicationService
       .getLeaveApplication(leaveApplication.getApplicationId());
-    final ProcessInstance processInstance1 = runtimeService.createProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult();
 
     assertEquals(0, tasks.size());
-    assertTrue(processInstance1.isEnded());
+    assertTrue(updatedLeaveApplication.isTerminated());
     assertFalse(updatedLeaveApplication.isApprovedByManager());
   }
 
@@ -214,9 +209,12 @@ public class LeaveApplicationProcessTest {
 
     final List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
     assertEquals("HR reviews the application", tasks.get(0).getName());
-    taskService.complete(tasks.get(0).getId());
+    taskService.complete(tasks.get(0).getId(), params);
 
-    assertTrue(processInstance.isEnded());
+    final LeaveApplication updatedLeaveApplication = session.get(LeaveApplication.class,
+      leaveApplication.getApplicationId());
+
+    assertTrue(updatedLeaveApplication.isTerminated());
   }
 
   @Test
@@ -251,7 +249,10 @@ public class LeaveApplicationProcessTest {
     assertEquals("HR reviews the application", tasks.get(0).getName());
     taskService.complete(tasks.get(0).getId());
 
-    assertTrue(processInstance.isEnded());
+    final LeaveApplication updatedLeaveApplication = session.get(LeaveApplication.class,
+      leaveApplication.getApplicationId());
+
+    assertTrue(updatedLeaveApplication.isTerminated());
   }
 
   @Test
@@ -296,6 +297,9 @@ public class LeaveApplicationProcessTest {
     params.put("applicationId", leaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
-    assertTrue(processInstance.isEnded());
+    final LeaveApplication updatedLeaveApplication = session.get(LeaveApplication.class,
+      leaveApplication.getApplicationId());
+
+    assertTrue(updatedLeaveApplication.isTerminated());
   }
 }

@@ -121,7 +121,6 @@ public class DelegationApplicationProcessTest {
     final Session session = sessionFactory.getCurrentSession();
     final DelegationApplication actualDelegationApplication = session.get(DelegationApplication.class,
       mockDelegationApplication.getApplicationId());
-
     final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertEquals("Amend the application", task2.getName());
