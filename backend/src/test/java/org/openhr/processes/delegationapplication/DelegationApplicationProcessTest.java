@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -23,11 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -35,19 +38,23 @@ import static junit.framework.TestCase.assertFalse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-@Transactional
+@Transactional(propagation = Propagation.NEVER)
 public class DelegationApplicationProcessTest {
-  private final static Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
+  private final Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
     "UK");
-  private final static PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
-  private final static ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
+  private final PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Xavier", "Alex", null);
+  private final ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
     mockAddress);
-  private final static EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
+  private final EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
     "Core", "12A", null, null);
-  private final static HrInformation mockHrInformation = new HrInformation(25L);
-  private final static Employee mockEmployee = new Employee(mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Jhn40", "testPass"));
-  private final static DelegationApplication mockDelegationApplication = new DelegationApplication(LocalDate.now(),
+  private final HrInformation mockHrInformation = new HrInformation(25L);
+  private final Employee mockEmployee = new Employee(mockPersonalInformation,
+    mockContactInformation, mockEmployeeInformation, mockHrInformation,
+    new User(UUID.randomUUID().toString().substring(0, 19), "testPass"));
+  private final Manager mockManager = new Manager(new PersonalInformation("John", "Xavier", "Alex", null),
+    new ContactInformation(), new EmployeeInformation(), new HrInformation(),
+    new User(UUID.randomUUID().toString().substring(0, 19), ""));
+  private final DelegationApplication mockDelegationApplication = new DelegationApplication(LocalDate.now(),
     LocalDate.now().plusDays(10));
 
   @Autowired
@@ -66,7 +73,10 @@ public class DelegationApplicationProcessTest {
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
     mockEmployee.setRole(Role.EMPLOYEE);
+    mockEmployee.setManager(mockManager);
     mockDelegationApplication.setSubject(mockEmployee);
+    session.save(mockManager);
+    session.save(mockEmployee);
     session.save(mockDelegationApplication);
     session.flush();
     session.clear();
@@ -111,7 +121,6 @@ public class DelegationApplicationProcessTest {
     final Session session = sessionFactory.getCurrentSession();
     final DelegationApplication actualDelegationApplication = session.get(DelegationApplication.class,
       mockDelegationApplication.getApplicationId());
-
     final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertEquals("Amend the application", task2.getName());

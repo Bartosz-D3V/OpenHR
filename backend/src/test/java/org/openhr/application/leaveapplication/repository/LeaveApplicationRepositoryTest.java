@@ -119,6 +119,8 @@ public class LeaveApplicationRepositoryTest {
     actualLeaveApplication2.setEndDate(LocalDate.of(2020, 5, 18));
     actualLeaveApplication2.setLeaveType(leaveType1);
     final Session session = sessionFactory.getCurrentSession();
+    session.save(mockEmployee);
+    session.save(mockManager);
     session.save(leaveApplication1);
     session.flush();
     session.clear();
@@ -157,6 +159,8 @@ public class LeaveApplicationRepositoryTest {
     actualLeaveApplication2.setLeaveType(leaveType1);
     actualLeaveApplication2.setSubject(mockManager);
     final Session session = sessionFactory.getCurrentSession();
+    session.save(mockEmployee);
+    session.save(mockManager);
     session.save(leaveApplication1);
     session.flush();
     session.clear();
@@ -186,6 +190,8 @@ public class LeaveApplicationRepositoryTest {
     leaveApplication2.setSubject(mockManager);
     leaveApplication2.setAssignee(null);
     final Session session = sessionFactory.getCurrentSession();
+    session.save(mockEmployee);
+    session.save(mockManager);
     session.save(leaveApplication1);
     session.flush();
     session.clear();
@@ -193,8 +199,10 @@ public class LeaveApplicationRepositoryTest {
 
     final List<LeaveApplication> actualLeaveApplications = leaveApplicationRepository
       .getAwaitingForActionLeaveApplications(mockManager.getSubjectId());
+    final LeaveApplication expectedLeaveApplication = session.get(LeaveApplication.class,
+      leaveApplication1.getApplicationId());
 
     assertEquals(1, actualLeaveApplications.size());
-    assertEquals(leaveApplication1, actualLeaveApplications.get(0));
+    assertEquals(expectedLeaveApplication, actualLeaveApplications.get(0));
   }
 }

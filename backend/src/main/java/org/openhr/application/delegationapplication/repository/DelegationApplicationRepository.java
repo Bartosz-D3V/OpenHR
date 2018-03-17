@@ -50,7 +50,6 @@ public class DelegationApplicationRepository {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
   public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
   }

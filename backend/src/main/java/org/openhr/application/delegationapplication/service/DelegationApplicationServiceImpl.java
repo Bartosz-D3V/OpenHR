@@ -52,7 +52,6 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
   public void assignToApplicant(final DelegationApplication delegationApplication) {
     final Subject applicant = delegationApplication.getSubject();
     delegationApplication.setAssignee(applicant);
@@ -60,7 +59,6 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
   public void assignToManager(final DelegationApplication delegationApplication) {
     final Subject applicant = delegationApplication.getSubject();
     final Employee employee = employeeService.getEmployee(applicant.getSubjectId());
