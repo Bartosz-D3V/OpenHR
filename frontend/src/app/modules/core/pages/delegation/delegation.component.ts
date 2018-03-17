@@ -1,19 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
+import { map, startWith } from 'rxjs/operators';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
-import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
-import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
-import { Subject } from '@shared/domain/subject/subject';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { DelegationService } from '@modules/core/pages/delegation/service/delegation.service';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { DelegationApplication } from '@shared/domain/application/delegation-application';
+import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
-import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delegation',
@@ -22,6 +25,7 @@ import { map, startWith } from 'rxjs/operators';
   providers: [
     SubjectDetailsService,
     DelegationService,
+    NotificationService,
   ],
 })
 export class DelegationComponent implements OnInit, OnDestroy {
@@ -32,8 +36,12 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public filteredCountries: Observable<Array<Country>>;
   public countries: Array<Country>;
 
+  @ViewChild('dateRange')
+  public dateRange: DateRangeComponent;
+
   constructor(private _delegationService: DelegationService,
               private _subjectDetails: SubjectDetailsService,
+              private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService,
               private _fb: FormBuilder) {
   }
@@ -115,7 +123,24 @@ export class DelegationComponent implements OnInit, OnDestroy {
       );
   }
 
+  public save(): void {
+    const form: AbstractControl = this.applicationForm;
+    const application: DelegationApplication = <DelegationApplication> form.get('delegation').value;
+    application.startDate = this.dateRange.startDate;
+    application.endDate = this.dateRange.endDate;
+    this._delegationService
+      .createDelegationApplication(application)
+      .subscribe((response: DelegationApplication) => {
+        const message = `Application with id ${response.applicationId} has been created`;
+        this.applicationForm.reset();
+        this._notificationService.openSnackBar(message, 'OK');
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      });
+  }
+
   public isValid(): boolean {
-    return this.applicationForm.valid;
+    return this.applicationForm.get('delegation').valid &&
+      this.dateRange.dateRangeGroup.valid;
   }
 }
