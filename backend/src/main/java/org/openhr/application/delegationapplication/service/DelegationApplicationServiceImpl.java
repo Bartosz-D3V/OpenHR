@@ -71,7 +71,8 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   @Transactional(propagation = Propagation.REQUIRED)
   public void assignToHr(final DelegationApplication delegationApplication) {
     final Subject applicant = delegationApplication.getSubject();
-    final Manager manager = managerService.getManager(applicant.getSubjectId());
+    final Employee employee = employeeService.getEmployee(applicant.getSubjectId());
+    final Manager manager = employee.getManager();
     final HrTeamMember hrTeamMember = manager.getHrTeamMember();
     delegationApplication.setAssignee(hrTeamMember);
     delegationApplicationRepository.updateDelegationApplication(delegationApplication);
@@ -102,6 +103,13 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   @Transactional(propagation = Propagation.REQUIRED)
   public void rejectByHr(final DelegationApplication delegationApplication) {
     delegationApplication.setApprovedByHR(false);
+    delegationApplicationRepository.updateDelegationApplication(delegationApplication);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void terminateDelegationApplication(final DelegationApplication delegationApplication) {
+    delegationApplication.setTerminated(true);
     delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
 }

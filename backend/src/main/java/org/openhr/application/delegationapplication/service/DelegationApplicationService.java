@@ -26,4 +26,6 @@ public interface DelegationApplicationService {
   void approveByHr(DelegationApplication delegationApplication);
 
   void rejectByHr(DelegationApplication delegationApplication);
+
+  void terminateDelegationApplication(DelegationApplication delegationApplication);
 }
