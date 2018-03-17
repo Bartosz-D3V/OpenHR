@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Country } from '@shared/domain/country/country';
 
 @Injectable()
@@ -24,5 +25,13 @@ export class DelegationService {
       .get<Array<Country>>(`${this.url}/countries`, {
         headers: this.headers,
       });
+  }
+
+  public createDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
+    return this._http
+      .post<DelegationApplication>(`${this.url}/${this._jwtHelper.getSubjectId()}`,
+        application, {
+          headers: this.headers,
+        });
   }
 }
