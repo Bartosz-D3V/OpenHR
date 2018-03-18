@@ -337,11 +337,6 @@ describe('DelegationComponent', () => {
   });
 
   describe('isValid', () => {
-    beforeAll(() => {
-      component.isLoadingResults = false;
-      fixture.detectChanges();
-    });
-
     it('should return false if form is dirty', () => {
       spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(false);
 
