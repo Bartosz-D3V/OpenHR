@@ -20,7 +20,7 @@ public abstract class BaseDAO {
     this.sessionFactory = sessionFactory;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void save(final Object object) throws HibernateException {
     try {
       final Session session = sessionFactory.getCurrentSession();
@@ -43,11 +43,10 @@ public abstract class BaseDAO {
       log.error(hibernateException.getLocalizedMessage());
       throw hibernateException;
     }
-
     return object;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void merge(final Object object) throws HibernateException {
     try {
       final Session session = sessionFactory.getCurrentSession();

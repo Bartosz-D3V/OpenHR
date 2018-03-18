@@ -17,6 +17,9 @@ import { ManageLeaveApplicationsComponent } from '@modules/core/pages/manage-lea
 import { ManageEmployeesDataComponent } from '@modules/core/pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from '@modules/core/pages/my-applications/my-applications.component';
 import { DashboardComponent } from '@modules/core/pages/dashboard/dashboard.component';
+import {
+  ManageDelegationApplicationsComponent,
+} from '@modules/core/pages/manage-delegation-applications/manage-delegation-applications.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -74,6 +77,12 @@ export const routeDefinitions: Routes = [
       {
         path: 'manage-leave-applications',
         component: ManageLeaveApplicationsComponent,
+        outlet: 'core',
+        canActivate: [ManagerGuard],
+      },
+      {
+        path: 'manage-delegation-applications',
+        component: ManageDelegationApplicationsComponent,
         outlet: 'core',
         canActivate: [ManagerGuard],
       },

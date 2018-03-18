@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {JwtHelperService} from '@shared//services/jwt/jwt-helper.service';
-import {LeaveApplication} from '@shared//domain/application/leave-application';
-import {Role} from '@shared//domain/subject/role';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { DelegationApplication } from '@shared/domain/application/delegation-application';
+import { Role } from '@shared/domain/subject/role';
 
 @Injectable()
-export class ManageLeaveApplicationsService {
-  private url: string = SystemVariables.API_URL + '/leave-application';
+export class ManageDelegationApplicationsService {
+  private readonly url: string = SystemVariables.API_URL + '/delegations';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -20,14 +20,14 @@ export class ManageLeaveApplicationsService {
               private _jwtHelper: JwtHelperService) {
   }
 
-  public getAwaitingForActionLeaveApplications(subjectId: number): Observable<Array<LeaveApplication>> {
+  public getAwaitingForActionDelegationApplications(subjectId: number): Observable<Array<DelegationApplication>> {
     return this._http
-      .get<Array<LeaveApplication>>(`${this.url}/${subjectId}/awaiting`, {
+      .get<Array<DelegationApplication>>(`${this.url}/${subjectId}/awaiting`, {
         headers: this.headers,
       });
   }
 
-  public approveLeaveApplicationByManager(processInstanceId: string): Observable<any> {
+  public approveDelegationApplicationByManager(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
@@ -38,7 +38,7 @@ export class ManageLeaveApplicationsService {
       });
   }
 
-  public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
+  public rejectDelegationApplicationByManager(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams()
       .set('processInstanceId', processInstanceId);
@@ -58,4 +58,5 @@ export class ManageLeaveApplicationsService {
         return 'hr';
     }
   }
+
 }

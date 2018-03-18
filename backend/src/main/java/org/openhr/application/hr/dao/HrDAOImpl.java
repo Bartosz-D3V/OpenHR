@@ -23,7 +23,7 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) {
     super.save(hrTeamMember);
 
@@ -31,7 +31,7 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
     final HrTeamMember savedHrTeamMember = getHrTeamMember(subjectId);
     BeanUtils.copyProperties(hrTeamMember, savedHrTeamMember, "subjectId");
@@ -41,7 +41,7 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void addManagerToHr(final HrTeamMember hrTeamMember, final Manager manager) {
     hrTeamMember.getManagers().add(manager);
     manager.setHrTeamMember(hrTeamMember);

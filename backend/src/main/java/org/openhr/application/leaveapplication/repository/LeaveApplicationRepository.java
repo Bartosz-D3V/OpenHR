@@ -123,12 +123,12 @@ public class LeaveApplicationRepository {
     return leaveApplications;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationDAO.updateLeaveApplication(leaveApplication);

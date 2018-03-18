@@ -39,7 +39,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws ValidationException {
     validateLeaveApplication(leaveApplication);
@@ -66,14 +66,14 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
     return leaveApplicationRepository.updateLeaveApplication(leaveApplication);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void rejectLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
@@ -84,7 +84,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void approveLeaveApplicationByManager(final long applicationId)
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
@@ -93,7 +93,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void rejectLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
@@ -104,7 +104,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void approveLeaveApplicationByHr(final long applicationId)
     throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
@@ -113,7 +113,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setTerminated(true);

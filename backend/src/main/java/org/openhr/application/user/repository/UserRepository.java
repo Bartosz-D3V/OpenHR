@@ -69,7 +69,7 @@ public class UserRepository  {
     return userId;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void registerUser(final User user) {
     userDAO.registerUser(user);
   }

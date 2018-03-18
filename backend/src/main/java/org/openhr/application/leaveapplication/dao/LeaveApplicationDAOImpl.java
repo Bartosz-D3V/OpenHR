@@ -43,7 +43,7 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
     leaveApplication.setSubject(subject);
@@ -53,7 +53,7 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException, HibernateException {
     final LeaveApplication legacyLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());

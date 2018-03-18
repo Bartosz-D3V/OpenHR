@@ -22,13 +22,13 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
     return (Employee) super.get(Employee.class, subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee createEmployee(final Employee employee) {
     super.save(employee);
     return employee;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     final Employee savedEmployee = getEmployee(subjectId);
     BeanUtils.copyProperties(savedEmployee, employee, "subjectId");
@@ -37,7 +37,7 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
     return savedEmployee;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     final Manager fetchedManager = (Manager) super.get(Manager.class, manager.getSubjectId());
     final Employee savedEmployee = (Employee) super.get(Employee.class, employeeId);
