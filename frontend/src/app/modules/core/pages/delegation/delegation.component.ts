@@ -129,7 +129,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
       .pipe(
         startWith<string | Country>(''),
         map(value => typeof value === 'string' ? value : value ? value.countryName : null),
-        map(name => name ? this.filterCountries(countries, name) : countries? countries.slice(): null),
+        map(name => name ? this.filterCountries(countries, name) : countries.slice())
       );
   }
 
