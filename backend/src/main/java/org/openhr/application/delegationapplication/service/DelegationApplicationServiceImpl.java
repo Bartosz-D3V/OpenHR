@@ -44,6 +44,18 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<DelegationApplication> getSubjectsDelegationApplications(final long subjectId) {
+    return delegationApplicationRepository.getSubjectsDelegationApplications(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(final long subjectId) {
+    return delegationApplicationRepository.getAwaitingForActionDelegationApplications(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public DelegationApplication saveProcessInstanceId(final String processInstanceId,
                                                      final DelegationApplication delegationApplication) {

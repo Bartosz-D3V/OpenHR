@@ -3,7 +3,6 @@ package org.openhr.application.delegationapplication.controller;
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.application.delegationapplication.facade.DelegationApplicationFacade;
 import org.openhr.common.domain.country.Country;
-import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,6 +43,22 @@ public class DelegationApplicationController {
     return delegationApplicationFacade.startDelegationApplicationProcess(subjectId, delegationApplication);
   }
 
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<DelegationApplication> getSubjectsDelegationApplications(@PathVariable final long subjectId) {
+    return delegationApplicationFacade.getSubjectsDelegationApplications(subjectId);
+  }
+
+  @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public List<DelegationApplication> getAwaitingForActionLeaveApplications(
+    @PathVariable("subjectId") final long subjectId) {
+    return delegationApplicationFacade.getAwaitingForActionDelegationApplications(subjectId);
+  }
+
   @RequestMapping(value = "/manager-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -54,24 +69,21 @@ public class DelegationApplicationController {
   @RequestMapping(value = "/manager-approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void approveDelegationApplicationByManager(@RequestParam final String processInstanceId)
-    throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
+  public void approveDelegationApplicationByManager(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.approveDelegationApplicationByManager(processInstanceId);
   }
 
   @RequestMapping(value = "/hr-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void rejectDelegationApplicationByHr(@RequestParam final String processInstanceId)
-    throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
+  public void rejectDelegationApplicationByHr(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.rejectDelegationApplicationByHr(processInstanceId);
   }
 
   @RequestMapping(value = "/hr-approve", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void approveDelegationApplicationByHr(@RequestParam final String processInstanceId)
-    throws ApplicationDoesNotExistException {
+  public void approveDelegationApplicationByHr(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.approveDelegationApplicationByHr(processInstanceId);
   }
 }
