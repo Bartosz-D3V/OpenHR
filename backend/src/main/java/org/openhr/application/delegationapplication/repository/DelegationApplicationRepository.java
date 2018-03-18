@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openhr.application.delegationapplication.dao.DelegationApplicationDAO;
 import org.openhr.application.delegationapplication.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
@@ -50,6 +51,47 @@ public class DelegationApplicationRepository {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<DelegationApplication> getSubjectsDelegationApplications(final long subjectId) {
+    List<DelegationApplication> leaveApplications;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(DelegationApplication.class);
+      leaveApplications = criteria.createAlias("subject", "subject")
+        .add(Restrictions.eq("subject.subjectId", subjectId))
+        .setReadOnly(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return leaveApplications;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(final long subjectId) {
+    List<DelegationApplication> filteredLeaveApplications;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      filteredLeaveApplications = session
+        .createCriteria(DelegationApplication.class)
+        .createAlias("assignee", "assignee")
+        .add(Restrictions.eq("terminated", false))
+        .add(Restrictions.eq("assignee.subjectId", subjectId))
+        .setReadOnly(true)
+        .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return filteredLeaveApplications;
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
   public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
   }

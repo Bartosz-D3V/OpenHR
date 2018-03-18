@@ -12,6 +12,10 @@ public interface DelegationApplicationFacade {
   DelegationApplication startDelegationApplicationProcess(long subjectId, DelegationApplication delegationApplication)
     throws SubjectDoesNotExistException;
 
+  List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);
+
+  List<DelegationApplication> getAwaitingForActionDelegationApplications(long subjectId);
+
   void rejectDelegationApplicationByManager(String processInstanceId);
 
   void approveDelegationApplicationByManager(String processInstanceId);

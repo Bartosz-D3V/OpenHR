@@ -11,6 +11,10 @@ public interface DelegationApplicationService {
 
   DelegationApplication createDelegationApplication(Subject subject, DelegationApplication delegationApplication);
 
+  List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);
+
+  List<DelegationApplication> getAwaitingForActionDelegationApplications(long subjectId);
+
   DelegationApplication saveProcessInstanceId(String processInstanceId, DelegationApplication delegationApplication);
 
   void assignToApplicant(DelegationApplication delegationApplication);
