@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import { map, startWith } from 'rxjs/operators';
@@ -39,11 +39,20 @@ export class DelegationComponent implements OnInit, OnDestroy {
   @ViewChild('dateRange')
   public dateRange: DateRangeComponent;
 
+  @ViewChild(FormGroupDirective)
+  public formTemplate: FormGroupDirective;
+
   constructor(private _delegationService: DelegationService,
               private _subjectDetails: SubjectDetailsService,
               private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService,
               private _fb: FormBuilder) {
+  }
+
+  private resetForm(): void {
+    this.applicationForm.get('delegation').reset({budget: 0});
+    this.formTemplate.resetForm();
+    this.dateRange.reset();
   }
 
   ngOnInit(): void {
@@ -78,8 +87,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
         department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
-        country: [''],
-        city: [''],
+        country: ['', Validators.required],
+        city: ['', Validators.required],
         objective: ['', Validators.required],
         budget: [0, [
           Validators.required,
@@ -118,9 +127,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
     return this.applicationForm.get(['delegation', 'country'])
       .valueChanges
       .pipe(
-        startWith(''),
-        map(name => name ? this.filterCountries(countries, name) : countries.slice())
+        startWith<string | Country>(''),
+        map(value => typeof value === 'string' ? value : value ? value.countryName : null),
+        map(name => name ? this.filterCountries(countries, name) : countries? countries.slice(): null),
       );
+  }
+
+  public displayCountryName(country?: Country): string | undefined {
+    return country ? country.countryName : undefined;
   }
 
   public save(): void {
@@ -132,7 +146,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
       .createDelegationApplication(application)
       .subscribe((response: DelegationApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
-        this.applicationForm.reset();
+        this.resetForm();
         this._notificationService.openSnackBar(message, 'OK');
       }, (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);

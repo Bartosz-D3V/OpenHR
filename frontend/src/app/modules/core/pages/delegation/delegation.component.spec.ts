@@ -28,6 +28,7 @@ import { Address } from '@shared/domain/subject/address';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Country } from '@shared/domain/country/country';
+import { By } from '@angular/platform-browser';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -336,14 +337,20 @@ describe('DelegationComponent', () => {
   });
 
   describe('isValid', () => {
+    beforeAll(() => {
+      component.isLoadingResults = false;
+      fixture.detectChanges();
+    });
+
     it('should return false if form is dirty', () => {
-      component.applicationForm.get('delegation').setErrors({'error': 'invalid'});
+      spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();
     });
 
     xit('should return true if form does not have any errors', () => {
-      component.applicationForm.get(['delegation', 'objective']).setValue('Example value');
+      spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.dateRange.dateRangeGroup, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });

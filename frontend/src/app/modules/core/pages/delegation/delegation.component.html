@@ -71,23 +71,34 @@
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <input matInput placeholder="Country" aria-label="Countries" [matAutocomplete]="autoCountries"
                  formControlName="country">
-          <mat-autocomplete #autoCountries="matAutocomplete">
-            <mat-option *ngFor="let country of filteredCountries | async " [value]="country.countryName">
+          <mat-autocomplete #autoCountries="matAutocomplete" [displayWith]="displayCountryName">
+            <mat-option *ngFor="let country of filteredCountries | async " [value]="country">
               <span>{{country.countryName}}</span>
             </mat-option>
           </mat-autocomplete>
+          <mat-error *ngIf="applicationForm.get(['delegation', 'country']).touched &&
+          applicationForm.get(['delegation', 'country']).invalid &&
+          applicationForm.get(['delegation', 'country']).errors.required">
+            Destination country is required
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-city"></label>
           <input #city matInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+          <mat-error *ngIf="applicationForm.get(['delegation', 'city']).touched &&
+          applicationForm.get(['delegation', 'city']).invalid &&
+          applicationForm.get(['delegation', 'city']).errors.required">
+            Destination city is required
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-objective"></label>
           <input #objective matInput placeholder="Objective" id="delegation-objective" name="objective"
                  formControlName="objective">
-          <mat-error *ngIf="applicationForm.get(['delegation', 'objective']).invalid &&
+          <mat-error *ngIf="applicationForm.get(['delegation', 'objective']).touched &&
+          applicationForm.get(['delegation', 'objective']).invalid &&
           applicationForm.get(['delegation', 'objective']).errors.required">
             Objective is required
           </mat-error>
@@ -96,11 +107,13 @@
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-budget"></label>
           <input matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
-          <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).invalid &&
+          <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
+          applicationForm.get(['delegation', 'budget']).invalid &&
           applicationForm.get(['delegation', 'budget']).errors.required">
             Budget is required
           </mat-error>
-          <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).invalid &&
+          <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
+          applicationForm.get(['delegation', 'budget']).invalid &&
           applicationForm.get(['delegation', 'budget']).errors.min">
             Budget cannot be negative
           </mat-error>
@@ -109,8 +122,7 @@
         <app-date-range #dateRange fxFlex="100" [mainFlexProperty]="50" [mobileFlexProperty]="100"
                         (updateStartDate)="setStartDate($event)" (updateEndDate)="setEndDate($event)"></app-date-range>
       </div>
-      <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid()" (click)="save()"
-              *ngIf="dateRange">Submit
+      <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid()" (click)="save()">Submit
       </button>
     </form>
   </mat-card>
