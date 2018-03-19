@@ -14,14 +14,15 @@ public class DelegationApplicationDAOImpl extends BaseDAO implements DelegationA
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public DelegationApplication createDelegationApplication(final DelegationApplication delegationApplication) {
     super.save(delegationApplication);
     return delegationApplication;
   }
 
   @Override
-  public DelegationApplication updateDelegationApplication(DelegationApplication delegationApplication) {
+  @Transactional(propagation = Propagation.MANDATORY)
+  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     super.merge(delegationApplication);
     return delegationApplication;
   }

@@ -21,7 +21,7 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void registerUser(final User user) {
     final List<UserRole> permissions = new ArrayList<>();
     final UserRole userRole = new UserRole(Role.EMPLOYEE);

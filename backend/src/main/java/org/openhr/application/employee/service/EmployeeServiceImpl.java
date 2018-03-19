@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee createEmployee(final Employee employee) {
     final User user = employee.getUser();
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
@@ -39,13 +39,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     return employeeRepository.updateEmployee(subjectId, employee);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     return employeeRepository.setManagerToEmployee(employeeId, manager);
   }

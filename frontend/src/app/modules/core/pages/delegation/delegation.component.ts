@@ -50,8 +50,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   private resetForm(): void {
-    this.applicationForm.get('delegation').reset({budget: 0});
     this.formTemplate.resetForm();
+    this.applicationForm.get('delegation').reset({budget: 0});
     this.dateRange.reset();
   }
 

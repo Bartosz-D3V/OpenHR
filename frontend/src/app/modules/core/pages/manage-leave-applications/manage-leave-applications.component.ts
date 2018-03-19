@@ -25,12 +25,11 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   private paginator: MatPaginator;
 
   private $leaveApplications: ISubscription;
-  leaveApplications: Array<LeaveApplication>;
-  isLoadingResults: boolean;
-  displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'employeeName', 'info', 'reject', 'approve'];
-  resultsLength = 0;
-
-  dataSource: MatTableDataSource<LeaveApplication>;
+  public leaveApplications: Array<LeaveApplication>;
+  public isLoadingResults: boolean;
+  public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'employeeName', 'info', 'reject', 'approve'];
+  public resultsLength = 0;
+  public dataSource: MatTableDataSource<LeaveApplication>;
 
   constructor(private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
               private _jwtHelper: JwtHelperService,

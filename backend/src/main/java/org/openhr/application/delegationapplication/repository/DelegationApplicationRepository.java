@@ -46,9 +46,14 @@ public class DelegationApplicationRepository {
     return countries;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public DelegationApplication createDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
+    return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -91,8 +96,4 @@ public class DelegationApplicationRepository {
     return filteredLeaveApplications;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
-  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
-    return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
-  }
 }

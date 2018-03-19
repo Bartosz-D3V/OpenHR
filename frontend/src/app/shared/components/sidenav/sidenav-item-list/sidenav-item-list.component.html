@@ -49,6 +49,12 @@
   </button>
 
   <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'" class="c-sidenav__item"
+          [routerLink]="[{ outlets: { core: ['manage-delegation-applications'] } }]">
+    <i class="material-icons c-sidenav__icon">gavel</i>
+    Manage delegations
+  </button>
+
+  <button mat-button *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'" class="c-sidenav__item"
           [routerLink]="[{ outlets: { core: ['add-employee'] } }]">
     <i class="material-icons c-sidenav__icon">person_add</i>
     Add employee

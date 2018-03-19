@@ -39,13 +39,15 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
                                                                  final DelegationApplication delegationApplication)
     throws SubjectDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
-    DelegationApplication savedDelegationApplication = delegationApplicationService
+    final DelegationApplication savedDelegationApplication = delegationApplicationService
       .createDelegationApplication(subject, delegationApplication);
-    final String processInstanceId = delegationApplicationCommand
-      .startDelegationProcess(subject, savedDelegationApplication);
-    savedDelegationApplication = delegationApplicationService
-      .saveProcessInstanceId(processInstanceId, savedDelegationApplication);
+    delegationApplicationCommand.startDelegationProcess(subject, savedDelegationApplication);
     return savedDelegationApplication;
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
+    return delegationApplicationService.updateDelegationApplication(delegationApplication);
   }
 
   @Override
