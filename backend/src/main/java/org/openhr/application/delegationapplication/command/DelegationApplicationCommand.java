@@ -6,6 +6,8 @@ import org.openhr.common.domain.subject.Subject;
 public interface DelegationApplicationCommand {
   String startDelegationProcess(Subject subject, DelegationApplication delegationApplication);
 
+  void amendDelegationApplication(String processInstanceId, DelegationApplication delegationApplication);
+
   void approveByManager(String processInstanceId);
 
   void rejectByManager(String processInstanceId);

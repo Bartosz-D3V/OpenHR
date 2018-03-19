@@ -13,29 +13,34 @@
 
       <ng-container matColumnDef="applicationId">
         <mat-header-cell *matHeaderCellDef>Application ID</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.applicationId}}</mat-cell>
+        <mat-cell *matCellDef="let application"> {{application.applicationId}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-cell *matCellDef="let application"> {{application | applicationType}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.startDate}}</mat-cell>
+        <mat-cell *matCellDef="let application"> {{application.startDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="to">
         <mat-header-cell *matHeaderCellDef>To</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.endDate}}</mat-cell>
+        <mat-cell *matCellDef="let application"> {{application.endDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication | leaveApplicationStatus}}
+        <mat-cell *matCellDef="let application"> {{application | applicationStatus}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="ics">
         <mat-header-cell *matHeaderCellDef>ICS</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication">
-          <button mat-icon-button color="accent" [disabled]="!leaveApplication.terminated">
+        <mat-cell *matCellDef="let application">
+          <button mat-icon-button color="accent" [disabled]="!application.terminated">
             <mat-icon class="mat-24">event</mat-icon>
           </button>
         </mat-cell>
@@ -43,9 +48,11 @@
 
       <ng-container matColumnDef="info">
         <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication">
-          <mat-icon class="mat-24" [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
-                    matTooltip="{{leaveApplication.message}}" [matTooltipPosition]="'above'">mode_comment
+        <mat-cell *matCellDef="let application">
+          <mat-icon class="mat-24"
+                    [ngClass]="{'c-drawer__element--off': !(application.message || application.objective)}"
+                    matTooltip="{{application.message || application.objective}}" [matTooltipPosition]="'above'">
+            mode_comment
           </mat-icon>
         </mat-cell>
       </ng-container>

@@ -59,6 +59,14 @@ public class DelegationApplicationController {
     return delegationApplicationFacade.getAwaitingForActionDelegationApplications(subjectId);
   }
 
+  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseBody
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateDelegationApplication(@RequestParam final String processInstanceId,
+                                          @RequestBody final DelegationApplication delegationApplication) {
+    delegationApplicationFacade.updateDelegationApplication(processInstanceId, delegationApplication);
+  }
+
   @RequestMapping(value = "/manager-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
