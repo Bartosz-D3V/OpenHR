@@ -71,7 +71,7 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void approveDelegationApplicationByManager(final String processInstanceId) {
-    delegationApplicationCommand.approveByHr(processInstanceId);
+    delegationApplicationCommand.approveByManager(processInstanceId);
   }
 
   @Override
