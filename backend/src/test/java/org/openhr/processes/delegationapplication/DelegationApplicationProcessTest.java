@@ -104,7 +104,12 @@ public class DelegationApplicationProcessTest {
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
     final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
+    final Session session = sessionFactory.getCurrentSession();
+    final DelegationApplication delegationApplication =
+      session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
+
     assertEquals("Manager reviews application", task.getName());
+    assertEquals(processInstance.getProcessInstanceId(), delegationApplication.getProcessInstanceId());
   }
 
   @Test
