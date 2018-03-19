@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -36,11 +37,28 @@ public class UserRepositoryTest {
   private SessionFactory sessionFactory;
 
   @Test
+  public void getUserBySubjectIdShouldReturnAssociatedUserObject() {
+    final Employee employee = new Employee(new PersonalInformation("John", "Test", null, null),
+      new ContactInformation(), new EmployeeInformation(), new HrInformation(),
+      new User("root1", "password"));
+    final Session session = sessionFactory.getCurrentSession();
+    session.save(employee);
+    session.flush();
+
+    final User user = userRepository.getUserBySubjectId(employee.getSubjectId());
+    final Employee actualEmployee = session.get(Employee.class, employee.getSubjectId());
+
+    assertNotNull(user);
+    assertNotEquals(0, user.getUserId());
+    assertEquals(actualEmployee.getUser(), user);
+  }
+
+  @Test
   public void findByUsernameShouldReturnUserObject() {
     final User mockUser = new User("username1", "password");
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockUser);
-    final User actualUser = userRepository.findByUsername(mockUser.getUsername());
+    final User actualUser = userRepository.getUserByUsername(mockUser.getUsername());
 
     assertNotEquals(0, actualUser.getUserId());
     assertEquals(mockUser.getUsername(), actualUser.getUsername());

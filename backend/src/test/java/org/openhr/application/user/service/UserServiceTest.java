@@ -34,8 +34,8 @@ public class UserServiceTest {
 
   @Test(expected = UserDoesNotExist.class)
   public void findByUsernameShouldReturnUserDoesNotExistIfUserDoesNotExist() throws UserDoesNotExist {
-    when(userRepository.findByUsername("Mock")).thenReturn(null);
-    userService.findByUsername("Mock");
+    when(userRepository.getUserByUsername("Mock")).thenReturn(null);
+    userService.getUserByUsername("Mock");
   }
 
   @Test(expected = UserAlreadyExists.class)
@@ -49,7 +49,7 @@ public class UserServiceTest {
 
   @Test
   public void validCredentialsShouldReturnFalseIfUserIsNull() throws UserDoesNotExist {
-    when(userRepository.findByUsername("Mock")).thenReturn(null);
+    when(userRepository.getUserByUsername("Mock")).thenReturn(null);
     assertFalse(userService.validCredentials("Mock", "123"));
   }
 
@@ -61,7 +61,7 @@ public class UserServiceTest {
 
   @Test
   public void validCredentialsShouldReturnTrueIfUserExistsAndPasswordsMatch() throws UserDoesNotExist {
-    when(userRepository.findByUsername(anyString())).thenReturn(new User());
+    when(userRepository.getUserByUsername(anyString())).thenReturn(new User());
     when(authenticationService.passwordsMatch(anyString(), anyString())).thenReturn(true);
 
     assertTrue(userService.validCredentials("Mock", "123"));
@@ -89,9 +89,9 @@ public class UserServiceTest {
 
   @Test(expected = UserDoesNotExist.class)
   public void findByUsernameShouldThrowUserDoesNotExistError() throws UserDoesNotExist {
-    when(userRepository.findByUsername("test")).thenReturn(null);
+    when(userRepository.getUserByUsername("test")).thenReturn(null);
 
-    userService.findByUsername("test");
+    userService.getUserByUsername("test");
   }
 
   @Test(expected = UserAlreadyExists.class)
