@@ -38,9 +38,10 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     this.emailForm = this._fb.group({
       email: ['',
-        Validators.required,
-        Validators.email,
-        Validators.pattern(RegularExpressions.EMAIL),
+        Validators.compose(
+          Validators.required,
+          Validators.email,
+          Validators.pattern(RegularExpressions.EMAIL)),
       ],
     });
   }
