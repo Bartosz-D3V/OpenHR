@@ -62,7 +62,7 @@ public abstract class Subject implements Serializable {
   private Role role;
 
   @JsonBackReference
-  @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, optional = false)
+  @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, optional = false)
   private User user;
 
   public Subject() {

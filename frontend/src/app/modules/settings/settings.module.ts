@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   MatCardModule, MatFormFieldModule, MatSlideToggleModule, MatToolbarModule, MatInputModule,
-  MatButtonModule
+  MatButtonModule, MatIconModule, MatTabsModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -29,6 +29,8 @@ import { AccountComponent } from './pages/account/account.component';
     MatSlideToggleModule,
     SharedModule,
     AppRoutingModule,
+    MatIconModule,
+    MatTabsModule,
   ],
   declarations: [
     AccountComponent,

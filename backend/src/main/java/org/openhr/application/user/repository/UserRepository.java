@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
+import org.hibernate.transform.Transformers;
 import org.openhr.application.user.dao.UserDAO;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.Subject;
@@ -22,7 +23,7 @@ import static org.hibernate.criterion.Restrictions.eq;
 
 @Repository
 @Transactional
-public class UserRepository  {
+public class UserRepository {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final SessionFactory sessionFactory;
   private final UserDAO userDAO;
@@ -34,7 +35,27 @@ public class UserRepository  {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public User findByUsername(final String username) {
+  public User getUserBySubjectId(final long subjectId) {
+    User user;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      user = (User) session
+        .createCriteria(Subject.class)
+        .add(eq("subjectId", subjectId))
+        .setProjection(Projections.property("user"))
+        .setReadOnly(true)
+        .setCacheable(true)
+        .uniqueResult();
+      session.flush();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return user;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUserByUsername(final String username) {
     User user;
     try {
       final Session session = sessionFactory.getCurrentSession();
@@ -49,6 +70,11 @@ public class UserRepository  {
     }
 
     return user;
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public User updateUser(final long userId, final User user) {
+    return userDAO.updateUser(userId, user);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

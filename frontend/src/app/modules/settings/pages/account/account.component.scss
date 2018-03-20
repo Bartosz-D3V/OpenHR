@@ -4,4 +4,15 @@
   margin-left: $drawer-margin;
   margin-top: $workspace-margin-top;
   width: $drawer-width;
+
+  &__element {
+    margin-top: 3%;
+    min-height: 100px;
+  }
+
+  &__tab {
+    &--heavy {
+      border: 1px solid #E8E8E8;
+    }
+  }
 }
