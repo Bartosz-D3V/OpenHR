@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
@@ -21,6 +21,7 @@ describe('AccountComponent', () => {
       ],
       imports: [
         NoopAnimationsModule,
+        FlexLayoutModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
@@ -28,6 +29,7 @@ describe('AccountComponent', () => {
         MatCardModule,
         MatInputModule,
         MatTabsModule,
+        MatIconModule,
       ],
     })
       .compileComponents();
