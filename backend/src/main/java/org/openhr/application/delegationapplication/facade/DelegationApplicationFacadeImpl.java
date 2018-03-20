@@ -45,9 +45,11 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
     return savedDelegationApplication;
   }
 
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
-    return delegationApplicationService.updateDelegationApplication(delegationApplication);
+  public void updateDelegationApplication(final String processInstanceId,
+                                          final DelegationApplication delegationApplication) {
+    delegationApplicationCommand.amendDelegationApplication(processInstanceId, delegationApplication);
   }
 
   @Override

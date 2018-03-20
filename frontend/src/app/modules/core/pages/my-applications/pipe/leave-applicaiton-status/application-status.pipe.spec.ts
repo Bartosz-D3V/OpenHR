@@ -1,28 +1,28 @@
 import { MomentInput } from 'moment';
 
-import { LeaveApplication } from '@shared/domain/application/leave-application';
-import { LeaveApplicationStatuses } from '../enumeration/leave-application-statuses.enum';
-import { LeaveApplicationStatusPipe } from './leave-application-status.pipe';
+import { LeaveApplication } from 'app/shared/domain/application/leave-application';
+import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-applicaiton-status/application-status.pipe';
+import { ApplicationStatuses } from '@modules/core/pages/my-applications/enumeration/application-statuses.enum';
 
-describe('LeaveApplicationStatusPipe', () => {
+describe('ApplicationStatusPipe', () => {
   it('create an instance', () => {
-    const pipe: LeaveApplicationStatusPipe = new LeaveApplicationStatusPipe();
+    const pipe: ApplicationStatusPipe = new ApplicationStatusPipe();
     expect(pipe).toBeTruthy();
   });
 
   describe('transform method', () => {
-    let pipe: LeaveApplicationStatusPipe;
+    let pipe: ApplicationStatusPipe;
     let mockLeaveApplication: LeaveApplication;
 
     beforeEach(() => {
-      pipe = new LeaveApplicationStatusPipe();
+      pipe = new ApplicationStatusPipe();
       const mockStartDate: MomentInput = '2020-05-05';
       const mockEndDate: MomentInput = '2020-05-10';
       mockLeaveApplication = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
     });
 
     it('should return AWAITING status if application was not terminated', () => {
-      expect(pipe.transform(mockLeaveApplication)).toEqual(LeaveApplicationStatuses.AWAITING);
+      expect(pipe.transform(mockLeaveApplication)).toEqual(ApplicationStatuses.AWAITING);
     });
 
     it('should return REJECTEDBYHR status if application was terminated and rejected by HR', () => {
@@ -30,14 +30,14 @@ describe('LeaveApplicationStatusPipe', () => {
       mockLeaveApplication.approvedByManager = true;
       mockLeaveApplication.terminated = true;
 
-      expect(pipe.transform(mockLeaveApplication)).toEqual(LeaveApplicationStatuses.REJECTEDBYHR);
+      expect(pipe.transform(mockLeaveApplication)).toEqual(ApplicationStatuses.REJECTEDBYHR);
     });
 
     it('should return REJECTEDBYMANAGER status if application was terminated and rejected by Manager', () => {
       mockLeaveApplication.approvedByManager = false;
       mockLeaveApplication.terminated = true;
 
-      expect(pipe.transform(mockLeaveApplication)).toEqual(LeaveApplicationStatuses.REJECTEDBYMANAGER);
+      expect(pipe.transform(mockLeaveApplication)).toEqual(ApplicationStatuses.REJECTEDBYMANAGER);
     });
 
     it('should return ACCEPTED status if application was approved and terminated', () => {
@@ -45,7 +45,7 @@ describe('LeaveApplicationStatusPipe', () => {
       mockLeaveApplication.approvedByHR = true;
       mockLeaveApplication.terminated = true;
 
-      expect(pipe.transform(mockLeaveApplication)).toEqual(LeaveApplicationStatuses.ACCEPTED);
+      expect(pipe.transform(mockLeaveApplication)).toEqual(ApplicationStatuses.ACCEPTED);
     });
   });
 });

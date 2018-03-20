@@ -29,6 +29,15 @@ public class DelegationApplicationCommandImpl implements DelegationApplicationCo
   }
 
   @Override
+  public void amendDelegationApplication(final String processInstanceId,
+                                         final DelegationApplication delegationApplication) {
+    final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    final Map<String, Object> parameters = new HashMap<>();
+    parameters.put("delegationApplication", delegationApplication);
+    taskService.complete(task.getId(), parameters);
+  }
+
+  @Override
   public void approveByManager(final String processInstanceId) {
     final Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     final Map<String, Object> args = new HashMap<>();
