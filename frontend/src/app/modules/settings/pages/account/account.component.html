@@ -18,7 +18,8 @@
               <input type="password" #currentPassword matInput placeholder="Current password"
                      formControlName="oldPassword">
             </mat-form-field>
-            <mat-error *ngIf="passwordForm.get('oldPassword').hasError('required')">
+            <mat-error *ngIf="passwordForm.get('oldPassword').touched &&
+            passwordForm.get('oldPassword').hasError('required')">
               Password is required
             </mat-error>
 
@@ -26,7 +27,8 @@
               <input type="password" #newPassword matInput placeholder="New password"
                      formControlName="newPassword">
             </mat-form-field>
-            <mat-error *ngIf="passwordForm.get('oldPassword').hasError('required')">
+            <mat-error *ngIf="passwordForm.get('oldPassword').touched &&
+            passwordForm.get('oldPassword').hasError('required')">
               Password is required
             </mat-error>
 
@@ -54,8 +56,8 @@
             <mat-error *ngIf="emailForm.get('email').hasError('pattern')">
               Please enter a valid email address
             </mat-error>
-            <mat-error *ngIf="emailForm.get('email').hasError('required') &&
-        emailForm.get('email').touched">
+            <mat-error *ngIf="emailForm.get('email').touched &&
+        emailForm.get('email').hasError('required')">
               Email is required
             </mat-error>
           </form>
