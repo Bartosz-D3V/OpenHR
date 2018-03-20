@@ -1,16 +1,33 @@
+import { Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+  MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule,
+  MatToolbarModule
+} from '@angular/material';
 
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatToolbarModule } from '@angular/material';
-
-import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { AccountService } from '@modules/settings/pages/account/service/account.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { AccountComponent } from './account.component';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
+
+  @Injectable()
+  class FakeAccountService {
+  }
+
+  @Injectable()
+  class FakeErrorResolverService {
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +37,9 @@ describe('AccountComponent', () => {
         CapitalizePipe,
       ],
       imports: [
+        HttpClientTestingModule,
         NoopAnimationsModule,
+        FlexLayoutModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,
@@ -28,6 +47,18 @@ describe('AccountComponent', () => {
         MatCardModule,
         MatInputModule,
         MatTabsModule,
+        MatIconModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        JwtHelperService,
+        NotificationService,
+        {
+          provide: AccountService, useClass: FakeAccountService,
+        },
+        {
+          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+        },
       ],
     })
       .compileComponents();
