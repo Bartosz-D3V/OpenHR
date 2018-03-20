@@ -34,7 +34,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
     final String password = (String) authentication.getCredentials();
     User user;
     try {
-      user = userService.findByUsername(username);
+      user = userService.getUserByUsername(username);
     } catch (final UserDoesNotExist userDoesNotExist) {
       throw new BadCredentialsException("User does not exist");
     }

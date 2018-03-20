@@ -5,6 +5,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.enumeration.Role;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +31,14 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
     userRole.setUser(user);
     super.save(user);
     super.save(userRole);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public User updateUser(final long userId, final User user) {
+    final User savedUser = (User) super.get(User.class, userId);
+    BeanUtils.copyProperties(user, savedUser, "userId");
+    super.merge(savedUser);
+    return savedUser;
   }
 }

@@ -7,8 +7,8 @@ export class NotificationService {
   constructor(private _snackBar: MatSnackBar) {
   }
 
-  openSnackBar(message: string, action: string): void {
-    this._snackBar.open(message, action, {
+  openSnackBar(message: string, action?: string): void {
+    this._snackBar.open(message, action ? action : 'OK', {
       duration: 3500,
     });
   }
