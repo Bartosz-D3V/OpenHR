@@ -4,7 +4,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import {
+  MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule,
+  MatToolbarModule
+} from '@angular/material';
 
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
@@ -45,6 +48,7 @@ describe('AccountComponent', () => {
         MatInputModule,
         MatTabsModule,
         MatIconModule,
+        MatSnackBarModule,
       ],
       providers: [
         JwtHelperService,
