@@ -6,6 +6,7 @@ import org.openhr.common.dao.BaseDAO;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.util.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,20 +28,33 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Manager addManager(final Manager manager) {
     super.save(manager);
     return manager;
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Manager updateManager(final Manager manager) {
-    final Manager legacyManager = getManager(manager.getSubjectId());
-    BeanUtils.copyProperties(legacyManager, manager, "subjectId");
-    super.merge(legacyManager);
+    final Manager savedManager = getManager(manager.getSubjectId());
+    BeanUtil.copyNotNullProperties(manager.getPersonalInformation(), savedManager.getPersonalInformation(),
+      "personalInformationId");
+    BeanUtil.copyNotNullProperties(manager.getContactInformation(), savedManager.getContactInformation(),
+      "contactInformationId");
+    BeanUtil.copyNotNullProperties(manager.getContactInformation().getAddress(),
+      savedManager.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(manager.getEmployeeInformation(), savedManager.getEmployeeInformation(),
+      "employeeInformationId");
+    BeanUtil.copyNotNullProperties(manager.getHrInformation(), savedManager.getHrInformation(),
+      "hrInformationId");
+    BeanUtil.copyNotNullProperties(manager.getRole(), savedManager.getRole());
+    BeanUtil.copyNotNullProperties(manager.getUser(), savedManager.getUser(), "userId", "userRoles");
+    BeanUtil.copyNotNullProperties(manager.getEmployees(), savedManager.getEmployees());
+    BeanUtil.copyNotNullProperties(manager.getHrTeamMember(), savedManager.getHrTeamMember());
+    super.merge(savedManager);
 
-    return legacyManager;
+    return manager;
   }
 
   @Override
@@ -50,7 +64,7 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRED)
   public void addEmployeeToManager(final Manager manager, final Employee employee) {
     final Set<Employee> employees = manager.getEmployees();
     employees.add(employee);

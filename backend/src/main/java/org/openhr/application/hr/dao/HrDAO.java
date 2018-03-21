@@ -11,4 +11,6 @@ public interface HrDAO {
   HrTeamMember updateHrTeamMember(long subjectId, HrTeamMember hrTeamMember);
 
   void addManagerToHr(HrTeamMember hrTeamMember, Manager manager);
+
+  void deleteHrTeamMember(long subjectId);
 }
