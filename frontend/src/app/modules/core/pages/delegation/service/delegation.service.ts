@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
@@ -28,9 +28,12 @@ export class DelegationService {
   }
 
   public createDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
+    const params: HttpParams = new HttpParams()
+      .put('subjectId', this._jwtHelper.getSubjectId());
     return this._http
-      .post<DelegationApplication>(`${this.url}/${this._jwtHelper.getSubjectId()}`,
+      .post<DelegationApplication>(this.url,
         application, {
+          params: params,
           headers: this.headers,
         });
   }

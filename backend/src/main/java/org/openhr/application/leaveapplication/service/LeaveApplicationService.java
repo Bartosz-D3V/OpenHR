@@ -10,13 +10,14 @@ import java.util.List;
 
 public interface LeaveApplicationService {
 
-  LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
+  LeaveApplication getLeaveApplication(long leaveApplicationId) throws ApplicationDoesNotExistException;
 
   List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
 
   LeaveApplication createLeaveApplication(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
-  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
+  LeaveApplication updateLeaveApplication(long leaveApplicationId, LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException;
 
   void rejectLeaveApplicationByManager(long applicationId) throws ApplicationDoesNotExistException;
 

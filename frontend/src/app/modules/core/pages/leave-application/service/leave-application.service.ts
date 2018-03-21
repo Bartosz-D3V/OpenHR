@@ -10,7 +10,7 @@ import { LeaveApplication } from '@shared//domain/application/leave-application'
 @Injectable()
 export class LeaveApplicationService {
 
-  private url: string = SystemVariables.API_URL + '/leave-application';
+  private url: string = SystemVariables.API_URL + '/leave-applications';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',

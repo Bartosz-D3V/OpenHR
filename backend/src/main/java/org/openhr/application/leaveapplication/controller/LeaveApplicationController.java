@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/leave-application")
+@RequestMapping(value = "/leave-applications")
 public class LeaveApplicationController {
 
   private final LeaveApplicationFacade leaveApplicationFacade;
@@ -31,37 +31,39 @@ public class LeaveApplicationController {
     this.leaveApplicationFacade = leaveApplicationFacade;
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "/{leaveApplicationId}", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
-  public LeaveApplication getLeaveApplication(@RequestParam final long applicationId) throws HibernateException,
+  public LeaveApplication getLeaveApplication(@PathVariable final long leaveApplicationId) throws HibernateException,
     ApplicationDoesNotExistException {
-    return leaveApplicationFacade.getLeaveApplication(applicationId);
+    return leaveApplicationFacade.getLeaveApplication(leaveApplicationId);
   }
 
-  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public List<LeaveApplication> getSubjectsLeaveApplications(@PathVariable final long subjectId) {
-    return leaveApplicationFacade.getSubjectsLeaveApplications(subjectId);
-  }
-
-  @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
+  @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public LeaveApplication createLeaveApplication(@PathVariable final long subjectId,
+  public LeaveApplication createLeaveApplication(@RequestParam final long subjectId,
                                                  @RequestBody final LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException {
     return leaveApplicationFacade.createLeaveApplication(subjectId, leaveApplication);
   }
 
-  @RequestMapping(method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE},
-    produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(value = "/{leaveApplicationId}", method = RequestMethod.PUT,
+    consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public LeaveApplication updateLeaveApplication(@RequestBody final LeaveApplication leaveApplication)
+  public LeaveApplication updateLeaveApplication(@PathVariable final long leaveApplicationId,
+                                                 @RequestBody final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationFacade.updateLeaveApplication(leaveApplication);
+    return leaveApplicationFacade.updateLeaveApplication(leaveApplicationId, leaveApplication);
+  }
+
+  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<LeaveApplication> getSubjectsLeaveApplications(@RequestParam final long subjectId) {
+    return leaveApplicationFacade.getSubjectsLeaveApplications(subjectId);
   }
 
   @RequestMapping(value = "/manager-reject", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -87,11 +89,11 @@ public class LeaveApplicationController {
     leaveApplicationFacade.approveLeaveApplicationByHR(processInstanceId);
   }
 
-  @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,
+  @RequestMapping(value = "/awaiting", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public List<LeaveApplication> getAwaitingForActionLeaveApplications(@PathVariable("subjectId") final long subjectId) {
+  public List<LeaveApplication> getAwaitingForActionLeaveApplications(@RequestParam final long subjectId) {
     return leaveApplicationFacade.getAwaitingForActionLeaveApplications(subjectId);
   }
 

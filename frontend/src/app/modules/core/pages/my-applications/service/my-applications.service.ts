@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
@@ -21,15 +21,21 @@ export class MyApplicationsService {
   }
 
   public getSubmittedLeaveApplications(subjectId: number): Observable<Array<LeaveApplication>> {
+    const params: HttpParams = new HttpParams()
+      .set('subjectId', subjectId.toString());
     return this._http
-      .get<Array<LeaveApplication>>(`${this.baseUrl}/leave-application/${subjectId}`, {
+      .get<Array<LeaveApplication>>(`${this.baseUrl}/leave-applications`, {
+        params: params,
         headers: this.headers,
       });
   }
 
   public getSubmittedDelegationApplications(subjectId: number): Observable<Array<DelegationApplication>> {
+    const params: HttpParams = new HttpParams()
+      .set('subjectId', subjectId.toString());
     return this._http
-      .get<Array<DelegationApplication>>(`${this.baseUrl}/delegations/${subjectId}`, {
+      .get<Array<DelegationApplication>>(`${this.baseUrl}/delegations`, {
+        params: params,
         headers: this.headers,
       });
   }

@@ -33,29 +33,28 @@ public class DelegationApplicationController {
     return delegationApplicationFacade.getCountries();
   }
 
-  @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
+  @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public DelegationApplication startDelegationApplicationProcess(@PathVariable final long subjectId,
+  public DelegationApplication startDelegationApplicationProcess(@RequestParam final long subjectId,
                                                                  @RequestBody final DelegationApplication delegationApplication)
     throws SubjectDoesNotExistException {
     return delegationApplicationFacade.startDelegationApplicationProcess(subjectId, delegationApplication);
   }
 
-  @RequestMapping(value = "/{subjectId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<DelegationApplication> getSubjectsDelegationApplications(@PathVariable final long subjectId) {
+  public List<DelegationApplication> getSubjectsDelegationApplications(@RequestParam final long subjectId) {
     return delegationApplicationFacade.getSubjectsDelegationApplications(subjectId);
   }
 
-  @RequestMapping(value = "/{subjectId}/awaiting", method = RequestMethod.GET,
+  @RequestMapping(value = "/awaiting", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public List<DelegationApplication> getAwaitingForActionLeaveApplications(
-    @PathVariable("subjectId") final long subjectId) {
+  public List<DelegationApplication> getAwaitingForActionLeaveApplications(@RequestParam final long subjectId) {
     return delegationApplicationFacade.getAwaitingForActionDelegationApplications(subjectId);
   }
 
