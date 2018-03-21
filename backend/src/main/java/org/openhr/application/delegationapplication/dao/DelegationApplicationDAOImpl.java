@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public class DelegationApplicationDAOImpl extends BaseDAO implements DelegationApplicationDAO {
   public DelegationApplicationDAOImpl(final SessionFactory sessionFactory) {
@@ -18,6 +20,12 @@ public class DelegationApplicationDAOImpl extends BaseDAO implements DelegationA
   public DelegationApplication createDelegationApplication(final DelegationApplication delegationApplication) {
     super.save(delegationApplication);
     return delegationApplication;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public DelegationApplication getDelegationApplication(final long delegationApplicationId) {
+    return (DelegationApplication) super.get(DelegationApplication.class, delegationApplicationId);
   }
 
   @Override

@@ -12,6 +12,8 @@ public interface DelegationApplicationService {
 
   DelegationApplication createDelegationApplication(Subject subject, DelegationApplication delegationApplication);
 
+  DelegationApplication getDelegationApplication(long delegationApplicationId);
+
   DelegationApplication updateDelegationApplication(DelegationApplication delegationApplication);
 
   DelegationApplication saveProcessInstanceId(DelegationApplication delegationApplication,

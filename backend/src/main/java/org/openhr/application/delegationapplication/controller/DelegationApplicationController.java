@@ -50,6 +50,15 @@ public class DelegationApplicationController {
     return delegationApplicationFacade.getSubjectsDelegationApplications(subjectId);
   }
 
+  @RequestMapping(value = "/{delegationApplicationId}", method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public DelegationApplication getDelegationApplication(@PathVariable final long delegationApplicationId) {
+    return delegationApplicationFacade.getDelegationApplication(delegationApplicationId);
+  }
+
+
   @RequestMapping(value = "/awaiting", method = RequestMethod.GET,
     produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseBody
