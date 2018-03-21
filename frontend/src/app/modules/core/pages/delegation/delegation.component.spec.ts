@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule,
-  MatSnackBarModule, MatTableModule,
-  MatToolbarModule,
+  MatSnackBarModule, MatTableModule, MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -29,7 +28,6 @@ import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Country } from '@shared/domain/country/country';
 import { DelegationComponent } from './delegation.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -45,10 +43,6 @@ describe('DelegationComponent', () => {
       return Observable.of([]);
     }
   }
-
-  const fakeActivatedRoute: ActivatedRoute = {
-    snapshot: {data: {}},
-  } as ActivatedRoute;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -80,7 +74,6 @@ describe('DelegationComponent', () => {
         JwtHelperService,
         NotificationService,
         ErrorResolverService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: DelegationService, useClass: FakeDelegationService},
       ],
     })
@@ -94,7 +87,6 @@ describe('DelegationComponent', () => {
 
     component.subject = employee1;
     component.constructForm();
-    spyOn(component['_router'], 'navigate');
   });
 
   it('should be created', () => {

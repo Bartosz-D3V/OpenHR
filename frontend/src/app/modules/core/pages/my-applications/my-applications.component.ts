@@ -56,7 +56,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
       this._myApplications.getSubmittedDelegationApplications(subjectId),
       (leaveApplications: Array<Application>,
        delegationApplications: Array<Application>) =>
-        ({leaveApplications, delegationApplications}),
+        ({leaveApplications, delegationApplications})
     ).subscribe((pair) => {
       this.isLoadingResults = false;
       const applications: Array<Application> = pair.leaveApplications.concat(pair.delegationApplications);

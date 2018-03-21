@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Params } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
@@ -17,7 +18,6 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-delegation',
@@ -96,16 +96,17 @@ export class DelegationComponent implements OnInit, OnDestroy {
         department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
-        country: [this.delegationApplication.country,
+        country: [this.delegationApplication ? this.delegationApplication.country : '',
           Validators.required],
-        city: [this.delegationApplication.city,
+        city: [this.delegationApplication ? this.delegationApplication.city : '',
           Validators.required],
-        objective: [this.delegationApplication.objective,
+        objective: [this.delegationApplication ? this.delegationApplication.objective : '',
           Validators.required],
-        budget: [this.delegationApplication.budget, [
-          Validators.required,
-          Validators.min(0),
-        ]],
+        budget: [this.delegationApplication ? this.delegationApplication.budget : 0,
+          Validators.compose([
+            Validators.required,
+            Validators.min(0),
+          ])],
       }),
     });
 
@@ -145,7 +146,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
   public filterCountries(countries: Array<Country>, name: string): Array<Country> {
     return countries.filter(country =>
-      country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<Country>): Observable<Array<Country>> {
@@ -154,7 +155,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
       .pipe(
         startWith<string | Country>(''),
         map(value => typeof value === 'string' ? value : value ? value.countryName : null),
-        map(name => name ? this.filterCountries(countries, name) : countries.slice()),
+        map(name => name ? this.filterCountries(countries, name) : countries.slice())
       );
   }
 
