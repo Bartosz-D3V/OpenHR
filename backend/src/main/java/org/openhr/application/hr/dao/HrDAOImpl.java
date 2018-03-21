@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.dao.BaseDAO;
+import org.openhr.common.util.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,7 +35,19 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
   @Transactional(propagation = Propagation.REQUIRED)
   public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
     final HrTeamMember savedHrTeamMember = getHrTeamMember(subjectId);
-    BeanUtils.copyProperties(hrTeamMember, savedHrTeamMember, "subjectId");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getPersonalInformation(), savedHrTeamMember.getPersonalInformation(),
+      "personalInformationId");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getContactInformation(), savedHrTeamMember.getContactInformation(),
+      "contactInformationId");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getContactInformation().getAddress(),
+      hrTeamMember.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(hrTeamMember.getEmployeeInformation(), savedHrTeamMember.getEmployeeInformation(),
+      "employeeInformationId");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getHrInformation(), savedHrTeamMember.getHrInformation(),
+      "hrInformationId");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getRole(), savedHrTeamMember.getRole());
+    BeanUtil.copyNotNullProperties(hrTeamMember.getUser(), savedHrTeamMember.getUser(), "userId", "userRoles");
+    BeanUtil.copyNotNullProperties(hrTeamMember.getManagers(), savedHrTeamMember.getManagers());
     super.merge(savedHrTeamMember);
 
     return savedHrTeamMember;
@@ -47,5 +60,12 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
     manager.setHrTeamMember(hrTeamMember);
     super.merge(hrTeamMember);
     super.merge(manager);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void deleteHrTeamMember(long subjectId) {
+    final HrTeamMember hrTeamMember = (HrTeamMember) super.get(HrTeamMember.class, subjectId);
+    super.delete(hrTeamMember);
   }
 }

@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.util.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,9 +32,19 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
   @Transactional(propagation = Propagation.REQUIRED)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     final Employee savedEmployee = getEmployee(subjectId);
-    BeanUtils.copyProperties(savedEmployee, employee, "subjectId");
+    BeanUtil.copyNotNullProperties(employee.getPersonalInformation(), savedEmployee.getPersonalInformation(),
+      "personalInformationId");
+    BeanUtil.copyNotNullProperties(employee.getContactInformation(), savedEmployee.getContactInformation(),
+      "contactInformationId");
+    BeanUtil.copyNotNullProperties(employee.getContactInformation().getAddress(),
+      employee.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(employee.getEmployeeInformation(), savedEmployee.getEmployeeInformation(),
+      "employeeInformationId");
+    BeanUtils.copyProperties(employee.getHrInformation(), savedEmployee.getHrInformation(),
+      "hrInformationId");
+    BeanUtil.copyNotNullProperties(employee.getRole(), savedEmployee.getRole());
+    BeanUtil.copyNotNullProperties(employee.getUser(), savedEmployee.getUser(), "userId", "userRoles");
     super.merge(savedEmployee);
-
     return savedEmployee;
   }
 
@@ -43,7 +54,6 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
     final Employee savedEmployee = (Employee) super.get(Employee.class, employeeId);
     savedEmployee.setManager(fetchedManager);
     super.merge(savedEmployee);
-
     return fetchedManager;
   }
 }

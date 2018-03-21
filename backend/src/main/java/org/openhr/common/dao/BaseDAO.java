@@ -58,4 +58,16 @@ public abstract class BaseDAO {
       throw hibernateException;
     }
   }
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void delete(final Object object) {
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      session.delete(object);
+      session.flush();
+    } catch (final HibernateException hibernateException) {
+      log.error(hibernateException.getLocalizedMessage());
+      throw hibernateException;
+    }
+  }
 }

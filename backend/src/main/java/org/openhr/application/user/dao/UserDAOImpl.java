@@ -34,10 +34,11 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.REQUIRED)
   public User updateUser(final long userId, final User user) {
     final User savedUser = (User) super.get(User.class, userId);
     BeanUtils.copyProperties(user, savedUser, "userId");
+    BeanUtils.copyProperties(user.getUserRoles(), savedUser.getUserRoles());
     super.merge(savedUser);
     return savedUser;
   }
