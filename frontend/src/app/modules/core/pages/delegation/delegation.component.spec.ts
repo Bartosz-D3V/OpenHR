@@ -336,6 +336,18 @@ describe('DelegationComponent', () => {
 
   });
 
+  describe('displayCountryName', () => {
+    it('should return country name if country was provided', () => {
+      const mockCountry: Country = new Country('Vietnam', null);
+
+      expect(component.displayCountryName(mockCountry)).toEqual('Vietnam');
+    });
+
+    it('should return undefined if country was not provided', () => {
+      expect(component.displayCountryName()).toBeUndefined();
+    });
+  });
+
   describe('isValid', () => {
     it('should return false if form is dirty', () => {
       spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(false);
