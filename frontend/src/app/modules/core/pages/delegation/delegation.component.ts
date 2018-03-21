@@ -17,6 +17,7 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-delegation',
@@ -35,6 +36,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public applicationForm: FormGroup;
   public filteredCountries: Observable<Array<Country>>;
   public countries: Array<Country>;
+  public delegationApplication: DelegationApplication;
 
   @ViewChild('dateRange')
   public dateRange: DateRangeComponent;
@@ -46,7 +48,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
               private _subjectDetails: SubjectDetailsService,
               private _notificationService: NotificationService,
               private _errorResolver: ErrorResolverService,
-              private _fb: FormBuilder) {
+              private _fb: FormBuilder,
+              private _route: ActivatedRoute) {
+    this._route.params
+      .subscribe((param?: Params) => {
+        if (param) {
+          this.fetchDelegationApplication(param['id']);
+        }
+      });
   }
 
   private resetForm(): void {
@@ -87,10 +96,13 @@ export class DelegationComponent implements OnInit, OnDestroy {
         department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
-        country: ['', Validators.required],
-        city: ['', Validators.required],
-        objective: ['', Validators.required],
-        budget: [0, [
+        country: [this.delegationApplication.country,
+          Validators.required],
+        city: [this.delegationApplication.city,
+          Validators.required],
+        objective: [this.delegationApplication.objective,
+          Validators.required],
+        budget: [this.delegationApplication.budget, [
           Validators.required,
           Validators.min(0),
         ]],
@@ -118,6 +130,19 @@ export class DelegationComponent implements OnInit, OnDestroy {
       });
   }
 
+  public fetchDelegationApplication(applicationId: number): void {
+    this.fetchData();
+    this.isLoadingResults = true;
+    this.$delegation = this._delegationService
+      .getDelegationApplication(applicationId)
+      .subscribe((val: DelegationApplication) => {
+        this.delegationApplication = val;
+        this.isLoadingResults = false;
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      });
+  }
+
   public filterCountries(countries: Array<Country>, name: string): Array<Country> {
     return countries.filter(country =>
       country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
@@ -129,7 +154,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
       .pipe(
         startWith<string | Country>(''),
         map(value => typeof value === 'string' ? value : value ? value.countryName : null),
-        map(name => name ? this.filterCountries(countries, name) : countries.slice())
+        map(name => name ? this.filterCountries(countries, name) : countries.slice()),
       );
   }
 

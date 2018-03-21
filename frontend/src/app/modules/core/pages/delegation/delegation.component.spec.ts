@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { AbstractControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -18,7 +19,6 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
-import { DelegationComponent } from './delegation.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { Employee } from '@shared/domain/subject/employee';
 import { ContactInformation } from '@shared/domain/subject/contact-information';
@@ -28,7 +28,8 @@ import { Address } from '@shared/domain/subject/address';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Country } from '@shared/domain/country/country';
-import { By } from '@angular/platform-browser';
+import { DelegationComponent } from './delegation.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -45,6 +46,10 @@ describe('DelegationComponent', () => {
     }
   }
 
+  const fakeActivatedRoute: ActivatedRoute = {
+    snapshot: {data: {}},
+  } as ActivatedRoute;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -54,6 +59,7 @@ describe('DelegationComponent', () => {
         DateRangeComponent,
       ],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         MomentDateModule,
         NoopAnimationsModule,
@@ -74,6 +80,7 @@ describe('DelegationComponent', () => {
         JwtHelperService,
         NotificationService,
         ErrorResolverService,
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: DelegationService, useClass: FakeDelegationService},
       ],
     })
@@ -87,6 +94,7 @@ describe('DelegationComponent', () => {
 
     component.subject = employee1;
     component.constructForm();
+    spyOn(component['_router'], 'navigate');
   });
 
   it('should be created', () => {

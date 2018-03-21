@@ -34,4 +34,11 @@ export class DelegationService {
           headers: this.headers,
         });
   }
+
+  public getDelegationApplication(applicationId: number): Observable<DelegationApplication> {
+    return this._http
+      .get<DelegationApplication>(`${this.url}/${applicationId}`, {
+        headers: this.headers,
+      });
+  }
 }

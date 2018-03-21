@@ -11,11 +11,6 @@
   <mat-card>
     <mat-table #table [dataSource]="dataSource">
 
-      <ng-container matColumnDef="applicationId">
-        <mat-header-cell *matHeaderCellDef>Application ID</mat-header-cell>
-        <mat-cell *matCellDef="let application"> {{application.applicationId}}</mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
         <mat-cell *matCellDef="let application"> {{application | applicationType}}</mat-cell>
@@ -54,6 +49,16 @@
                     matTooltip="{{application.message || application.objective}}" [matTooltipPosition]="'above'">
             mode_comment
           </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let application">
+          <button mat-icon-button color="accent" [disabled]="!applicationIsRejected(application)"
+                  (click)="amendApplication(application.applicationId)">
+            <mat-icon class="mat-24">create</mat-icon>
+          </button>
         </mat-cell>
       </ng-container>
 
