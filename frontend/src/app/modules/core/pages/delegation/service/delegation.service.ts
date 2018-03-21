@@ -29,7 +29,7 @@ export class DelegationService {
 
   public createDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
     const params: HttpParams = new HttpParams()
-      .put('subjectId', this._jwtHelper.getSubjectId());
+      .set('subjectId', this._jwtHelper.getSubjectId().toString());
     return this._http
       .post<DelegationApplication>(this.url,
         application, {
