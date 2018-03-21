@@ -15,16 +15,16 @@ import { EmployeeData } from './employee-data';
   providers: [EmployeesService],
 })
 export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
-  public employees: Array<EmployeeData>;
   private $employees: ISubscription;
-  tableColumns: Array<string> = ['id', 'name', 'position'];
-  dataSource: MatTableDataSource<EmployeeData>;
+  public employees: Array<EmployeeData>;
+  public tableColumns: Array<string> = ['id', 'name', 'position'];
+  public dataSource: MatTableDataSource<EmployeeData>;
 
   @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  public paginator: MatPaginator;
 
   @ViewChild(MatSort)
-  sort: MatSort;
+  public sort: MatSort;
 
   constructor(private _employeesService: EmployeesService) {
     this.dataSource = new MatTableDataSource(this.employees);
