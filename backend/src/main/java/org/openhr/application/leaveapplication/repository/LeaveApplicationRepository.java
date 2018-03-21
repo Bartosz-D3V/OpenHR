@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class LeaveApplicationRepository {
 
   private final LeaveApplicationDAO leaveApplicationDAO;

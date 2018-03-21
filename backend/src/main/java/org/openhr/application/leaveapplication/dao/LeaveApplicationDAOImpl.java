@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplicationDAO {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -56,11 +57,11 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   @Transactional(propagation = Propagation.REQUIRED)
   public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException, HibernateException {
-    final LeaveApplication legacyLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());
-    BeanUtils.copyProperties(leaveApplication, legacyLeaveApplication);
-    super.merge(legacyLeaveApplication);
+    final LeaveApplication savedLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());
+    BeanUtils.copyProperties(leaveApplication, savedLeaveApplication, "subject", "assignee");
+    super.merge(savedLeaveApplication);
 
-    return legacyLeaveApplication;
+    return savedLeaveApplication;
   }
 
   @Override
