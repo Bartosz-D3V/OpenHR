@@ -101,8 +101,8 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.getLeaveApplication(applicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationDAO.getLeaveApplication(leaveApplicationId);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -130,9 +130,9 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    return leaveApplicationDAO.updateLeaveApplication(leaveApplicationId, leaveApplication);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

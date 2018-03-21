@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
@@ -10,7 +10,7 @@ import { LeaveApplication } from '@shared//domain/application/leave-application'
 @Injectable()
 export class LeaveApplicationService {
 
-  private url: string = SystemVariables.API_URL + '/leave-application';
+  private url: string = SystemVariables.API_URL + '/leave-applications';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -29,11 +29,16 @@ export class LeaveApplicationService {
   }
 
   public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
+    const params = new HttpParams()
+      .set('subjectId', this._jwtHelper.getSubjectId().toString());
     return this._http
-      .post<LeaveApplication>(`${this.url}/${this._jwtHelper.getSubjectId()}`,
+      .post<LeaveApplication>(this.url,
         leaveApplication, {
+          params: params,
           headers: this.headers,
         });
   }
+
+
 
 }

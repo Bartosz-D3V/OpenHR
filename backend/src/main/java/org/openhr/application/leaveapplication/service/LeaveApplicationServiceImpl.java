@@ -28,8 +28,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    return leaveApplicationRepository.getLeaveApplication(applicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationRepository.getLeaveApplication(leaveApplicationId);
   }
 
   @Override
@@ -67,9 +67,9 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    return leaveApplicationRepository.updateLeaveApplication(leaveApplicationId, leaveApplication);
   }
 
   @Override
@@ -80,7 +80,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByManager(false);
     subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
-    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
   @Override
@@ -89,7 +89,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     throws ApplicationDoesNotExistException {
     LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByManager(true);
-    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
   @Override
@@ -100,7 +100,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByHR(false);
     subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
-    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
   @Override
@@ -109,7 +109,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setApprovedByHR(true);
-    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
   @Override
@@ -117,7 +117,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   public void terminateLeaveApplication(long applicationId) throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = leaveApplicationRepository.getLeaveApplication(applicationId);
     leaveApplication.setTerminated(true);
-    leaveApplicationRepository.updateLeaveApplication(leaveApplication);
+    leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
   @Override

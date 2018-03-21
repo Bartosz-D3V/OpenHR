@@ -30,7 +30,7 @@ describe('LeaveApplicationService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + '/leave-application';
+    const apiLink: string = SystemVariables.API_URL + '/leave-applications';
 
     it('should query current service URL', fakeAsync(() => {
       leaveApplicationService.getLeaveTypes().subscribe();

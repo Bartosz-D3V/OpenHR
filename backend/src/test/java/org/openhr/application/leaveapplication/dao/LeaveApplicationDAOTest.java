@@ -114,7 +114,8 @@ public class LeaveApplicationDAOTest {
 
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockLeaveApplication);
-    final LeaveApplication actualUpdatedApplication = leaveApplicationDAO.updateLeaveApplication(mockLeaveApplication);
+    final LeaveApplication actualUpdatedApplication = leaveApplicationDAO
+      .updateLeaveApplication(mockLeaveApplication.getApplicationId(), mockLeaveApplication);
 
     assertEquals(mockLeaveApplication.getApplicationId(), actualUpdatedApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualUpdatedApplication.getStartDate());
@@ -128,6 +129,6 @@ public class LeaveApplicationDAOTest {
   @Test(expected = ApplicationDoesNotExistException.class)
   public void updateLeaveApplicationShouldHandle404Error() throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = new LeaveApplication();
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    leaveApplicationDAO.updateLeaveApplication(leaveApplication.getApplicationId(), leaveApplication);
   }
 }

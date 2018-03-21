@@ -11,14 +11,15 @@ import java.util.List;
 
 public interface LeaveApplicationFacade {
 
-  LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
+  LeaveApplication getLeaveApplication(long leaveApplicationId) throws ApplicationDoesNotExistException;
 
   List<LeaveApplication> getSubjectsLeaveApplications(long subjectId);
 
   LeaveApplication createLeaveApplication(long subjectId, LeaveApplication leaveApplication)
     throws SubjectDoesNotExistException, ValidationException, ApplicationDoesNotExistException;
 
-  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
+  LeaveApplication updateLeaveApplication(long leaveApplicationId, LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException;
 
   void rejectLeaveApplicationByManager(String processInstanceId);
 
