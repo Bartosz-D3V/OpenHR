@@ -51,6 +51,11 @@ public class DelegationApplicationRepository {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
   }
 
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public DelegationApplication getDelegationApplication(final long delegationApplicationId) {
+    return delegationApplicationDAO.getDelegationApplication(delegationApplicationId);
+  }
+
   @Transactional(propagation = Propagation.MANDATORY)
   public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
@@ -95,5 +100,4 @@ public class DelegationApplicationRepository {
 
     return filteredLeaveApplications;
   }
-
 }

@@ -38,7 +38,4 @@ export class LeaveApplicationService {
           headers: this.headers,
         });
   }
-
-
-
 }

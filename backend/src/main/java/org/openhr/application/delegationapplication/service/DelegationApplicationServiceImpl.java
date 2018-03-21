@@ -41,6 +41,12 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public DelegationApplication getDelegationApplication(final long delegationApplicationId) {
+    return delegationApplicationRepository.getDelegationApplication(delegationApplicationId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
     return delegationApplicationRepository.updateDelegationApplication(delegationApplication);
