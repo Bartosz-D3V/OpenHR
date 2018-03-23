@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {Credentials} from '../domain/credentials';
+import { SystemVariables } from '@config/system-variables';
+import { Credentials } from '../domain/credentials';
 
 @Injectable()
 export class LoginService {

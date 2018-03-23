@@ -1,6 +1,6 @@
-import {LeaveApplicationStatusPipe} from './leave-application-status.pipe';
-import {LeaveApplication} from '../../../../../shared/domain/leave-application/leave-application';
-import {LeaveApplicationStatuses} from '../enumeration/leave-application-statuses.enum';
+import { LeaveApplicationStatusPipe } from './leave-application-status.pipe';
+import { LeaveApplication } from '../../../../../shared/domain/leave-application/leave-application';
+import { LeaveApplicationStatuses } from '../enumeration/leave-application-statuses.enum';
 
 describe('LeaveApplicationStatusPipe', () => {
   it('create an instance', () => {

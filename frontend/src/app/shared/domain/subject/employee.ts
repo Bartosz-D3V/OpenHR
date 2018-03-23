@@ -1,10 +1,10 @@
-import {Subject} from './subject';
-import {Manager} from './manager';
-import {PersonalInformation} from './personal-information';
-import {ContactInformation} from './contact-information';
-import {EmployeeInformation} from './employee-information';
-import {HrInformation} from './hr-information';
-import {Role} from './role';
+import { Subject } from './subject';
+import { Manager } from './manager';
+import { PersonalInformation } from './personal-information';
+import { ContactInformation } from './contact-information';
+import { EmployeeInformation } from './employee-information';
+import { HrInformation } from './hr-information';
+import { Role } from './role';
 
 export class Employee extends Subject {
   public manager?: Manager;

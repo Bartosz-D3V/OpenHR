@@ -1,4 +1,4 @@
-import {MyDetailsPo} from './my-details.po';
+import { MyDetailsPo } from './my-details.po';
 
 describe('frontend App', () => {
   let page: MyDetailsPo;

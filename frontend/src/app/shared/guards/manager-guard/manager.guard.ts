@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {CanActivate} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
 
-import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
-import {Role} from '../../domain/subject/role';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { Role } from '../../domain/subject/role';
 
 @Injectable()
 export class ManagerGuard implements CanActivate {

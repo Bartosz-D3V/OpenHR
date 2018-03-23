@@ -1,10 +1,10 @@
-import {TestBed, fakeAsync, tick} from '@angular/core/testing';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import {SystemVariables} from '@config/system-variables';
-import {LoginService} from './login.service';
-import {Credentials} from '../domain/credentials';
+import { SystemVariables } from '@config/system-variables';
+import { LoginService } from './login.service';
+import { Credentials } from '../domain/credentials';
 
 describe('LoginService', () => {
   let service: LoginService;

@@ -1,11 +1,11 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HttpResponse} from '@angular/common/http';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
-import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
-import {Credentials} from './domain/credentials';
-import {LoginService} from './service/login.service';
-import {ISubscription} from 'rxjs/Subscription';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { Credentials } from './domain/credentials';
+import { LoginService } from './service/login.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-login-box',
@@ -56,7 +56,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   public handleErrorResponse(err: HttpResponse<null>): void {
     switch (err.status) {
       case 401:
-        this.loginBoxForm.controls['password'].setErrors({unauthorized: true});
+        this.loginBoxForm.controls['password'].setErrors({ unauthorized: true });
     }
   }
 }

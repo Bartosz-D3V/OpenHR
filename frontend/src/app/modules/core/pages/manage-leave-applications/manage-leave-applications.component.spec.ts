@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatCardModule,
   MatDialogModule,
@@ -13,18 +13,18 @@ import {
   MatToolbarModule,
   MatTooltipModule,
 } from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {_throw} from 'rxjs/observable/throw';
+import { Observable } from 'rxjs/Observable';
+import { _throw } from 'rxjs/observable/throw';
 
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {InitialsPipe} from '@shared/pipes/initials/initials.pipe';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {LeaveApplication} from '@shared/domain/leave-application/leave-application';
-import {ManageLeaveApplicationsComponent} from './manage-leave-applications.component';
-import {ManageLeaveApplicationsService} from './service/manage-leave-applications.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
+import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;

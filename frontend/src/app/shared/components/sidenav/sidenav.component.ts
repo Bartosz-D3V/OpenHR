@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {MatSidenav} from '@angular/material';
+import { MatSidenav } from '@angular/material';
 
-import {User} from '../../domain/user/user';
-import {ResponsiveHelperService} from '../../services/responsive-helper/responsive-helper.service';
+import { User } from '../../domain/user/user';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 
 @Component({
   selector: 'app-sidenav',

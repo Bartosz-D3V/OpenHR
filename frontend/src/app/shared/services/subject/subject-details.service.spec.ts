@@ -1,19 +1,19 @@
-import {Injectable} from '@angular/core';
-import {TestBed, async, fakeAsync, tick} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
+import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import {ErrorResolverService} from '../error-resolver/error-resolver.service';
-import {Subject} from '../../domain/subject/subject';
-import {Address} from '../../domain/subject/address';
-import {PersonalInformation} from '../../domain/subject/personal-information';
-import {ContactInformation} from '../../domain/subject/contact-information';
-import {EmployeeInformation} from '../../domain/subject/employee-information';
-import {SystemVariables} from '@config/system-variables';
-import {JwtHelperService} from '../jwt/jwt-helper.service';
-import {HrInformation} from '../../domain/subject/hr-information';
-import {Employee} from '../../domain/subject/employee';
-import {SubjectDetailsService} from './subject-details.service';
-import {Role} from '../../domain/subject/role';
+import { ErrorResolverService } from '../error-resolver/error-resolver.service';
+import { Subject } from '../../domain/subject/subject';
+import { Address } from '../../domain/subject/address';
+import { PersonalInformation } from '../../domain/subject/personal-information';
+import { ContactInformation } from '../../domain/subject/contact-information';
+import { EmployeeInformation } from '../../domain/subject/employee-information';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '../jwt/jwt-helper.service';
+import { HrInformation } from '../../domain/subject/hr-information';
+import { Employee } from '../../domain/subject/employee';
+import { SubjectDetailsService } from './subject-details.service';
+import { Role } from '../../domain/subject/role';
 
 describe('PersonalDetailsService', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());

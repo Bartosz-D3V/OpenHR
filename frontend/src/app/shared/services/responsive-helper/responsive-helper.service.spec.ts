@@ -1,6 +1,6 @@
-import {TestBed, inject} from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
-import {ResponsiveHelperService} from './responsive-helper.service';
+import { ResponsiveHelperService } from './responsive-helper.service';
 
 describe('ResponsiveHelperService', () => {
   beforeEach(() => {

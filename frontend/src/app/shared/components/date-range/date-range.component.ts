@@ -1,26 +1,26 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {ISubscription} from 'rxjs/Subscription';
-import {Moment, MomentInput} from 'moment';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ISubscription } from 'rxjs/Subscription';
+import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 
-import {NAMED_DATE} from '@config/datepicker-format';
-import {ResponsiveHelperService} from '../../services/responsive-helper/responsive-helper.service';
-import {ErrorResolverService} from '../../services/error-resolver/error-resolver.service';
-import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
-import {BankHolidayEngland} from './domain/bank-holiday/england/bank-holiday-england';
-import {BankHoliday} from './domain/bank-holiday/england/bank-holiday';
-import {DateRangeService} from './service/date-range.service';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
+import { DateRangeService } from './service/date-range.service';
 
 @Component({
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     ResponsiveHelperService,
     DateRangeService,
     ErrorResolverService,
@@ -89,7 +89,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     const startDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
     this.$startDateChange = startDateCtrl.valueChanges.subscribe((value: Moment) => {
       if (this.endDate && moment(value).isAfter(this.endDate)) {
-        startDateCtrl.setErrors({startDateInvalid: true});
+        startDateCtrl.setErrors({ startDateInvalid: true });
       } else {
         this.recalculateNumOfDays(this.startDate, this.endDate, false);
       }
@@ -100,7 +100,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['endDate'];
     this.$endDateChange = endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
       if (this.startDate && moment(value).isBefore(this.startDate)) {
-        endDateCtrl.setErrors({endDateInvalid: true});
+        endDateCtrl.setErrors({ endDateInvalid: true });
       } else {
         this.recalculateNumOfDays(this.startDate, this.endDate, false);
       }

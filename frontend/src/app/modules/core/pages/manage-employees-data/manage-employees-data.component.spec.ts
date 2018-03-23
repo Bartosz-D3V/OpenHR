@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
@@ -20,26 +20,26 @@ import {
   MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {_throw} from 'rxjs/observable/throw';
+import { Observable } from 'rxjs/Observable';
+import { _throw } from 'rxjs/observable/throw';
 
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {Employee} from '@shared/domain/subject/employee';
-import {PersonalInformation} from '@shared/domain/subject/personal-information';
-import {EmployeeService} from '@shared/services/employee/employee.service';
-import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
-import {ContactInformation} from '@shared/domain/subject/contact-information';
-import {Address} from '@shared/domain/subject/address';
-import {EmployeeInformation} from '@shared/domain/subject/employee-information';
-import {HrInformation} from '@shared/domain/subject/hr-information';
-import {Role} from '@shared/domain/subject/role';
-import {Manager} from '@shared/domain/subject/manager';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {ManageEmployeesDataComponent} from './manage-employees-data.component';
-import {ManageEmployeesDataService} from './service/manage-employees-data.service';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Employee } from '@shared/domain/subject/employee';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { EmployeeService } from '@shared/services/employee/employee.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { Address } from '@shared/domain/subject/address';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Role } from '@shared/domain/subject/role';
+import { Manager } from '@shared/domain/subject/manager';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ManageEmployeesDataComponent } from './manage-employees-data.component';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 describe('ManageEmployeesDataComponent', () => {
   const employee1: Employee = new Employee(
@@ -117,8 +117,8 @@ describe('ManageEmployeesDataComponent', () => {
           NotificationService,
           ErrorResolverService,
           ResponsiveHelperService,
-          {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},
-          {provide: EmployeeService, useClass: FakeEmployeeService},
+          { provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService },
+          { provide: EmployeeService, useClass: FakeEmployeeService },
         ],
       }).compileComponents();
     })

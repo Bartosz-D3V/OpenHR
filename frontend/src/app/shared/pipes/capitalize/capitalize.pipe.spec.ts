@@ -1,4 +1,4 @@
-import {CapitalizePipe} from './capitalize.pipe';
+import { CapitalizePipe } from './capitalize.pipe';
 
 describe('CapitalizePipe', () => {
   let pipe: CapitalizePipe;

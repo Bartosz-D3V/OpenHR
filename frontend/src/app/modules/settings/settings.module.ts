@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import {
   MatCardModule,
   MatFormFieldModule,
@@ -12,13 +12,13 @@ import {
   MatIconModule,
   MatTabsModule,
 } from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
 
-import {SharedModule} from '@modules/shared/shared.module';
-import {AppRoutingModule} from '../../app-routing.module';
-import {SettingsComponent} from './pages/settings/settings.component';
-import {AccountComponent} from './pages/account/account.component';
+import { SharedModule } from '@modules/shared/shared.module';
+import { AppRoutingModule } from '../../app-routing.module';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   imports: [

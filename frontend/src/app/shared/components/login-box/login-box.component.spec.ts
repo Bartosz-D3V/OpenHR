@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule} from '@angular/material';
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
-import {LoginBoxComponent} from './login-box.component';
-import {LoginService} from './service/login.service';
-import {Credentials} from './domain/credentials';
+import { LoginBoxComponent } from './login-box.component';
+import { LoginService } from './service/login.service';
+import { Credentials } from './domain/credentials';
 
 describe('LoginBoxComponent', () => {
   let component: LoginBoxComponent;
@@ -55,7 +55,7 @@ describe('LoginBoxComponent', () => {
           HttpClientTestingModule,
         ],
         declarations: [LoginBoxComponent],
-        providers: [{provide: LoginService, useClass: FakeLoginService}],
+        providers: [{ provide: LoginService, useClass: FakeLoginService }],
       }).compileComponents();
     })
   );

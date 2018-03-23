@@ -1,10 +1,10 @@
-import {TestBed, inject, async} from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 
-import {MatDialog, MatDialogModule} from '@angular/material';
+import { MatDialog, MatDialogModule } from '@angular/material';
 
-import {ErrorResolverService} from './error-resolver.service';
-import {StaticModalComponent} from '../../components/static-modal/static-modal.component';
-import {ErrorInfo} from '@shared/domain/error/error-info';
+import { ErrorResolverService } from './error-resolver.service';
+import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
+import { ErrorInfo } from '@shared/domain/error/error-info';
 
 describe('ErrorResolverService', () => {
   const error: ErrorInfo = {

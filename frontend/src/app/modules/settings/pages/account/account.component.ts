@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ISubscription} from 'rxjs/Subscription';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {RegularExpressions} from '@shared/constants/regexps/regular-expressions';
-import {AccountService} from '@modules/settings/pages/account/service/account.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {Password} from '@modules/settings/pages/account/domain/password';
-import {HttpErrorResponse} from '@angular/common/http';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { AccountService } from '@modules/settings/pages/account/service/account.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Password } from '@modules/settings/pages/account/domain/password';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-account',
@@ -51,7 +51,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   public arePasswordsIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
-      this.passwordForm.get('newPasswordRepeat').setErrors({passwordDoNotMatch: true});
+      this.passwordForm.get('newPasswordRepeat').setErrors({ passwordDoNotMatch: true });
       return false;
     }
     return true;

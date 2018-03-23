@@ -1,4 +1,4 @@
-import {RegularExpressions} from './regular-expressions';
+import { RegularExpressions } from './regular-expressions';
 
 describe('RegularExpressions', () => {
   it('should be defined', () => {

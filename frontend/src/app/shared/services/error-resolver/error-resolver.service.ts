@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
-import {ErrorInfo} from '@shared/domain/error/error-info';
-import {StaticModalComponent} from '../../components/static-modal/static-modal.component';
-import {MatDialogRef} from '@angular/material';
+import { ErrorInfo } from '@shared/domain/error/error-info';
+import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
+import { MatDialogRef } from '@angular/material';
 
 @Injectable()
 export class ErrorResolverService {

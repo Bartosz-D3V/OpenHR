@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ISubscription} from 'rxjs/Subscription';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {RegularExpressions} from '@shared/constants/regexps/regular-expressions';
-import {SubjectDetailsService} from '@shared/services/subject/subject-details.service';
-import {Subject} from '@shared/domain/subject/subject';
-import {RegisterDetails} from '@shared/domain/register/register-details';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { RegisterDetails } from '@shared/domain/register/register-details';
 
 @Component({
   selector: 'app-add-employee',
@@ -27,7 +27,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
     dobFormControl: new FormControl('', [Validators.required]),
 
-    positionFormControl: new FormControl({disabled: true}, []),
+    positionFormControl: new FormControl({ disabled: true }, []),
   });
 
   public contactInformationFormGroup: FormGroup = new FormGroup({
@@ -101,7 +101,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   public arePasswordsIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
-      this.loginInformationFormGroup.controls['repeatPasswordFormControl'].setErrors({passwordDoNotMatch: true});
+      this.loginInformationFormGroup.controls['repeatPasswordFormControl'].setErrors({ passwordDoNotMatch: true });
       return false;
     }
     return true;

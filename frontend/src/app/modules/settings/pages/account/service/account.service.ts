@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {Password} from '@modules/settings/pages/account/domain/password';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { Password } from '@modules/settings/pages/account/domain/password';
 
 @Injectable()
 export class AccountService {

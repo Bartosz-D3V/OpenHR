@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PageHeaderComponent} from './page-header.component';
-import {CapitalizePipe} from '../../pipes/capitalize/capitalize.pipe';
+import { PageHeaderComponent } from './page-header.component';
+import { CapitalizePipe } from '../../pipes/capitalize/capitalize.pipe';
 
 describe('PageHeaderComponent', () => {
   let component: PageHeaderComponent;

@@ -1,28 +1,28 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange} from '@angular/material';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {ISubscription} from 'rxjs/Subscription';
-import {MomentInput} from 'moment';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRadioChange } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ISubscription } from 'rxjs/Subscription';
+import { MomentInput } from 'moment';
 
-import {NAMED_DATE} from '@config/datepicker-format';
-import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {DateRangeComponent} from '@shared/components/date-range/date-range.component';
-import {LeaveType} from '@shared/domain/leave-application/leave-type';
-import {LeaveApplication} from '@shared/domain/leave-application/leave-application';
-import {DateSelectorType} from './enumeration/date-selector-type.enum';
-import {LeaveApplicationService} from './service/leave-application.service';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { LeaveType } from '@shared/domain/leave-application/leave-type';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
+import { LeaveApplicationService } from './service/leave-application.service';
 
 @Component({
   selector: 'app-leave-application',
   templateUrl: './leave-application.component.html',
   styleUrls: ['./leave-application.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     LeaveApplicationService,
     ResponsiveHelperService,
     NotificationService,

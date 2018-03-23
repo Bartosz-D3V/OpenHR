@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
-import {ISubscription} from 'rxjs/Subscription';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {LeaveApplication} from '@shared/domain/leave-application/leave-application';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {ManageLeaveApplicationsService} from './service/manage-leave-applications.service';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 @Component({
   selector: 'app-manage-leave-applications',

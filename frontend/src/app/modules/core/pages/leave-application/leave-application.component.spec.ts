@@ -1,8 +1,8 @@
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {Injectable} from '@angular/core';
-import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MatButtonModule,
@@ -16,25 +16,25 @@ import {
   MatStepperModule,
   MatToolbarModule,
 } from '@angular/material';
-import {MomentDateModule} from '@angular/material-moment-adapter';
-import {MomentInput} from 'moment';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MomentInput } from 'moment';
 
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {DateRangeComponent} from '@shared/components/date-range/date-range.component';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {LeaveApplicationService} from './service/leave-application.service';
-import {LeaveApplicationComponent} from './leave-application.component';
-import {DateSelectorType} from './enumeration/date-selector-type.enum';
-import {LeaveApplication} from '@shared/domain/leave-application/leave-application';
-import {LeaveType} from '@shared/domain/leave-application/leave-type';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LeaveApplicationService } from './service/leave-application.service';
+import { LeaveApplicationComponent } from './leave-application.component';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
+import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveType } from '@shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -129,7 +129,7 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setSelector should update selector type', () => {
-    component.setSelector({source: null, value: DateSelectorType.RANGE});
+    component.setSelector({ source: null, value: DateSelectorType.RANGE });
 
     expect(component.selectorType).toBeDefined();
     expect(typeof component.selectorType).toBe('string');

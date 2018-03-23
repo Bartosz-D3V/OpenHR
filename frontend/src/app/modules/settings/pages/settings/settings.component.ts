@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import {ISubscription} from 'rxjs/Subscription';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {SettingsService} from './service/settings.service';
+import { SettingsService } from './service/settings.service';
 
 @Component({
   selector: 'app-settings',

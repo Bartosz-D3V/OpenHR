@@ -1,26 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-import {ISubscription} from 'rxjs/Subscription';
-import {map, startWith} from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { ISubscription } from 'rxjs/Subscription';
+import { map, startWith } from 'rxjs/operators';
 import 'rxjs/add/observable/zip';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
-import {RegularExpressions} from '@shared/constants/regexps/regular-expressions';
-import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {EmployeeService} from '@shared/services/employee/employee.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {ManagerService} from '@shared/services/manager/manager.service';
-import {Subject} from '@shared/domain/subject/subject';
-import {Employee} from '@shared/domain/subject/employee';
-import {PersonalInformation} from '@shared/domain/subject/personal-information';
-import {ContactInformation} from '@shared/domain/subject/contact-information';
-import {EmployeeInformation} from '@shared/domain/subject/employee-information';
-import {HrInformation} from '@shared/domain/subject/hr-information';
-import {Manager} from '@shared/domain/subject/manager';
-import {ManageEmployeesDataService} from './service/manage-employees-data.service';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { EmployeeService } from '@shared/services/employee/employee.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { ManagerService } from '@shared/services/manager/manager.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { Employee } from '@shared/domain/subject/employee';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Manager } from '@shared/domain/subject/manager';
+import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 @Component({
   selector: 'app-manage-employees-data',
@@ -207,7 +207,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     Observable.zip(
       this._employeeService.updateEmployee(updatedEmployee),
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
-      (employee: Employee, manager: Manager) => ({employee, manager})
+      (employee: Employee, manager: Manager) => ({ employee, manager })
     ).subscribe(
       pair => {
         const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
