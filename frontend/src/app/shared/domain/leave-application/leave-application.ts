@@ -1,6 +1,6 @@
-import {MomentInput} from 'moment';
+import { MomentInput } from 'moment';
 
-import {LeaveType} from './leave-type';
+import { LeaveType } from './leave-type';
 
 export class LeaveApplication {
   public applicationId: number;

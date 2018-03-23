@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {ErrorResolverService} from '@shared//services/error-resolver/error-resolver.service';
-import {Employee} from '@shared//domain/subject/employee';
+import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
+import { Employee } from '@shared//domain/subject/employee';
 
 @Injectable()
 export class EmployeesService {

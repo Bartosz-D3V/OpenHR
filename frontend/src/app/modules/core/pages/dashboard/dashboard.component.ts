@@ -1,18 +1,18 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ISubscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs/Observable';
-import {Chart} from 'chart.js';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ISubscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { Chart } from 'chart.js';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
-import {DashboardService} from '@modules/core/pages/dashboard/service/dashboard.service';
-import {MonthSummary} from '@modules/core/pages/dashboard/domain/month-summary';
-import {ChartData} from '@modules/core/pages/dashboard/domain/chart-data';
-import {ApplicationsStatusRadio} from '@modules/core/pages/dashboard/domain/applications-status-radio';
-import {SubjectDetailsService} from '@shared/services/subject/subject-details.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {Subject} from '@shared/domain/subject/subject';
-import {Month} from '@shared/constants/enumeration/month';
+import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
+import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
+import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
+import { ApplicationsStatusRadio } from '@modules/core/pages/dashboard/domain/applications-status-radio';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { Month } from '@shared/constants/enumeration/month';
 
 @Component({
   selector: 'app-dashboard',
@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
       this._dashboardService.getSubjectsOnLeave(),
-      (subject: Subject, subjectsOnLeave: Array<Subject>) => ({subject, subjectsOnLeave})
+      (subject: Subject, subjectsOnLeave: Array<Subject>) => ({ subject, subjectsOnLeave })
     ).subscribe(
       pair => {
         this.subject = pair.subject;

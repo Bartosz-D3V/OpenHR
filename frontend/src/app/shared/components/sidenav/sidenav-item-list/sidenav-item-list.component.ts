@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {JwtHelperService} from '../../../services/jwt/jwt-helper.service';
-import {Role} from '../../../domain/subject/role';
+import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
+import { Role } from '../../../domain/subject/role';
 
 @Component({
   selector: 'app-sidenav-item-list',

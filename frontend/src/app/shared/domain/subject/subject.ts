@@ -1,8 +1,8 @@
-import {PersonalInformation} from './personal-information';
-import {ContactInformation} from './contact-information';
-import {EmployeeInformation} from './employee-information';
-import {HrInformation} from './hr-information';
-import {Role} from './role';
+import { PersonalInformation } from './personal-information';
+import { ContactInformation } from './contact-information';
+import { EmployeeInformation } from './employee-information';
+import { HrInformation } from './hr-information';
+import { Role } from './role';
 
 export abstract class Subject {
   public subjectId: number;

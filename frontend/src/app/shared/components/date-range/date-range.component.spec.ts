@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatDatepickerModule, MatInputModule} from '@angular/material';
-import {MomentDateModule} from '@angular/material-moment-adapter';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {MomentInput} from 'moment';
+import { Injectable } from '@angular/core';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule, MatInputModule } from '@angular/material';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MomentInput } from 'moment';
 import moment = require('moment');
 
-import {ResponsiveHelperService} from '../../services/responsive-helper/responsive-helper.service';
-import {ErrorResolverService} from '../../services/error-resolver/error-resolver.service';
-import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
-import {BankHoliday} from './domain/bank-holiday/england/bank-holiday';
-import {BankHolidayEngland} from './domain/bank-holiday/england/bank-holiday-england';
-import {DateRangeComponent} from './date-range.component';
-import {DateRangeService} from './service/date-range.service';
+import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
+import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
+import { DateRangeComponent } from './date-range.component';
+import { DateRangeService } from './service/date-range.service';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;

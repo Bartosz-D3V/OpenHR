@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {Subject} from '@shared/domain/subject/subject';
-import {MonthSummary} from '@modules/core/pages/dashboard/domain/month-summary';
-import {ApplicationsStatusRadio} from '@modules/core/pages/dashboard/domain/applications-status-radio';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
+import { ApplicationsStatusRadio } from '@modules/core/pages/dashboard/domain/applications-status-radio';
 
 @Injectable()
 export class DashboardService {

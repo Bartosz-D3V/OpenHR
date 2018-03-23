@@ -1,8 +1,8 @@
-import {TestBed, inject} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import {JwtHelperService} from '../jwt/jwt-helper.service';
-import {ManagerService} from './manager.service';
+import { JwtHelperService } from '../jwt/jwt-helper.service';
+import { ManagerService } from './manager.service';
 
 describe('ManagerService', () => {
   beforeEach(() => {

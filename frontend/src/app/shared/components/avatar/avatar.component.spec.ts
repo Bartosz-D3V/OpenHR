@@ -1,11 +1,11 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {MatButtonModule, MatMenuModule} from '@angular/material';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatButtonModule, MatMenuModule } from '@angular/material';
 
-import {User} from '../../domain/user/user';
-import {InitialsPipe} from '../../pipes/initials/initials.pipe';
-import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
-import {AvatarComponent} from './avatar.component';
+import { User } from '../../domain/user/user';
+import { InitialsPipe } from '../../pipes/initials/initials.pipe';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;

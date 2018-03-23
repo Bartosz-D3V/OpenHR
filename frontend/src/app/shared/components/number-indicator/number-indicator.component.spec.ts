@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {NumberIndicatorComponent} from './number-indicator.component';
+import { NumberIndicatorComponent } from './number-indicator.component';
 
 describe('NumberIndicatorComponent', () => {
   let component: NumberIndicatorComponent;

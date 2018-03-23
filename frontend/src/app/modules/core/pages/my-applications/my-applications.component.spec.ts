@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Observable } from 'rxjs/Observable';
 import {
   MatCardModule,
   MatDialogModule,
@@ -15,14 +15,14 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {InitialsPipe} from '@shared/pipes/initials/initials.pipe';
-import {LeaveApplicationStatusPipe} from './pipe/leave-application-status.pipe';
-import {MyApplicationsService} from './service/my-applications.service';
-import {MyApplicationsComponent} from './my-applications.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
+import { LeaveApplicationStatusPipe } from './pipe/leave-application-status.pipe';
+import { MyApplicationsService } from './service/my-applications.service';
+import { MyApplicationsComponent } from './my-applications.component';
 
 describe('MyApplicationsComponent', () => {
   let component: MyApplicationsComponent;

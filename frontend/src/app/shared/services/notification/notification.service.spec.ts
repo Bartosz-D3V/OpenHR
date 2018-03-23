@@ -1,8 +1,8 @@
-import {TestBed, inject} from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
-import {MatSnackBarModule} from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 
-import {NotificationService} from './notification.service';
+import { NotificationService } from './notification.service';
 
 describe('NotificationService', () => {
   beforeEach(() => {

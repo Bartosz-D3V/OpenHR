@@ -1,12 +1,12 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
-import {ISubscription} from 'rxjs/Subscription';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {EmployeesService} from './service/employees.service';
-import {EmployeeDataObject} from './domain/employee-data-object';
-import {Employee} from '@shared/domain/subject/employee';
-import {EmployeeData} from './employee-data';
+import { EmployeesService } from './service/employees.service';
+import { EmployeeDataObject } from './domain/employee-data-object';
+import { Employee } from '@shared/domain/subject/employee';
+import { EmployeeData } from './employee-data';
 
 @Component({
   selector: 'app-employees',

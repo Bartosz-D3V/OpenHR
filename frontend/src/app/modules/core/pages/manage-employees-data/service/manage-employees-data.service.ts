@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
-import {SystemVariables} from '@config/system-variables';
-import {JwtHelperService} from '@shared//services/jwt/jwt-helper.service';
-import {Employee} from '@shared//domain/subject/employee';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
+import { Employee } from '@shared//domain/subject/employee';
 
 @Injectable()
 export class ManageEmployeesDataService {

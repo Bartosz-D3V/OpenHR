@@ -1,26 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {ISubscription} from 'rxjs/Subscription';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { ISubscription } from 'rxjs/Subscription';
 
-import {NAMED_DATE} from '@config/datepicker-format';
-import {RegularExpressions} from '@shared/constants/regexps/regular-expressions';
-import {SubjectDetailsService} from '@shared/services/subject/subject-details.service';
-import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
-import {Subject} from '@shared/domain/subject/subject';
-import {NotificationService} from '@shared/services/notification/notification.service';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {PersonalDetailsService} from './service/personal-details.service';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { Subject } from '@shared/domain/subject/subject';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     SubjectDetailsService,
     NotificationService,
     ResponsiveHelperService,
@@ -40,7 +40,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
     dobFormControl: new FormControl('', [Validators.required]),
 
-    positionFormControl: new FormControl({disabled: true}, []),
+    positionFormControl: new FormControl({ disabled: true }, []),
   });
 
   public contactInformationFormGroup: FormGroup = new FormGroup({

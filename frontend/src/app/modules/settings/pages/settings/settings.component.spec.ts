@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import {MatCardModule, MatSlideToggleModule, MatToolbarModule} from '@angular/material';
+import { MatCardModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
 
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {SettingsComponent} from './settings.component';
-import {SettingsService} from './service/settings.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { SettingsComponent } from './settings.component';
+import { SettingsService } from './service/settings.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;

@@ -1,7 +1,7 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
-import {LeaveApplication} from '@shared//domain/leave-application/leave-application';
-import {LeaveApplicationStatuses} from '../enumeration/leave-application-statuses.enum';
+import { LeaveApplication } from '@shared//domain/leave-application/leave-application';
+import { LeaveApplicationStatuses } from '../enumeration/leave-application-statuses.enum';
 
 @Pipe({
   name: 'leaveApplicationStatus',

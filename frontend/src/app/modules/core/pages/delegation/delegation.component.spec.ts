@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatAutocompleteModule,
   MatCardModule,
@@ -12,22 +12,22 @@ import {
   MatTableModule,
   MatToolbarModule,
 } from '@angular/material';
-import {MomentDateModule} from '@angular/material-moment-adapter';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {DateRangeComponent} from '@shared/components/date-range/date-range.component';
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
-import {Employee} from '@shared/domain/subject/employee';
-import {ContactInformation} from '@shared/domain/subject/contact-information';
-import {EmployeeInformation} from '@shared/domain/subject/employee-information';
-import {HrInformation} from '@shared/domain/subject/hr-information';
-import {Address} from '@shared/domain/subject/address';
-import {Role} from '@shared/domain/subject/role';
-import {PersonalInformation} from '@shared/domain/subject/personal-information';
-import {DelegationComponent} from './delegation.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { Employee } from '@shared/domain/subject/employee';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Address } from '@shared/domain/subject/address';
+import { Role } from '@shared/domain/subject/role';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -313,7 +313,7 @@ describe('DelegationComponent', () => {
 
   describe('isValid', () => {
     it('should return false if form is dirty', () => {
-      component.applicationForm.get('delegation').setErrors({error: 'invalid'});
+      component.applicationForm.get('delegation').setErrors({ error: 'invalid' });
 
       expect(component.isValid()).toBeFalsy();
     });

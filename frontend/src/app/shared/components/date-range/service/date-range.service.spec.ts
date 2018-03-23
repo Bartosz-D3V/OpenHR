@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {TestBed, inject} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import {ErrorResolverService} from '../../../services/error-resolver/error-resolver.service';
-import {JwtHelperService} from '../../../services/jwt/jwt-helper.service';
-import {DateRangeService} from './date-range.service';
+import { ErrorResolverService } from '../../../services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
+import { DateRangeService } from './date-range.service';
 
 describe('DateRangeService', () => {
   @Injectable()

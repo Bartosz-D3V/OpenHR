@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {MatFormFieldModule, MatInputModule, MatPaginatorModule, MatTableModule} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatFormFieldModule, MatInputModule, MatPaginatorModule, MatTableModule } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 
-import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
-import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
-import {EmployeeInformation} from '@shared/domain/subject/employee-information';
-import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
-import {EmployeesService} from './service/employees.service';
-import {EmployeesComponent} from './employees.component';
-import {EmployeeData} from './employee-data';
-import {Employee} from '@shared/domain/subject/employee';
-import {Role} from '@shared/domain/subject/role';
-import {PersonalInformation} from '@shared/domain/subject/personal-information';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { EmployeesService } from './service/employees.service';
+import { EmployeesComponent } from './employees.component';
+import { EmployeeData } from './employee-data';
+import { Employee } from '@shared/domain/subject/employee';
+import { Role } from '@shared/domain/subject/role';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
 
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
