@@ -1,4 +1,4 @@
-import { BankHoliday } from './bank-holiday';
+import {BankHoliday} from './bank-holiday';
 
 export class BankHolidayEngland {
   public division: string;

@@ -64,7 +64,7 @@ export class JwtHelperService {
     if (token === null || token.length < 10) {
       return emptyJwt;
     }
-    if (((token.split('.')).length - 1) !== 2) {
+    if (token.split('.').length - 1 !== 2) {
       return emptyJwt;
     }
   }

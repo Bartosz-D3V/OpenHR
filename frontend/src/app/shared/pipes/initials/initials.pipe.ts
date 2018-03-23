@@ -1,10 +1,9 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'initials',
 })
 export class InitialsPipe implements PipeTransform {
-
   private readonly SINGLE_SPACE: string = ' ';
 
   transform(fullName: string): string {
@@ -17,5 +16,4 @@ export class InitialsPipe implements PipeTransform {
         .toUpperCase();
     }
   }
-
 }

@@ -1,4 +1,4 @@
-import { EmployeeData } from '../employee-data';
+import {EmployeeData} from '../employee-data';
 
 export class EmployeeDataObject implements EmployeeData {
   id: number;

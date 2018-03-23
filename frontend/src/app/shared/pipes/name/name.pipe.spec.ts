@@ -1,4 +1,4 @@
-import { NamePipe } from './name.pipe';
+import {NamePipe} from './name.pipe';
 
 describe('NamePipe', () => {
   const pipe: NamePipe = new NamePipe();

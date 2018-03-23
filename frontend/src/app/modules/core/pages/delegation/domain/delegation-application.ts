@@ -1,6 +1,6 @@
-import { MomentInput } from 'moment';
+import {MomentInput} from 'moment';
 
-import { Subject } from '@shared/domain/subject/subject';
+import {Subject} from '@shared/domain/subject/subject';
 
 export class DelegationApplication {
   public subject: Subject;
@@ -11,6 +11,5 @@ export class DelegationApplication {
   public startDate: MomentInput;
   public endDate: MomentInput;
 
-  constructor() {
-  }
+  constructor() {}
 }

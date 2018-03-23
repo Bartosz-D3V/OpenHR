@@ -1,7 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ManagerGuard } from './manager.guard';
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import {ManagerGuard} from './manager.guard';
+import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
 
 describe('ManagerGuard', () => {
   let guard: ManagerGuard;
@@ -9,10 +9,7 @@ describe('ManagerGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ManagerGuard,
-        JwtHelperService,
-      ],
+      providers: [ManagerGuard, JwtHelperService],
     });
     guard = TestBed.get(ManagerGuard);
     service = TestBed.get(JwtHelperService);

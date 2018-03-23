@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import { ISubscription } from 'rxjs/Subscription';
+import {ISubscription} from 'rxjs/Subscription';
 
-import { SettingsService } from './service/settings.service';
+import {SettingsService} from './service/settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +11,6 @@ import { SettingsService } from './service/settings.service';
   providers: [SettingsService],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-
   public darkModeOn: boolean;
   public notificationsOn: boolean;
   private darkModeKey = 'darkMode';
@@ -26,8 +25,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return text === 'Y';
   }
 
-  constructor(private _settingsService: SettingsService) {
-  }
+  constructor(private _settingsService: SettingsService) {}
 
   ngOnInit(): void {
     this.loadThemeSetting();
@@ -51,10 +49,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   public loadNotificationSettings(): void {
-    this.$notification = this._settingsService.getNotificationsSetting(123)
-      .subscribe((response: boolean) => {
-        this.notificationsOn = response;
-      });
+    this.$notification = this._settingsService.getNotificationsSetting(123).subscribe((response: boolean) => {
+      this.notificationsOn = response;
+    });
   }
-
 }

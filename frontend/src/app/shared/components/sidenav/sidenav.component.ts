@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { MatSidenav } from '@angular/material';
+import {MatSidenav} from '@angular/material';
 
-import { User } from '../../domain/user/user';
-import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import {User} from '../../domain/user/user';
+import {ResponsiveHelperService} from '../../services/responsive-helper/responsive-helper.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,14 +13,10 @@ import { ResponsiveHelperService } from '../../services/responsive-helper/respon
   providers: [ResponsiveHelperService],
 })
 export class SidenavComponent implements OnInit {
-
-  @Input()
-  public user: User;
+  @Input() public user: User;
   public sidenav: MatSidenav;
 
-  constructor(private _router: Router,
-              private _responsiveHelper: ResponsiveHelperService) {
-  }
+  constructor(private _router: Router, private _responsiveHelper: ResponsiveHelperService) {}
 
   ngOnInit() {
     this._router.events.subscribe(() => {

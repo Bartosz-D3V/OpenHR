@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule} from '@angular/material';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 
-import { LoginBoxComponent } from './login-box.component';
-import { LoginService } from './service/login.service';
-import { Credentials } from './domain/credentials';
+import {LoginBoxComponent} from './login-box.component';
+import {LoginService} from './service/login.service';
+import {Credentials} from './domain/credentials';
 
 describe('LoginBoxComponent', () => {
   let component: LoginBoxComponent;
@@ -21,43 +21,44 @@ describe('LoginBoxComponent', () => {
   @Injectable()
   class FakeLoginService {
     login(credentials: Credentials): Observable<any> {
-      return Observable.of(new Response(null, {
-        headers: new Headers({
-          'Authorization': 'mock-token',
-        }),
-      }));
+      return Observable.of(
+        new Response(null, {
+          headers: new Headers({
+            Authorization: 'mock-token',
+          }),
+        })
+      );
     }
 
     unathorizedLogin(credentials: Credentials): Observable<any> {
-      return Observable.throw(new HttpErrorResponse({
-        error: 'Unauthorized',
-        status: 401,
-      }));
+      return Observable.throw(
+        new HttpErrorResponse({
+          error: 'Unauthorized',
+          status: 401,
+        })
+      );
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        FormsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatInputModule,
-        MatFormFieldModule,
-        HttpClientTestingModule,
-      ],
-      declarations: [
-        LoginBoxComponent,
-      ],
-      providers: [
-        {provide: LoginService, useClass: FakeLoginService},
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+          FormsModule,
+          MatCardModule,
+          MatButtonModule,
+          MatIconModule,
+          MatInputModule,
+          MatFormFieldModule,
+          HttpClientTestingModule,
+        ],
+        declarations: [LoginBoxComponent],
+        providers: [{provide: LoginService, useClass: FakeLoginService}],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginBoxComponent);
@@ -114,7 +115,7 @@ describe('LoginBoxComponent', () => {
 
     it('should emit true once token is saved', () => {
       let authenticated: boolean;
-      component.onAuthenticated.subscribe((response) => authenticated = response);
+      component.onAuthenticated.subscribe(response => (authenticated = response));
       component.login();
 
       expect(authenticated).toBeDefined();

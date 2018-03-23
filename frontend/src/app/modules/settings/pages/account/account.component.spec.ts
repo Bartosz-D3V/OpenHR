@@ -1,68 +1,70 @@
-import { Injectable } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {Injectable} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {
-  MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule,
-  MatToolbarModule
+  MatCardModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatSnackBarModule,
+  MatTabsModule,
+  MatToolbarModule,
 } from '@angular/material';
 
-import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { NotificationService } from '@shared/services/notification/notification.service';
-import { AccountService } from '@modules/settings/pages/account/service/account.service';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { AccountComponent } from './account.component';
+import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
+import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
+import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
+import {NotificationService} from '@shared/services/notification/notification.service';
+import {AccountService} from '@modules/settings/pages/account/service/account.service';
+import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
+import {AccountComponent} from './account.component';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
 
   @Injectable()
-  class FakeAccountService {
-  }
+  class FakeAccountService {}
 
   @Injectable()
-  class FakeErrorResolverService {
-  }
+  class FakeErrorResolverService {}
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AccountComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FlexLayoutModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatInputModule,
-        MatTabsModule,
-        MatIconModule,
-        MatSnackBarModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: AccountService, useClass: FakeAccountService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AccountComponent, PageHeaderComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FlexLayoutModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatFormFieldModule,
+          MatCardModule,
+          MatInputModule,
+          MatTabsModule,
+          MatIconModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: AccountService,
+            useClass: FakeAccountService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
@@ -75,7 +77,6 @@ describe('AccountComponent', () => {
   });
 
   describe('passwordForm', () => {
-
     describe('oldPassword', () => {
       it('should be valid if the field is not empty', () => {
         component.passwordForm.get('oldPassword').setValue('j.j@mail.com');
@@ -89,7 +90,6 @@ describe('AccountComponent', () => {
         expect(component.passwordForm.get('oldPassword').valid).toBeFalsy();
       });
     });
-
 
     describe('newPassword', () => {
       it('should be valid if the field is not empty', () => {
@@ -118,7 +118,6 @@ describe('AccountComponent', () => {
         expect(component.passwordForm.get('newPasswordRepeat').valid).toBeFalsy();
       });
     });
-
   });
 
   describe('emailForm', () => {

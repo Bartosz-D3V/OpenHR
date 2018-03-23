@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 
-import { ISubscription } from 'rxjs/Subscription';
+import {ISubscription} from 'rxjs/Subscription';
 
-import { EmployeesService } from './service/employees.service';
-import { EmployeeDataObject } from './domain/employee-data-object';
-import { Employee } from '@shared/domain/subject/employee';
-import { EmployeeData } from './employee-data';
+import {EmployeesService} from './service/employees.service';
+import {EmployeeDataObject} from './domain/employee-data-object';
+import {Employee} from '@shared/domain/subject/employee';
+import {EmployeeData} from './employee-data';
 
 @Component({
   selector: 'app-employees',
@@ -20,22 +20,18 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   tableColumns: Array<string> = ['id', 'name', 'position'];
   dataSource: MatTableDataSource<EmployeeData>;
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  @ViewChild(MatSort)
-  sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private _employeesService: EmployeesService) {
     this.dataSource = new MatTableDataSource(this.employees);
   }
 
   ngOnInit() {
-    this.$employees = this._employeesService
-      .getEmployees()
-      .subscribe((result: Array<Employee>) => {
-        this.employees = this.simplifyEmployeeArray(result);
-      });
+    this.$employees = this._employeesService.getEmployees().subscribe((result: Array<Employee>) => {
+      this.employees = this.simplifyEmployeeArray(result);
+    });
   }
 
   ngOnDestroy() {

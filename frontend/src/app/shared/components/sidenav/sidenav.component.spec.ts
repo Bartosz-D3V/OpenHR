@@ -1,43 +1,38 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
 
 import {MatButtonModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
 
-import { SidenavComponent } from './sidenav.component';
-import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
-import { AvatarComponent } from '../avatar/avatar.component';
-import { InitialsPipe } from '../../pipes/initials/initials.pipe';
-import { User } from '../../domain/user/user';
-import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import {SidenavComponent} from './sidenav.component';
+import {SidenavItemListComponent} from './sidenav-item-list/sidenav-item-list.component';
+import {AvatarComponent} from '../avatar/avatar.component';
+import {InitialsPipe} from '../../pipes/initials/initials.pipe';
+import {User} from '../../domain/user/user';
+import {ResponsiveHelperService} from '../../services/responsive-helper/responsive-helper.service';
 
 describe('SidenavComponent', () => {
   const mockUser: User = new User(2199, 'John', 'Test');
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        InitialsPipe,
-        AvatarComponent,
-        SidenavComponent,
-        SidenavItemListComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatMenuModule,
-        MatToolbarModule,
-        MatButtonModule,
-      ],
-      providers: [
-        ResponsiveHelperService,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [InitialsPipe, AvatarComponent, SidenavComponent, SidenavItemListComponent],
+        imports: [
+          RouterTestingModule,
+          BrowserAnimationsModule,
+          MatIconModule,
+          MatSidenavModule,
+          MatMenuModule,
+          MatToolbarModule,
+          MatButtonModule,
+        ],
+        providers: [ResponsiveHelperService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidenavComponent);

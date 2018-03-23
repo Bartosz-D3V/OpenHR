@@ -1,26 +1,23 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
-import { SystemVariables } from '@config/system-variables';
-import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
-import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
-import { Subject } from '@shared//domain/subject/subject';
-import { Role } from '@shared//domain/subject/role';
+import {SystemVariables} from '@config/system-variables';
+import {ErrorResolverService} from '@shared//services/error-resolver/error-resolver.service';
+import {JwtHelperService} from '@shared//services/jwt/jwt-helper.service';
+import {Subject} from '@shared//domain/subject/subject';
+import {Role} from '@shared//domain/subject/role';
 
 @Injectable()
 export class PersonalDetailsService {
   private baseUrl: string = SystemVariables.API_URL;
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService, private _errorResolver: ErrorResolverService) {}
 
   public saveSubject(subject: Subject): Observable<Subject> {
     return this._http
@@ -46,5 +43,4 @@ export class PersonalDetailsService {
     }
     return url;
   }
-
 }

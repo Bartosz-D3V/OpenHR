@@ -1,4 +1,4 @@
-import { Month } from '@shared/constants/enumeration/month';
+import {Month} from '@shared/constants/enumeration/month';
 
 export class MonthSummary {
   public month: Month;

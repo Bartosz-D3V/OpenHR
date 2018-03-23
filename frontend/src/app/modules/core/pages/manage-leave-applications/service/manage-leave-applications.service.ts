@@ -12,41 +12,34 @@ export class ManageLeaveApplicationsService {
   private url: string = SystemVariables.API_URL + '/leave-application';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getAwaitingForActionLeaveApplications(subjectId: number): Observable<Array<LeaveApplication>> {
-    return this._http
-      .get<Array<LeaveApplication>>(`${this.url}/${subjectId}/awaiting`, {
-        headers: this.headers,
-      });
+    return this._http.get<Array<LeaveApplication>>(`${this.url}/${subjectId}/awaiting`, {
+      headers: this.headers,
+    });
   }
 
   public approveLeaveApplicationByManager(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
-    const params: HttpParams = new HttpParams()
-      .set('processInstanceId', processInstanceId);
-    return this._http
-      .put(`${this.url}/${url}-approve`, null, {
-        params: params,
-        headers: this.headers,
-      });
+    const params: HttpParams = new HttpParams().set('processInstanceId', processInstanceId);
+    return this._http.put(`${this.url}/${url}-approve`, null, {
+      params: params,
+      headers: this.headers,
+    });
   }
 
   public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
-    const params: HttpParams = new HttpParams()
-      .set('processInstanceId', processInstanceId);
-    return this._http
-      .put(`${this.url}/${url}-reject`, null, {
-        headers: this.headers,
-        params: params,
-      });
+    const params: HttpParams = new HttpParams().set('processInstanceId', processInstanceId);
+    return this._http.put(`${this.url}/${url}-reject`, null, {
+      headers: this.headers,
+      params: params,
+    });
   }
 
   private getUrlByRole(): string {
@@ -58,5 +51,4 @@ export class ManageLeaveApplicationsService {
         return 'hr';
     }
   }
-
 }

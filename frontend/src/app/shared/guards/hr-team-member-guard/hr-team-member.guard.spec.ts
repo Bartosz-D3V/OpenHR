@@ -1,7 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { HrTeamMemberGuard } from './hr-team-member.guard';
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import {HrTeamMemberGuard} from './hr-team-member.guard';
+import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
 
 describe('HrTeamMemberGuard', () => {
   let guard: HrTeamMemberGuard;
@@ -9,10 +9,7 @@ describe('HrTeamMemberGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HrTeamMemberGuard,
-        JwtHelperService,
-      ],
+      providers: [HrTeamMemberGuard, JwtHelperService],
     });
     guard = TestBed.get(HrTeamMemberGuard);
     service = TestBed.get(JwtHelperService);

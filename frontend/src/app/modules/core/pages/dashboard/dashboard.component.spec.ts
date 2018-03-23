@@ -1,28 +1,27 @@
-import { Injectable } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { Observable } from 'rxjs/Observable';
-import { MatPaginatorModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
+import {Injectable} from '@angular/core';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {Observable} from 'rxjs/Observable';
+import {MatPaginatorModule, MatProgressSpinnerModule, MatTableModule} from '@angular/material';
 
-import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
-import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
-import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
-import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { NumberIndicatorComponent } from '@shared/components/number-indicator/number-indicator.component';
-import { Month } from '@shared/constants/enumeration/month';
-import { DashboardComponent } from './dashboard.component';
+import {DashboardService} from '@modules/core/pages/dashboard/service/dashboard.service';
+import {ChartData} from '@modules/core/pages/dashboard/domain/chart-data';
+import {MonthSummary} from '@modules/core/pages/dashboard/domain/month-summary';
+import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
+import {SubjectDetailsService} from '@shared/services/subject/subject-details.service';
+import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
+import {NumberIndicatorComponent} from '@shared/components/number-indicator/number-indicator.component';
+import {Month} from '@shared/constants/enumeration/month';
+import {DashboardComponent} from './dashboard.component';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
   @Injectable()
-  class FakeDashboardService {
-  }
+  class FakeDashboardService {}
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -33,39 +32,39 @@ describe('DashboardComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DashboardComponent,
-        NumberIndicatorComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        FlexLayoutModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-      ],
-      providers: [
-        JwtHelperService,
-        {
-          provide: DashboardService, useClass: FakeDashboardService,
-        },
-        {
-          provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [DashboardComponent, NumberIndicatorComponent],
+        imports: [
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          FlexLayoutModule,
+          MatTableModule,
+          MatPaginatorModule,
+          MatProgressSpinnerModule,
+        ],
+        providers: [
+          JwtHelperService,
+          {
+            provide: DashboardService,
+            useClass: FakeDashboardService,
+          },
+          {
+            provide: SubjectDetailsService,
+            useClass: FakeSubjectDetailsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);

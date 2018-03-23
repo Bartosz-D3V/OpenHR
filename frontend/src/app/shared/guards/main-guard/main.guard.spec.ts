@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import {TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { MainGuard } from './main.guard';
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import {MainGuard} from './main.guard';
+import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
 
 describe('MainGuard', () => {
   let guard: MainGuard;
@@ -10,13 +10,8 @@ describe('MainGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MainGuard,
-        JwtHelperService,
-      ],
-      imports: [
-        RouterTestingModule,
-      ],
+      providers: [MainGuard, JwtHelperService],
+      imports: [RouterTestingModule],
     });
     guard = TestBed.get(MainGuard);
     service = TestBed.get(JwtHelperService);

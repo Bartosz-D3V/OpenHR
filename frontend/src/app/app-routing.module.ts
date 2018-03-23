@@ -8,18 +8,8 @@ import {ManagerGuard} from '@shared/guards/manager-guard/manager.guard';
 import {HrTeamMemberGuard} from '@shared/guards/hr-team-member-guard/hr-team-member.guard';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routeDefinitions),
-  ],
-  exports: [
-    RouterModule,
-  ],
-  providers: [
-    MainGuard,
-    ManagerGuard,
-    HrTeamMemberGuard,
-  ],
+  imports: [CommonModule, RouterModule.forRoot(routeDefinitions)],
+  exports: [RouterModule],
+  providers: [MainGuard, ManagerGuard, HrTeamMemberGuard],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

@@ -1,38 +1,36 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-import { MatDialogRef } from '@angular/material';
-import { OverlayContainer } from '@angular/cdk/overlay';
+import {MatDialogRef} from '@angular/material';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
-import { StaticModalComponent } from './static-modal.component';
+import {StaticModalComponent} from './static-modal.component';
 
 describe('StaticModalComponent', () => {
   let component: StaticModalComponent;
   let fixture: ComponentFixture<StaticModalComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        StaticModalComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-      ],
-      providers: [
-        {
-          provide: MatDialogRef,
-        },
-        {
-          provide: OverlayContainer, useFactory: () => {
-          overlayContainerElement = document.createElement('div');
-          return {getContainerElement: () => overlayContainerElement};
-        },
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [StaticModalComponent],
+        imports: [NoopAnimationsModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+          },
+          {
+            provide: OverlayContainer,
+            useFactory: () => {
+              overlayContainerElement = document.createElement('div');
+              return {getContainerElement: () => overlayContainerElement};
+            },
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StaticModalComponent);
@@ -47,8 +45,6 @@ describe('StaticModalComponent', () => {
   xit('close method should close modal', () => {
     component.close();
 
-    expect(overlayContainerElement.querySelectorAll('mat-dialog-container').length)
-      .toBe(0, 'Expected no open dialogs.');
+    expect(overlayContainerElement.querySelectorAll('mat-dialog-container').length).toBe(0, 'Expected no open dialogs.');
   });
-
 });

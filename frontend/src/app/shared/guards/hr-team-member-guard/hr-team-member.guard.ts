@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {CanActivate} from '@angular/router';
 
-import { Role } from '../../domain/subject/role';
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import {Role} from '../../domain/subject/role';
+import {JwtHelperService} from '../../services/jwt/jwt-helper.service';
 
 @Injectable()
 export class HrTeamMemberGuard implements CanActivate {
-  constructor(private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _jwtHelper: JwtHelperService) {}
 
   canActivate(): boolean {
-    return (!this._jwtHelper.isTokenExpired() &&
-      this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
+    return !this._jwtHelper.isTokenExpired() && this._jwtHelper.hasRole(Role.HRTEAMMEMBER);
   }
 }

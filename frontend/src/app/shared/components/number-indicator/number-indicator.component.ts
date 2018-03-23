@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-number-indicator',
@@ -6,11 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./number-indicator.component.scss'],
 })
 export class NumberIndicatorComponent {
+  @Input() public number: number;
 
-  @Input()
-  public number: number;
-
-  @Input()
-  public description: string;
-
+  @Input() public description: string;
 }

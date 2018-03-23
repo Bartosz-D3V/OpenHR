@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {Injectable} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
-import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
-import { SettingsService } from './settings.service';
+import {ErrorResolverService} from '@shared//services/error-resolver/error-resolver.service';
+import {SettingsService} from './settings.service';
 
 describe('SettingsService', () => {
   let http: HttpTestingController;
@@ -12,19 +12,17 @@ describe('SettingsService', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         SettingsService,
         {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
         },
       ],
     });

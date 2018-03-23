@@ -1,34 +1,40 @@
-import { Injectable } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {Injectable} from '@angular/core';
+import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {
-  MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatProgressSpinnerModule,
+  MatDatepickerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatProgressSpinnerModule,
   MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import Spy = jasmine.Spy;
 
-import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { Subject } from '@shared/domain/subject/subject';
-import { Address } from '@shared/domain/subject/address';
-import { PersonalInformation } from '@shared/domain/subject/personal-information';
-import { EmployeeInformation } from '@shared/domain/subject/employee-information';
-import { ContactInformation } from '@shared/domain/subject/contact-information';
-import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
-import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
-import { HrInformation } from '@shared/domain/subject/hr-information';
-import { Employee } from '@shared/domain/subject/employee';
-import { PersonalDetailsComponent } from './personal-details.component';
-import { Role } from '@shared/domain/subject/role';
-import { PersonalDetailsService } from './service/personal-details.service';
+import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
+import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
+import {StaticModalComponent} from '@shared/components/static-modal/static-modal.component';
+import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
+import {Subject} from '@shared/domain/subject/subject';
+import {Address} from '@shared/domain/subject/address';
+import {PersonalInformation} from '@shared/domain/subject/personal-information';
+import {EmployeeInformation} from '@shared/domain/subject/employee-information';
+import {ContactInformation} from '@shared/domain/subject/contact-information';
+import {SubjectDetailsService} from '@shared/services/subject/subject-details.service';
+import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
+import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
+import {HrInformation} from '@shared/domain/subject/hr-information';
+import {Employee} from '@shared/domain/subject/employee';
+import {PersonalDetailsComponent} from './personal-details.component';
+import {Role} from '@shared/domain/subject/role';
+import {PersonalDetailsService} from './service/personal-details.service';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -36,11 +42,22 @@ describe('PersonalDetailsComponent', () => {
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', null, 'Xavier', new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', 'WOR123', '2020-02-08',
-    '2020-02-08', '123AS');
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation(
+    'WR 41 45 55 C',
+    'Tester',
+    'WOR123',
+    '2020-02-08',
+    '2020-02-08',
+    '123AS'
+  );
   const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Employee(mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation, mockHrInformation, Role.EMPLOYEE);
+  const mockSubject: Subject = new Employee(
+    mockPersonalInformation,
+    mockContactInformation,
+    mockEmployeeInformation,
+    mockHrInformation,
+    Role.EMPLOYEE
+  );
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -58,49 +75,47 @@ describe('PersonalDetailsComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        PersonalDetailsComponent,
-        PageHeaderComponent,
-        StaticModalComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatExpansionModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSnackBarModule,
-        MatProgressSpinnerModule,
-      ],
-      providers: [
-        JwtHelperService,
-        ResponsiveHelperService,
-        {
-          provide: PersonalDetailsService, useClass: FakePersonalDetailsService,
-        },
-        {
-          provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [PersonalDetailsComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatExpansionModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatSnackBarModule,
+          MatProgressSpinnerModule,
+        ],
+        providers: [
+          JwtHelperService,
+          ResponsiveHelperService,
+          {
+            provide: PersonalDetailsService,
+            useClass: FakePersonalDetailsService,
+          },
+          {
+            provide: SubjectDetailsService,
+            useClass: FakeSubjectDetailsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonalDetailsComponent);
@@ -118,7 +133,6 @@ describe('PersonalDetailsComponent', () => {
   });
 
   describe('domain object', () => {
-
     it('should accept middle name as optional parameter', () => {
       mockPersonalInformation.middleName = 'Adam';
 
@@ -133,7 +147,6 @@ describe('PersonalDetailsComponent', () => {
   });
 
   describe('First name validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
       component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
@@ -147,11 +160,9 @@ describe('PersonalDetailsComponent', () => {
 
       expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Last name validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
       component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
@@ -165,11 +176,9 @@ describe('PersonalDetailsComponent', () => {
 
       expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Date of birth validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const dob: Date = new Date('11 October 1960 15:00 UTC');
       component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
@@ -183,7 +192,6 @@ describe('PersonalDetailsComponent', () => {
 
       expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Postcode validator', () => {
@@ -209,7 +217,6 @@ describe('PersonalDetailsComponent', () => {
 
       expect(postcodeFormControl.valid).toBeTruthy();
     });
-
   });
 
   describe('Email validator', () => {
@@ -235,7 +242,6 @@ describe('PersonalDetailsComponent', () => {
 
       expect(emailFormControl.valid).toBeTruthy();
     });
-
   });
 
   describe('Telephone validator', () => {
@@ -287,7 +293,6 @@ describe('PersonalDetailsComponent', () => {
       telephoneFormControl.setValue(invalidTelephone1);
       expect(telephoneFormControl.valid).toBeFalsy();
     });
-
   });
 
   describe('Postcode validator', () => {
@@ -327,7 +332,6 @@ describe('PersonalDetailsComponent', () => {
       expect(postcodeFormControl.valid).toBeTruthy();
       postcodeFormControl.reset();
     });
-
   });
 
   describe('NIN validator', () => {
@@ -367,7 +371,6 @@ describe('PersonalDetailsComponent', () => {
       expect(ninFormControl.valid).toBeTruthy();
       ninFormControl.reset();
     });
-
   });
 
   describe('employeeNumber validator', () => {
@@ -388,7 +391,6 @@ describe('PersonalDetailsComponent', () => {
 
       expect(employeeIdFormControl.valid).toBeTruthy();
     });
-
   });
 
   describe('isValid method', () => {
@@ -396,7 +398,7 @@ describe('PersonalDetailsComponent', () => {
     let spy2: Spy;
     let spy3: Spy;
 
-    const setFormGroupSpies = function (firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
+    const setFormGroupSpies = function(firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
       spy1.and.returnValue(firstGroupFlag);
       spy2.and.returnValue(secondGroupFlag);
       spy3.and.returnValue(thirdGroupFlag);
@@ -436,11 +438,9 @@ describe('PersonalDetailsComponent', () => {
       setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
-
   });
 
   describe('methods for expansion panel', () => {
-
     it('setStep should set the stepNumber', () => {
       component.setStep(1);
 
@@ -466,7 +466,5 @@ describe('PersonalDetailsComponent', () => {
 
       expect(component.stepNumber).toEqual(0);
     });
-
   });
-
 });

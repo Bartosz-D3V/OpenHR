@@ -1,19 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NumberIndicatorComponent } from './number-indicator.component';
+import {NumberIndicatorComponent} from './number-indicator.component';
 
 describe('NumberIndicatorComponent', () => {
   let component: NumberIndicatorComponent;
   let fixture: ComponentFixture<NumberIndicatorComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        NumberIndicatorComponent,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [NumberIndicatorComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NumberIndicatorComponent);

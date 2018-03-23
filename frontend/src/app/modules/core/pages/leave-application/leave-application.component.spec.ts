@@ -1,33 +1,40 @@
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { Injectable } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {Injectable} from '@angular/core';
+import {AbstractControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatSnackBarModule,
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatInputModule,
+  MatMenuModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSnackBarModule,
   MatStepperModule,
   MatToolbarModule,
 } from '@angular/material';
-import { MomentDateModule } from '@angular/material-moment-adapter';
-import { MomentInput } from 'moment';
+import {MomentDateModule} from '@angular/material-moment-adapter';
+import {MomentInput} from 'moment';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 
-import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
-import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
-import { NotificationService } from '@shared/services/notification/notification.service';
-import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { LeaveApplicationService } from './service/leave-application.service';
-import { LeaveApplicationComponent } from './leave-application.component';
-import { DateSelectorType } from './enumeration/date-selector-type.enum';
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
-import { LeaveType } from '@shared/domain/leave-application/leave-type';
+import {CapitalizePipe} from '@shared/pipes/capitalize/capitalize.pipe';
+import {DateRangeComponent} from '@shared/components/date-range/date-range.component';
+import {PageHeaderComponent} from '@shared/components/page-header/page-header.component';
+import {ErrorResolverService} from '@shared/services/error-resolver/error-resolver.service';
+import {ResponsiveHelperService} from '@shared/services/responsive-helper/responsive-helper.service';
+import {NotificationService} from '@shared/services/notification/notification.service';
+import {JwtHelperService} from '@shared/services/jwt/jwt-helper.service';
+import {LeaveApplicationService} from './service/leave-application.service';
+import {LeaveApplicationComponent} from './leave-application.component';
+import {DateSelectorType} from './enumeration/date-selector-type.enum';
+import {LeaveApplication} from '@shared/domain/leave-application/leave-application';
+import {LeaveType} from '@shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -45,50 +52,47 @@ describe('LeaveApplicationComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        LeaveApplicationComponent,
-        DateRangeComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        FlexLayoutModule,
-        MatDatepickerModule,
-        MomentDateModule,
-        MatStepperModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatToolbarModule,
-        MatSelectModule,
-        MatInputModule,
-        MatRadioModule,
-        MatCardModule,
-        MatSnackBarModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-        ResponsiveHelperService,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [LeaveApplicationComponent, DateRangeComponent, PageHeaderComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          FlexLayoutModule,
+          MatDatepickerModule,
+          MomentDateModule,
+          MatStepperModule,
+          MatButtonModule,
+          MatMenuModule,
+          MatToolbarModule,
+          MatSelectModule,
+          MatInputModule,
+          MatRadioModule,
+          MatCardModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: LeaveApplicationService,
+            useClass: FakeLeaveApplicationService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+          ResponsiveHelperService,
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeaveApplicationComponent);
@@ -187,20 +191,24 @@ describe('LeaveApplicationComponent', () => {
   });
 
   describe('isMobile method', () => {
-    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
         expect(component.isMobile()).toBeTruthy();
-      }));
+      })
+    );
 
-    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
         expect(component.isMobile()).toBeFalsy();
-      }));
+      })
+    );
   });
 });

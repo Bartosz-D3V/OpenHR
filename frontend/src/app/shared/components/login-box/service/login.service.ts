@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 
-import { SystemVariables } from '@config/system-variables';
-import { Credentials } from '../domain/credentials';
+import {SystemVariables} from '@config/system-variables';
+import {Credentials} from '../domain/credentials';
 
 @Injectable()
 export class LoginService {
@@ -13,15 +13,12 @@ export class LoginService {
     'Content-Type': 'application/json',
   });
 
-  constructor(private _http: HttpClient) {
-  }
+  constructor(private _http: HttpClient) {}
 
   public login(credentials: Credentials): Observable<HttpResponse<null>> {
-    return this._http
-      .post<null>(this.url, credentials, {
-        headers: this.headers,
-        observe: 'response',
-      });
+    return this._http.post<null>(this.url, credentials, {
+      headers: this.headers,
+      observe: 'response',
+    });
   }
-
 }

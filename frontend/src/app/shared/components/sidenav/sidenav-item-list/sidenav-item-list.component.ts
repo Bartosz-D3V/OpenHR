@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { JwtHelperService } from '../../../services/jwt/jwt-helper.service';
-import { Role } from '../../../domain/subject/role';
+import {JwtHelperService} from '../../../services/jwt/jwt-helper.service';
+import {Role} from '../../../domain/subject/role';
 
 @Component({
   selector: 'app-sidenav-item-list',
@@ -12,11 +12,9 @@ import { Role } from '../../../domain/subject/role';
 export class SidenavItemListComponent implements OnInit {
   public role: Role;
 
-  constructor(private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _jwtHelper: JwtHelperService) {}
 
   ngOnInit(): void {
-    this.role = this._jwtHelper.getUsersRole() ?
-      this._jwtHelper.getUsersRole()[0] : null;
+    this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
   }
 }

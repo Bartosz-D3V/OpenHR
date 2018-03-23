@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 @Injectable()
 export class ResponsiveHelperService {
@@ -6,8 +6,8 @@ export class ResponsiveHelperService {
   private maxSmallMediaMatcher: MediaQueryList = matchMedia(`(max-width: 840px)`);
 
   constructor(private _zone: NgZone) {
-    this.medExtraSmallMediaMatcher.addListener(mql => _zone.run(() => this.medExtraSmallMediaMatcher = mql));
-    this.maxSmallMediaMatcher.addListener(mql => _zone.run(() => this.maxSmallMediaMatcher = mql));
+    this.medExtraSmallMediaMatcher.addListener(mql => _zone.run(() => (this.medExtraSmallMediaMatcher = mql)));
+    this.maxSmallMediaMatcher.addListener(mql => _zone.run(() => (this.maxSmallMediaMatcher = mql)));
   }
 
   public isMobile(): boolean {
