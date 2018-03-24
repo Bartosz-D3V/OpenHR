@@ -19,8 +19,8 @@ import { DateRangeService } from './service/date-range.service';
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     ResponsiveHelperService,
     DateRangeService,
     ErrorResolverService,
@@ -28,41 +28,30 @@ import { DateRangeService } from './service/date-range.service';
   ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
-
   private $startDateChange: ISubscription;
   private $endDateChange: ISubscription;
 
-  @Input()
-  public mainFlexProperty?: number;
+  @Input() public mainFlexProperty?: number;
 
-  @Input()
-  public mobileFlexProperty?: number;
+  @Input() public mobileFlexProperty?: number;
 
-  @Input()
-  public startDate?: MomentInput;
+  @Input() public startDate?: MomentInput;
 
-  @Input()
-  public endDate?: MomentInput;
+  @Input() public endDate?: MomentInput;
 
-  @Input()
-  public requireStartDate = true;
+  @Input() public requireStartDate = true;
 
-  @Input()
-  public requireEndDate = true;
+  @Input() public requireEndDate = true;
 
   public numberOfDays: number;
 
-  @Output()
-  public startDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+  @Output() public startDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
 
-  @Output()
-  public endDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+  @Output() public endDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
 
-  @Output()
-  public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
-  @Output()
-  public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
   private $bankHolidays: ISubscription;
@@ -72,9 +61,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     endDate: new FormControl(this.endDate, []),
   });
 
-  constructor(private _dateRangeService: DateRangeService,
-              private _responsiveHelper: ResponsiveHelperService) {
-  }
+  constructor(private _dateRangeService: DateRangeService, private _responsiveHelper: ResponsiveHelperService) {}
 
   ngOnInit(): void {
     this.setValidators();
@@ -102,7 +89,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     const startDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
     this.$startDateChange = startDateCtrl.valueChanges.subscribe((value: Moment) => {
       if (this.endDate && moment(value).isAfter(this.endDate)) {
-        startDateCtrl.setErrors({'startDateInvalid': true});
+        startDateCtrl.setErrors({ startDateInvalid: true });
       } else {
         this.recalculateNumOfDays(this.startDate, this.endDate, false);
       }
@@ -113,7 +100,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['endDate'];
     this.$endDateChange = endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
       if (this.startDate && moment(value).isBefore(this.startDate)) {
-        endDateCtrl.setErrors({'endDateInvalid': true});
+        endDateCtrl.setErrors({ endDateInvalid: true });
       } else {
         this.recalculateNumOfDays(this.startDate, this.endDate, false);
       }
@@ -121,7 +108,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
-    let diffDays: number = (moment(endDate).diff(startDate, 'days')) + (excludeEndDate ? -1 : 0) + 1;
+    let diffDays: number = moment(endDate).diff(startDate, 'days') + (excludeEndDate ? -1 : 0) + 1;
     let diffDaysCounter: number = diffDays;
     while (diffDaysCounter > 0) {
       diffDaysCounter--;
@@ -161,11 +148,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public getBankHolidays(): void {
-    this.$bankHolidays = this._dateRangeService
-      .getBankHolidaysInEnglandAndWales()
-      .subscribe((data: BankHolidayEngland) => {
-        this.bankHolidaysEngland = data;
-      });
+    this.$bankHolidays = this._dateRangeService.getBankHolidaysInEnglandAndWales().subscribe((data: BankHolidayEngland) => {
+      this.bankHolidaysEngland = data;
+    });
   }
 
   public reset(): void {

@@ -6,11 +6,9 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 
 @Injectable()
 export class HrTeamMemberGuard implements CanActivate {
-  constructor(private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _jwtHelper: JwtHelperService) {}
 
   canActivate(): boolean {
-    return (!this._jwtHelper.isTokenExpired() &&
-      this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
+    return !this._jwtHelper.isTokenExpired() && this._jwtHelper.hasRole(Role.HRTEAMMEMBER);
   }
 }

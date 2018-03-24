@@ -9,13 +9,8 @@ describe('MyApplicationsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MyApplicationsService,
-        JwtHelperService,
-      ],
-      imports: [
-        HttpClientTestingModule,
-      ],
+      providers: [MyApplicationsService, JwtHelperService],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.get(MyApplicationsService);
   });

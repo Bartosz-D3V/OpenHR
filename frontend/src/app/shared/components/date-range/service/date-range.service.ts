@@ -13,14 +13,11 @@ export class DateRangeService {
   private url: string = SystemVariables.API_URL + '/bank-holidays';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _jwtHelper: JwtHelperService,
-              private _errorResolverService: ErrorResolverService,
-              private _http: HttpClient) {
-  }
+  constructor(private _jwtHelper: JwtHelperService, private _errorResolverService: ErrorResolverService, private _http: HttpClient) {}
 
   public getBankHolidaysInEnglandAndWales(): Observable<BankHolidayEngland> {
     return this._http
@@ -33,5 +30,4 @@ export class DateRangeService {
         return Observable.of(emptyData);
       });
   }
-
 }

@@ -9,10 +9,7 @@ describe('HrTeamMemberGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HrTeamMemberGuard,
-        JwtHelperService,
-      ],
+      providers: [HrTeamMemberGuard, JwtHelperService],
     });
     guard = TestBed.get(HrTeamMemberGuard);
     service = TestBed.get(JwtHelperService);

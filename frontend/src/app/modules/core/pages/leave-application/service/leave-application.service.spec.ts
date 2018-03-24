@@ -14,13 +14,8 @@ describe('LeaveApplicationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        JwtHelperService,
-        LeaveApplicationService,
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [JwtHelperService, LeaveApplicationService],
     });
     http = TestBed.get(HttpTestingController);
     leaveApplicationService = TestBed.get(LeaveApplicationService);
@@ -33,50 +28,53 @@ describe('LeaveApplicationService', () => {
   describe('API access methods', () => {
     const apiLink: string = SystemVariables.API_URL + '/leave-application';
 
-    it('should query current service URL', fakeAsync(() => {
-      leaveApplicationService.getLeaveTypes().subscribe();
-      http.expectOne(`${apiLink}/types`);
-    }));
+    it(
+      'should query current service URL',
+      fakeAsync(() => {
+        leaveApplicationService.getLeaveTypes().subscribe();
+        http.expectOne(`${apiLink}/types`);
+      })
+    );
 
     describe('getLeaveTypes', () => {
+      it(
+        'should return an Observable of type Array of type LeaveType',
+        fakeAsync(() => {
+          let result: any;
+          let error: any;
+          leaveApplicationService.getLeaveTypes().subscribe((res: Array<LeaveType>) => (result = res), (err: any) => (error = err));
+          http
+            .expectOne({
+              url: `${apiLink}/types`,
+              method: 'GET',
+            })
+            .flush(mockLeaveTypes);
 
-      it('should return an Observable of type Array of type LeaveType', fakeAsync(() => {
-        let result: any;
-        let error: any;
-        leaveApplicationService.getLeaveTypes()
-          .subscribe(
-            (res: Array<LeaveType>) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: `${apiLink}/types`,
-          method: 'GET',
-        }).flush(mockLeaveTypes);
+          tick();
+          /**
+           * tests goes here
+           */
+        })
+      );
 
-        tick();
-        /**
-         * tests goes here
-         */
-      }));
-
-      it('should resolve error if server is down', fakeAsync(() => {
-        let result: Object;
-        let error: any;
-        leaveApplicationService.getLeaveTypes()
-          .subscribe(
-            (res: Object) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: `${apiLink}/types`,
-          method: 'GET',
-        }).error(new ErrorEvent('404'));
-        tick();
-        /**
-         * tests goes here
-         */
-      }));
-
+      it(
+        'should resolve error if server is down',
+        fakeAsync(() => {
+          let result: Object;
+          let error: any;
+          leaveApplicationService.getLeaveTypes().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          http
+            .expectOne({
+              url: `${apiLink}/types`,
+              method: 'GET',
+            })
+            .error(new ErrorEvent('404'));
+          tick();
+          /**
+           * tests goes here
+           */
+        })
+      );
     });
-
   });
-
 });

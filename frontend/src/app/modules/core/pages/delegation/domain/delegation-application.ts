@@ -11,6 +11,5 @@ export class DelegationApplication {
   public startDate: MomentInput;
   public endDate: MomentInput;
 
-  constructor() {
-  }
+  constructor() {}
 }

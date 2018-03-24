@@ -26,10 +26,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public filteredCountries: Observable<Array<string>>;
   public countries: Array<string>;
 
-  constructor(private _subjectDetails: SubjectDetailsService,
-              private _errorResolver: ErrorResolverService,
-              private _fb: FormBuilder) {
-  }
+  constructor(private _subjectDetails: SubjectDetailsService, private _errorResolver: ErrorResolverService, private _fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.getCurrentSubject();
@@ -44,32 +41,20 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public constructForm(): void {
     this.applicationForm = this._fb.group({
       name: this._fb.group({
-        subjectId: [this.subject.subjectId, [
-          Validators.required,
-          Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-        ]],
-        first: [this.subject.personalInformation.firstName,
-          Validators.required,
-        ],
+        subjectId: [this.subject.subjectId, [Validators.required, Validators.pattern(RegularExpressions.NUMBERS_ONLY)]],
+        first: [this.subject.personalInformation.firstName, Validators.required],
         middle: [this.subject.personalInformation.middleName],
-        last: [this.subject.personalInformation.lastName,
-          Validators.required,
-        ],
+        last: [this.subject.personalInformation.lastName, Validators.required],
       }),
       organisation: this._fb.group({
-        position: [this.subject.employeeInformation.position,
-          Validators.required,
-        ],
+        position: [this.subject.employeeInformation.position, Validators.required],
         department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
         country: [''],
         city: [''],
         objective: ['', Validators.required],
-        budget: [0, [
-          Validators.required,
-          Validators.min(0),
-        ]],
+        budget: [0, [Validators.required, Validators.min(0)]],
       }),
     });
 
@@ -80,27 +65,27 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
   public getCurrentSubject(): void {
     this.isLoadingResults = true;
-    this.$currentSubject = this._subjectDetails
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
+    this.$currentSubject = this._subjectDetails.getCurrentSubject().subscribe(
+      (response: Subject) => {
         this.subject = response;
         this.isLoadingResults = false;
         this.constructForm();
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public filterCountries(countries: Array<string>, name: string): Array<string> {
-    return countries.filter(country =>
-      country.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    return countries.filter(country => country.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<string>): Observable<Array<string>> {
-    return this.applicationForm.get(['delegation', 'country'])
-      .valueChanges
-      .startWith(null)
-      .map(country => country ? this.filterCountries(countries, country) : countries.slice());
+    return this.applicationForm
+      .get(['delegation', 'country'])
+      .valueChanges.startWith(null)
+      .map(country => (country ? this.filterCountries(countries, country) : countries.slice()));
   }
 
   public isValid(): boolean {

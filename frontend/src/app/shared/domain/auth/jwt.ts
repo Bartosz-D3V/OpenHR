@@ -1,4 +1,4 @@
-import {Role} from '../subject/role';
+import { Role } from '../subject/role';
 
 export interface Jwt {
   sub: string;

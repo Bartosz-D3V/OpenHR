@@ -21,8 +21,7 @@ describe('DashboardComponent', () => {
   let fixture: ComponentFixture<DashboardComponent>;
 
   @Injectable()
-  class FakeDashboardService {
-  }
+  class FakeDashboardService {}
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -33,39 +32,39 @@ describe('DashboardComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DashboardComponent,
-        NumberIndicatorComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        FlexLayoutModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-      ],
-      providers: [
-        JwtHelperService,
-        {
-          provide: DashboardService, useClass: FakeDashboardService,
-        },
-        {
-          provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [DashboardComponent, NumberIndicatorComponent],
+        imports: [
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          FlexLayoutModule,
+          MatTableModule,
+          MatPaginatorModule,
+          MatProgressSpinnerModule,
+        ],
+        providers: [
+          JwtHelperService,
+          {
+            provide: DashboardService,
+            useClass: FakeDashboardService,
+          },
+          {
+            provide: SubjectDetailsService,
+            useClass: FakeSubjectDetailsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);

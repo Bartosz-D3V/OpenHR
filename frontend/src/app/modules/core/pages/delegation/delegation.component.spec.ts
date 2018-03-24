@@ -3,7 +3,13 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatTableModule,
+  MatAutocompleteModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatTableModule,
   MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
@@ -26,42 +32,38 @@ import { DelegationComponent } from './delegation.component';
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
   let fixture: ComponentFixture<DelegationComponent>;
-  const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
-    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line',
-      'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
-      '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
+  const employee1: Employee = new Employee(
+    new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
+    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line', 'SA2 92B', 'Gotham', 'US')),
+    new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team', '13HJ', '2010-02-02', '2012-02-02'),
+    new HrInformation(30, 10),
+    Role.EMPLOYEE
+  );
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DelegationComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-        DateRangeComponent,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        MomentDateModule,
-        NoopAnimationsModule,
-        FormsModule,
-        FlexLayoutModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatInputModule,
-        MatTableModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-      ],
-      providers: [
-        JwtHelperService,
-        ErrorResolverService,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [DelegationComponent, PageHeaderComponent, CapitalizePipe, DateRangeComponent],
+        imports: [
+          HttpClientTestingModule,
+          MomentDateModule,
+          NoopAnimationsModule,
+          FormsModule,
+          FlexLayoutModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatDatepickerModule,
+          MatFormFieldModule,
+          MatCardModule,
+          MatInputModule,
+          MatTableModule,
+          MatAutocompleteModule,
+          MatProgressSpinnerModule,
+        ],
+        providers: [JwtHelperService, ErrorResolverService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DelegationComponent);
@@ -164,7 +166,6 @@ describe('DelegationComponent', () => {
         expect(nameValidator.valid).toBeTruthy();
       });
     });
-
   });
 
   describe('organisation form group', () => {
@@ -261,14 +262,7 @@ describe('DelegationComponent', () => {
 
   describe('autocomplete', () => {
     let filteredCountries;
-    const mockCountries: Array<string> = [
-      'Algeria',
-      'South Korea',
-      'Germany',
-      'Poland',
-      'Portugal',
-      'Zanzibar',
-    ];
+    const mockCountries: Array<string> = ['Algeria', 'South Korea', 'Germany', 'Poland', 'Portugal', 'Zanzibar'];
 
     afterEach(() => {
       filteredCountries.length = 0;
@@ -314,14 +308,12 @@ describe('DelegationComponent', () => {
         expect(result).toBeDefined();
         expect(result[0]).toEqual('Germany');
       });
-
     });
-
   });
 
   describe('isValid', () => {
     it('should return false if form is dirty', () => {
-      component.applicationForm.get('delegation').setErrors({'error': 'invalid'});
+      component.applicationForm.get('delegation').setErrors({ error: 'invalid' });
 
       expect(component.isValid()).toBeFalsy();
     });
@@ -332,5 +324,4 @@ describe('DelegationComponent', () => {
       expect(component.isValid()).toBeTruthy();
     });
   });
-
 });

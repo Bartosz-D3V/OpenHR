@@ -20,33 +20,24 @@ describe('CoreComponent', () => {
   let fixture: ComponentFixture<CoreWrapperComponent>;
   const mockUser: User = new User(1, 'John', 'Test');
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CoreWrapperComponent,
-        AppComponent,
-        AvatarComponent,
-        SidenavComponent,
-        SidenavItemListComponent,
-        InitialsPipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        NoopAnimationsModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatMenuModule,
-        MatIconModule,
-        MatDialogModule,
-      ],
-      providers: [
-        LightweightSubjectService,
-        ErrorResolverService,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [CoreWrapperComponent, AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
+        imports: [
+          HttpClientTestingModule,
+          RouterTestingModule,
+          NoopAnimationsModule,
+          MatSidenavModule,
+          MatToolbarModule,
+          MatMenuModule,
+          MatIconModule,
+          MatDialogModule,
+        ],
+        providers: [LightweightSubjectService, ErrorResolverService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoreWrapperComponent);

@@ -26,12 +26,7 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
   selector: 'app-manage-employees-data',
   templateUrl: './manage-employees-data.component.html',
   styleUrls: ['./manage-employees-data.component.scss'],
-  providers: [
-    ManageEmployeesDataService,
-    EmployeeService,
-    ManagerService,
-    ResponsiveHelperService,
-  ],
+  providers: [ManageEmployeesDataService, EmployeeService, ManagerService, ResponsiveHelperService],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
@@ -48,14 +43,15 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public employeesCtrl: FormControl = new FormControl();
   public managersCtrl: FormControl = new FormControl();
 
-  constructor(private _manageEmployeesDataService: ManageEmployeesDataService,
-              private _employeeService: EmployeeService,
-              private _managerService: ManagerService,
-              private _responsiveHelper: ResponsiveHelperService,
-              private _notificationService: NotificationService,
-              private _errorResolver: ErrorResolverService,
-              private _fb: FormBuilder) {
-  }
+  constructor(
+    private _manageEmployeesDataService: ManageEmployeesDataService,
+    private _employeeService: EmployeeService,
+    private _managerService: ManagerService,
+    private _responsiveHelper: ResponsiveHelperService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService,
+    private _fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.fetchEmployees();
@@ -86,64 +82,48 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     this.employeeForm = this._fb.group({
       subjectId: [this.subject.subjectId],
       personalInformation: this._fb.group({
-        firstName: [perInfo.firstName,
-          Validators.required,
-        ],
+        firstName: [perInfo.firstName, Validators.required],
         middleName: [perInfo.middleName],
-        lastName: [perInfo.lastName,
-          Validators.required,
-        ],
-        dateOfBirth: [perInfo.dateOfBirth,
-          Validators.required,
-        ],
+        lastName: [perInfo.lastName, Validators.required],
+        dateOfBirth: [perInfo.dateOfBirth, Validators.required],
       }),
       contactInformation: this._fb.group({
-        telephone: [contactInfo.telephone,
+        telephone: [
+          contactInfo.telephone,
           Validators.compose([
             Validators.required,
             Validators.pattern(RegularExpressions.NUMBERS_ONLY),
             Validators.minLength(7),
             Validators.maxLength(11),
-          ])],
-        email: [contactInfo.email,
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(RegularExpressions.EMAIL),
-          ])],
+          ]),
+        ],
+        email: [contactInfo.email, Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)])],
         address: this._fb.group({
           firstLineAddress: [contactInfo.address.firstLineAddress],
           secondLineAddress: [contactInfo.address.secondLineAddress],
           thirdLineAddress: [contactInfo.address.thirdLineAddress],
-          postcode: [contactInfo.address.postcode,
-            Validators.compose([
-              Validators.required,
-              Validators.pattern(RegularExpressions.UK_POSTCODE),
-            ])],
+          postcode: [
+            contactInfo.address.postcode,
+            Validators.compose([Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)]),
+          ],
           city: [contactInfo.address.city],
           country: [contactInfo.address.country],
         }),
       }),
       employeeInformation: this._fb.group({
-        nationalInsuranceNumber: [employeeInfo.nationalInsuranceNumber,
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(RegularExpressions.NIN),
-          ])],
+        nationalInsuranceNumber: [
+          employeeInfo.nationalInsuranceNumber,
+          Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)]),
+        ],
         position: [employeeInfo.position],
         department: [employeeInfo.department],
-        employeeNumber: [employeeInfo.employeeNumber,
-          Validators.required,
-        ],
+        employeeNumber: [employeeInfo.employeeNumber, Validators.required],
         startDate: [employeeInfo.startDate],
         endDate: [employeeInfo.endDate],
       }),
       hrInformation: this._fb.group({
-        allowance: [hrInfo.allowance,
-          Validators.min(0),
-        ],
-        usedAllowance: [hrInfo.usedAllowance,
-          Validators.min(0),
-        ],
+        allowance: [hrInfo.allowance, Validators.min(0)],
+        usedAllowance: [hrInfo.usedAllowance, Validators.min(0)],
       }),
       role: [this.subject.role],
     });
@@ -152,90 +132,92 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
-    return this.employeesCtrl
-      .valueChanges
-      .pipe(
-        startWith(''),
-        map(lastName => typeof lastName === 'string' ? lastName : ''),
-        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice())
-      );
+    return this.employeesCtrl.valueChanges.pipe(
+      startWith(''),
+      map(lastName => (typeof lastName === 'string' ? lastName : '')),
+      map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
+    );
   }
 
   public reduceManagers(subjects: Array<Manager>): Observable<Array<Subject>> {
-    return this.managersCtrl
-      .valueChanges
-      .pipe(
-        startWith(''),
-        map(lastName => typeof lastName === 'string' ? lastName : ''),
-        map(subject => subject ? this.filterSubjects(subjects, subject) : subjects.slice())
-      );
+    return this.managersCtrl.valueChanges.pipe(
+      startWith(''),
+      map(lastName => (typeof lastName === 'string' ? lastName : '')),
+      map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
+    );
   }
 
   public filterSubjects(subjects: Array<Subject>, lastName: string): Array<Subject> {
-    return subjects.filter(subject =>
-      subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+    return subjects.filter(subject => subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   public fetchEmployees(): void {
-    this.$employees = this._manageEmployeesDataService
-      .getEmployees()
-      .subscribe((response: Array<Employee>) => {
+    this.$employees = this._manageEmployeesDataService.getEmployees().subscribe(
+      (response: Array<Employee>) => {
         this.employees = response;
         this.filteredEmployees = this.reduceEmployees(response);
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public fetchSelectedEmployee(employeeId: number): void {
     this.isLoadingResults = true;
-    this.$employee = this._employeeService
-      .getEmployee(employeeId)
-      .subscribe((response: Employee) => {
+    this.$employee = this._employeeService.getEmployee(employeeId).subscribe(
+      (response: Employee) => {
         this.subject = response;
         this.constructForm();
         this.isLoadingResults = false;
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public fetchManagers(): void {
-    this.$managers = this._managerService
-      .getManagers()
-      .subscribe((response: Array<Manager>) => {
+    this.$managers = this._managerService.getManagers().subscribe(
+      (response: Array<Manager>) => {
         this.managers = response;
         this.filteredManagers = this.reduceManagers(response);
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public displayFullName(subject?: Subject): string | undefined {
-    return subject && subject.personalInformation ?
-      `${subject.personalInformation.firstName} ${subject.personalInformation.lastName}` : undefined;
+    return subject && subject.personalInformation
+      ? `${subject.personalInformation.firstName} ${subject.personalInformation.lastName}`
+      : undefined;
   }
 
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
-    const employeeId: number = (<Employee> $event.option.value).subjectId;
+    const employeeId: number = (<Employee>$event.option.value).subjectId;
     this.fetchSelectedEmployee(employeeId);
     this.fetchManagers();
   }
 
   public save(): void {
-    const updatedEmployee: Employee = <Employee> this.employeeForm.value;
-    const updatedManger: Manager = <Manager> this.managersCtrl.value;
+    const updatedEmployee: Employee = <Employee>this.employeeForm.value;
+    const updatedManger: Manager = <Manager>this.managersCtrl.value;
     Observable.zip(
       this._employeeService.updateEmployee(updatedEmployee),
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
-      (employee: Employee, manager: Manager) => ({employee, manager})
-    ).subscribe((pair) => {
-      const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
-      this._notificationService.openSnackBar(msg, 'OK');
-      this.subject = pair.employee;
-    }, (httpErrorResponse: HttpErrorResponse) => {
-      this._errorResolver.handleError(httpErrorResponse.error);
-    });
+      (employee: Employee, manager: Manager) => ({ employee, manager })
+    ).subscribe(
+      pair => {
+        const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
+        this._notificationService.openSnackBar(msg, 'OK');
+        this.subject = pair.employee;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
   }
 
   public isMobile(): boolean {
@@ -243,8 +225,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.employeeForm.valid &&
-      this.managersCtrl.valid;
+    return this.employeeForm.valid && this.managersCtrl.valid;
   }
 
   private unsubscribeAll(): void {

@@ -7,16 +7,12 @@ import { LeaveApplicationStatuses } from '../enumeration/leave-application-statu
   name: 'leaveApplicationStatus',
 })
 export class LeaveApplicationStatusPipe implements PipeTransform {
-
   transform(leaveApplication: LeaveApplication): LeaveApplicationStatuses {
     if (leaveApplication.terminated) {
-      return !leaveApplication.approvedByManager ?
-        LeaveApplicationStatuses.REJECTEDBYMANAGER :
-        !leaveApplication.approvedByHR ?
-          LeaveApplicationStatuses.REJECTEDBYHR :
-          LeaveApplicationStatuses.ACCEPTED;
+      return !leaveApplication.approvedByManager
+        ? LeaveApplicationStatuses.REJECTEDBYMANAGER
+        : !leaveApplication.approvedByHR ? LeaveApplicationStatuses.REJECTEDBYHR : LeaveApplicationStatuses.ACCEPTED;
     }
     return LeaveApplicationStatuses.AWAITING;
   }
-
 }

@@ -10,6 +10,7 @@
     "test": "ng test --watch=false --code-coverage",
     "lint": "ng lint --type-check && npm run stylelint",
     "e2e": "ng e2e",
+    "pretty": "prettier --write **/*.{js,ts}",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
     "precommit": "lint-staged",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
@@ -35,14 +36,9 @@
     "scope": "\\S+.*"
   },
   "lint-staged": {
-    "*.{js,json,ts,md}": [
-      "prettier --write",
+    "*.{js,ts}": [
+      "npm run pretty",
       "git add"
-    ]
-  },
-  "greenkeeper": {
-    "ignore": [
-      "@types/jasmine"
     ]
   },
   "private": true,
@@ -77,6 +73,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "^4.1.0",
     "commitplease": "^2.7.10",
+    "husky": "^0.14.3",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "^2.0.0",
@@ -85,6 +82,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "lint-staged": "^7.0.0",
     "prettier": "^1.11.1",
     "protractor": "~5.1.2",
     "stylelint": "^8.2.0",

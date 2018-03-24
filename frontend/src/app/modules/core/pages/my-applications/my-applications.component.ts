@@ -13,15 +13,10 @@ import { MyApplicationsService } from './service/my-applications.service';
   selector: 'app-my-applications',
   templateUrl: './my-applications.component.html',
   styleUrls: ['./my-applications.component.scss'],
-  providers: [
-    MyApplicationsService,
-    JwtHelperService,
-    NotificationService,
-  ],
+  providers: [MyApplicationsService, JwtHelperService, NotificationService],
 })
 export class MyApplicationsComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   private $leaveApplications: ISubscription;
   public isLoadingResults: boolean;
@@ -29,10 +24,11 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication> = new MatTableDataSource<LeaveApplication>();
 
-  constructor(private _myApplications: MyApplicationsService,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(
+    private _myApplications: MyApplicationsService,
+    private _jwtHelper: JwtHelperService,
+    private _errorResolver: ErrorResolverService
+  ) {}
 
   ngOnInit() {
     this.isLoadingResults = true;
@@ -47,16 +43,16 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
 
   public fetchLeaveApplications(): void {
     const subjectId: number = this._jwtHelper.getSubjectId();
-    this._myApplications
-      .getSubmittedLeaveApplications(subjectId)
-      .subscribe((res: Array<LeaveApplication>) => {
+    this._myApplications.getSubmittedLeaveApplications(subjectId).subscribe(
+      (res: Array<LeaveApplication>) => {
         this.isLoadingResults = false;
         this.resultsLength = res.length;
         this.dataSource.data = res;
         this.dataSource.paginator = this.paginator;
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
-
 }

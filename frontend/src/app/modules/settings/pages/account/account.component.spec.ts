@@ -5,8 +5,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
-  MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTabsModule,
-  MatToolbarModule
+  MatCardModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatSnackBarModule,
+  MatTabsModule,
+  MatToolbarModule,
 } from '@angular/material';
 
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
@@ -22,47 +27,44 @@ describe('AccountComponent', () => {
   let fixture: ComponentFixture<AccountComponent>;
 
   @Injectable()
-  class FakeAccountService {
-  }
+  class FakeAccountService {}
 
   @Injectable()
-  class FakeErrorResolverService {
-  }
+  class FakeErrorResolverService {}
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AccountComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FlexLayoutModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatInputModule,
-        MatTabsModule,
-        MatIconModule,
-        MatSnackBarModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: AccountService, useClass: FakeAccountService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AccountComponent, PageHeaderComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FlexLayoutModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatFormFieldModule,
+          MatCardModule,
+          MatInputModule,
+          MatTabsModule,
+          MatIconModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: AccountService,
+            useClass: FakeAccountService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);
@@ -75,7 +77,6 @@ describe('AccountComponent', () => {
   });
 
   describe('passwordForm', () => {
-
     describe('oldPassword', () => {
       it('should be valid if the field is not empty', () => {
         component.passwordForm.get('oldPassword').setValue('j.j@mail.com');
@@ -89,7 +90,6 @@ describe('AccountComponent', () => {
         expect(component.passwordForm.get('oldPassword').valid).toBeFalsy();
       });
     });
-
 
     describe('newPassword', () => {
       it('should be valid if the field is not empty', () => {
@@ -118,7 +118,6 @@ describe('AccountComponent', () => {
         expect(component.passwordForm.get('newPasswordRepeat').valid).toBeFalsy();
       });
     });
-
   });
 
   describe('emailForm', () => {

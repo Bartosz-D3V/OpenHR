@@ -13,7 +13,5 @@ export class LeaveApplication {
   public terminated: boolean;
   public processInstanceId: string;
 
-  constructor() {
-  }
-
+  constructor() {}
 }

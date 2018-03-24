@@ -1,7 +1,6 @@
 import { RegularExpressions } from './regular-expressions';
 
 describe('RegularExpressions', () => {
-
   it('should be defined', () => {
     expect(RegularExpressions).toBeDefined();
   });
@@ -68,7 +67,6 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber2)).toBeFalsy();
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleInNumber3)).toBeFalsy();
     });
-
   });
 
   describe('LETTERS_ONLY', () => {
@@ -114,5 +112,4 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NIN.test(exampleIncorrectNin3)).toBeFalsy();
     });
   });
-
 });

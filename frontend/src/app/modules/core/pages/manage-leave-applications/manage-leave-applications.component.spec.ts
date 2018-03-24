@@ -3,8 +3,15 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule,
-  MatTableModule, MatToolbarModule, MatTooltipModule,
+  MatCardModule,
+  MatDialogModule,
+  MatIconModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
@@ -26,8 +33,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
   }
 
   @Injectable()
@@ -37,41 +43,39 @@ describe('ManageLeaveApplicationsComponent', () => {
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ManageLeaveApplicationsComponent,
-        InitialsPipe,
-        CapitalizePipe,
-        PageHeaderComponent,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        MatDialogModule,
-        MatCardModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-      ],
-      providers: [
-        ErrorResolverService,
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: ManageLeaveApplicationsService, useClass: FakeManageLeaveApplicationsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ManageLeaveApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          MatDialogModule,
+          MatCardModule,
+          MatIconModule,
+          MatToolbarModule,
+          MatPaginatorModule,
+          MatTableModule,
+          MatProgressSpinnerModule,
+          MatSnackBarModule,
+          MatTooltipModule,
+        ],
+        providers: [
+          ErrorResolverService,
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: ManageLeaveApplicationsService,
+            useClass: FakeManageLeaveApplicationsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageLeaveApplicationsComponent);
@@ -85,8 +89,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   describe('fetchLeaveApplications method', () => {
     it('should set loading to true', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
-        .and.returnValue(Observable.of({}));
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(Observable.of({}));
 
       expect(component.isLoadingResults).toBeTruthy();
       component.fetchLeaveApplications();
@@ -94,24 +97,27 @@ describe('ManageLeaveApplicationsComponent', () => {
     });
 
     it('should set leave applications field', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
-        .and.returnValue(Observable.of([mockLeave]));
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(
+        Observable.of([mockLeave])
+      );
       component.fetchLeaveApplications();
 
       expect(component.leaveApplications).toEqual([mockLeave]);
     });
 
     it('should set the dataSource', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
-        .and.returnValue(Observable.of([mockLeave]));
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(
+        Observable.of([mockLeave])
+      );
       component.fetchLeaveApplications();
 
       expect(component.dataSource).toBeDefined();
     });
 
     it('should set the results length field', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
-        .and.returnValue(Observable.of([mockLeave]));
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(
+        Observable.of([mockLeave])
+      );
       component.fetchLeaveApplications();
 
       expect(component.resultsLength).toBe(1);
@@ -119,8 +125,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
     it('should call errorResolver in case of an error', () => {
       spyOn(component['_errorResolver'], 'handleError');
-      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications')
-        .and.returnValue(_throw('Error'));
+      spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(_throw('Error'));
       component.fetchLeaveApplications();
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
@@ -129,16 +134,14 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   describe('approveLeaveApplication method', () => {
     it('should invoke service method using process instance id', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager')
-        .and.returnValue(Observable.of({}));
+      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager').and.returnValue(Observable.of({}));
       component.approveLeaveApplication('11AZ');
 
       expect(component['_manageLeaveApplicationsService'].approveLeaveApplicationByManager).toHaveBeenCalledWith('11AZ');
     });
 
     it('should open snackBar notification with success message', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager')
-        .and.returnValue(Observable.of({}));
+      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager').and.returnValue(Observable.of({}));
       spyOn(component['_notificationService'], 'openSnackBar');
       component.approveLeaveApplication('11AZ');
 
@@ -147,8 +150,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
     it('should call errorResolver in case of an error', () => {
       spyOn(component['_errorResolver'], 'handleError');
-      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager')
-        .and.returnValue(_throw('Error'));
+      spyOn(component['_manageLeaveApplicationsService'], 'approveLeaveApplicationByManager').and.returnValue(_throw('Error'));
       component.approveLeaveApplication('12A');
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
@@ -157,16 +159,14 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   describe('rejectLeaveApplication method', () => {
     it('should invoke service method using process instance id', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager')
-        .and.returnValue(Observable.of({}));
+      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(Observable.of({}));
       component.rejectLeaveApplication('11AZ');
 
       expect(component['_manageLeaveApplicationsService'].rejectLeaveApplicationByManager).toHaveBeenCalledWith('11AZ');
     });
 
     it('should open snackBar notification with success message', () => {
-      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager')
-        .and.returnValue(Observable.of({}));
+      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(Observable.of({}));
       spyOn(component['_notificationService'], 'openSnackBar');
       component.rejectLeaveApplication('11AZ');
 
@@ -175,8 +175,7 @@ describe('ManageLeaveApplicationsComponent', () => {
 
     it('should call errorResolver in case of an error', () => {
       spyOn(component['_errorResolver'], 'handleError');
-      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager')
-        .and.returnValue(_throw('Error'));
+      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(_throw('Error'));
       component.rejectLeaveApplication('12A');
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();

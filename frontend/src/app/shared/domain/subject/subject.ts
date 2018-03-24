@@ -12,11 +12,13 @@ export abstract class Subject {
   public hrInformation: HrInformation;
   public role: Role;
 
-  constructor(personalInformation: PersonalInformation,
-              contactInformation: ContactInformation,
-              employeeInformation: EmployeeInformation,
-              hrInformation: HrInformation,
-              role: Role) {
+  constructor(
+    personalInformation: PersonalInformation,
+    contactInformation: ContactInformation,
+    employeeInformation: EmployeeInformation,
+    hrInformation: HrInformation,
+    role: Role
+  ) {
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;
     this.employeeInformation = employeeInformation;

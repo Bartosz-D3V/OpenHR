@@ -9,29 +9,29 @@ import { DateRangeService } from './date-range.service';
 describe('DateRangeService', () => {
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
 
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         JwtHelperService,
         DateRangeService,
         {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
         },
       ],
     });
   });
 
-  it('should be created', inject([DateRangeService], (service: DateRangeService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([DateRangeService], (service: DateRangeService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

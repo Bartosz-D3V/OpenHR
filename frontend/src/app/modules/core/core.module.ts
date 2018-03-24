@@ -3,11 +3,33 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
-  MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
-  MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatCheckboxModule, MatSnackBarModule,
-  MatProgressSpinnerModule, MatTooltipModule,
+  MatAutocompleteModule,
+  MatMenuModule,
+  MatButtonModule,
+  MatRadioModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatIconModule,
+  MatListModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatToolbarModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatExpansionModule,
+  MatStepperModule,
+  MatSelectModule,
+  MatPaginatorModule,
+  MatTableModule,
+  MatCheckboxModule,
+  MatSnackBarModule,
+  MatProgressSpinnerModule,
+  MatTooltipModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -94,9 +116,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     LeaveApplicationStatusPipe,
     DashboardComponent,
   ],
-  providers: [
-    JwtHelperService,
-  ],
+  providers: [JwtHelperService],
 })
-export class CoreModule {
-}
+export class CoreModule {}

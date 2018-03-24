@@ -19,8 +19,8 @@ import { PersonalDetailsService } from './service/personal-details.service';
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     SubjectDetailsService,
     NotificationService,
     ResponsiveHelperService,
@@ -32,28 +32,19 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   public isLoadingResults: boolean;
 
   public personalInformationFormGroup: FormGroup = new FormGroup({
-    firstNameFormControl: new FormControl('', [
-      Validators.required,
-    ]),
+    firstNameFormControl: new FormControl('', [Validators.required]),
 
-    lastNameFormControl: new FormControl('', [
-      Validators.required,
-    ]),
+    lastNameFormControl: new FormControl('', [Validators.required]),
 
     middleNameFormControl: new FormControl('', []),
 
-    dobFormControl: new FormControl('', [
-      Validators.required,
-    ]),
+    dobFormControl: new FormControl('', [Validators.required]),
 
-    positionFormControl: new FormControl({disabled: true}, []),
+    positionFormControl: new FormControl({ disabled: true }, []),
   });
 
   public contactInformationFormGroup: FormGroup = new FormGroup({
-    emailFormControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(RegularExpressions.EMAIL),
-    ]),
+    emailFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.EMAIL)]),
 
     telephoneFormControl: new FormControl('', [
       Validators.required,
@@ -68,10 +59,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
     thirdLineAddressFormControl: new FormControl('', []),
 
-    postcodeFormControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(RegularExpressions.UK_POSTCODE),
-    ]),
+    postcodeFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)]),
 
     cityFormControl: new FormControl('', []),
 
@@ -79,14 +67,9 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   });
 
   public employeeDetailsFormGroup: FormGroup = new FormGroup({
-    ninFormControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(RegularExpressions.NIN),
-    ]),
+    ninFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.NIN)]),
 
-    employeeIdFormControl: new FormControl('', [
-      Validators.required,
-    ]),
+    employeeIdFormControl: new FormControl('', [Validators.required]),
 
     startDateFormControl: new FormControl('', []),
 
@@ -94,25 +77,21 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   });
 
   public hrInformationFormGroup: FormGroup = new FormGroup({
+    allowanceFormControl: new FormControl('', [Validators.min(0)]),
 
-    allowanceFormControl: new FormControl('', [
-      Validators.min(0),
-    ]),
-
-    usedAllowanceFormControl: new FormControl('', [
-      Validators.min(0),
-    ]),
+    usedAllowanceFormControl: new FormControl('', [Validators.min(0)]),
   });
 
   public stepNumber = 0;
   public subject: Subject;
 
-  constructor(private _subjectDetailsService: SubjectDetailsService,
-              private _personalDetailsService: PersonalDetailsService,
-              private _responsiveHelper: ResponsiveHelperService,
-              private _errorResolver: ErrorResolverService,
-              private _notificationService: NotificationService) {
-  }
+  constructor(
+    private _subjectDetailsService: SubjectDetailsService,
+    private _personalDetailsService: PersonalDetailsService,
+    private _responsiveHelper: ResponsiveHelperService,
+    private _errorResolver: ErrorResolverService,
+    private _notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.getCurrentSubject();
@@ -125,26 +104,28 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
   public getCurrentSubject(): void {
     this.isLoadingResults = true;
-    this.$currentSubject = this._subjectDetailsService
-      .getCurrentSubject()
-      .subscribe((response: Subject) => {
+    this.$currentSubject = this._subjectDetailsService.getCurrentSubject().subscribe(
+      (response: Subject) => {
         this.isLoadingResults = false;
         this.subject = response;
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public save(): void {
     if (this.isValid()) {
-      this._personalDetailsService
-        .saveSubject(this.subject)
-        .subscribe((result: Subject) => {
+      this._personalDetailsService.saveSubject(this.subject).subscribe(
+        (result: Subject) => {
           const msg = `Details of user with id ${result.subjectId} have been updated`;
           this._notificationService.openSnackBar(msg, 'OK');
-        }, (httpErrorResponse: HttpErrorResponse) => {
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
           this._errorResolver.handleError(httpErrorResponse.error);
-        });
+        }
+      );
     }
   }
 
@@ -165,9 +146,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.personalInformationFormGroup.valid &&
-      this.contactInformationFormGroup.valid &&
-      this.employeeDetailsFormGroup.valid;
+    return this.personalInformationFormGroup.valid && this.contactInformationFormGroup.valid && this.employeeDetailsFormGroup.valid;
   }
 
   public isMobile(): boolean {
