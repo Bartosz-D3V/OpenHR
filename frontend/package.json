@@ -12,7 +12,7 @@
     "e2e": "ng e2e",
     "pretty": "prettier --write **/*.{js,ts}",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
-    "precommit": "lint-staged",
+    "precommit": "./node_modules/.bin/lint-staged --config .lintstagedrc",
     "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist ./coverage",
     "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
@@ -34,12 +34,6 @@
       "revert"
     ],
     "scope": "\\S+.*"
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "npm run pretty",
-      "git add"
-    ]
   },
   "private": true,
   "dependencies": {
