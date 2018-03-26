@@ -1,0 +1,6 @@
+{
+  "skipCI": true,
+  "hooks": {
+     "pre-commit": "./node_modules/.bin/lint-staged --config .lintstagedrc",
+  }
+}
