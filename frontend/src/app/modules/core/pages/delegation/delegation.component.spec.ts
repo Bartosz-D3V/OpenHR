@@ -14,6 +14,7 @@ import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.p
 import { DateRangeComponent } from '../../../../shared/components/date-range/date-range.component';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { DelegationComponent } from './delegation.component';
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -26,6 +27,7 @@ describe('DelegationComponent', () => {
         PageHeaderComponent,
         CapitalizePipe,
         DateRangeComponent,
+        ThemePickerComponent,
       ],
       imports: [
         HttpClientTestingModule,

@@ -15,6 +15,7 @@ import { EmployeesService } from './service/employees.service';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
@@ -39,6 +40,7 @@ describe('EmployeesComponent', () => {
         CapitalizePipe,
         PageHeaderComponent,
         EmployeesComponent,
+        ThemePickerComponent,
       ],
       imports: [
         HttpClientTestingModule,

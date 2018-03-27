@@ -7,6 +7,7 @@ import { MatCardModule, MatFormFieldModule, MatInputModule, MatToolbarModule } f
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
 import { AccountComponent } from './account.component';
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
@@ -18,6 +19,7 @@ describe('AccountComponent', () => {
         AccountComponent,
         PageHeaderComponent,
         CapitalizePipe,
+        ThemePickerComponent,
       ],
       imports: [
         NoopAnimationsModule,

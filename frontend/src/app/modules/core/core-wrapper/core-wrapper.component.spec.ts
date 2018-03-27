@@ -10,6 +10,7 @@ import { SidenavComponent } from '../../../shared/components/sidenav/sidenav.com
 import { SidenavItemListComponent } from '../../../shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { AvatarComponent } from '../../../shared/components/avatar/avatar.component';
 import { InitialsPipe } from '../../../shared/pipes/initials/initials.pipe';
+import { ThemePickerComponent } from '../../../shared/components/theme-picker/theme-picker.component';
 
 describe('CoreComponent', () => {
   let component: CoreWrapperComponent;
@@ -24,6 +25,7 @@ describe('CoreComponent', () => {
         SidenavComponent,
         SidenavItemListComponent,
         InitialsPipe,
+        ThemePickerComponent,
       ],
       imports: [
         RouterTestingModule,
