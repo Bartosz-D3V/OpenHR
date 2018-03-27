@@ -1,0 +1,15 @@
+{
+  "external": {
+    "urls": [
+      {
+        "url": "https://fonts.googleapis.com/icon?family=Material+Icons"
+      },
+      {
+        "url": "https://fonts.googleapis.com/css?family=Work+Sans"
+      },
+      {
+        "url": "https://fonts.googleapis.com/css?family=Roboto:100,400"
+      }
+    ]
+  }
+}
