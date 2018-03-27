@@ -7,6 +7,7 @@ import { MatCardModule, MatToolbarModule } from '@angular/material';
 import { AboutComponent } from './about.component';
 import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -18,6 +19,7 @@ describe('AboutComponent', () => {
         AboutComponent,
         PageHeaderComponent,
         CapitalizePipe,
+        ThemePickerComponent,
       ],
       imports: [
         FormsModule,

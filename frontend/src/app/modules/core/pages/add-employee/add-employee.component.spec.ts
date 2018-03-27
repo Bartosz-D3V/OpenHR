@@ -24,6 +24,7 @@ import { ConfigService } from '../../../../shared/services/config/config.service
 import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
 import { AddEmployeeComponent } from './add-employee.component';
 import Spy = jasmine.Spy;
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -69,6 +70,7 @@ describe('AddEmployeeComponent', () => {
         PageHeaderComponent,
         StaticModalComponent,
         CapitalizePipe,
+        ThemePickerComponent,
       ],
       imports: [
         HttpClientTestingModule,

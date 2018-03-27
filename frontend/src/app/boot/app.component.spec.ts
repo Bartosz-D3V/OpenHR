@@ -12,6 +12,7 @@ import { SidenavItemListComponent } from '../shared/components/sidenav/sidenav-i
 import { AvatarComponent } from '../shared/components/avatar/avatar.component';
 import { InitialsPipe } from '../shared/pipes/initials/initials.pipe';
 import { User } from '../shared/domain/user/user';
+import { ThemePickerComponent } from '../shared/components/theme-picker/theme-picker.component';
 
 describe('AppComponent', () => {
   const mockUser: User = new User(2199, 'john.test', 'John Test', null);
@@ -19,6 +20,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        ThemePickerComponent,
         AppComponent,
         AvatarComponent,
         SidenavComponent,

@@ -23,6 +23,7 @@ import { ResponsiveHelperService } from '../../../../shared/services/responsive-
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
 import { LeaveApplication } from './domain/leave-application';
+import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
@@ -53,6 +54,7 @@ describe('LeaveApplicationComponent', () => {
         DateRangeComponent,
         PageHeaderComponent,
         CapitalizePipe,
+        ThemePickerComponent,
       ],
       imports: [
         HttpClientTestingModule,
