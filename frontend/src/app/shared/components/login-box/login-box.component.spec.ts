@@ -115,7 +115,7 @@ describe('LoginBoxComponent', () => {
 
     it('should emit true once token is saved', () => {
       let authenticated: boolean;
-      component.onAuthenticated.subscribe(response => (authenticated = response));
+      component.onAuthenticated.subscribe((response) => (authenticated = response));
       component.login();
 
       expect(authenticated).toBeDefined();
