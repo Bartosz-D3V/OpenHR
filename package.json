@@ -1,10 +1,11 @@
 {
   "scripts": {
+    "lint-staged": "./node_modules/.bin/lint-staged --config .lintstagedrc",
     "pretty": "prettier --write **/*.{js,ts}"
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "^0.14.3",
+    "husky": "0.15.0-rc.13",
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1"
   }
