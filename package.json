@@ -1,11 +1,6 @@
 {
   "scripts": {
-    "pretty": "prettier --write **/*.{js, ts}"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "./node_modules/.bin/lint-staged --config .lintstagedrc"
-    }
+    "pretty": "prettier --write **/*.{js,ts}"
   },
   "dependencies": {},
   "devDependencies": {
