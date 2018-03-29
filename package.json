@@ -1,8 +1,31 @@
 {
-  "scripts": {},
+  "scripts": {
+    "pretty": "prettier --write **/*.{js,ts}",
+    "commitmsg": "commitplease .git/COMMIT_EDITMSG"
+  },
+  "commitplease": {
+    "nohook": true,
+    "style": "angular",
+    "types": [
+      "feat",
+      "fix",
+      "docs",
+      "style",
+      "refactor",
+      "perf",
+      "test",
+      "build",
+      "ci",
+      "chore",
+      "revert"
+    ],
+    "scope": "\\S+.*"
+  },
   "dependencies": {},
   "devDependencies": {
+    "commitplease": "^3.2.0",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0"
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
   }
 }

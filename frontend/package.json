@@ -10,29 +10,9 @@
     "test": "ng test --watch=false --code-coverage",
     "lint": "ng lint --type-check && npm run stylelint",
     "e2e": "ng e2e",
-    "pretty": "prettier --write **/*.{js,ts}",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
-    "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist ./coverage",
     "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
-  },
-  "commitplease": {
-    "nohook": true,
-    "style": "angular",
-    "types": [
-      "feat",
-      "fix",
-      "docs",
-      "style",
-      "refactor",
-      "perf",
-      "test",
-      "build",
-      "ci",
-      "chore",
-      "revert"
-    ],
-    "scope": "\\S+.*"
   },
   "private": true,
   "dependencies": {
