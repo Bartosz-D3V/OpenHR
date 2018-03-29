@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class NumberIndicatorComponent {
   @Input()
+  
   public number: number;
 
   @Input() public description: string;
