@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this._dashboardService.getSubjectsOnLeave(),
       (subject: Subject, subjectsOnLeave: Array<Subject>) => ({ subject, subjectsOnLeave })
     ).subscribe(
-      (pair) => {
+      pair => {
         this.subject = pair.subject;
         this.dataSource.data = pair.subjectsOnLeave;
         this.isLoadingResults = false;
@@ -171,7 +171,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             ticks: {
               beginAtZero: true,
               fixedStepSize: 1,
-              userCallback: (label) => {
+              userCallback: label => {
                 return Math.floor(label);
               },
             },

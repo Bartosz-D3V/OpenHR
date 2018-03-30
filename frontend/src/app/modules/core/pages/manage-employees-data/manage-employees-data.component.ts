@@ -134,21 +134,21 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
     return this.employeesCtrl.valueChanges.pipe(
       startWith(''),
-      map((lastName) => (typeof lastName === 'string' ? lastName : '')),
-      map((subject) => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
+      map(lastName => (typeof lastName === 'string' ? lastName : '')),
+      map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
     );
   }
 
   public reduceManagers(subjects: Array<Manager>): Observable<Array<Subject>> {
     return this.managersCtrl.valueChanges.pipe(
       startWith(''),
-      map((lastName) => (typeof lastName === 'string' ? lastName : '')),
-      map((subject) => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
+      map(lastName => (typeof lastName === 'string' ? lastName : '')),
+      map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
     );
   }
 
   public filterSubjects(subjects: Array<Subject>, lastName: string): Array<Subject> {
-    return subjects.filter((subject) => subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
+    return subjects.filter(subject => subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
   public fetchEmployees(): void {
@@ -209,7 +209,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
       (employee: Employee, manager: Manager) => ({ employee, manager })
     ).subscribe(
-      (pair) => {
+      pair => {
         const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
         this._notificationService.openSnackBar(msg, 'OK');
         this.subject = pair.employee;
