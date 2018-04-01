@@ -23,7 +23,7 @@ import java.io.Serializable;
   property = "subjectId",
   scope = Long.class)
 public class Employee extends Subject implements Serializable {
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "FK_MANAGER")
   private Manager manager;
 

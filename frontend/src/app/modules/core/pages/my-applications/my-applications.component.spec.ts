@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import {
-  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule,
-  MatToolbarModule, MatTooltipModule,
+MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule,
+MatToolbarModule, MatTooltipModule,
 } from '@angular/material';
 
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -13,7 +14,8 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
-import { LeaveApplicationStatusPipe } from './pipe/leave-application-status.pipe';
+import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-applicaiton-status/application-status.pipe';
+import { ApplicationTypePipe } from '@modules/core/pages/my-applications/pipe/application-type/application-type.pipe';
 import { MyApplicationsService } from './service/my-applications.service';
 import { MyApplicationsComponent } from './my-applications.component';
 
@@ -38,12 +40,14 @@ describe('MyApplicationsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApplicationsComponent,
-        LeaveApplicationStatusPipe,
+        ApplicationStatusPipe,
+        ApplicationTypePipe,
         InitialsPipe,
         CapitalizePipe,
         PageHeaderComponent,
       ],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         NoopAnimationsModule,
         MatDialogModule,

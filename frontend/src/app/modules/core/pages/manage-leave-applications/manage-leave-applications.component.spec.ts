@@ -8,6 +8,7 @@ import {
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
+import { MomentInput } from 'moment';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -15,14 +16,16 @@ import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { NotificationService } from '@shared/services/notification/notification.service';
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
   let fixture: ComponentFixture<ManageLeaveApplicationsComponent>;
-  const mockLeave = new LeaveApplication();
+  const mockStartDate: MomentInput = '2020-05-05';
+  const mockEndDate: MomentInput = '2020-05-10';
+  const mockLeave = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
 
   @Injectable()
   class FakeErrorResolverService {

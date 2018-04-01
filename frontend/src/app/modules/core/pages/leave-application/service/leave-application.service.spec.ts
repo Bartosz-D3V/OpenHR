@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LeaveApplicationService } from './leave-application.service';
 import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
 import { SystemVariables } from '@config/system-variables';
-import { LeaveType } from '@shared//domain/leave-application/leave-type';
+import { LeaveType } from '@shared//domain/application/leave-type';
 
 describe('LeaveApplicationService', () => {
   const mockLeaveTypes: Array<string> = ['Holiday', 'Maternity leave'];
@@ -31,7 +30,7 @@ describe('LeaveApplicationService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + '/leave-application';
+    const apiLink: string = SystemVariables.API_URL + '/leave-applications';
 
     it('should query current service URL', fakeAsync(() => {
       leaveApplicationService.getLeaveTypes().subscribe();

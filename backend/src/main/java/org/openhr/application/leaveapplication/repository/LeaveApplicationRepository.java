@@ -68,7 +68,7 @@ public class LeaveApplicationRepository {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
       filteredLeaveApplications = criteria
-        .createAlias("assignee", "subject")
+        .createAlias("assignee", "assignee")
         .add(Restrictions.eq("terminated", false))
         .add(Restrictions.eq("assignee.subjectId", subjectId))
         .setReadOnly(true)
@@ -101,8 +101,8 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.getLeaveApplication(applicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationDAO.getLeaveApplication(leaveApplicationId);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -124,15 +124,15 @@ public class LeaveApplicationRepository {
     return leaveApplications;
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
-  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+  @Transactional(propagation = Propagation.MANDATORY)
+  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationDAO.updateLeaveApplication(leaveApplication);
+    return leaveApplicationDAO.updateLeaveApplication(leaveApplicationId, leaveApplication);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

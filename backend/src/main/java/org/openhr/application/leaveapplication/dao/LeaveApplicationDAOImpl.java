@@ -32,8 +32,8 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = (LeaveApplication) super.get(LeaveApplication.class, applicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+    final LeaveApplication leaveApplication = (LeaveApplication) super.get(LeaveApplication.class, leaveApplicationId);
 
     if (leaveApplication == null) {
       log.error("Application could not be found");
@@ -44,7 +44,7 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
     throws HibernateException {
     leaveApplication.setSubject(subject);
@@ -54,10 +54,10 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+  @Transactional(propagation = Propagation.MANDATORY)
+  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException, HibernateException {
-    final LeaveApplication savedLeaveApplication = getLeaveApplication(leaveApplication.getApplicationId());
+    final LeaveApplication savedLeaveApplication = getLeaveApplication(leaveApplicationId);
     BeanUtils.copyProperties(leaveApplication, savedLeaveApplication, "subject", "assignee");
     super.merge(savedLeaveApplication);
 

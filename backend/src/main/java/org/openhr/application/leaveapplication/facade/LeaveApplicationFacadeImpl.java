@@ -33,8 +33,8 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long applicationId) throws ApplicationDoesNotExistException {
-    return leaveApplicationService.getLeaveApplication(applicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+    return leaveApplicationService.getLeaveApplication(leaveApplicationId);
   }
 
   @Override
@@ -54,14 +54,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final String processInstanceId = leaveApplicationCommand.startLeaveApplicationProcess(subject, savedLeaveApplication);
     savedLeaveApplication.setProcessInstanceId(processInstanceId);
 
-    return leaveApplicationService.updateLeaveApplication(savedLeaveApplication);
+    return leaveApplicationService.updateLeaveApplication(savedLeaveApplication.getApplicationId(), savedLeaveApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public LeaveApplication updateLeaveApplication(final LeaveApplication leaveApplication)
+  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
     throws ApplicationDoesNotExistException {
-    return leaveApplicationService.updateLeaveApplication(leaveApplication);
+    return leaveApplicationService.updateLeaveApplication(leaveApplicationId, leaveApplication);
   }
 
   @Override
@@ -81,7 +81,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     leaveApplicationCommand.approveLeaveApplicationByManager(processInstanceId, applicationId);
     final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(supervisor);
-    leaveApplicationService.updateLeaveApplication(leaveApplication);
+    leaveApplicationService.updateLeaveApplication(leaveApplication.getApplicationId(), leaveApplication);
   }
 
   @Override
@@ -91,7 +91,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
     final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(null);
-    leaveApplicationService.updateLeaveApplication(leaveApplication);
+    leaveApplicationService.updateLeaveApplication(leaveApplication.getApplicationId(), leaveApplication);
   }
 
   @Override
@@ -101,7 +101,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final long applicationId = leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
     final LeaveApplication leaveApplication = leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(null);
-    leaveApplicationService.updateLeaveApplication(leaveApplication);
+    leaveApplicationService.updateLeaveApplication(leaveApplication.getApplicationId(), leaveApplication);
   }
 
   @Override

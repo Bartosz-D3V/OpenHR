@@ -4,14 +4,19 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { MatDialogModule } from '@angular/material';
 
 import { SystemVariables } from '@config/system-variables';
-import { LeaveApplication } from '@shared//domain/leave-application/leave-application';
+import { LeaveApplication } from '@shared//domain/application/leave-application';
 import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './manage-leave-applications.service';
+import { MomentInput } from 'moment';
 
 describe('ManageLeaveApplicationsService', () => {
   let service: ManageLeaveApplicationsService;
   let http: HttpTestingController;
-  const mockLeaveApplications: Array<LeaveApplication> = [new LeaveApplication(), new LeaveApplication()];
+  const mockStartDate: MomentInput = '2020-05-05';
+  const mockEndDate: MomentInput = '2020-05-10';
+  const mockLeaveApplication1 = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
+  const mockLeaveApplication2 = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
+  const mockLeaveApplications: Array<LeaveApplication> = [mockLeaveApplication1, mockLeaveApplication2];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
