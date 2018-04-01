@@ -17,6 +17,9 @@ import { ManageLeaveApplicationsComponent } from '@modules/core/pages/manage-lea
 import { ManageEmployeesDataComponent } from '@modules/core/pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from '@modules/core/pages/my-applications/my-applications.component';
 import { DashboardComponent } from '@modules/core/pages/dashboard/dashboard.component';
+import {
+  ManageDelegationApplicationsComponent,
+} from '@modules/core/pages/manage-delegation-applications/manage-delegation-applications.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -33,64 +36,89 @@ export const routeDefinitions: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         outlet: 'core',
+      pathMatch: 'full',
       },
       {
         path: 'personal-details',
         component: PersonalDetailsComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'leave-application',
         component: LeaveApplicationComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'delegation',
         component: DelegationComponent,
         outlet: 'core',
+        pathMatch: 'full',
+      },
+      {
+        path: 'delegation/:id',
+        component: DelegationComponent,
+        outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'my-applications',
         component: MyApplicationsComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'employees',
         component: EmployeesComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'manage-employee-data',
         component: ManageEmployeesDataComponent,
         outlet: 'core',
         canActivate: [ManagerGuard],
+        pathMatch: 'full',
       },
       {
         path: 'add-employee',
         component: AddEmployeeComponent,
         outlet: 'core',
         canActivate: [HrTeamMemberGuard],
+        pathMatch: 'full',
       },
       {
         path: 'manage-leave-applications',
         component: ManageLeaveApplicationsComponent,
         outlet: 'core',
         canActivate: [ManagerGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'manage-delegation-applications',
+        component: ManageDelegationApplicationsComponent,
+        outlet: 'core',
+        canActivate: [ManagerGuard],
+        pathMatch: 'full',
       },
       {
         path: 'about',
         component: AboutComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'account',
         component: AccountComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
       {
         path: 'settings',
         component: SettingsComponent,
         outlet: 'core',
+        pathMatch: 'full',
       },
     ],
   },

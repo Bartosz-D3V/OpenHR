@@ -39,7 +39,7 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager addManager(final Manager manager) {
     final User user = manager.getUser();
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
@@ -50,7 +50,7 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
     return managerRepository.updateManager(manager);
   }
@@ -68,7 +68,7 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void addEmployeeToManager(final long managerId, final long subjectId) throws SubjectDoesNotExistException {
     final Manager manager = getManager(managerId);
     final Employee employee = workerProxy.getEmployee(subjectId);
@@ -77,7 +77,7 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setHrToManager(final long managerId, final long hrTeamMemberId) throws SubjectDoesNotExistException {
     final Manager manager = getManager(managerId);
     final HrTeamMember hrTeamMember = workerProxy.getHrTeamMember(hrTeamMemberId);

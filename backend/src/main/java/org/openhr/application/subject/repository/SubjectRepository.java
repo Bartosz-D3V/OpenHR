@@ -39,30 +39,30 @@ public class SubjectRepository {
     return this.subjectDAO.getSubjectDetails(subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation) {
     this.subjectDAO.updateSubjectHRInformation(subjectId, hrInformation);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void deleteSubject(final long subjectId) throws SubjectDoesNotExistException {
     this.subjectDAO.deleteSubject(subjectId);
   }

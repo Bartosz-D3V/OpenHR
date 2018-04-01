@@ -28,28 +28,28 @@ public class SubjectFacadeImpl implements SubjectFacade {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectService.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectService.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectService.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     subjectService.deleteSubject(subjectId);
   }

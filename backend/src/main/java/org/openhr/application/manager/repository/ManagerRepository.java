@@ -52,27 +52,27 @@ public class ManagerRepository {
     return managerDAO.getManager(subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager addManager(final Manager manager) {
     return managerDAO.addManager(manager);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
     return managerDAO.updateManager(manager);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
     return managerDAO.getEmployees(subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void addEmployeeToManager(final Manager manager, final Employee employee) throws SubjectDoesNotExistException {
     managerDAO.addEmployeeToManager(manager, employee);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
     throws SubjectDoesNotExistException {
     return managerDAO.setHrToManager(manager, hrTeamMember);

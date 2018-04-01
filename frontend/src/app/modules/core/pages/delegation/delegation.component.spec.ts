@@ -1,19 +1,24 @@
+import { Injectable } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatTableModule,
-  MatToolbarModule,
+  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule,
+  MatSnackBarModule, MatTableModule, MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { Observable } from 'rxjs/Observable';
 
+import { DelegationService } from '@modules/core/pages/delegation/service/delegation.service';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
-import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { Employee } from '@shared/domain/subject/employee';
 import { ContactInformation } from '@shared/domain/subject/contact-information';
 import { EmployeeInformation } from '@shared/domain/subject/employee-information';
@@ -21,6 +26,7 @@ import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Address } from '@shared/domain/subject/address';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { Country } from '@shared/domain/country/country';
 import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {
@@ -31,6 +37,13 @@ describe('DelegationComponent', () => {
       'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
       '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
 
+  @Injectable()
+  class FakeDelegationService {
+    getCountries(): Observable<Array<Country>> {
+      return Observable.of([]);
+    }
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -40,6 +53,7 @@ describe('DelegationComponent', () => {
         DateRangeComponent,
       ],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         MomentDateModule,
         NoopAnimationsModule,
@@ -54,10 +68,13 @@ describe('DelegationComponent', () => {
         MatTableModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
       ],
       providers: [
         JwtHelperService,
+        NotificationService,
         ErrorResolverService,
+        {provide: DelegationService, useClass: FakeDelegationService},
       ],
     })
       .compileComponents();
@@ -260,14 +277,14 @@ describe('DelegationComponent', () => {
   });
 
   describe('autocomplete', () => {
-    let filteredCountries;
-    const mockCountries: Array<string> = [
-      'Algeria',
-      'South Korea',
-      'Germany',
-      'Poland',
-      'Portugal',
-      'Zanzibar',
+    let filteredCountries: Array<Country>;
+    const mockCountries: Array<Country> = [
+      new Country('Algeria', ''),
+      new Country('South Korea', ''),
+      new Country('Germany', ''),
+      new Country('Poland', ''),
+      new Country('Portugal', ''),
+      new Country('Zanzibar', ''),
     ];
 
     afterEach(() => {
@@ -278,17 +295,17 @@ describe('DelegationComponent', () => {
       filteredCountries = component.filterCountries(mockCountries, 'Pol');
 
       expect(filteredCountries.length).toEqual(1);
-      expect(filteredCountries[0]).toEqual('Poland');
+      expect(filteredCountries[0].countryName).toEqual('Poland');
 
       filteredCountries = component.filterCountries(mockCountries, 'Po');
 
       expect(filteredCountries.length).toEqual(2);
-      expect(filteredCountries[0]).toEqual('Poland');
-      expect(filteredCountries[1]).toEqual('Portugal');
+      expect(filteredCountries[0].countryName).toEqual('Poland');
+      expect(filteredCountries[1].countryName).toEqual('Portugal');
     });
 
     describe('reduceCountries method', () => {
-      let result: Array<string>;
+      let result: Array<Country>;
       let countryCtrl: AbstractControl;
 
       beforeEach(() => {
@@ -296,7 +313,7 @@ describe('DelegationComponent', () => {
       });
 
       it('should not filter results if input is empty', () => {
-        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<Country>) => {
           result = data;
         });
         countryCtrl.setValue('');
@@ -306,28 +323,41 @@ describe('DelegationComponent', () => {
       });
 
       it('should filter results accordingly to input value', () => {
-        component.reduceCountries(mockCountries).subscribe((data: Array<string>) => {
+        component.reduceCountries(mockCountries).subscribe((data: Array<Country>) => {
           result = data;
         });
         countryCtrl.setValue('Ger');
 
         expect(result).toBeDefined();
-        expect(result[0]).toEqual('Germany');
+        expect(result[0].countryName).toEqual('Germany');
       });
 
     });
 
   });
 
+  describe('displayCountryName', () => {
+    it('should return country name if country was provided', () => {
+      const mockCountry: Country = new Country('Vietnam', null);
+
+      expect(component.displayCountryName(mockCountry)).toEqual('Vietnam');
+    });
+
+    it('should return undefined if country was not provided', () => {
+      expect(component.displayCountryName()).toBeUndefined();
+    });
+  });
+
   describe('isValid', () => {
     it('should return false if form is dirty', () => {
-      component.applicationForm.get('delegation').setErrors({'error': 'invalid'});
+      spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();
     });
 
-    it('should return true if form does not have any errors', () => {
-      component.applicationForm.get(['delegation', 'objective']).setValue('Example value');
+    xit('should return true if form does not have any errors', () => {
+      spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.dateRange.dateRangeGroup, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });

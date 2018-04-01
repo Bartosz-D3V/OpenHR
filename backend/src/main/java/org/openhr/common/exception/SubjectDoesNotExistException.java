@@ -1,7 +1,7 @@
 package org.openhr.common.exception;
 
 /**
- * Exception thrown when required subject was not found in the
+ * Exception thrown when MANDATORY subject was not found in the
  * database, although it must exist at that point.
  */
 public class SubjectDoesNotExistException extends Exception {

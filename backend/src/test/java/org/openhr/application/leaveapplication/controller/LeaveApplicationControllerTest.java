@@ -68,11 +68,10 @@ public class LeaveApplicationControllerTest {
   @WithMockUser()
   public void getLeaveApplicationShouldReturnAnApplication() throws Exception {
     final String leaveApplicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
-    when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenReturn(mockLeaveApplication);
+    when(leaveApplicationFacade.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
 
     final MvcResult result = mockMvc
-      .perform(get("/leave-application")
-        .param("applicationId", "1"))
+      .perform(get("/leave-applications/{leaveApplicationId}", 1L))
       .andExpect(status().isOk())
       .andReturn();
     assertNull(result.getResolvedException());
@@ -82,11 +81,10 @@ public class LeaveApplicationControllerTest {
   @Test
   @WithMockUser()
   public void getLeaveApplicationShouldHandle404Exception() throws Exception {
-    when(leaveApplicationFacade.getLeaveApplication(anyLong())).thenThrow(mock404Exception);
+    when(leaveApplicationFacade.getLeaveApplication(1L)).thenThrow(mock404Exception);
 
     final MvcResult result = mockMvc
-      .perform(get("/leave-application")
-        .param("applicationId", "1"))
+      .perform(get("/leave-applications/{leaveApplicationId}", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -97,11 +95,10 @@ public class LeaveApplicationControllerTest {
   @WithMockUser()
   public void getLeaveApplicationShouldHandleHibernateError() throws Exception {
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .getLeaveApplication(anyLong());
+      .getLeaveApplication(1L);
 
     final MvcResult result = mockMvc
-      .perform(get("/leave-application")
-        .param("applicationId", "1"))
+      .perform(get("/leave-applications/{leaveApplicationId}", 1L))
       .andExpect(status().isInternalServerError())
       .andReturn();
     assertNotNull(result.getResolvedException());
@@ -116,7 +113,8 @@ public class LeaveApplicationControllerTest {
       .createLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application/{subjectId}", 1)
+      .perform(post("/leave-applications")
+        .param("subjectId", String.valueOf(1L))
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isNotFound())
@@ -133,7 +131,8 @@ public class LeaveApplicationControllerTest {
       .createLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application/{subjectId}", 1)
+      .perform(post("/leave-applications")
+        .param("subjectId", String.valueOf(1L))
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isBadRequest())
@@ -150,7 +149,8 @@ public class LeaveApplicationControllerTest {
       .createLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application/{subjectId}", 1)
+      .perform(post("/leave-applications")
+        .param("subjectId", String.valueOf(1L))
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isInternalServerError())
@@ -165,7 +165,8 @@ public class LeaveApplicationControllerTest {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
     final MvcResult result = mockMvc
-      .perform(post("/leave-application/{subjectId}", 1)
+      .perform(post("/leave-applications")
+        .param("subjectId", String.valueOf(1L))
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isCreated())
@@ -178,10 +179,10 @@ public class LeaveApplicationControllerTest {
   public void updateLeaveApplicationShouldHandle404Error() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mock404Exception).when(leaveApplicationFacade)
-      .updateLeaveApplication(anyObject());
+      .updateLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application")
+      .perform(put("/leave-applications/{leaveApplicationId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isNotFound())
@@ -195,10 +196,10 @@ public class LeaveApplicationControllerTest {
   public void updateLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockHibernateException).when(leaveApplicationFacade)
-      .updateLeaveApplication(anyObject());
+      .updateLeaveApplication(anyLong(), anyObject());
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application")
+      .perform(put("/leave-applications/{leaveApplicationId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(subjectAsJson))
       .andExpect(status().isInternalServerError())
@@ -213,7 +214,7 @@ public class LeaveApplicationControllerTest {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application")
+      .perform(put("/leave-applications/{leaveApplicationId}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(applicationAsJson))
       .andExpect(status().isOk())
@@ -227,7 +228,7 @@ public class LeaveApplicationControllerTest {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application/manager-reject")
+      .perform(put("/leave-applications/manager-reject")
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
@@ -242,7 +243,7 @@ public class LeaveApplicationControllerTest {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
     final MvcResult result = mockMvc
-      .perform(put("/leave-application/manager-approve")
+      .perform(put("/leave-applications/manager-approve")
         .param("processInstanceId", "1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(roleAsJson))
