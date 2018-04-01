@@ -38,28 +38,28 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
     throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.deleteSubject(subjectId);
   }
@@ -83,7 +83,7 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject,
                                                                 final LeaveApplication leaveApplication)
     throws ValidationException {
@@ -101,7 +101,7 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void revertSubtractedDaysForApplication(final Subject subject, final LeaveApplication leaveApplication) {
     final long allowanceSubtracted = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
       leaveApplication.getEndDate());

@@ -20,9 +20,9 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   public tableColumns: Array<string> = ['id', 'name', 'position'];
   public dataSource: MatTableDataSource<EmployeeData>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) public paginator: MatPaginator;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) public sort: MatSort;
 
   constructor(private _employeesService: EmployeesService) {
     this.dataSource = new MatTableDataSource(this.employees);

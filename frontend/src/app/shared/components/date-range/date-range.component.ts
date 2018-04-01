@@ -28,6 +28,7 @@ import { DateRangeService } from './service/date-range.service';
   ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
+  private $bankHolidays: ISubscription;
   private $startDateChange: ISubscription;
   private $endDateChange: ISubscription;
 
@@ -54,7 +55,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   @Output() public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
-  private $bankHolidays: ISubscription;
 
   public dateRangeGroup: FormGroup = new FormGroup({
     startDate: new FormControl(this.startDate, []),
@@ -157,7 +157,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.dateRangeGroup.reset();
   }
 
-  isMobile(): boolean {
+  public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
 }

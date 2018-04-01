@@ -127,6 +127,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       }),
       role: [this.subject.role],
     });
+
     this.managersCtrl.setValue(this.subject.manager);
     this.managersCtrl.setValidators(Validators.required);
   }

@@ -33,7 +33,7 @@ public class HrServiceImpl implements HrService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) {
     final User user = hrTeamMember.getUser();
     final String encodedPassword = authenticationService.encodePassword(user.getPassword());
@@ -45,19 +45,19 @@ public class HrServiceImpl implements HrService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public HrTeamMember updateHrTeamMember(final long subjectId, final HrTeamMember hrTeamMember) {
     return hrRepository.updateHrTeamMember(subjectId, hrTeamMember);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
     hrRepository.deleteHrTeamMember(subjectId);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void addManagerToHr(final long hrTeamMemberId, final long managerId) throws SubjectDoesNotExistException {
     final HrTeamMember hrTeamMember = getHrTeamMember(hrTeamMemberId);
     final Manager manager = workerProxy.getManager(managerId);

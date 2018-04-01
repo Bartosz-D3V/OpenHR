@@ -73,7 +73,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY, rollbackFor = HibernateException.class)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
     throws HibernateException {
     final Subject subject = getExistingSubjectDetails(subjectId);

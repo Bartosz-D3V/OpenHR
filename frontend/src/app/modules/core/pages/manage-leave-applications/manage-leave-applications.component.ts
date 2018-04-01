@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
@@ -19,12 +19,11 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
   private $leaveApplications: ISubscription;
-  leaveApplications: Array<LeaveApplication>;
-  isLoadingResults: boolean;
-  displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'employeeName', 'info', 'reject', 'approve'];
-  resultsLength = 0;
-
-  dataSource: MatTableDataSource<LeaveApplication>;
+  public leaveApplications: Array<LeaveApplication>;
+  public isLoadingResults: boolean;
+  public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'employeeName', 'info', 'reject', 'approve'];
+  public resultsLength = 0;
+  public dataSource: MatTableDataSource<LeaveApplication>;
 
   constructor(
     private _manageLeaveApplicationsService: ManageLeaveApplicationsService,

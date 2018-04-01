@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import {
   MatButtonModule,
   MatCardModule,
@@ -18,9 +17,7 @@ import {
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { MomentInput } from 'moment';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 import { Observable } from 'rxjs/Observable';
 
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
@@ -30,18 +27,18 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { DateSelectorType } from './enumeration/date-selector-type.enum';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
+import { LeaveType } from '@shared/domain/application/leave-type';
 import { LeaveApplicationService } from './service/leave-application.service';
 import { LeaveApplicationComponent } from './leave-application.component';
-import { DateSelectorType } from './enumeration/date-selector-type.enum';
-import { LeaveApplication } from '@shared/domain/leave-application/leave-application';
-import { LeaveType } from '@shared/domain/leave-application/leave-type';
 
 describe('LeaveApplicationComponent', () => {
   let component: LeaveApplicationComponent;
   let fixture: ComponentFixture<LeaveApplicationComponent>;
   const mockStartDate: MomentInput = '2020-05-05';
   const mockEndDate: MomentInput = '2020-05-10';
-  const mockLeave = new LeaveApplication();
+  const mockLeave = new LeaveApplication(null, mockStartDate, mockEndDate, false, false, false, null, null);
 
   @Injectable()
   class FakeLeaveApplicationService {

@@ -21,17 +21,17 @@ public class EmployeeRepository {
     return employeeDAO.getEmployee(subjectId);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee createEmployee(final Employee employee) {
     return employeeDAO.createEmployee(employee);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     return employeeDAO.updateEmployee(subjectId, employee);
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     return employeeDAO.setManagerToEmployee(employeeId, manager);
   }

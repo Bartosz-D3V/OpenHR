@@ -70,7 +70,6 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
     return taskService.createTaskQuery()
       .processInstanceId(processInstanceId)
@@ -81,7 +80,6 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<String> getActiveProcessesId() {
     return runtimeService
       .createProcessInstanceQuery()

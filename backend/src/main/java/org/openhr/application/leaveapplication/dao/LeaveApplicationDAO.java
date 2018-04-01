@@ -9,11 +9,12 @@ import java.util.List;
 
 public interface LeaveApplicationDAO {
 
-  LeaveApplication getLeaveApplication(long applicationId) throws ApplicationDoesNotExistException;
+  LeaveApplication getLeaveApplication(long leaveApplicationId) throws ApplicationDoesNotExistException;
 
   LeaveApplication createLeaveApplication(Subject subject, LeaveApplication leaveApplication);
 
-  LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication) throws ApplicationDoesNotExistException;
+  LeaveApplication updateLeaveApplication(long leaveApplicationId, LeaveApplication leaveApplication)
+    throws ApplicationDoesNotExistException;
 
   long getLeaveApplicationIdByProcessId(String processInstanceId);
 
