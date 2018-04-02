@@ -12,19 +12,17 @@ describe('SettingsService', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         SettingsService,
         {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
         },
       ],
     });

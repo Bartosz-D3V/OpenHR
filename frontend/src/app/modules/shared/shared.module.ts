@@ -8,22 +8,8 @@ import { NumberIndicatorComponent } from '@shared/components/number-indicator/nu
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    FlexLayoutModule,
-  ],
-  exports: [
-    CapitalizePipe,
-    PageHeaderComponent,
-    NumberIndicatorComponent,
-  ],
-  declarations: [
-    CapitalizePipe,
-    PageHeaderComponent,
-    NumberIndicatorComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, FlexLayoutModule],
+  exports: [CapitalizePipe, PageHeaderComponent, NumberIndicatorComponent],
+  declarations: [CapitalizePipe, PageHeaderComponent, NumberIndicatorComponent],
 })
-export class SharedModule {
-}
+export class SharedModule {}

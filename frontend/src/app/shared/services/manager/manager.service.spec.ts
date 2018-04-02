@@ -7,17 +7,15 @@ import { ManagerService } from './manager.service';
 describe('ManagerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        ManagerService,
-        JwtHelperService,
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [ManagerService, JwtHelperService],
     });
   });
 
-  it('should be created', inject([ManagerService], (service: ManagerService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([ManagerService], (service: ManagerService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

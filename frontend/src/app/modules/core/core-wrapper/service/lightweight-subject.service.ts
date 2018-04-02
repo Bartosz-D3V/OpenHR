@@ -12,14 +12,11 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 export class LightweightSubjectService {
   private url: string = SystemVariables.API_URL + '/subjects/lightweight';
   private readonly headers: HttpHeaders = new HttpHeaders({
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService, private _errorResolver: ErrorResolverService) {}
 
   public getUser(userId: number): Observable<User> {
     return this._http

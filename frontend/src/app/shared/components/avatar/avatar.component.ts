@@ -11,17 +11,12 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
   providers: [JwtHelperService],
 })
 export class AvatarComponent {
+  @Input() public user: User;
 
-  @Input()
-  public user: User;
-
-  constructor(private _jwtHelper: JwtHelperService,
-              private _router: Router) {
-  }
+  constructor(private _jwtHelper: JwtHelperService, private _router: Router) {}
 
   public logout(): void {
     this._jwtHelper.removeToken();
     this._router.navigate(['login']);
   }
-
 }

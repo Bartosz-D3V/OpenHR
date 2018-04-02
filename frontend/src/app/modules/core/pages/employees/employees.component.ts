@@ -20,22 +20,18 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   public tableColumns: Array<string> = ['id', 'name', 'position'];
   public dataSource: MatTableDataSource<EmployeeData>;
 
-  @ViewChild(MatPaginator)
-  public paginator: MatPaginator;
+  @ViewChild(MatPaginator) public paginator: MatPaginator;
 
-  @ViewChild(MatSort)
-  public sort: MatSort;
+  @ViewChild(MatSort) public sort: MatSort;
 
   constructor(private _employeesService: EmployeesService) {
     this.dataSource = new MatTableDataSource(this.employees);
   }
 
   ngOnInit() {
-    this.$employees = this._employeesService
-      .getEmployees()
-      .subscribe((result: Array<Employee>) => {
-        this.employees = this.simplifyEmployeeArray(result);
-      });
+    this.$employees = this._employeesService.getEmployees().subscribe((result: Array<Employee>) => {
+      this.employees = this.simplifyEmployeeArray(result);
+    });
   }
 
   ngOnDestroy() {

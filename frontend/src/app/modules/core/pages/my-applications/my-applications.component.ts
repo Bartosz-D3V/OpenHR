@@ -15,11 +15,7 @@ import { MyApplicationsService } from './service/my-applications.service';
   selector: 'app-my-applications',
   templateUrl: './my-applications.component.html',
   styleUrls: ['./my-applications.component.scss'],
-  providers: [
-    MyApplicationsService,
-    JwtHelperService,
-    NotificationService,
-  ],
+  providers: [MyApplicationsService, JwtHelperService, NotificationService],
 })
 export class MyApplicationsComponent implements OnInit, OnDestroy {
   private $leaveApplications: ISubscription;
@@ -28,15 +24,15 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   public resultsLength = 0;
   public dataSource: MatTableDataSource<Application> = new MatTableDataSource<Application>();
 
-  @ViewChild(MatPaginator)
-  public paginator: MatPaginator;
+  @ViewChild(MatPaginator) public paginator: MatPaginator;
 
-  constructor(private _myApplications: MyApplicationsService,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService,
-              private _router: Router,
-              private _activatedRoute: ActivatedRoute) {
-  }
+  constructor(
+    private _myApplications: MyApplicationsService,
+    private _jwtHelper: JwtHelperService,
+    private _errorResolver: ErrorResolverService,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.isLoadingResults = true;
@@ -54,18 +50,19 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     Observable.zip(
       this._myApplications.getSubmittedLeaveApplications(subjectId),
       this._myApplications.getSubmittedDelegationApplications(subjectId),
-      (leaveApplications: Array<Application>,
-       delegationApplications: Array<Application>) =>
-        ({leaveApplications, delegationApplications})
-    ).subscribe((pair) => {
-      this.isLoadingResults = false;
-      const applications: Array<Application> = pair.leaveApplications.concat(pair.delegationApplications);
-      this.resultsLength = applications.length;
-      this.dataSource.data = applications;
-      this.dataSource.paginator = this.paginator;
-    }, (httpErrorResponse: HttpErrorResponse) => {
-      this._errorResolver.handleError(httpErrorResponse.error);
-    });
+      (leaveApplications: Array<Application>, delegationApplications: Array<Application>) => ({ leaveApplications, delegationApplications })
+    ).subscribe(
+      pair => {
+        this.isLoadingResults = false;
+        const applications: Array<Application> = pair.leaveApplications.concat(pair.delegationApplications);
+        this.resultsLength = applications.length;
+        this.dataSource.data = applications;
+        this.dataSource.paginator = this.paginator;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
   }
 
   public applicationIsRejected(application: Application): boolean {
@@ -73,7 +70,6 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   }
 
   public amendApplication(applicationId: number): void {
-    this._router.navigate(['../delegation', applicationId], {relativeTo: this._activatedRoute});
+    this._router.navigate(['../delegation', applicationId], { relativeTo: this._activatedRoute });
   }
-
 }

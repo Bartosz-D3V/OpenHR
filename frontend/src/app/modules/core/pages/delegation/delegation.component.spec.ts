@@ -5,8 +5,15 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatAutocompleteModule, MatCardModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule,
-  MatSnackBarModule, MatTableModule, MatToolbarModule,
+  MatAutocompleteModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatToolbarModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -32,10 +39,13 @@ import { DelegationComponent } from './delegation.component';
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
   let fixture: ComponentFixture<DelegationComponent>;
-  const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
-    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line',
-      'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
-      '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
+  const employee1: Employee = new Employee(
+    new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
+    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line', 'SA2 92B', 'Gotham', 'US')),
+    new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team', '13HJ', '2010-02-02', '2012-02-02'),
+    new HrInformation(30, 10),
+    Role.EMPLOYEE
+  );
 
   @Injectable()
   class FakeDelegationService {
@@ -44,41 +54,37 @@ describe('DelegationComponent', () => {
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DelegationComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-        DateRangeComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        MomentDateModule,
-        NoopAnimationsModule,
-        FormsModule,
-        FlexLayoutModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatCardModule,
-        MatInputModule,
-        MatTableModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        ErrorResolverService,
-        {provide: DelegationService, useClass: FakeDelegationService},
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [DelegationComponent, PageHeaderComponent, CapitalizePipe, DateRangeComponent],
+        imports: [
+          RouterTestingModule,
+          HttpClientTestingModule,
+          MomentDateModule,
+          NoopAnimationsModule,
+          FormsModule,
+          FlexLayoutModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatDatepickerModule,
+          MatFormFieldModule,
+          MatCardModule,
+          MatInputModule,
+          MatTableModule,
+          MatAutocompleteModule,
+          MatProgressSpinnerModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          ErrorResolverService,
+          { provide: DelegationService, useClass: FakeDelegationService },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DelegationComponent);
@@ -181,7 +187,6 @@ describe('DelegationComponent', () => {
         expect(nameValidator.valid).toBeTruthy();
       });
     });
-
   });
 
   describe('organisation form group', () => {
@@ -331,9 +336,7 @@ describe('DelegationComponent', () => {
         expect(result).toBeDefined();
         expect(result[0].countryName).toEqual('Germany');
       });
-
     });
-
   });
 
   describe('displayCountryName', () => {
@@ -362,5 +365,4 @@ describe('DelegationComponent', () => {
       expect(component.isValid()).toBeTruthy();
     });
   });
-
 });

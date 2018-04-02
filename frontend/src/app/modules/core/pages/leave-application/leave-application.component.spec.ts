@@ -4,7 +4,14 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatInputModule, MatMenuModule, MatRadioModule, MatSelectModule, MatSnackBarModule,
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatInputModule,
+  MatMenuModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSnackBarModule,
   MatStepperModule,
   MatToolbarModule,
 } from '@angular/material';
@@ -42,50 +49,47 @@ describe('LeaveApplicationComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        LeaveApplicationComponent,
-        DateRangeComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        FlexLayoutModule,
-        MatDatepickerModule,
-        MomentDateModule,
-        MatStepperModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatToolbarModule,
-        MatSelectModule,
-        MatInputModule,
-        MatRadioModule,
-        MatCardModule,
-        MatSnackBarModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: LeaveApplicationService, useClass: FakeLeaveApplicationService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-        ResponsiveHelperService,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [LeaveApplicationComponent, DateRangeComponent, PageHeaderComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          FlexLayoutModule,
+          MatDatepickerModule,
+          MomentDateModule,
+          MatStepperModule,
+          MatButtonModule,
+          MatMenuModule,
+          MatToolbarModule,
+          MatSelectModule,
+          MatInputModule,
+          MatRadioModule,
+          MatCardModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: LeaveApplicationService,
+            useClass: FakeLeaveApplicationService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+          ResponsiveHelperService,
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeaveApplicationComponent);
@@ -122,7 +126,7 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setSelector should update selector type', () => {
-    component.setSelector({source: null, value: DateSelectorType.RANGE});
+    component.setSelector({ source: null, value: DateSelectorType.RANGE });
 
     expect(component.selectorType).toBeDefined();
     expect(typeof component.selectorType).toBe('string');
@@ -184,20 +188,24 @@ describe('LeaveApplicationComponent', () => {
   });
 
   describe('isMobile method', () => {
-    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
         expect(component.isMobile()).toBeTruthy();
-      }));
+      })
+    );
 
-    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
         expect(component.isMobile()).toBeFalsy();
-      }));
+      })
+    );
   });
 });

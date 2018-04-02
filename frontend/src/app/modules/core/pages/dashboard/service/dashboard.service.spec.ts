@@ -8,13 +8,8 @@ describe('DashboardService', () => {
   let service: DashboardService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DashboardService,
-        JwtHelperService,
-      ],
-      imports: [
-        HttpClientTestingModule,
-      ],
+      providers: [DashboardService, JwtHelperService],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.get(DashboardService);
   });

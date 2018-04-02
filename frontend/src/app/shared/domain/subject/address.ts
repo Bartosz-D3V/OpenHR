@@ -6,8 +6,14 @@ export class Address {
   public city: String;
   public country: String;
 
-  constructor(firstLineAddress: String, secondLineAddress: String, thirdLineAddress: String, postcode: String,
-              city: String, country: String) {
+  constructor(
+    firstLineAddress: String,
+    secondLineAddress: String,
+    thirdLineAddress: String,
+    postcode: String,
+    city: String,
+    country: String
+  ) {
     this.firstLineAddress = firstLineAddress;
     this.secondLineAddress = secondLineAddress;
     this.thirdLineAddress = thirdLineAddress;

@@ -13,16 +13,10 @@ import { ManageLeaveApplicationsService } from './service/manage-leave-applicati
   selector: 'app-manage-leave-applications',
   templateUrl: './manage-leave-applications.component.html',
   styleUrls: ['./manage-leave-applications.component.scss'],
-  providers: [
-    ManageLeaveApplicationsService,
-    JwtHelperService,
-    NotificationService,
-  ],
+  providers: [ManageLeaveApplicationsService, JwtHelperService, NotificationService],
 })
 export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
-
-  @ViewChild(MatPaginator)
-  private paginator: MatPaginator;
+  @ViewChild(MatPaginator) private paginator: MatPaginator;
 
   private $leaveApplications: ISubscription;
   public leaveApplications: Array<LeaveApplication>;
@@ -31,11 +25,12 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication>;
 
-  constructor(private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
-              private _jwtHelper: JwtHelperService,
-              private _notificationService: NotificationService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(
+    private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
+    private _jwtHelper: JwtHelperService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService
+  ) {}
 
   ngOnInit() {
     this.isLoadingResults = true;
@@ -50,38 +45,43 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     this.isLoadingResults = true;
     this.$leaveApplications = this._manageLeaveApplicationsService
       .getAwaitingForActionLeaveApplications(this._jwtHelper.getSubjectId())
-      .subscribe((result: Array<LeaveApplication>) => {
-        this.leaveApplications = result;
-        this.dataSource = new MatTableDataSource<LeaveApplication>(result);
-        this.dataSource.paginator = this.paginator;
-        this.isLoadingResults = false;
-        this.resultsLength = result.length;
-      }, (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      .subscribe(
+        (result: Array<LeaveApplication>) => {
+          this.leaveApplications = result;
+          this.dataSource = new MatTableDataSource<LeaveApplication>(result);
+          this.dataSource.paginator = this.paginator;
+          this.isLoadingResults = false;
+          this.resultsLength = result.length;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public approveLeaveApplication(processInstanceId: string): void {
-    this._manageLeaveApplicationsService
-      .approveLeaveApplicationByManager(processInstanceId)
-      .subscribe(() => {
+    this._manageLeaveApplicationsService.approveLeaveApplicationByManager(processInstanceId).subscribe(
+      () => {
         this.fetchLeaveApplications();
         const message = 'Application has been accepted';
         this._notificationService.openSnackBar(message, 'OK');
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public rejectLeaveApplication(processInstanceId: string): void {
-    this._manageLeaveApplicationsService
-      .rejectLeaveApplicationByManager(processInstanceId)
-      .subscribe(() => {
+    this._manageLeaveApplicationsService.rejectLeaveApplicationByManager(processInstanceId).subscribe(
+      () => {
         this.fetchLeaveApplications();
         const message = 'Application has been rejected';
         this._notificationService.openSnackBar(message, 'OK');
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 }

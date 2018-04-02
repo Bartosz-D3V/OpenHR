@@ -8,8 +8,14 @@ export class EmployeeInformation {
   public startDate: MomentInput;
   public endDate: MomentInput;
 
-  constructor(nationalInsuranceNumber: string, position: string, department: string, employeeNumber: string,
-              startDate: MomentInput, endDate: MomentInput) {
+  constructor(
+    nationalInsuranceNumber: string,
+    position: string,
+    department: string,
+    employeeNumber: string,
+    startDate: MomentInput,
+    endDate: MomentInput
+  ) {
     this.nationalInsuranceNumber = nationalInsuranceNumber;
     this.position = position;
     this.department = department;

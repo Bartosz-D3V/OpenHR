@@ -9,19 +9,15 @@ import { PersonalDetailsService } from './personal-details.service';
 describe('PersonalDetailsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatDialogModule,
-      ],
-      providers: [
-        JwtHelperService,
-        ErrorResolverService,
-        PersonalDetailsService,
-      ],
+      imports: [HttpClientTestingModule, MatDialogModule],
+      providers: [JwtHelperService, ErrorResolverService, PersonalDetailsService],
     });
   });
 
-  it('should be created', inject([PersonalDetailsService], (service: PersonalDetailsService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([PersonalDetailsService], (service: PersonalDetailsService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

@@ -9,10 +9,7 @@ describe('ManagerGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ManagerGuard,
-        JwtHelperService,
-      ],
+      providers: [ManagerGuard, JwtHelperService],
     });
     guard = TestBed.get(ManagerGuard);
     service = TestBed.get(JwtHelperService);

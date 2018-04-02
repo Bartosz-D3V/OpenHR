@@ -11,19 +11,16 @@ export class AccountService {
   private readonly url: string = SystemVariables.API_URL + '/users';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public updatePassword(password: Password): Observable<any> {
     const subjectId: number = this._jwtHelper.getSubjectId();
-    return this._http.put(`${this.url}/auth/${subjectId}`,
-      password, {
-        headers: this.headers,
-      });
+    return this._http.put(`${this.url}/auth/${subjectId}`, password, {
+      headers: this.headers,
+    });
   }
 }

@@ -12,32 +12,27 @@ export class EmployeeService {
   private url: string = SystemVariables.API_URL + '/employees';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getEmployee(employeeId: number): Observable<Employee> {
-    return this._http
-      .get<Employee>(`${this.url}/${employeeId}`, {
-        headers: this.headers,
-      });
+    return this._http.get<Employee>(`${this.url}/${employeeId}`, {
+      headers: this.headers,
+    });
   }
 
   public updateEmployee(employee: Employee): Observable<Employee> {
-    return this._http
-      .put<Employee>(`${this.url}/${employee.subjectId}`, employee, {
-        headers: this.headers,
-      });
+    return this._http.put<Employee>(`${this.url}/${employee.subjectId}`, employee, {
+      headers: this.headers,
+    });
   }
 
   public updateEmployeesManager(employeeId: number, manager: Manager): Observable<Manager> {
-    return this._http
-      .put<Manager>(`${this.url}/${employeeId}/manager-assignment`, manager, {
-        headers: this.headers,
-      });
+    return this._http.put<Manager>(`${this.url}/${employeeId}/manager-assignment`, manager, {
+      headers: this.headers,
+    });
   }
 }

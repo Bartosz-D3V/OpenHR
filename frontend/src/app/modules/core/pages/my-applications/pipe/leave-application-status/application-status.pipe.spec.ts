@@ -1,7 +1,7 @@
 import { MomentInput } from 'moment';
 
 import { LeaveApplication } from 'app/shared/domain/application/leave-application';
-import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-applicaiton-status/application-status.pipe';
+import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-application-status/application-status.pipe';
 import { ApplicationStatuses } from '@modules/core/pages/my-applications/enumeration/application-statuses.enum';
 
 describe('ApplicationStatusPipe', () => {

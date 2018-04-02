@@ -16,15 +16,11 @@ import { ISubscription } from 'rxjs/Subscription';
 export class LoginBoxComponent implements OnInit, OnDestroy {
   private $loginService: ISubscription;
 
-  @Output()
-  public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public loginBoxForm: FormGroup;
 
-  constructor(private _fb: FormBuilder,
-              private _loginService: LoginService,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _fb: FormBuilder, private _loginService: LoginService, private _jwtHelper: JwtHelperService) {}
 
   ngOnInit() {
     this.createForm();
@@ -44,23 +40,23 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   }
 
   public login(): void {
-    const credentials: Credentials = <Credentials> this.loginBoxForm.value;
-    this.$loginService = this._loginService
-      .login(credentials)
-      .subscribe((response: HttpResponse<null>) => {
+    const credentials: Credentials = <Credentials>this.loginBoxForm.value;
+    this.$loginService = this._loginService.login(credentials).subscribe(
+      (response: HttpResponse<null>) => {
         const token: string = response.headers.get('Authorization');
         this._jwtHelper.saveToken(token);
         this.onAuthenticated.emit(true);
-      }, (err: HttpResponse<null>) => {
+      },
+      (err: HttpResponse<null>) => {
         this.handleErrorResponse(err);
-      });
+      }
+    );
   }
 
   public handleErrorResponse(err: HttpResponse<null>): void {
     switch (err.status) {
       case 401:
-        this.loginBoxForm.controls['password'].setErrors({unauthorized: true});
+        this.loginBoxForm.controls['password'].setErrors({ unauthorized: true });
     }
   }
-
 }

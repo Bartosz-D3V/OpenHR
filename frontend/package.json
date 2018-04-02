@@ -11,32 +11,8 @@
     "lint": "ng lint --type-check && npm run stylelint",
     "e2e": "ng e2e",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
-    "commitmsg": "commitplease ../.git/COMMIT_EDITMSG",
     "clean": "rm -rf ./dist ./coverage",
     "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
-  },
-  "commitplease": {
-    "nohook": true,
-    "style": "angular",
-    "types": [
-      "feat",
-      "fix",
-      "docs",
-      "style",
-      "refactor",
-      "perf",
-      "test",
-      "build",
-      "ci",
-      "chore",
-      "revert"
-    ],
-    "scope": "\\S+.*"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "@types/jasmine"
-    ]
   },
   "private": true,
   "dependencies": {
@@ -69,7 +45,6 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.1.0",
-    "commitplease": "^2.7.10",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "^2.0.0",
@@ -78,6 +53,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "prettier": "^1.11.1",
     "protractor": "~5.1.2",
     "stylelint": "^8.2.0",
     "stylelint-config-sass-guidelines": "^3.1.0",

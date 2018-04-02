@@ -13,21 +13,19 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  providers: [
-    AccountService,
-    NotificationService,
-  ],
+  providers: [AccountService, NotificationService],
 })
 export class AccountComponent implements OnInit, OnDestroy {
   private $accountService: ISubscription;
   public passwordForm: FormGroup;
   public emailForm: FormGroup;
 
-  constructor(private _accountService: AccountService,
-              private _notificationService: NotificationService,
-              private _errorResolver: ErrorResolverService,
-              private _fb: FormBuilder) {
-  }
+  constructor(
+    private _accountService: AccountService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService,
+    private _fb: FormBuilder
+  ) {}
 
   public buildForm(): void {
     this.passwordForm = this._fb.group({
@@ -37,12 +35,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     });
 
     this.emailForm = this._fb.group({
-      email: ['',
-        Validators.compose([
-          Validators.required,
-          Validators.email,
-          Validators.pattern(RegularExpressions.EMAIL)]),
-      ],
+      email: ['', Validators.compose([Validators.required, Validators.email, Validators.pattern(RegularExpressions.EMAIL)])],
     });
   }
 
@@ -58,23 +51,24 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   public arePasswordsIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
-      this.passwordForm.get('newPasswordRepeat')
-        .setErrors({'passwordDoNotMatch': true});
+      this.passwordForm.get('newPasswordRepeat').setErrors({ passwordDoNotMatch: true });
       return false;
     }
     return true;
   }
 
   public savePassword(): void {
-    const password: Password = <Password> this.passwordForm.value;
-    this._accountService
-      .updatePassword(password)
-      .subscribe((() => {
+    const password: Password = <Password>this.passwordForm.value;
+    this._accountService.updatePassword(password).subscribe(
+      () => {
         this._notificationService.openSnackBar('Password updated');
-      }), (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      }, () => {
+      },
+      () => {
         this.passwordForm.reset();
-      });
+      }
+    );
   }
 }

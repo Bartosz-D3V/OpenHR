@@ -7,13 +7,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   styleUrls: ['./static-modal.component.scss'],
 })
 export class StaticModalComponent {
-
-  constructor(public dialogRef: MatDialogRef<StaticModalComponent>,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
+  constructor(
+    public dialogRef: MatDialogRef<StaticModalComponent>,
+    @Optional()
+    @Inject(MAT_DIALOG_DATA)
+    public data: any
+  ) {}
 
   public close(): void {
     this.dialogRef.close();
   }
-
 }

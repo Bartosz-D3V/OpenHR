@@ -7,16 +7,12 @@ import { ApplicationStatuses } from '@modules/core/pages/my-applications/enumera
   name: 'applicationStatus',
 })
 export class ApplicationStatusPipe implements PipeTransform {
-
   transform(application: Application): ApplicationStatuses {
     if (application.terminated) {
-      return !application.approvedByManager ?
-        ApplicationStatuses.REJECTEDBYMANAGER :
-        !application.approvedByHR ?
-          ApplicationStatuses.REJECTEDBYHR :
-          ApplicationStatuses.ACCEPTED;
+      return !application.approvedByManager
+        ? ApplicationStatuses.REJECTEDBYMANAGER
+        : !application.approvedByHR ? ApplicationStatuses.REJECTEDBYHR : ApplicationStatuses.ACCEPTED;
     }
     return ApplicationStatuses.AWAITING;
   }
-
 }
