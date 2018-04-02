@@ -8,7 +8,7 @@ import { DelegationApplication } from '@shared/domain/application/delegation-app
 import { Role } from '@shared/domain/subject/role';
 
 @Injectable()
-export class ManageDelegationApplicationsService {
+export class ManageDelegationsService {
   private readonly url: string = SystemVariables.API_URL + '/delegations';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',

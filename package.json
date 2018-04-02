@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint-staged": "./node_modules/.bin/lint-staged --config .lintstagedrc",
+    "lint-staged": "lint-staged --config .lintstagedrc",
     "pretty": "prettier --write **/*.{js,ts}"
   },
   "dependencies": {},

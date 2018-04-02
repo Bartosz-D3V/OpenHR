@@ -33,6 +33,7 @@ describe('ApplicationTypePipe', () => {
 
     expect(pipe.transform(mockLeaveApplication)).toEqual('Leave application');
   });
+
   it('returns "Delegation application" if passed object is of type DelegationApplication', () => {
     mockDelegationApplication.budget = 100;
 

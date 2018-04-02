@@ -82,7 +82,7 @@ describe('DelegationComponent', () => {
           ErrorResolverService,
           { provide: DelegationService, useClass: FakeDelegationService },
         ],
-      });
+      }).compileComponents();
     })
   );
 
