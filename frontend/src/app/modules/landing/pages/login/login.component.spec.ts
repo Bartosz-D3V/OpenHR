@@ -16,34 +16,28 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   @Injectable()
-  class MockLoginService {
-  }
+  class MockLoginService {}
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        LoginComponent,
-        LoginBoxComponent,
-      ],
-      imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        FormsModule,
-        RouterTestingModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
-        JwtHelperService,
-        {provide: LoginService, useClass: MockLoginService},
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [LoginComponent, LoginBoxComponent],
+        imports: [
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+          FormsModule,
+          RouterTestingModule,
+          MatCardModule,
+          MatButtonModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatInputModule,
+          HttpClientTestingModule,
+        ],
+        providers: [JwtHelperService, { provide: LoginService, useClass: MockLoginService }],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);

@@ -9,24 +9,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('DelegationService', () => {
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        DelegationService,
-        JwtHelperService,
-        {provide: ErrorResolverService, useClass: FakeErrorResolverService},
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [DelegationService, JwtHelperService, { provide: ErrorResolverService, useClass: FakeErrorResolverService }],
     });
   });
 
-  it('should be created', inject([DelegationService], (service: DelegationService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([DelegationService], (service: DelegationService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

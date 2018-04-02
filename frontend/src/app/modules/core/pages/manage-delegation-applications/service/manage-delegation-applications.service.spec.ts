@@ -9,19 +9,15 @@ import { ManageDelegationApplicationsService } from './manage-delegation-applica
 describe('ManageDelegationApplicationsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        MatDialogModule,
-        NoopAnimationsModule,
-      ],
-      providers: [
-        JwtHelperService,
-        ManageDelegationApplicationsService,
-      ],
+      imports: [HttpClientTestingModule, MatDialogModule, NoopAnimationsModule],
+      providers: [JwtHelperService, ManageDelegationApplicationsService],
     });
   });
 
-  it('should be created', inject([ManageDelegationApplicationsService], (service: ManageDelegationApplicationsService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([ManageDelegationApplicationsService], (service: ManageDelegationApplicationsService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

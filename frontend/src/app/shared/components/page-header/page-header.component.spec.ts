@@ -7,15 +7,13 @@ describe('PageHeaderComponent', () => {
   let component: PageHeaderComponent;
   let fixture: ComponentFixture<PageHeaderComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [PageHeaderComponent, CapitalizePipe],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageHeaderComponent);
@@ -27,5 +25,4 @@ describe('PageHeaderComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-
 });

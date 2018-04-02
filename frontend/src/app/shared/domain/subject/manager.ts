@@ -9,12 +9,14 @@ import { Role } from './role';
 export class Manager extends Subject {
   public employees?: Set<Employee>;
 
-  constructor(personalInformation: PersonalInformation,
-              contactInformation: ContactInformation,
-              employeeInformation: EmployeeInformation,
-              hrInformation: HrInformation,
-              role: Role,
-              employees?: Set<Employee>) {
+  constructor(
+    personalInformation: PersonalInformation,
+    contactInformation: ContactInformation,
+    employeeInformation: EmployeeInformation,
+    hrInformation: HrInformation,
+    role: Role,
+    employees?: Set<Employee>
+  ) {
     super(personalInformation, contactInformation, employeeInformation, hrInformation, role);
     this.employees = employees;
   }

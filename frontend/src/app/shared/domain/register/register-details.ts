@@ -3,6 +3,5 @@ export class RegisterDetails {
   public email: string;
   public password: string;
 
-  constructor() {
-  }
+  constructor() {}
 }

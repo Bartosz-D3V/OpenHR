@@ -5,8 +5,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import {
-MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule,
-MatToolbarModule, MatTooltipModule,
+  MatCardModule,
+  MatDialogModule,
+  MatIconModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -25,8 +32,7 @@ describe('MyApplicationsComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
   }
 
   @Injectable()
@@ -36,43 +42,46 @@ describe('MyApplicationsComponent', () => {
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MyApplicationsComponent,
-        ApplicationStatusPipe,
-        ApplicationTypePipe,
-        InitialsPipe,
-        CapitalizePipe,
-        PageHeaderComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        MatDialogModule,
-        MatCardModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-      ],
-      providers: [
-        ErrorResolverService,
-        JwtHelperService,
-        {
-          provide: MyApplicationsService, useClass: FakeMyApplicationsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MyApplicationsComponent,
+          ApplicationStatusPipe,
+          ApplicationTypePipe,
+          InitialsPipe,
+          CapitalizePipe,
+          PageHeaderComponent,
+        ],
+        imports: [
+          RouterTestingModule,
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          MatDialogModule,
+          MatCardModule,
+          MatIconModule,
+          MatToolbarModule,
+          MatPaginatorModule,
+          MatTableModule,
+          MatProgressSpinnerModule,
+          MatSnackBarModule,
+          MatTooltipModule,
+        ],
+        providers: [
+          ErrorResolverService,
+          JwtHelperService,
+          {
+            provide: MyApplicationsService,
+            useClass: FakeMyApplicationsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MyApplicationsComponent);

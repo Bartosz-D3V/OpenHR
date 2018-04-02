@@ -6,12 +6,9 @@ import { Role } from '../../domain/subject/role';
 
 @Injectable()
 export class ManagerGuard implements CanActivate {
-  constructor(private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _jwtHelper: JwtHelperService) {}
 
   canActivate(): boolean {
-    return (!this._jwtHelper.isTokenExpired() &&
-      (this._jwtHelper.hasRole(Role.MANAGER) ||
-      this._jwtHelper.hasRole(Role.HRTEAMMEMBER)));
+    return !this._jwtHelper.isTokenExpired() && (this._jwtHelper.hasRole(Role.MANAGER) || this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
   }
 }

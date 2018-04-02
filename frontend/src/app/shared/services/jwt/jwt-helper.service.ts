@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Moment} from 'moment';
+import { Injectable } from '@angular/core';
+import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import {SystemVariables} from '@config/system-variables';
-import {Jwt} from '../../domain/auth/jwt';
-import {Role} from '../../domain/subject/role';
+import { SystemVariables } from '@config/system-variables';
+import { Jwt } from '../../domain/auth/jwt';
+import { Role } from '../../domain/subject/role';
 
 @Injectable()
 export class JwtHelperService {
@@ -64,7 +64,7 @@ export class JwtHelperService {
     if (token === null || token.length < 10) {
       return emptyJwt;
     }
-    if (((token.split('.')).length - 1) !== 2) {
+    if (token.split('.').length - 1 !== 2) {
       return emptyJwt;
     }
   }

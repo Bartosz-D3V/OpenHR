@@ -20,10 +20,6 @@ import { LoginComponent } from './pages/login/login.component';
     MatButtonModule,
     SharedModule,
   ],
-  declarations: [
-    LoginComponent,
-    LoginBoxComponent,
-  ],
+  declarations: [LoginComponent, LoginBoxComponent],
 })
-export class LandingModule {
-}
+export class LandingModule {}

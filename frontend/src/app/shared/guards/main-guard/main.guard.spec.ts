@@ -10,13 +10,8 @@ describe('MainGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MainGuard,
-        JwtHelperService,
-      ],
-      imports: [
-        RouterTestingModule,
-      ],
+      providers: [MainGuard, JwtHelperService],
+      imports: [RouterTestingModule],
     });
     guard = TestBed.get(MainGuard);
     service = TestBed.get(JwtHelperService);

@@ -7,18 +7,14 @@ import { MatDialogRef } from '@angular/material';
 
 @Injectable()
 export class ErrorResolverService {
-
   private dialogOpened = false;
   private readonly header = 'Error';
 
-  constructor(public dialog: MatDialog) {
-  }
+  constructor(public dialog: MatDialog) {}
 
   private subscribeToEvents(): void {
-    this.dialog.afterAllClosed
-      .subscribe(() => this.dialogOpened = false);
-    this.dialog.afterOpen
-      .subscribe(() => this.dialogOpened = true);
+    this.dialog.afterAllClosed.subscribe(() => (this.dialogOpened = false));
+    this.dialog.afterOpen.subscribe(() => (this.dialogOpened = true));
   }
 
   public handleError(errorInfo: ErrorInfo): void {
@@ -37,5 +33,4 @@ export class ErrorResolverService {
     }
     this.subscribeToEvents();
   }
-
 }

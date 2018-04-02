@@ -10,13 +10,8 @@ describe('EmployeeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        JwtHelperService,
-        EmployeeService,
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [JwtHelperService, EmployeeService],
     });
     http = TestBed.get(HttpTestingController);
     service = TestBed.get(EmployeeService);

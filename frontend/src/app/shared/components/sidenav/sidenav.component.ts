@@ -13,14 +13,10 @@ import { ResponsiveHelperService } from '../../services/responsive-helper/respon
   providers: [ResponsiveHelperService],
 })
 export class SidenavComponent implements OnInit {
-
-  @Input()
-  public user: User;
+  @Input() public user: User;
   public sidenav: MatSidenav;
 
-  constructor(private _router: Router,
-              private _responsiveHelper: ResponsiveHelperService) {
-  }
+  constructor(private _router: Router, private _responsiveHelper: ResponsiveHelperService) {}
 
   ngOnInit() {
     this._router.events.subscribe(() => {

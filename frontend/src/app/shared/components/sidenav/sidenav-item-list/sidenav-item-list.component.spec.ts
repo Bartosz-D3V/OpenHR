@@ -9,20 +9,15 @@ describe('SidenavItemListComponent', () => {
   let component: SidenavItemListComponent;
   let fixture: ComponentFixture<SidenavItemListComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        SidenavItemListComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-      ],
-      providers: [
-        JwtHelperService,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SidenavItemListComponent],
+        imports: [RouterTestingModule],
+        providers: [JwtHelperService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidenavItemListComponent);

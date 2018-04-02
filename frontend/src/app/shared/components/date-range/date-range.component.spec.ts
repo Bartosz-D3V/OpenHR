@@ -22,46 +22,44 @@ describe('DateRangeComponent', () => {
   let fixture: ComponentFixture<DateRangeComponent>;
 
   @Injectable()
-  class FakeDateRangeService {
-  }
+  class FakeDateRangeService {}
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
 
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DateRangeComponent,
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MomentDateModule,
-        FlexLayoutModule,
-        MatDatepickerModule,
-        MatInputModule,
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-      ],
-      providers: [
-        ResponsiveHelperService,
-        JwtHelperService,
-        {
-          provide: DateRangeService, useClass: FakeDateRangeService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [DateRangeComponent],
+        imports: [
+          FormsModule,
+          ReactiveFormsModule,
+          MomentDateModule,
+          FlexLayoutModule,
+          MatDatepickerModule,
+          MatInputModule,
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+        ],
+        providers: [
+          ResponsiveHelperService,
+          JwtHelperService,
+          {
+            provide: DateRangeService,
+            useClass: FakeDateRangeService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DateRangeComponent);
@@ -318,20 +316,24 @@ describe('DateRangeComponent', () => {
   });
 
   describe('isMobile', () => {
-    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
         expect(component.isMobile()).toBeTruthy();
-      }));
+      })
+    );
 
-    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
         expect(component.isMobile()).toBeFalsy();
-      }));
+      })
+    );
   });
 });

@@ -28,9 +28,7 @@ describe('JwtHelperService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        JwtHelperService,
-      ],
+      providers: [JwtHelperService],
     });
     service = TestBed.get(JwtHelperService);
     service.removeToken();

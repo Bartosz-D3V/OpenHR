@@ -21,8 +21,8 @@ import { LeaveApplicationService } from './service/leave-application.service';
   templateUrl: './leave-application.component.html',
   styleUrls: ['./leave-application.component.scss'],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: NAMED_DATE},
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
     LeaveApplicationService,
     ResponsiveHelperService,
     NotificationService,
@@ -36,25 +36,21 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   public leaveApplication: LeaveApplication = new LeaveApplication(null, null, null, null, null, null, null, null);
   public selectorType: DateSelectorType = DateSelectorType.RANGE;
 
-  @ViewChild('dateRange')
-  private dateRangeComponent: DateRangeComponent;
+  @ViewChild('dateRange') private dateRangeComponent: DateRangeComponent;
 
   public leaveApplicationFormGroup: FormGroup = new FormGroup({
-    leaveTypeSelectorController: new FormControl('', [
-      Validators.required,
-    ]),
-    messageController: new FormControl('', [
-      Validators.maxLength(500),
-    ]),
+    leaveTypeSelectorController: new FormControl('', [Validators.required]),
+    messageController: new FormControl('', [Validators.maxLength(500)]),
     dateRangeController: new FormControl('', []),
     singleDateController: new FormControl('', []),
   });
 
-  constructor(private _leaveApplicationService: LeaveApplicationService,
-              private _responsiveHelper: ResponsiveHelperService,
-              private _notificationService: NotificationService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(
+    private _leaveApplicationService: LeaveApplicationService,
+    private _responsiveHelper: ResponsiveHelperService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService
+  ) {}
 
   ngOnInit(): void {
     this.getLeaveTypes();
@@ -73,9 +69,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public setSelector(selector: MatRadioChange): void {
-    this.selectorType = selector.value === 'Range' ?
-      DateSelectorType.RANGE :
-      DateSelectorType.SINGLE;
+    this.selectorType = selector.value === 'Range' ? DateSelectorType.RANGE : DateSelectorType.SINGLE;
     this.setConditionalValidators();
   }
 
@@ -86,12 +80,14 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public getLeaveTypes(): void {
-    this.$leaveTypes = this._leaveApplicationService.getLeaveTypes()
-      .subscribe((response: Array<LeaveType>) => {
+    this.$leaveTypes = this._leaveApplicationService.getLeaveTypes().subscribe(
+      (response: Array<LeaveType>) => {
         this.leaveTypes = response;
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public isDateRangePickerValid(isValid: boolean): void {
@@ -99,16 +95,17 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    this._leaveApplicationService
-      .submitLeaveApplication(this.leaveApplication)
-      .subscribe((response: LeaveApplication) => {
+    this._leaveApplicationService.submitLeaveApplication(this.leaveApplication).subscribe(
+      (response: LeaveApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
         this.leaveApplicationFormGroup.reset();
         this.dateRangeComponent.reset();
         this._notificationService.openSnackBar(message, 'OK');
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public isMobile(): boolean {
@@ -127,8 +124,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   private setConditionalValidators(): void {
     if (this.selectorType === DateSelectorType.SINGLE) {
-      this.leaveApplicationFormGroup.get('singleDateController')
-        .setValidators(Validators.required);
+      this.leaveApplicationFormGroup.get('singleDateController').setValidators(Validators.required);
     }
   }
 }

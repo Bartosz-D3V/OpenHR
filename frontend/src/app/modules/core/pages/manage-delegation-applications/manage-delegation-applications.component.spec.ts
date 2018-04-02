@@ -4,8 +4,15 @@ import { ManageDelegationApplicationsComponent } from './manage-delegation-appli
 import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatCardModule, MatDialogModule, MatIconModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule,
-  MatToolbarModule, MatTooltipModule,
+  MatCardModule,
+  MatDialogModule,
+  MatIconModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -14,9 +21,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import {
-  ManageDelegationApplicationsService,
-} from '@modules/core/pages/manage-delegation-applications/service/manage-delegation-applications.service';
+import { ManageDelegationApplicationsService } from '@modules/core/pages/manage-delegation-applications/service/manage-delegation-applications.service';
 
 describe('ManageDelegationApplicationsComponent', () => {
   let component: ManageDelegationApplicationsComponent;
@@ -24,49 +29,45 @@ describe('ManageDelegationApplicationsComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public handleError(error: any): void {
-    }
+    public handleError(error: any): void {}
   }
 
   @Injectable()
-  class FakeManageDelegationApplicationsService {
-  }
+  class FakeManageDelegationApplicationsService {}
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ManageDelegationApplicationsComponent,
-        InitialsPipe,
-        CapitalizePipe,
-        PageHeaderComponent,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        MatDialogModule,
-        MatCardModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-      ],
-      providers: [
-        ErrorResolverService,
-        JwtHelperService,
-        NotificationService,
-        {
-          provide: ManageDelegationApplicationsService, useClass: FakeManageDelegationApplicationsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ManageDelegationApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          MatDialogModule,
+          MatCardModule,
+          MatIconModule,
+          MatToolbarModule,
+          MatPaginatorModule,
+          MatTableModule,
+          MatProgressSpinnerModule,
+          MatSnackBarModule,
+          MatTooltipModule,
+        ],
+        providers: [
+          ErrorResolverService,
+          JwtHelperService,
+          NotificationService,
+          {
+            provide: ManageDelegationApplicationsService,
+            useClass: FakeManageDelegationApplicationsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageDelegationApplicationsComponent);
