@@ -55,7 +55,7 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
-import { ManageDelegationApplicationsComponent } from './pages/manage-delegation-applications/manage-delegation-applications.component';
+import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
 
@@ -117,7 +117,7 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     MyApplicationsComponent,
     ApplicationStatusPipe,
     DashboardComponent,
-    ManageDelegationApplicationsComponent,
+    ManageDelegationsComponent,
     ApplicationTypePipe,
   ],
   providers: [JwtHelperService],

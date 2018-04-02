@@ -6,15 +6,15 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { ISubscription } from 'rxjs/Subscription';
-import { ManageDelegationApplicationsService } from '@modules/core/pages/manage-delegation-applications/service/manage-delegation-applications.service';
+import { ManageDelegationsService } from '@modules/core/pages/manage-delegations/service/manage-delegations.service';
 
 @Component({
-  selector: 'app-manage-delegation-applications',
-  templateUrl: './manage-delegation-applications.component.html',
-  styleUrls: ['./manage-delegation-applications.component.scss'],
-  providers: [ManageDelegationApplicationsService, JwtHelperService, NotificationService],
+  selector: 'app-manage-delegations',
+  templateUrl: './manage-delegations.component.html',
+  styleUrls: ['./manage-delegations.component.scss'],
+  providers: [ManageDelegationsService, JwtHelperService, NotificationService],
 })
-export class ManageDelegationApplicationsComponent implements OnInit, OnDestroy {
+export class ManageDelegationsComponent implements OnInit, OnDestroy {
   private $delegationApplications: ISubscription;
   public delegationApplications: Array<DelegationApplication>;
   public isLoadingResults: boolean;
@@ -34,7 +34,7 @@ export class ManageDelegationApplicationsComponent implements OnInit, OnDestroy 
   @ViewChild(MatPaginator) public paginator: MatPaginator;
 
   constructor(
-    private _manageDelegationApplicationsService: ManageDelegationApplicationsService,
+    private _manageDelegationsService: ManageDelegationsService,
     private _jwtHelper: JwtHelperService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService
@@ -53,7 +53,7 @@ export class ManageDelegationApplicationsComponent implements OnInit, OnDestroy 
 
   public fetchDelegationApplications(): void {
     this.isLoadingResults = true;
-    this.$delegationApplications = this._manageDelegationApplicationsService
+    this.$delegationApplications = this._manageDelegationsService
       .getAwaitingForActionDelegationApplications(this._jwtHelper.getSubjectId())
       .subscribe(
         (result: Array<DelegationApplication>) => {
@@ -69,7 +69,7 @@ export class ManageDelegationApplicationsComponent implements OnInit, OnDestroy 
   }
 
   public approveDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationApplicationsService.approveDelegationApplicationByManager(processInstanceId).subscribe(
+    this._manageDelegationsService.approveDelegationApplicationByManager(processInstanceId).subscribe(
       () => {
         this.fetchDelegationApplications();
         const message = 'Application has been accepted';
@@ -82,7 +82,7 @@ export class ManageDelegationApplicationsComponent implements OnInit, OnDestroy 
   }
 
   public rejectDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationApplicationsService.rejectDelegationApplicationByManager(processInstanceId).subscribe(
+    this._manageDelegationsService.rejectDelegationApplicationByManager(processInstanceId).subscribe(
       () => {
         this.fetchDelegationApplications();
         const message = 'Application has been rejected';

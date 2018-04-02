@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ManageDelegationApplicationsComponent } from './manage-delegation-applications.component';
+import { ManageDelegationsComponent } from './manage-delegations.component';
 import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -21,11 +21,11 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { ManageDelegationApplicationsService } from '@modules/core/pages/manage-delegation-applications/service/manage-delegation-applications.service';
+import { ManageDelegationsService } from '@modules/core/pages/manage-delegations/service/manage-delegations.service';
 
-describe('ManageDelegationApplicationsComponent', () => {
-  let component: ManageDelegationApplicationsComponent;
-  let fixture: ComponentFixture<ManageDelegationApplicationsComponent>;
+describe('ManageDelegationsComponent', () => {
+  let component: ManageDelegationsComponent;
+  let fixture: ComponentFixture<ManageDelegationsComponent>;
 
   @Injectable()
   class FakeErrorResolverService {
@@ -33,12 +33,12 @@ describe('ManageDelegationApplicationsComponent', () => {
   }
 
   @Injectable()
-  class FakeManageDelegationApplicationsService {}
+  class FakeManageDelegationsService {}
 
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [ManageDelegationApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
+        declarations: [ManageDelegationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
         imports: [
           HttpClientTestingModule,
           NoopAnimationsModule,
@@ -57,8 +57,8 @@ describe('ManageDelegationApplicationsComponent', () => {
           JwtHelperService,
           NotificationService,
           {
-            provide: ManageDelegationApplicationsService,
-            useClass: FakeManageDelegationApplicationsService,
+            provide: ManageDelegationsService,
+            useClass: FakeManageDelegationsService,
           },
           {
             provide: ErrorResolverService,
@@ -70,7 +70,7 @@ describe('ManageDelegationApplicationsComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageDelegationApplicationsComponent);
+    fixture = TestBed.createComponent(ManageDelegationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

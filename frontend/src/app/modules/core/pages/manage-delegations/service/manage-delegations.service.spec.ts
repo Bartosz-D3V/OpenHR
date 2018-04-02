@@ -4,19 +4,19 @@ import { MatDialogModule } from '@angular/material';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ManageDelegationApplicationsService } from './manage-delegation-applications.service';
+import { ManageDelegationsService } from './manage-delegations.service';
 
-describe('ManageDelegationApplicationsService', () => {
+describe('ManageDelegationsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDialogModule, NoopAnimationsModule],
-      providers: [JwtHelperService, ManageDelegationApplicationsService],
+      providers: [JwtHelperService, ManageDelegationsService],
     });
   });
 
   it(
     'should be created',
-    inject([ManageDelegationApplicationsService], (service: ManageDelegationApplicationsService) => {
+    inject([ManageDelegationsService], (service: ManageDelegationsService) => {
       expect(service).toBeTruthy();
     })
   );
