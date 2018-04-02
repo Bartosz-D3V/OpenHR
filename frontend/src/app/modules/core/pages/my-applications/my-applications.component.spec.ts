@@ -21,7 +21,7 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
-import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-applicaiton-status/application-status.pipe';
+import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-application-status/application-status.pipe';
 import { ApplicationTypePipe } from '@modules/core/pages/my-applications/pipe/application-type/application-type.pipe';
 import { MyApplicationsService } from './service/my-applications.service';
 import { MyApplicationsComponent } from './my-applications.component';
