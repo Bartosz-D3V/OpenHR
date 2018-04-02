@@ -10,19 +10,15 @@ export class ManagerService {
   private url: string = SystemVariables.API_URL + '/managers';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getManagers(): Observable<Array<Manager>> {
-    return this._http
-      .get<Array<Manager>>(this.url, {
-        headers: this.headers,
-      });
+    return this._http.get<Array<Manager>>(this.url, {
+      headers: this.headers,
+    });
   }
-
 }

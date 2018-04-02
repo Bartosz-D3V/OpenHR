@@ -8,15 +8,10 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [
-    LoginService,
-    JwtHelperService,
-  ],
+  providers: [LoginService, JwtHelperService],
 })
 export class LoginComponent {
-
-  constructor(private _router: Router) {
-  }
+  constructor(private _router: Router) {}
 
   openApp(authenticated: boolean): void {
     if (authenticated) {

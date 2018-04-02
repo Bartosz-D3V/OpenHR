@@ -4,10 +4,20 @@ import { LeaveType } from '@shared/domain/application/leave-type';
 import { ApplicationTypePipe } from './application-type.pipe';
 
 describe('ApplicationTypePipe', () => {
-  const mockLeaveApplication: LeaveApplication =
-    new LeaveApplication(null, null, null, null, null, null, null, null);
-  const mockDelegationApplication: DelegationApplication =
-    new DelegationApplication(null, null, null, null, null, null, null, null, null, null, null);
+  const mockLeaveApplication: LeaveApplication = new LeaveApplication(null, null, null, null, null, null, null, null);
+  const mockDelegationApplication: DelegationApplication = new DelegationApplication(
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  );
   let pipe: ApplicationTypePipe;
 
   beforeAll(() => {
@@ -23,10 +33,10 @@ describe('ApplicationTypePipe', () => {
 
     expect(pipe.transform(mockLeaveApplication)).toEqual('Leave application');
   });
+
   it('returns "Delegation application" if passed object is of type DelegationApplication', () => {
     mockDelegationApplication.budget = 100;
 
     expect(pipe.transform(mockDelegationApplication)).toEqual('Delegation application');
   });
-
 });

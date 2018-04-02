@@ -9,33 +9,26 @@ import { LeaveApplication } from '@shared//domain/application/leave-application'
 
 @Injectable()
 export class LeaveApplicationService {
-
   private url: string = SystemVariables.API_URL + '/leave-applications';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getLeaveTypes(): Observable<Array<LeaveType>> {
-    return this._http
-      .get<Array<LeaveType>>(`${this.url}/types`, {
-        headers: this.headers,
-      });
+    return this._http.get<Array<LeaveType>>(`${this.url}/types`, {
+      headers: this.headers,
+    });
   }
 
   public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
-    const params = new HttpParams()
-      .set('subjectId', this._jwtHelper.getSubjectId().toString());
-    return this._http
-      .post<LeaveApplication>(this.url,
-        leaveApplication, {
-          params: params,
-          headers: this.headers,
-        });
+    const params = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
+    return this._http.post<LeaveApplication>(this.url, leaveApplication, {
+      params: params,
+      headers: this.headers,
+    });
   }
 }

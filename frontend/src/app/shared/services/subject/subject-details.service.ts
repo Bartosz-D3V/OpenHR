@@ -14,22 +14,18 @@ import { JwtHelperService } from '../jwt/jwt-helper.service';
 
 @Injectable()
 export class SubjectDetailsService {
-
   private url: string = SystemVariables.API_URL + '/subjects';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
   private handleError(error: any): void {
     this._errorResolver.createAlert(error);
   }
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService,
-              private _errorResolver: ErrorResolverService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService, private _errorResolver: ErrorResolverService) {}
 
   public getCurrentSubject(): Observable<Subject> {
     return this._http

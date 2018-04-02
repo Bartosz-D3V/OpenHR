@@ -17,10 +17,7 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-  ],
+  declarations: [AppComponent, FooterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -32,12 +29,8 @@ import { AppRoutingModule } from './app-routing.module';
     SettingsModule,
     AppRoutingModule,
   ],
-  providers: [
-    ErrorResolverService,
-    NotificationService,
-  ],
+  providers: [ErrorResolverService, NotificationService],
   bootstrap: [AppComponent],
   entryComponents: [StaticModalComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

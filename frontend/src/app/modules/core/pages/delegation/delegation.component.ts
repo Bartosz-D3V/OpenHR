@@ -23,11 +23,7 @@ import { Country } from '@shared/domain/country/country';
   selector: 'app-delegation',
   templateUrl: './delegation.component.html',
   styleUrls: ['./delegation.component.scss'],
-  providers: [
-    SubjectDetailsService,
-    DelegationService,
-    NotificationService,
-  ],
+  providers: [SubjectDetailsService, DelegationService, NotificationService],
 })
 export class DelegationComponent implements OnInit, OnDestroy {
   private $delegation: ISubscription;
@@ -38,29 +34,28 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public countries: Array<Country>;
   public delegationApplication: DelegationApplication;
 
-  @ViewChild('dateRange')
-  public dateRange: DateRangeComponent;
+  @ViewChild('dateRange') public dateRange: DateRangeComponent;
 
-  @ViewChild(FormGroupDirective)
-  public formTemplate: FormGroupDirective;
+  @ViewChild(FormGroupDirective) public formTemplate: FormGroupDirective;
 
-  constructor(private _delegationService: DelegationService,
-              private _subjectDetails: SubjectDetailsService,
-              private _notificationService: NotificationService,
-              private _errorResolver: ErrorResolverService,
-              private _fb: FormBuilder,
-              private _route: ActivatedRoute) {
-    this._route.params
-      .subscribe((param?: Params) => {
-        if (param) {
-          this.fetchDelegationApplication(param['id']);
-        }
-      });
+  constructor(
+    private _delegationService: DelegationService,
+    private _subjectDetails: SubjectDetailsService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService,
+    private _fb: FormBuilder,
+    private _route: ActivatedRoute
+  ) {
+    this._route.params.subscribe((param?: Params) => {
+      if (param) {
+        this.fetchDelegationApplication(param['id']);
+      }
+    });
   }
 
   private resetForm(): void {
     this.formTemplate.resetForm();
-    this.applicationForm.get('delegation').reset({budget: 0});
+    this.applicationForm.get('delegation').reset({ budget: 0 });
     this.dateRange.reset();
   }
 
@@ -77,36 +72,23 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public constructForm(): void {
     this.applicationForm = this._fb.group({
       name: this._fb.group({
-        subjectId: [this.subject.subjectId, [
-          Validators.required,
-          Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-        ]],
-        first: [this.subject.personalInformation.firstName,
-          Validators.required,
-        ],
+        subjectId: [this.subject.subjectId, [Validators.required, Validators.pattern(RegularExpressions.NUMBERS_ONLY)]],
+        first: [this.subject.personalInformation.firstName, Validators.required],
         middle: [this.subject.personalInformation.middleName],
-        last: [this.subject.personalInformation.lastName,
-          Validators.required,
-        ],
+        last: [this.subject.personalInformation.lastName, Validators.required],
       }),
       organisation: this._fb.group({
-        position: [this.subject.employeeInformation.position,
-          Validators.required,
-        ],
+        position: [this.subject.employeeInformation.position, Validators.required],
         department: [this.subject.employeeInformation.department],
       }),
       delegation: this._fb.group({
-        country: [this.delegationApplication ? this.delegationApplication.country : '',
-          Validators.required],
-        city: [this.delegationApplication ? this.delegationApplication.city : '',
-          Validators.required],
-        objective: [this.delegationApplication ? this.delegationApplication.objective : '',
-          Validators.required],
-        budget: [this.delegationApplication ? this.delegationApplication.budget : 0,
-          Validators.compose([
-            Validators.required,
-            Validators.min(0),
-          ])],
+        country: [this.delegationApplication ? this.delegationApplication.country : '', Validators.required],
+        city: [this.delegationApplication ? this.delegationApplication.city : '', Validators.required],
+        objective: [this.delegationApplication ? this.delegationApplication.objective : '', Validators.required],
+        budget: [
+          this.delegationApplication ? this.delegationApplication.budget : 0,
+          Validators.compose([Validators.required, Validators.min(0)]),
+        ],
       }),
     });
 
@@ -120,42 +102,45 @@ export class DelegationComponent implements OnInit, OnDestroy {
     this.$delegation = Observable.zip(
       this._subjectDetails.getCurrentSubject(),
       this._delegationService.getCountries(),
-      (subject: Subject, countries: Array<Country>) => ({subject, countries}))
-      .subscribe((pair) => {
+      (subject: Subject, countries: Array<Country>) => ({ subject, countries })
+    ).subscribe(
+      pair => {
         this.subject = pair.subject;
         this.countries = pair.countries;
         this.isLoadingResults = false;
         this.constructForm();
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public fetchDelegationApplication(applicationId: number): void {
     this.fetchData();
     this.isLoadingResults = true;
-    this.$delegation = this._delegationService
-      .getDelegationApplication(applicationId)
-      .subscribe((val: DelegationApplication) => {
+    this.$delegation = this._delegationService.getDelegationApplication(applicationId).subscribe(
+      (val: DelegationApplication) => {
         this.delegationApplication = val;
         this.isLoadingResults = false;
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public filterCountries(countries: Array<Country>, name: string): Array<Country> {
-    return countries.filter(country =>
-    country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    return countries.filter(country => country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
   public reduceCountries(countries: Array<Country>): Observable<Array<Country>> {
-    return this.applicationForm.get(['delegation', 'country'])
-      .valueChanges
-      .pipe(
+    return this.applicationForm
+      .get(['delegation', 'country'])
+      .valueChanges.pipe(
         startWith<string | Country>(''),
-        map(value => typeof value === 'string' ? value : value ? value.countryName : null),
-        map(name => name ? this.filterCountries(countries, name) : countries.slice())
+        map(value => (typeof value === 'string' ? value : value ? value.countryName : null)),
+        map(name => (name ? this.filterCountries(countries, name) : countries.slice()))
       );
   }
 
@@ -165,22 +150,22 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
   public save(): void {
     const form: AbstractControl = this.applicationForm;
-    const application: DelegationApplication = <DelegationApplication> form.get('delegation').value;
+    const application: DelegationApplication = <DelegationApplication>form.get('delegation').value;
     application.startDate = this.dateRange.startDate;
     application.endDate = this.dateRange.endDate;
-    this._delegationService
-      .createDelegationApplication(application)
-      .subscribe((response: DelegationApplication) => {
+    this._delegationService.createDelegationApplication(application).subscribe(
+      (response: DelegationApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
         this.resetForm();
         this._notificationService.openSnackBar(message, 'OK');
-      }, (httpErrorResponse: HttpErrorResponse) => {
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
-      });
+      }
+    );
   }
 
   public isValid(): boolean {
-    return this.applicationForm.get('delegation').valid &&
-      this.dateRange.dateRangeGroup.valid;
+    return this.applicationForm.get('delegation').valid && this.dateRange.dateRangeGroup.valid;
   }
 }

@@ -4,9 +4,21 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  MatAutocompleteModule, MatAutocompleteSelectedEvent,
-  MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
-  MatNativeDateModule, MatOption, MatOptionModule, MatProgressSpinnerModule, MatSnackBarModule, MatToolbarModule,
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatOption,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatToolbarModule,
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
@@ -30,18 +42,35 @@ import { ManageEmployeesDataComponent } from './manage-employees-data.component'
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
 
 describe('ManageEmployeesDataComponent', () => {
-  const employee1: Employee = new Employee(new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
-    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line',
-      'SA2 92B', 'Gotham', 'US')), new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team',
-      '13HJ', '2010-02-02', '2012-02-02'), new HrInformation(30, 10), Role.EMPLOYEE);
-  const employee2: Employee = new Employee(new PersonalInformation('Donnie', 'Darko', null, '2001-03-03'),
-    new ContactInformation('987654321', 'test2@test.com', new Address('First line 1', 'Second line 2', 'Third line 3',
-      'SB2 92B', 'NYC', 'US')), new EmployeeInformation('KZ 44 09 71 B', 'Java Developer', 'Development Team',
-      '13HJ', '2011-02-02', '2013-02-02'), new HrInformation(30, 15), Role.EMPLOYEE);
-  const manager1: Manager = new Manager(new PersonalInformation('Jim', 'Smith', null, '1999-05-01'),
-    new ContactInformation('987654321', 'test2@test.com', new Address('First line 1', 'Second line 2', 'Third line 3',
-      'SB2 92B', 'NYC', 'US')), new EmployeeInformation('KZ 54 09 74 C', 'Java Developer', 'Development Team',
-      '13HJ', '2011-02-02', '2013-02-02'), new HrInformation(30, 15), Role.MANAGER);
+  const employee1: Employee = new Employee(
+    new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
+    new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line', 'SA2 92B', 'Gotham', 'US')),
+    new EmployeeInformation('KZ 44 09 71 A', 'Junior Software Tester', 'Maintenance Team', '13HJ', '2010-02-02', '2012-02-02'),
+    new HrInformation(30, 10),
+    Role.EMPLOYEE
+  );
+  const employee2: Employee = new Employee(
+    new PersonalInformation('Donnie', 'Darko', null, '2001-03-03'),
+    new ContactInformation(
+      '987654321',
+      'test2@test.com',
+      new Address('First line 1', 'Second line 2', 'Third line 3', 'SB2 92B', 'NYC', 'US')
+    ),
+    new EmployeeInformation('KZ 44 09 71 B', 'Java Developer', 'Development Team', '13HJ', '2011-02-02', '2013-02-02'),
+    new HrInformation(30, 15),
+    Role.EMPLOYEE
+  );
+  const manager1: Manager = new Manager(
+    new PersonalInformation('Jim', 'Smith', null, '1999-05-01'),
+    new ContactInformation(
+      '987654321',
+      'test2@test.com',
+      new Address('First line 1', 'Second line 2', 'Third line 3', 'SB2 92B', 'NYC', 'US')
+    ),
+    new EmployeeInformation('KZ 54 09 74 C', 'Java Developer', 'Development Team', '13HJ', '2011-02-02', '2013-02-02'),
+    new HrInformation(30, 15),
+    Role.MANAGER
+  );
   let fakeEmployeeService: EmployeeService;
   let component: ManageEmployeesDataComponent;
   let fixture: ComponentFixture<ManageEmployeesDataComponent>;
@@ -60,43 +89,40 @@ describe('ManageEmployeesDataComponent', () => {
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ManageEmployeesDataComponent,
-        CapitalizePipe,
-        PageHeaderComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientTestingModule,
-        MatCardModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatToolbarModule,
-        MatExpansionModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatIconModule,
-        MatAutocompleteModule,
-        MatOptionModule,
-        MatSnackBarModule,
-        MatProgressSpinnerModule,
-      ],
-      providers: [
-        JwtHelperService,
-        NotificationService,
-        ErrorResolverService,
-        ResponsiveHelperService,
-        {provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService},
-        {provide: EmployeeService, useClass: FakeEmployeeService},
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ManageEmployeesDataComponent, CapitalizePipe, PageHeaderComponent],
+        imports: [
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          FormsModule,
+          HttpClientTestingModule,
+          MatCardModule,
+          MatButtonModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatToolbarModule,
+          MatExpansionModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
+          MatIconModule,
+          MatAutocompleteModule,
+          MatOptionModule,
+          MatSnackBarModule,
+          MatProgressSpinnerModule,
+        ],
+        providers: [
+          JwtHelperService,
+          NotificationService,
+          ErrorResolverService,
+          ResponsiveHelperService,
+          { provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService },
+          { provide: EmployeeService, useClass: FakeEmployeeService },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageEmployeesDataComponent);
@@ -245,21 +271,25 @@ describe('ManageEmployeesDataComponent', () => {
   });
 
   describe('isMobile', () => {
-    it('should return true if screen is less than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
         expect(component.isMobile()).toBeTruthy();
-      }));
+      })
+    );
 
-    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService],
-      (service: ResponsiveHelperService) => {
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
         component['_responsiveHelper'] = service;
         spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
         expect(component.isMobile()).toBeFalsy();
-      }));
+      })
+    );
   });
 
   describe('isValid method', () => {

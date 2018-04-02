@@ -13,15 +13,12 @@ export class LoginService {
     'Content-Type': 'application/json',
   });
 
-  constructor(private _http: HttpClient) {
-  }
+  constructor(private _http: HttpClient) {}
 
   public login(credentials: Credentials): Observable<HttpResponse<null>> {
-    return this._http
-      .post<null>(this.url, credentials, {
-        headers: this.headers,
-        observe: 'response',
-      });
+    return this._http.post<null>(this.url, credentials, {
+      headers: this.headers,
+      observe: 'response',
+    });
   }
-
 }

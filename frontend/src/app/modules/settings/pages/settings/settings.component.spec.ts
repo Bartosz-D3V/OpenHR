@@ -31,36 +31,27 @@ describe('SettingsComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        SettingsComponent,
-        PageHeaderComponent,
-        CapitalizePipe,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatSlideToggleModule,
-        MatCardModule,
-      ],
-      providers: [
-        {
-          provide: SettingsService, useClass: FakeSettingsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SettingsComponent, PageHeaderComponent, CapitalizePipe],
+        imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule, MatToolbarModule, MatSlideToggleModule, MatCardModule],
+        providers: [
+          {
+            provide: SettingsService,
+            useClass: FakeSettingsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SettingsComponent);

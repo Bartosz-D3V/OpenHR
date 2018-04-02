@@ -15,15 +15,8 @@ describe('LightweightSubjectService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        LightweightSubjectService,
-        JwtHelperService,
-        ErrorResolverService,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        MatDialogModule,
-      ],
+      providers: [LightweightSubjectService, JwtHelperService, ErrorResolverService],
+      imports: [HttpClientTestingModule, MatDialogModule],
     });
     service = TestBed.get(LightweightSubjectService);
     http = TestBed.get(HttpTestingController);
@@ -38,53 +31,58 @@ describe('LightweightSubjectService', () => {
     const mockUser: User = new User(1, 'John', 'Black');
 
     describe('getCurrentSubject', () => {
-
       beforeEach(() => {
         spyOn(service['_jwtHelper'], 'getSubjectId').and.returnValue(1);
       });
 
-      it('should query current service URL', fakeAsync(() => {
-        service.getUser(1).subscribe();
+      it(
+        'should query current service URL',
+        fakeAsync(() => {
+          service.getUser(1).subscribe();
 
-        http.expectOne(`${apiLink}/lightweight/1`);
-      }));
+          http.expectOne(`${apiLink}/lightweight/1`);
+        })
+      );
 
-      it('should return an Observable of type Subject', fakeAsync(() => {
-        let result: Object;
-        let error: any;
-        service.getUser(1)
-          .subscribe(
-            (res: Object) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: `${apiLink}/lightweight/1`,
-          method: 'GET',
-        }).flush(mockUser);
-        tick();
+      it(
+        'should return an Observable of type Subject',
+        fakeAsync(() => {
+          let result: Object;
+          let error: any;
+          service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          http
+            .expectOne({
+              url: `${apiLink}/lightweight/1`,
+              method: 'GET',
+            })
+            .flush(mockUser);
+          tick();
 
-        expect(error).toBeUndefined();
-        expect(typeof result).toBe('object');
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockUser));
-      }));
+          expect(error).toBeUndefined();
+          expect(typeof result).toBe('object');
+          expect(JSON.stringify(result)).toEqual(JSON.stringify(mockUser));
+        })
+      );
 
-      it('should resolve error if server is down', fakeAsync(() => {
-        spyOn(service['_errorResolver'], 'handleError');
+      it(
+        'should resolve error if server is down',
+        fakeAsync(() => {
+          spyOn(service['_errorResolver'], 'handleError');
 
-        let result: Object;
-        let error: any;
-        service.getUser(1)
-          .subscribe(
-            (res: Object) => result = res,
-            (err: any) => error = err);
-        http.expectOne({
-          url: `${apiLink}/lightweight/1`,
-          method: 'GET',
-        }).error(new ErrorEvent('404'));
-        tick();
+          let result: Object;
+          let error: any;
+          service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          http
+            .expectOne({
+              url: `${apiLink}/lightweight/1`,
+              method: 'GET',
+            })
+            .error(new ErrorEvent('404'));
+          tick();
 
-        expect(service['_errorResolver'].handleError).toHaveBeenCalled();
-      }));
-
+          expect(service['_errorResolver'].handleError).toHaveBeenCalled();
+        })
+      );
     });
   });
 });

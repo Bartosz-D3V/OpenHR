@@ -12,36 +12,29 @@ export class DelegationService {
   private readonly url: string = SystemVariables.API_URL + '/delegations';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer-' + this._jwtHelper.getToken(),
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient,
-              private _jwtHelper: JwtHelperService) {
-  }
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getCountries(): Observable<Array<Country>> {
-    return this._http
-      .get<Array<Country>>(`${this.url}/countries`, {
-        headers: this.headers,
-      });
+    return this._http.get<Array<Country>>(`${this.url}/countries`, {
+      headers: this.headers,
+    });
   }
 
   public createDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
-    const params: HttpParams = new HttpParams()
-      .set('subjectId', this._jwtHelper.getSubjectId().toString());
-    return this._http
-      .post<DelegationApplication>(this.url,
-        application, {
-          params: params,
-          headers: this.headers,
-        });
+    const params: HttpParams = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
+    return this._http.post<DelegationApplication>(this.url, application, {
+      params: params,
+      headers: this.headers,
+    });
   }
 
   public getDelegationApplication(applicationId: number): Observable<DelegationApplication> {
-    return this._http
-      .get<DelegationApplication>(`${this.url}/${applicationId}`, {
-        headers: this.headers,
-      });
+    return this._http.get<DelegationApplication>(`${this.url}/${applicationId}`, {
+      headers: this.headers,
+    });
   }
 }

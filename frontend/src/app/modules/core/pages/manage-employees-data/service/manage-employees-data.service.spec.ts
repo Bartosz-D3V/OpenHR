@@ -9,24 +9,20 @@ import { ManageEmployeesDataService } from './manage-employees-data.service';
 describe('ManageEmployeesDataService', () => {
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
-        ManageEmployeesDataService,
-        JwtHelperService,
-        {provide: ErrorResolverService, useClass: FakeErrorResolverService},
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [ManageEmployeesDataService, JwtHelperService, { provide: ErrorResolverService, useClass: FakeErrorResolverService }],
     });
   });
 
-  it('should be created', inject([ManageEmployeesDataService], (service: ManageEmployeesDataService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([ManageEmployeesDataService], (service: ManageEmployeesDataService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

@@ -6,14 +6,13 @@ describe('NumberIndicatorComponent', () => {
   let component: NumberIndicatorComponent;
   let fixture: ComponentFixture<NumberIndicatorComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        NumberIndicatorComponent,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [NumberIndicatorComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NumberIndicatorComponent);

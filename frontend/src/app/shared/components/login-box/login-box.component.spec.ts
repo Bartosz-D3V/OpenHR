@@ -21,43 +21,44 @@ describe('LoginBoxComponent', () => {
   @Injectable()
   class FakeLoginService {
     login(credentials: Credentials): Observable<any> {
-      return Observable.of(new Response(null, {
-        headers: new Headers({
-          'Authorization': 'mock-token',
-        }),
-      }));
+      return Observable.of(
+        new Response(null, {
+          headers: new Headers({
+            Authorization: 'mock-token',
+          }),
+        })
+      );
     }
 
     unathorizedLogin(credentials: Credentials): Observable<any> {
-      return Observable.throw(new HttpErrorResponse({
-        error: 'Unauthorized',
-        status: 401,
-      }));
+      return Observable.throw(
+        new HttpErrorResponse({
+          error: 'Unauthorized',
+          status: 401,
+        })
+      );
     }
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        FormsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatInputModule,
-        MatFormFieldModule,
-        HttpClientTestingModule,
-      ],
-      declarations: [
-        LoginBoxComponent,
-      ],
-      providers: [
-        {provide: LoginService, useClass: FakeLoginService},
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+          FormsModule,
+          MatCardModule,
+          MatButtonModule,
+          MatIconModule,
+          MatInputModule,
+          MatFormFieldModule,
+          HttpClientTestingModule,
+        ],
+        declarations: [LoginBoxComponent],
+        providers: [{ provide: LoginService, useClass: FakeLoginService }],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginBoxComponent);
@@ -114,7 +115,7 @@ describe('LoginBoxComponent', () => {
 
     it('should emit true once token is saved', () => {
       let authenticated: boolean;
-      component.onAuthenticated.subscribe((response) => authenticated = response);
+      component.onAuthenticated.subscribe(response => (authenticated = response));
       component.login();
 
       expect(authenticated).toBeDefined();

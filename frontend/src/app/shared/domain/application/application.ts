@@ -9,10 +9,15 @@ export abstract class Application {
   public terminated: boolean;
   public processInstanceId: string;
 
-  constructor(applicationId: number, startDate: MomentInput,
-              endDate: MomentInput, approvedByManager: boolean,
-              approvedByHR: boolean, terminated: boolean,
-              processInstanceId: string) {
+  constructor(
+    applicationId: number,
+    startDate: MomentInput,
+    endDate: MomentInput,
+    approvedByManager: boolean,
+    approvedByHR: boolean,
+    terminated: boolean,
+    processInstanceId: string
+  ) {
     this.applicationId = applicationId;
     this.startDate = startDate;
     this.endDate = endDate;

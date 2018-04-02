@@ -3,11 +3,33 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatAutocompleteModule, MatMenuModule, MatButtonModule, MatRadioModule, MatButtonToggleModule, MatCardModule,
-  MatDialogModule, MatGridListModule, MatIconModule, MatListModule, MatInputModule, MatSidenavModule, MatSliderModule,
-  MatSlideToggleModule, MatToolbarModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule,
-  MatExpansionModule, MatStepperModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatCheckboxModule, MatSnackBarModule,
-  MatProgressSpinnerModule, MatTooltipModule,
+  MatAutocompleteModule,
+  MatMenuModule,
+  MatButtonModule,
+  MatRadioModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatIconModule,
+  MatListModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatToolbarModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatExpansionModule,
+  MatStepperModule,
+  MatSelectModule,
+  MatPaginatorModule,
+  MatTableModule,
+  MatCheckboxModule,
+  MatSnackBarModule,
+  MatProgressSpinnerModule,
+  MatTooltipModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -15,7 +37,7 @@ import 'hammerjs/hammer';
 import { AppRoutingModule } from '../../app-routing.module';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { NamePipe } from '@shared/pipes/name/name.pipe';
-import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-applicaiton-status/application-status.pipe';
+import { ApplicationStatusPipe } from '@modules/core/pages/my-applications/pipe/leave-application-status/application-status.pipe';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
 import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
@@ -33,7 +55,7 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
-import { ManageDelegationApplicationsComponent } from './pages/manage-delegation-applications/manage-delegation-applications.component';
+import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
 
@@ -95,12 +117,9 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     MyApplicationsComponent,
     ApplicationStatusPipe,
     DashboardComponent,
-    ManageDelegationApplicationsComponent,
+    ManageDelegationsComponent,
     ApplicationTypePipe,
   ],
-  providers: [
-    JwtHelperService,
-  ],
+  providers: [JwtHelperService],
 })
-export class CoreModule {
-}
+export class CoreModule {}
