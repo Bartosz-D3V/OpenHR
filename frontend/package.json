@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "start:pwa": "bash ./tools/run-pwa.sh",
     "build": "ng build",
     "pretest": "npm run lint",
     "test": "ng test --watch=false --code-coverage",
