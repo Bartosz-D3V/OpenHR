@@ -21,7 +21,7 @@ import { AppRoutingModule } from './app-routing.module';
 @NgModule({
   declarations: [AppComponent, FooterComponent],
   imports: [
-    environment.production ? ServiceWorkerModule.register('ngsw-worker.js') : [],
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
