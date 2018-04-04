@@ -1,4 +1,7 @@
-<app-page-header [header]="'Add employee'"></app-page-header>
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Add employee'"></app-page-header>
+</section>
+
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">New employee details</mat-toolbar>
   <mat-accordion>
@@ -16,7 +19,7 @@
         <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
           <label for="personal-details-first-name"></label>
           <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
-                 id="personal-details-first-name" name="firstName" [ngModel]="subject?.firstName">
+                 id="personal-details-first-name" name="firstName" [ngModel]="subject?.personalInformation?.firstName">
           <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
             First name is required
           </mat-error>
@@ -32,7 +35,7 @@
         <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
           <label for="personal-details-last-name"></label>
           <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
-                 id="personal-details-last-name" name="lastName" [ngModel]="subject?.lastName">
+                 id="personal-details-last-name" name="lastName" [ngModel]="subject?.personalInformation?.lastName">
           <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
             Last name is required
           </mat-error>
@@ -218,6 +221,16 @@
       </mat-expansion-panel-header>
       <form [formGroup]="loginInformationFormGroup" fxLayout.gt-sm="row wrap"
             fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+        <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <label for="account-details-username"></label>
+          <input matInput #username type="text" required="required" placeholder="Username"
+                 formControlName="usernameFormControl"
+                 id="account-details-username" name="username">
+          <mat-error *ngIf="loginInformationFormGroup.controls['usernameFormControl'].hasError('required')">
+            Username is required
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
           <label for="account-details-password"></label>
           <input matInput #password type="password" required="required" placeholder="Password"

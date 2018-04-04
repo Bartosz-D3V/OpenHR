@@ -10,24 +10,15 @@ describe('ThemePickerComponent', () => {
   let component: ThemePickerComponent;
   let fixture: ComponentFixture<ThemePickerComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ThemePickerComponent,
-      ],
-      providers: [
-        ThemeStorageService,
-        StyleManagerService,
-      ],
-      imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatGridListModule,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ThemePickerComponent],
+        providers: [ThemeStorageService, StyleManagerService],
+        imports: [MatButtonModule, MatIconModule, MatMenuModule, MatGridListModule],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ThemePickerComponent);

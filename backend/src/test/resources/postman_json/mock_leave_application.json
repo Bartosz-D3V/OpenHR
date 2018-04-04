@@ -1,4 +1,8 @@
 {
   "startDate": "2018-05-05",
-  "endDate": "2018-05-10"
+  "endDate": "2018-05-10",
+  "leaveType": {
+    "leaveTypeId": 1,
+    "leaveCategory": "Annual Leave"
+  }
 }

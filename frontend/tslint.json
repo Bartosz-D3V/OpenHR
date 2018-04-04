@@ -13,6 +13,7 @@
     "curly": true,
     "deprecation": true,
     "eofline": true,
+    "encoding": true,
     "forin": true,
     "import-blacklist": [
       true,
@@ -45,6 +46,7 @@
     "no-bitwise": true,
     "no-console": [
       true,
+      "log",
       "debug",
       "info",
       "time",
@@ -54,6 +56,7 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
+    "no-duplicate-imports": false,
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
@@ -61,16 +64,19 @@
       true,
       "ignore-params"
     ],
+    "no-invalid-this": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
+    "no-this-assignment": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-unused-variable": false,
+    "no-require-imports": false,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -87,6 +93,7 @@
       "single"
     ],
     "radix": true,
+    "restrict-plus-operands": true,
     "semicolon": [
       true,
       "always"
@@ -107,6 +114,7 @@
       true,
       "allow-null-check"
     ],
+    "typedef": true,
     "typedef-whitespace": [
       true,
       {
@@ -149,6 +157,7 @@
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
+    "no-var-requires": true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,

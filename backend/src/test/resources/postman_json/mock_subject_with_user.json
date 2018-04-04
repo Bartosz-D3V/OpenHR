@@ -1,0 +1,36 @@
+{
+  "personalInformation": {
+    "firstName": "John",
+    "lastName": "Kendell",
+    "middleName": "Xavier",
+    "dateOfBirth": null
+  },
+  "contactInformation": {
+    "telephone": "123456789",
+    "email": "j.kendell@mail.com",
+    "address": {
+      "firstLineAddress": "Test street 1",
+      "secondLineAddress": null,
+      "thirdLineAddress": "131/321",
+      "postcode": "BD21 4UA",
+      "city": "NYC",
+      "country": "USA"
+    }
+  },
+  "employeeInformation": {
+    "nationalInsuranceNumber": "KZ 44 09 71 A",
+    "position": "Junior Software Tester",
+    "department": "Maintenance Team",
+    "employeeNumber": "123S",
+    "startDate": null,
+    "endDate": null
+  },
+  "hrInformation": {
+    "allowance": 25,
+    "usedAllowance": 0
+  },
+  "user": {
+    "username": "user",
+    "password": "1234"
+  }
+}

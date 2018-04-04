@@ -1,0 +1,72 @@
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Manage leave applications'"></app-page-header>
+
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults">
+  <mat-toolbar [color]="'primary'">Manage leave applications</mat-toolbar>
+  <mat-card>
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="applicationId">
+        <mat-header-cell *matHeaderCellDef> Application ID</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.applicationId}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="from">
+        <mat-header-cell *matHeaderCellDef> From</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.startDate}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="to">
+        <mat-header-cell *matHeaderCellDef> To</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.endDate}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="employeeName">
+        <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.subject.personalInformation.firstName}}
+          {{leaveApplication.subject.personalInformation.lastName}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication">
+          <mat-icon class="mat-24" [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
+                    matTooltip="{{leaveApplication.message}}" [matTooltipPosition]="'above'">mode_comment
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="reject">
+        <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication">
+          <button mat-icon-button color="accent" (click)="rejectLeaveApplication(leaveApplication.processInstanceId)">
+            <mat-icon class="mat-24">cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="approve">
+        <mat-header-cell *matHeaderCellDef> Approve</mat-header-cell>
+        <mat-cell *matCellDef="let leaveApplication">
+          <button mat-icon-button color="accent" (click)="approveLeaveApplication(leaveApplication.processInstanceId)">
+            <mat-icon class="mat-24">done</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+  </mat-card>
+</section>

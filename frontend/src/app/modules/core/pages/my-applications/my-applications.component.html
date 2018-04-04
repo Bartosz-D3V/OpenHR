@@ -1,0 +1,72 @@
+<section fxLayout="row wrap">
+  <app-page-header [header]="'My Applications'"></app-page-header>
+
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults">
+  <mat-toolbar [color]="'primary'">My applications</mat-toolbar>
+  <mat-card>
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-cell *matCellDef="let application"> {{application | applicationType}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="from">
+        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+        <mat-cell *matCellDef="let application"> {{application.startDate}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="to">
+        <mat-header-cell *matHeaderCellDef>To</mat-header-cell>
+        <mat-cell *matCellDef="let application"> {{application.endDate}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let application"> {{application | applicationStatus}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ics">
+        <mat-header-cell *matHeaderCellDef>ICS</mat-header-cell>
+        <mat-cell *matCellDef="let application">
+          <button mat-icon-button color="accent" [disabled]="!application.terminated">
+            <mat-icon class="mat-24">event</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="info">
+        <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
+        <mat-cell *matCellDef="let application">
+          <mat-icon class="mat-24"
+                    [ngClass]="{'c-drawer__element--off': !(application.message || application.objective)}"
+                    matTooltip="{{application.message || application.objective}}" [matTooltipPosition]="'above'">
+            mode_comment
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let application">
+          <button mat-icon-button color="accent" [disabled]="!applicationIsRejected(application)"
+                  (click)="amendApplication(application.applicationId)">
+            <mat-icon class="mat-24">create</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [length]="resultsLength">
+    </mat-paginator>
+  </mat-card>
+</section>

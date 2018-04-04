@@ -5,9 +5,7 @@ import { StyleManagerService } from './style-manager.service';
 describe('StyleManagerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        StyleManagerService,
-      ],
+      providers: [StyleManagerService],
     });
   });
 
@@ -20,35 +18,47 @@ describe('StyleManagerService', () => {
     }
   });
 
-  it('should be created', inject([StyleManagerService], (service: StyleManagerService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([StyleManagerService], (service: StyleManagerService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 
-  it('should add stylesheet to head', inject([StyleManagerService], (sm: StyleManagerService) => {
-    sm.setStyle('test', 'test.css');
-    const styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
-    expect(styleEl).not.toBeNull();
-    expect(styleEl.href.endsWith('test.css')).toBe(true);
-  }));
+  it(
+    'should add stylesheet to head',
+    inject([StyleManagerService], (sm: StyleManagerService) => {
+      sm.setStyle('test', 'test.css');
+      const styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
+      expect(styleEl).not.toBeNull();
+      expect(styleEl.href.endsWith('test.css')).toBe(true);
+    })
+  );
 
-  it('should change existing stylesheet', inject([StyleManagerService], (sm: StyleManagerService) => {
-    sm.setStyle('test', 'test.css');
-    const styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
-    expect(styleEl).not.toBeNull();
-    expect(styleEl.href.endsWith('test.css')).toBe(true);
+  it(
+    'should change existing stylesheet',
+    inject([StyleManagerService], (sm: StyleManagerService) => {
+      sm.setStyle('test', 'test.css');
+      const styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
+      expect(styleEl).not.toBeNull();
+      expect(styleEl.href.endsWith('test.css')).toBe(true);
 
-    sm.setStyle('test', 'new.css');
-    expect(styleEl.href.endsWith('new.css')).toBe(true);
-  }));
+      sm.setStyle('test', 'new.css');
+      expect(styleEl.href.endsWith('new.css')).toBe(true);
+    })
+  );
 
-  it('should remove existing stylesheet', inject([StyleManagerService], (sm: StyleManagerService) => {
-    sm.setStyle('test', 'test.css');
-    let styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
-    expect(styleEl).not.toBeNull();
-    expect(styleEl.href.endsWith('test.css')).toBe(true);
+  it(
+    'should remove existing stylesheet',
+    inject([StyleManagerService], (sm: StyleManagerService) => {
+      sm.setStyle('test', 'test.css');
+      let styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
+      expect(styleEl).not.toBeNull();
+      expect(styleEl.href.endsWith('test.css')).toBe(true);
 
-    sm.removeStyle('test');
-    styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
-    expect(styleEl).toBeNull();
-  }));
+      sm.removeStyle('test');
+      styleEl = document.head.querySelector('.style-manager-test') as HTMLLinkElement;
+      expect(styleEl).toBeNull();
+    })
+  );
 });

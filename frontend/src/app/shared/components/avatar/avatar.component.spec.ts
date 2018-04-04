@@ -1,37 +1,36 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
-import { AvatarComponent } from './avatar.component';
 import { User } from '../../domain/user/user';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
+import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
-  const mockUser = new User(2199, 'john.test', 'John Test', null);
+  let jwtHelper: JwtHelperService;
+  const mockUser: User = new User(2199, 'John', 'Test');
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        InitialsPipe,
-        AvatarComponent,
-      ],
-      imports: [
-        MatMenuModule,
-        MatButtonModule,
-        RouterTestingModule,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [InitialsPipe, AvatarComponent],
+        imports: [MatMenuModule, MatButtonModule, RouterTestingModule],
+        providers: [JwtHelperService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarComponent);
     component = fixture.componentInstance;
     component.user = mockUser;
     fixture.detectChanges();
+    jwtHelper = TestBed.get(JwtHelperService);
+
+    spyOn(component['_router'], 'navigate');
   });
 
   it('should be created', () => {
@@ -44,10 +43,10 @@ describe('AvatarComponent', () => {
     expect(actualInitials).toEqual('JT');
   });
 
-  it('logout method should remove token from localStorage', () => {
-    window.localStorage.setItem('openHRAuth', 't0k3n');
+  it('logout method should call removeToken method from JWT Helper Service', () => {
+    spyOn(component['_jwtHelper'], 'removeToken');
     component.logout();
 
-    expect(window.localStorage.getItem('openHRAuth')).toBeNull();
+    expect(component['_jwtHelper'].removeToken).toHaveBeenCalled();
   });
 });
