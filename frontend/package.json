@@ -4,7 +4,7 @@
   "license": "GNU AGPLv3",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "npm run build-themes && ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "pretest": "npm run lint",
     "test": "ng test --watch=false --code-coverage",
