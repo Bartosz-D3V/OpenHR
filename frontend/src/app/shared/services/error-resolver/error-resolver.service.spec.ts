@@ -4,43 +4,57 @@ import { MatDialog, MatDialogModule } from '@angular/material';
 
 import { ErrorResolverService } from './error-resolver.service';
 import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
+import { ErrorInfo } from '@shared/domain/error/error-info';
 
 describe('ErrorResolverService', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        StaticModalComponent,
-      ],
-      imports: [
-        MatDialogModule,
-      ],
-      providers: [
-        MatDialog,
-        ErrorResolverService,
-      ],
-    });
-  }));
+  const error: ErrorInfo = {
+    url: 'localhost',
+    message: 'Example error message',
+  };
+  const data: Object = {
+    width: '250px',
+    data: {
+      text: 'Example error message',
+      header: 'Error',
+    },
+  };
 
-  it('should be created', inject([ErrorResolverService], (service: ErrorResolverService) => {
-    expect(service).toBeTruthy();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [StaticModalComponent],
+        imports: [MatDialogModule],
+        providers: [MatDialog, ErrorResolverService],
+      });
+    })
+  );
 
-  it('should open an alert', inject([ErrorResolverService], (service: ErrorResolverService) => {
-    const error: Object = {
-      message: 'Example error message',
-    };
-    const data: Object = {
-      width: '250px',
-      data: {
-        text: 'Example error message',
-        header: 'Error',
-      },
-    };
-    spyOn(service.dialog, 'open');
-    service.createAlert(error);
+  it(
+    'should be created',
+    inject([ErrorResolverService], (service: ErrorResolverService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 
-    expect(service.dialog.open).toHaveBeenCalledTimes(1);
-    expect(service.dialog.open).toHaveBeenCalledWith(StaticModalComponent, data);
-  }));
+  it(
+    'should handle an error and open an alert',
+    inject([ErrorResolverService], (service: ErrorResolverService) => {
+      spyOn(service.dialog, 'open');
+      service.handleError(error);
 
+      expect(service.dialog.open).toHaveBeenCalledTimes(1);
+      expect(service.dialog.open).toHaveBeenCalledWith(StaticModalComponent, data);
+    })
+  );
+
+  it(
+    'should open an alert',
+    inject([ErrorResolverService], (service: ErrorResolverService) => {
+      spyOn(service.dialog, 'open');
+      service.createAlert('Example error message');
+
+      expect(service.dialog.open).toHaveBeenCalledTimes(1);
+      expect(service.dialog.open).toHaveBeenCalledWith(StaticModalComponent, data);
+    })
+  );
 });

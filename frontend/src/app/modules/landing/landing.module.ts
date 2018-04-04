@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
 
-import { LandingComponent } from './pages/landing/landing.component';
+import { SharedModule } from '@modules/shared/shared.module';
+import { LoginBoxComponent } from '@shared/components/login-box/login-box.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    FlexLayoutModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    SharedModule,
   ],
-  declarations: [
-    LandingComponent,
-  ],
+  declarations: [LoginComponent, LoginBoxComponent],
 })
-export class LandingModule {
-}
+export class LandingModule {}

@@ -5,7 +5,7 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { EmployeesService } from './service/employees.service';
 import { EmployeeDataObject } from './domain/employee-data-object';
-import { Employee } from './domain/employee';
+import { Employee } from '@shared/domain/subject/employee';
 import { EmployeeData } from './employee-data';
 
 @Component({
@@ -15,27 +15,23 @@ import { EmployeeData } from './employee-data';
   providers: [EmployeesService],
 })
 export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
-  public employees: Array<EmployeeData>;
   private $employees: ISubscription;
-  tableColumns: Array<string> = ['id', 'name', 'position'];
-  dataSource: MatTableDataSource<EmployeeData>;
+  public employees: Array<EmployeeData>;
+  public tableColumns: Array<string> = ['id', 'name', 'position'];
+  public dataSource: MatTableDataSource<EmployeeData>;
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(MatPaginator) public paginator: MatPaginator;
 
-  @ViewChild(MatSort)
-  sort: MatSort;
+  @ViewChild(MatSort) public sort: MatSort;
 
   constructor(private _employeesService: EmployeesService) {
     this.dataSource = new MatTableDataSource(this.employees);
   }
 
   ngOnInit() {
-    this.$employees = this._employeesService
-      .getEmployees()
-      .subscribe((result: Array<Employee>) => {
-        this.employees = this.simplifyEmployeeArray(result);
-      });
+    this.$employees = this._employeesService.getEmployees().subscribe((result: Array<Employee>) => {
+      this.employees = this.simplifyEmployeeArray(result);
+    });
   }
 
   ngOnDestroy() {
@@ -62,7 +58,7 @@ export class EmployeesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   simplifyEmployeeObject(employee: Employee): EmployeeData {
-    const fullName: string = employee.subject.firstName + ' ' + employee.subject.lastName;
-    return new EmployeeDataObject(employee.employeeId, fullName, employee.subject.employeeInformation.position);
+    const fullName = `${employee.personalInformation.firstName} ${employee.personalInformation.lastName}`;
+    return new EmployeeDataObject(employee.subjectId, fullName, employee.employeeInformation.position);
   }
 }

@@ -1,38 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { SystemVariables } from '../../../../../config/system-variables';
-import { ErrorResolverService } from '../../../../../shared/services/error-resolver/error-resolver.service';
+import { SystemVariables } from '@config/system-variables';
+import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
+import { LeaveType } from '@shared//domain/application/leave-type';
+import { LeaveApplication } from '@shared//domain/application/leave-application';
 
 @Injectable()
 export class LeaveApplicationService {
-
-  private url: string = SystemVariables.API_URL + 'leave-application';
+  private url: string = SystemVariables.API_URL + '/leave-applications';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
+    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  private handleError(error: any): void {
-    console.log('An error occurred', error);
-    this._errorResolver.createAlert(error);
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
+
+  public getLeaveTypes(): Observable<Array<LeaveType>> {
+    return this._http.get<Array<LeaveType>>(`${this.url}/types`, {
+      headers: this.headers,
+    });
   }
 
-  constructor(private _http: HttpClient,
-              private _errorResolver: ErrorResolverService) {
+  public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
+    const params = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
+    return this._http.post<LeaveApplication>(this.url, leaveApplication, {
+      params: params,
+      headers: this.headers,
+    });
   }
-
-  public getLeaveTypes(): Observable<Array<string>> {
-    return this._http
-      .get<Array<string>>(this.url, {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of([]);
-      });
-  }
-
 }

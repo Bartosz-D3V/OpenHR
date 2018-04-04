@@ -11,18 +11,13 @@ import { SiteTheme } from './domain/site-theme';
   styleUrls: ['./theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [
-    ThemeStorageService,
-    StyleManagerService,
-  ],
+  providers: [ThemeStorageService, StyleManagerService],
 })
 export class ThemePickerComponent implements OnInit {
   currentTheme: SiteTheme;
   siteThemes: Array<SiteTheme> = SiteThemes.siteThemes;
 
-  constructor(private _themeStorageService: ThemeStorageService,
-              private _styleManagerService: StyleManagerService) {
-  }
+  constructor(private _themeStorageService: ThemeStorageService, private _styleManagerService: StyleManagerService) {}
 
   ngOnInit(): void {
     const currentTheme: SiteTheme = this._themeStorageService.getStoredTheme();

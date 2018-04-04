@@ -1,50 +1,60 @@
 import { Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import {
-  MatCheckboxModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule,
-  MatToolbarModule
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatToolbarModule,
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { Observable } from 'rxjs/Observable';
-
-import { Address } from '../../../../shared/domain/subject/address';
-import { EmployeeInformation } from '../../../../shared/domain/subject/employee-information';
-import { PageHeaderComponent } from '../../../../shared/components/page-header/page-header.component';
-import { StaticModalComponent } from '../../../../shared/components/static-modal/static-modal.component';
-import { CapitalizePipe } from '../../../../shared/pipes/capitalize/capitalize.pipe';
-import { Subject } from '../../../../shared/domain/subject/subject';
-import { ContactInformation } from '../../../../shared/domain/subject/contact-information';
-import { PersonalInformation } from '../../../../shared/domain/subject/personal-information';
-import { SubjectDetailsService } from '../../../../shared/services/subject/subject-details.service';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-import { ErrorResolverService } from '../../../../shared/services/error-resolver/error-resolver.service';
-import { AddEmployeeComponent } from './add-employee.component';
 import Spy = jasmine.Spy;
-import { ThemePickerComponent } from '../../../../shared/components/theme-picker/theme-picker.component';
+
+import { Address } from '@shared/domain/subject/address';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
+import { Subject } from '@shared/domain/subject/subject';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { Employee } from '@shared/domain/subject/employee';
+import { AddEmployeeComponent } from './add-employee.component';
+import { Role } from '@shared/domain/subject/role';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
   let fixture: ComponentFixture<AddEmployeeComponent>;
-  const mockPersonalInformation: PersonalInformation = new PersonalInformation(null, new Date());
+  const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
   const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
   const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation('WR 41 45 55 C', 'Tester', new Date(), new Date());
-  const mockSubject: Subject = new Subject('John', 'Xavier', mockPersonalInformation, mockContactInformation,
-    mockEmployeeInformation);
-  const mockContractTypes: Array<string> = ['Full time', 'Part time'];
-
+  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation(
+    'WR 41 45 55 C',
+    'Tester',
+    'Core',
+    'WOR923',
+    '2020-02-08',
+    '2020-02-08'
+  );
+  const mockHrInformation: HrInformation = new HrInformation(25, 5);
+  const mockSubject: Subject = new Employee(
+    mockPersonalInformation,
+    mockContactInformation,
+    mockEmployeeInformation,
+    mockHrInformation,
+    Role.EMPLOYEE
+  );
   let subjectDetailsService: SubjectDetailsService;
-
-  @Injectable()
-  class FakeConfigService {
-    public getContractTypes(): any {
-      return Observable.of(mockContractTypes);
-    }
-  }
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -59,48 +69,42 @@ describe('AddEmployeeComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {
-    }
+    public createAlert(error: any): void {}
   }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AddEmployeeComponent,
-        PageHeaderComponent,
-        StaticModalComponent,
-        CapitalizePipe,
-        ThemePickerComponent,
-      ],
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatToolbarModule,
-        MatExpansionModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCheckboxModule,
-      ],
-      providers: [
-        {
-          provide: ConfigService, useClass: FakeConfigService,
-        },
-        {
-          provide: SubjectDetailsService, useClass: FakeSubjectDetailsService,
-        },
-        {
-          provide: ErrorResolverService, useClass: FakeErrorResolverService,
-        },
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AddEmployeeComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
+        imports: [
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatToolbarModule,
+          MatExpansionModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
+          MatIconModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatCheckboxModule,
+        ],
+        providers: [
+          JwtHelperService,
+          {
+            provide: SubjectDetailsService,
+            useClass: FakeSubjectDetailsService,
+          },
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEmployeeComponent);
@@ -132,7 +136,6 @@ describe('AddEmployeeComponent', () => {
   });
 
   describe('First name validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
       component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
@@ -146,11 +149,9 @@ describe('AddEmployeeComponent', () => {
 
       expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Last name validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
       component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
@@ -164,11 +165,9 @@ describe('AddEmployeeComponent', () => {
 
       expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Date of birth validator', () => {
-
     it('should mark form as valid if input is not empty', () => {
       const dob: Date = new Date('11 October 1960 15:00 UTC');
       component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
@@ -182,7 +181,6 @@ describe('AddEmployeeComponent', () => {
 
       expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
     });
-
   });
 
   describe('Postcode validator', () => {
@@ -208,7 +206,6 @@ describe('AddEmployeeComponent', () => {
 
       expect(postcodeFormControl.valid).toBeTruthy();
     });
-
   });
 
   describe('Email validator', () => {
@@ -234,7 +231,6 @@ describe('AddEmployeeComponent', () => {
 
       expect(emailFormControl.valid).toBeTruthy();
     });
-
   });
 
   describe('Telephone validator', () => {
@@ -286,7 +282,6 @@ describe('AddEmployeeComponent', () => {
       telephoneFormControl.setValue(invalidTelephone1);
       expect(telephoneFormControl.valid).toBeFalsy();
     });
-
   });
 
   describe('Postcode validator', () => {
@@ -326,7 +321,6 @@ describe('AddEmployeeComponent', () => {
       expect(postcodeFormControl.valid).toBeTruthy();
       postcodeFormControl.reset();
     });
-
   });
 
   describe('NIN validator', () => {
@@ -379,7 +373,7 @@ describe('AddEmployeeComponent', () => {
     let spy2: Spy;
     let spy3: Spy;
 
-    const setFormGroupSpies = function (firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
+    const setFormGroupSpies = function(firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
       spy1.and.returnValue(firstGroupFlag);
       spy2.and.returnValue(secondGroupFlag);
       spy3.and.returnValue(thirdGroupFlag);
@@ -422,7 +416,6 @@ describe('AddEmployeeComponent', () => {
   });
 
   describe('methods for expansion panel', () => {
-
     it('setStep should set the stepNumber', () => {
       component.setStep(1);
 
@@ -448,25 +441,21 @@ describe('AddEmployeeComponent', () => {
 
       expect(component.stepNumber).toEqual(0);
     });
-
   });
 
   describe('arePasswordsIdentical', () => {
     it('arePasswordsIdentical should return true if passwords are the same', () => {
       expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
-        .hasError('passwordDoNotMatch')).toBeFalsy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeFalsy();
     });
 
     it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
       expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl']
-        .hasError('passwordDoNotMatch')).toBeTruthy();
+      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeTruthy();
     });
   });
 
   describe('submitForm method', () => {
-
     it('should call createSubject method if the form is valid', () => {
       spyOn(component, 'createSubject');
       spyOn(component, 'isValid').and.returnValue(true);
@@ -498,11 +487,9 @@ describe('AddEmployeeComponent', () => {
 
       expect(component.assignEmployeeToManager).not.toHaveBeenCalled();
     });
-
   });
 
   xdescribe('create subject method', () => {
-
     it('should call service method if the form is valid', () => {
       spyOn(subjectDetailsService, 'createSubject');
 
@@ -518,7 +505,5 @@ describe('AddEmployeeComponent', () => {
 
       expect(subjectDetailsService.createSubject).not.toHaveBeenCalled();
     });
-
   });
-
 });

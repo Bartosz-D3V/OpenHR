@@ -1,51 +1,87 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Observable } from 'rxjs/Observable';
+import { MatDialogModule, MatGridListModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
-import {MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
-
+import { AppComponent } from '@boot/app.component';
+import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
+import { AvatarComponent } from '@shared/components/avatar/avatar.component';
+import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
+import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
+import { User } from '@shared/domain/user/user';
+import { LightweightSubjectService } from './service/lightweight-subject.service';
 import { CoreWrapperComponent } from './core-wrapper.component';
-import { AppComponent } from '../../../boot/app.component';
-import { SidenavComponent } from '../../../shared/components/sidenav/sidenav.component';
-import { SidenavItemListComponent } from '../../../shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
-import { AvatarComponent } from '../../../shared/components/avatar/avatar.component';
-import { InitialsPipe } from '../../../shared/pipes/initials/initials.pipe';
-import { ThemePickerComponent } from '../../../shared/components/theme-picker/theme-picker.component';
 
 describe('CoreComponent', () => {
   let component: CoreWrapperComponent;
   let fixture: ComponentFixture<CoreWrapperComponent>;
+  const mockUser: User = new User(1, 'John', 'Test');
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CoreWrapperComponent,
-        AppComponent,
-        AvatarComponent,
-        SidenavComponent,
-        SidenavItemListComponent,
-        InitialsPipe,
-        ThemePickerComponent,
-      ],
-      imports: [
-        RouterTestingModule,
-        NoopAnimationsModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatMenuModule,
-        MatIconModule,
-      ],
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          CoreWrapperComponent,
+          AppComponent,
+          AvatarComponent,
+          SidenavComponent,
+          SidenavItemListComponent,
+          InitialsPipe,
+          ThemePickerComponent,
+        ],
+        imports: [
+          HttpClientTestingModule,
+          RouterTestingModule,
+          NoopAnimationsModule,
+          MatSidenavModule,
+          MatToolbarModule,
+          MatMenuModule,
+          MatIconModule,
+          MatDialogModule,
+          MatGridListModule,
+        ],
+        providers: [LightweightSubjectService, ErrorResolverService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoreWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    spyOn(component['_router'], 'navigate');
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(component['_lightweightSubject'], 'getUser').and.returnValue(Observable.of(mockUser));
+      spyOn(component['_jwtHelper'], 'getSubjectId');
+    });
+
+    it('should fetch and assign all values to the User object', () => {
+      component.ngOnInit();
+      const actualUser: User = component.user;
+
+      expect(actualUser).toBeDefined();
+      expect(actualUser.subjectId).toEqual(mockUser.subjectId);
+      expect(actualUser.firstName).toBe(mockUser.firstName);
+      expect(actualUser.lastName).toBe(mockUser.lastName);
+      expect(actualUser.fullName).toBe(mockUser.firstName + ' ' + mockUser.lastName);
+    });
+
+    it('should navigate to dashboard page', () => {
+      component.ngOnInit();
+
+      expect(component['_router'].navigate).toHaveBeenCalled();
+    });
   });
 });

@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { ErrorInfo } from '@shared/domain/error/error-info';
 import { StaticModalComponent } from '../../components/static-modal/static-modal.component';
+import { MatDialogRef } from '@angular/material';
 
 @Injectable()
 export class ErrorResolverService {
+  private dialogOpened = false;
+  private readonly header = 'Error';
 
-  private header = 'Error';
+  constructor(public dialog: MatDialog) {}
 
-  constructor(public dialog: MatDialog) {
+  private subscribeToEvents(): void {
+    this.dialog.afterAllClosed.subscribe(() => (this.dialogOpened = false));
+    this.dialog.afterOpen.subscribe(() => (this.dialogOpened = true));
   }
 
-  public handleError(error: any): void {
-    console.log('An error occurred', error);
-    this.createAlert(error);
+  public handleError(errorInfo: ErrorInfo): void {
+    this.createAlert(errorInfo.message);
   }
 
-  public createAlert(error: any): void {
-    const dialogRef = this.dialog.open(StaticModalComponent, {
-      width: '250px',
-      data: {
-        text: error.message,
-        header: this.header,
-      },
-    });
+  public createAlert(message: string): void {
+    if (!this.dialogOpened) {
+      const dialogRef: MatDialogRef<StaticModalComponent> = this.dialog.open(StaticModalComponent, {
+        width: '250px',
+        data: {
+          text: message,
+          header: this.header,
+        },
+      });
+    }
+    this.subscribeToEvents();
   }
-
 }

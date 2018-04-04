@@ -1,7 +1,6 @@
 import { InitialsPipe } from './initials.pipe';
 
 describe('InitialsPipe', () => {
-
   let pipe: InitialsPipe;
 
   beforeEach(() => {
@@ -13,7 +12,6 @@ describe('InitialsPipe', () => {
   });
 
   describe('transform method', () => {
-
     it('should transform full name into initials', () => {
       const mockName1 = 'John Xavier Black';
       const mockName2 = 'John Test';
@@ -36,5 +34,8 @@ describe('InitialsPipe', () => {
       expect(pipe.transform(mockName1)).toEqual('JS');
     });
 
+    it('should return undefined if no value was provided', () => {
+      expect(pipe.transform(null)).toBeUndefined();
+    });
   });
 });

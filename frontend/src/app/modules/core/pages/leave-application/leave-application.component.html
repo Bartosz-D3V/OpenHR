@@ -1,37 +1,52 @@
-<app-page-header [header]="'Leave application'"></app-page-header>
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Leave application'"></app-page-header>
+</section>
+
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
   <mat-card>
-    <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="column wrap"
-          fxLayoutAlign.lt-sm="center center">
-      <mat-radio-group fxFlex.gt-xs="50" fxFlex.xs="100" name="selectorType" (change)="setSelector($event)">
-        <mat-radio-button class="c-radio__option" value="single" fxFlex.gt-xs="50" fxFlex.xs="100">Single day
+    <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="row wrap"
+          fxLayoutAlign.gt-xs="start" fxLayoutAlign.lt-sm="center center" fxFlex.gt-md="50" fxFlex.lt-md="100">
+      <mat-radio-group class="c-drawer__element" fxFlex="100" name="selectorType" [selected]="range"
+                       (change)="setSelector($event)">
+        <mat-radio-button #single class="c-radio__option" value="Single" fxFlex="50">Single day
         </mat-radio-button>
-        <mat-radio-button class="c-radio__option" value="range" fxFlex.gt-xs="50" fxFlex.xs="100">Range
+        <mat-radio-button #range class="c-radio__option" value="Range" fxFlex="50">Range
         </mat-radio-button>
       </mat-radio-group>
-      <mat-select fxFlex.gt-xs="50" fxFlex.xs="100" placeholder="Leave type"
-                  formControlName="leaveTypeSelectorController">
-        <mat-option *ngFor="let leaveType of leaveTypes" (selectorChange)="setLeaveType($event)" name="leaveType">
-          {{leaveType}}
-        </mat-option>
-      </mat-select>
-      <app-date-range fxFlex="50" *ngIf="selectorType === 'range'; else single_date_template" [mainFlexProperty]="50"
-                      [mobileFlexProperty]="100" (updateStartDate)="setStartDate($event)"
-                      (updateEndDate)="setEndDate($event)"></app-date-range>
-      <ng-template #single_date_template>
-        <mat-form-field fxFlex="50">
+      <app-date-range #dateRange class="c-drawer__element" fxFlex="100"
+                      *ngIf="selectorType === 'Range'; else single_date_template"
+                      [requireStartDate]="selectorType === 'Range'"
+                      [requireEndDate]="selectorType === 'Range'" [startDate]="leaveApplication.startDate"
+                      [endDate]="leaveApplication.endDate" (startDateChange)="setStartDate($event)"
+                      (endDateChange)="setEndDate($event)"
+                      (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
+      <ng-template class="c-drawer__element" #single_date_template>
+        <mat-form-field fxFlex="100">
           <input matInput [matDatepicker]="singleDate" placeholder="Choose a date" name="singleDate"
                  formControlName="singleDateController" (dateInput)="setStartDate($event)">
           <mat-datepicker-toggle matSuffix [for]="singleDate"></mat-datepicker-toggle>
           <mat-datepicker #singleDate [touchUi]="isMobile()"></mat-datepicker>
+          <mat-error *ngIf="leaveApplicationFormGroup.controls['singleDateController'].hasError('required')">
+            Date is required
+          </mat-error>
         </mat-form-field>
       </ng-template>
-      <mat-form-field fxFlex="60" class="c-textarea">
+      <mat-select class="c-drawer__element" fxFlex="100" placeholder="Select a leave type"
+                  formControlName="leaveTypeSelectorController" (selectionChange)="setLeaveType($event.value)">
+        <mat-option *ngFor="let leaveType of leaveTypes" name="leaveType"
+                    [value]="leaveType.leaveCategory">
+          {{leaveType.leaveCategory}}
+        </mat-option>
+      </mat-select>
+      <mat-form-field class="c-drawer__element" fxFlex="100" class="c-textarea">
         <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
-                  formControlName="messageController"></textarea>
-        <mat-hint align="end">{{message.value.length}} / 500</mat-hint>
+                  formControlName="messageController" [(ngModel)]="leaveApplication.message"></textarea>
+        <mat-hint align="end">{{message?.value.length || 0}} / 500</mat-hint>
       </mat-form-field>
     </form>
   </mat-card>
+  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()"
+          (click)="submitForm()">Submit
+  </button>
 </section>
