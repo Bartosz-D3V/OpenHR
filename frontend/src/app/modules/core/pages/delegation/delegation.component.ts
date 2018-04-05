@@ -47,8 +47,9 @@ export class DelegationComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute
   ) {
     this._route.params.subscribe((param?: Params) => {
-      if (param) {
-        this.fetchDelegationApplication(param['id']);
+      const applicationId: number = param['id'];
+      if (applicationId) {
+        this.fetchDelegationApplication(applicationId);
       }
     });
   }
