@@ -1,7 +1,7 @@
-package org.openhr.application.delegationapplication.controller;
+package org.openhr.application.delegation.controller;
 
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
-import org.openhr.application.delegationapplication.facade.DelegationApplicationFacade;
+import org.openhr.application.delegation.domain.DelegationApplication;
+import org.openhr.application.delegation.facade.DelegationApplicationFacade;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.http.HttpStatus;

@@ -9,7 +9,7 @@ import { Role } from '@shared//domain/subject/role';
 
 @Injectable()
 export class ManageLeaveApplicationsService {
-  private url: string = SystemVariables.API_URL + '/leave-application';
+  private url: string = SystemVariables.API_URL + '/leave-applications';
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -19,8 +19,10 @@ export class ManageLeaveApplicationsService {
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getAwaitingForActionLeaveApplications(subjectId: number): Observable<Array<LeaveApplication>> {
-    return this._http.get<Array<LeaveApplication>>(`${this.url}/${subjectId}/awaiting`, {
+    const params: HttpParams = new HttpParams().set('subjectId', subjectId.toString());
+    return this._http.get<Array<LeaveApplication>>(`${this.url}/awaiting`, {
       headers: this.headers,
+      params: params,
     });
   }
 

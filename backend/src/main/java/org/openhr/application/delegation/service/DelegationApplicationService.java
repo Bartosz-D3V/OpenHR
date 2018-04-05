@@ -1,7 +1,7 @@
-package org.openhr.application.delegationapplication.service;
+package org.openhr.application.delegation.service;
 
 import org.activiti.engine.impl.persistence.entity.ExecutionEntityImpl;
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;
 

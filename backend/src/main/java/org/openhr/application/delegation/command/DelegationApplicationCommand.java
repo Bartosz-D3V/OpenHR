@@ -1,6 +1,6 @@
-package org.openhr.application.delegationapplication.command;
+package org.openhr.application.delegation.command;
 
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.subject.Subject;
 
 public interface DelegationApplicationCommand {

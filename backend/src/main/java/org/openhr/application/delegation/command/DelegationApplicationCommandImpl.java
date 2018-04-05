@@ -1,9 +1,9 @@
-package org.openhr.application.delegationapplication.command;
+package org.openhr.application.delegation.command;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 
