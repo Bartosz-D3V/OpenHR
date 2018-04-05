@@ -32,6 +32,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.subethamail.wiser.Wiser;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -83,6 +84,8 @@ public class LeaveApplicationProcessTest {
   @Autowired
   private SessionFactory sessionFactory;
 
+  private final Wiser wiser = new Wiser();
+
   @Before
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
@@ -92,10 +95,15 @@ public class LeaveApplicationProcessTest {
     session.clear();
     mockLeaveApplication.setLeaveType(leaveType);
     mockLeaveApplication.setSubject(mockSubject);
+
+    wiser.setHostname("localhost");
+    wiser.setPort(1025);
+    wiser.start();
   }
 
   @After
   public void tearDown() {
+    wiser.stop();
     final Session session = sessionFactory.getCurrentSession();
     final String sql = "TRUNCATE TABLE LEAVE_APPLICATION";
     final SQLQuery query = session.createSQLQuery(sql);
@@ -167,6 +175,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", false);
@@ -197,6 +206,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
@@ -235,6 +245,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
     params.put("approvedByManager", true);
@@ -294,6 +305,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("applicationId", leaveApplication.getApplicationId());
     final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
 
