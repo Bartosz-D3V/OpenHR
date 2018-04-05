@@ -1,8 +1,8 @@
-package org.openhr.application.delegationapplication.facade;
+package org.openhr.application.delegation.facade;
 
-import org.openhr.application.delegationapplication.command.DelegationApplicationCommand;
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
-import org.openhr.application.delegationapplication.service.DelegationApplicationService;
+import org.openhr.application.delegation.command.DelegationApplicationCommand;
+import org.openhr.application.delegation.domain.DelegationApplication;
+import org.openhr.application.delegation.service.DelegationApplicationService;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;

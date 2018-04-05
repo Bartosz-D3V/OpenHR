@@ -1,12 +1,12 @@
-package org.openhr.application.delegationapplication.repository;
+package org.openhr.application.delegation.repository;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.openhr.application.delegationapplication.dao.DelegationApplicationDAO;
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.dao.DelegationApplicationDAO;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

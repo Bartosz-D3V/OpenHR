@@ -1,4 +1,4 @@
-package org.openhr.application.delegationapplication.domain;
+package org.openhr.application.delegation.domain;
 
 import org.openhr.common.domain.application.Application;
 import org.openhr.common.domain.country.Country;
