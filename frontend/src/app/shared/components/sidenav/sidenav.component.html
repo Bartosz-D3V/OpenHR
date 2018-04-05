@@ -11,8 +11,10 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon class="mat-24">menu</mat-icon>
     </button>
-    <app-theme-picker></app-theme-picker>
-    <app-avatar [user]="user"></app-avatar>
+    <span fxLayout="row" fxLayoutAlign="end center">
+      <app-theme-picker></app-theme-picker>
+      <app-avatar [user]="user"></app-avatar>
+    </span>
   </mat-toolbar>
   <router-outlet name="core"></router-outlet>
 </mat-sidenav-container>
