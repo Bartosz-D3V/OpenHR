@@ -30,4 +30,6 @@ public interface UserService {
   boolean isUsernameFree(String username);
 
   long findSubjectId(String username) throws SubjectDoesNotExistException;
+
+  boolean notificationsEnabled(long userId);
 }
