@@ -35,6 +35,11 @@ public class UserRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUser(final long userId) {
+    return userDAO.getUser(userId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public User getUserBySubjectId(final long subjectId) {
     User user;
     try {
@@ -161,5 +166,12 @@ public class UserRepository {
     }
 
     return subjectId;
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void updateNotificationsSettings(final long userId, final boolean notificationsTurnedOn) {
+    final User user = getUserBySubjectId(userId);
+    user.setNotificationsTurnedOn(notificationsTurnedOn);
+    userDAO.updateUser(userId, user);
   }
 }

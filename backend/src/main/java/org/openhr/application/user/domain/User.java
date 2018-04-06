@@ -1,5 +1,7 @@
 package org.openhr.application.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,13 +31,19 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+  @Column(name = "NOTIFICATIONS")
+  private boolean notificationsTurnedOn;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @JsonBackReference
   private List<UserRole> userRoles;
 
   public User() {
+    super();
   }
 
   public User(final String username, final String password) {
+    super();
     this.username = username;
     this.password = password;
   }
@@ -62,6 +70,14 @@ public class User implements Serializable {
 
   public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  public boolean isNotificationsTurnedOn() {
+    return notificationsTurnedOn;
+  }
+
+  public void setNotificationsTurnedOn(final boolean notificationsTurnedOn) {
+    this.notificationsTurnedOn = notificationsTurnedOn;
   }
 
   public List<UserRole> getUserRoles() {
