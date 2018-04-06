@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { User } from '../domain/User';
+import { User } from '@modules/settings/pages/settings/domain/user';
 
 @Injectable()
 export class SettingsService {
