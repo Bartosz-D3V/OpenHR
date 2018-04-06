@@ -4,7 +4,7 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { SettingsService } from './service/settings.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { User } from '@modules/settings/pages/settings/domain/User';
+import { User } from '@modules/settings/pages/settings/domain/user';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 
 @Component({
