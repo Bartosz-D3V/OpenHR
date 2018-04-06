@@ -28,6 +28,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public String startLeaveApplicationProcess(final Subject subject, final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("subject", subject);
+    parameters.put("userId", subject.getUser().getUserId());
     parameters.put("emailAddress", subject.getContactInformation().getEmail());
     parameters.put("leaveApplication", leaveApplication);
     parameters.put("applicationId", leaveApplication.getApplicationId());

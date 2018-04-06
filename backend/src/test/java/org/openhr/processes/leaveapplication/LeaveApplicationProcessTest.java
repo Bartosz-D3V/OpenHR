@@ -18,6 +18,7 @@ import org.openhr.application.leaveapplication.repository.LeaveApplicationReposi
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.domain.address.Address;
 import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
@@ -71,6 +72,9 @@ public class LeaveApplicationProcessTest {
 
   @MockBean
   private SubjectService subjectService;
+
+  @MockBean
+  private UserService userService;
 
   @SpyBean
   private LeaveApplicationRepository leaveApplicationRepository;
@@ -187,12 +191,14 @@ public class LeaveApplicationProcessTest {
       .getLeaveApplication(leaveApplication.getApplicationId());
 
     assertEquals(0, tasks.size());
+    assertEquals(1, wiser.getMessages().size());
     assertTrue(updatedLeaveApplication.isTerminated());
     assertFalse(updatedLeaveApplication.isApprovedByManager());
   }
 
   @Test
   public void hrTeamShouldEndWorkflowByRejectingTheApplication() throws Exception {
+    when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
@@ -206,6 +212,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("user", mockSubject.getUser());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
@@ -225,10 +232,12 @@ public class LeaveApplicationProcessTest {
       leaveApplication.getApplicationId());
 
     assertTrue(updatedLeaveApplication.isTerminated());
+    assertEquals(1, wiser.getMessages().size());
   }
 
   @Test
   public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws ValidationException {
+    when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
@@ -245,6 +254,7 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("user", mockSubject.getUser());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
@@ -264,6 +274,7 @@ public class LeaveApplicationProcessTest {
       leaveApplication.getApplicationId());
 
     assertTrue(updatedLeaveApplication.isTerminated());
+    assertEquals(1, wiser.getMessages().size());
   }
 
   @Test
@@ -291,6 +302,7 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void workflowShouldEndIfHrTeamMemberAppliedForLeave() throws ValidationException {
+    when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId())).thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject())).thenReturn(false);
@@ -305,13 +317,15 @@ public class LeaveApplicationProcessTest {
       .createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
+    params.put("user", mockSubject.getUser());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("applicationId", leaveApplication.getApplicationId());
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave-application", params);
+    runtimeService.startProcessInstanceByKey("leave-application", params);
 
     final LeaveApplication updatedLeaveApplication = session.get(LeaveApplication.class,
       leaveApplication.getApplicationId());
 
     assertTrue(updatedLeaveApplication.isTerminated());
+    assertEquals(1, wiser.getMessages().size());
   }
 }

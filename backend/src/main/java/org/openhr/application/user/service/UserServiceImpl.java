@@ -103,4 +103,10 @@ public class UserServiceImpl implements UserService {
   public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     return userRepository.findSubjectId(username);
   }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public boolean notificationsEnabled(final long userId) {
+    return getUser(userId).isNotificationsTurnedOn();
+  }
 }
