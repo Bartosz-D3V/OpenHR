@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
-  User getUserBySubjectId(long subjectId) throws UserDoesNotExist;
+  User getUser(long userId);
 
   User getUserByUsername(String username) throws UserDoesNotExist;
 
@@ -18,7 +18,12 @@ public interface UserService {
 
   void registerUser(User user) throws UserAlreadyExists;
 
-  void updatePassword(long subjectId, PasswordDTO passwordDTO) throws UserDoesNotExist, ValidationException;
+  User getUserBySubjectId(long subjectId);
+
+  void updateNotificationsSettings(long userId, boolean notificationsTurnedOn);
+
+  void updatePassword(long userId, PasswordDTO passwordDTO) throws UserDoesNotExist,
+    ValidationException, SubjectDoesNotExistException;
 
   boolean validCredentials(String username, String password) throws UserDoesNotExist;
 

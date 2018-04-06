@@ -19,12 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,30 +70,5 @@ public class UserControllerTest {
       .andReturn();
 
     assertEquals(userAlreadyExistsError.getLocalizedMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  @WithMockUser
-  public void getUserByUsernameShouldReturnUserByUsername() throws Exception {
-    when(userFacade.findByUsername("username")).thenReturn(mockUser);
-    final String userAsJson = objectMapper.writeValueAsString(mockUser);
-    final MvcResult result = mockMvc
-      .perform(get("/users/{username}", "username"))
-      .andExpect(status().isOk())
-      .andReturn();
-    assertNull(result.getResolvedException());
-    assertEquals(userAsJson, result.getResponse().getContentAsString());
-  }
-
-  @Test
-  @WithMockUser
-  public void getUserByUsernameShouldHandleSubjectDoesNotExistError() throws Exception {
-    when(userFacade.findByUsername("username")).thenThrow(userDoesNotExist);
-    final MvcResult result = mockMvc
-      .perform(get("/users/{username}", "username"))
-      .andExpect(status().isNotFound())
-      .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(userDoesNotExist.getMessage(), result.getResolvedException().getMessage());
   }
 }

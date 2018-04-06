@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
-import { MatCardModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
-
+import { MatCardModule, MatProgressSpinnerModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable } from 'rxjs/Observable';
 
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -38,7 +37,16 @@ describe('SettingsComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [SettingsComponent, PageHeaderComponent, CapitalizePipe],
-        imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule, MatToolbarModule, MatSlideToggleModule, MatCardModule],
+        imports: [
+          HttpClientTestingModule,
+          FormsModule,
+          ReactiveFormsModule,
+          FlexLayoutModule,
+          MatToolbarModule,
+          MatSlideToggleModule,
+          MatCardModule,
+          MatProgressSpinnerModule,
+        ],
         providers: [
           {
             provide: SettingsService,
@@ -62,15 +70,6 @@ describe('SettingsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should load settings on init', () => {
-    spyOn(component, 'loadThemeSetting');
-    spyOn(component, 'loadNotificationSettings');
-    component.ngOnInit();
-
-    expect(component.loadThemeSetting).toHaveBeenCalled();
-    expect(component.loadNotificationSettings).toHaveBeenCalled();
   });
 
   describe('booleanToFlag method', () => {
@@ -127,12 +126,5 @@ describe('SettingsComponent', () => {
 
       expect(component['darkModeOn']).toBeTruthy();
     });
-  });
-
-  xit('turnNotification should invoke service with boolean switch as a flag', () => {
-    spyOn(component['_settingsService'], 'setNotificationsSetting');
-    component.turnNotification(true);
-
-    expect(component['_settingsService'].setNotificationsSetting).toHaveBeenCalledWith(123, 'Y');
   });
 });
