@@ -5,7 +5,7 @@
       "git add"
     ],
     "*.java": [
-      "bash ./mvnw com.coveo:fmt-maven-plugin:format"
+      "bash ./backend/mvnw com.coveo:fmt-maven-plugin:format"
     ]
   }
 }
