@@ -1,6 +1,6 @@
-package org.openhr.application.delegationapplication.facade;
+package org.openhr.application.delegation.facade;
 
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 

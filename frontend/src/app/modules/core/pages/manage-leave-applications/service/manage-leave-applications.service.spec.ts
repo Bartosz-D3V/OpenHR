@@ -8,6 +8,7 @@ import { LeaveApplication } from '@shared//domain/application/leave-application'
 import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './manage-leave-applications.service';
 import { MomentInput } from 'moment';
+import { HttpParams } from '@angular/common/http';
 
 describe('ManageLeaveApplicationsService', () => {
   let service: ManageLeaveApplicationsService;
@@ -32,13 +33,13 @@ describe('ManageLeaveApplicationsService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + '/leave-application';
+    const apiLink: string = SystemVariables.API_URL + '/leave-applications';
 
     it(
       'should query current service URL',
       fakeAsync(() => {
         service.getAwaitingForActionLeaveApplications(45).subscribe();
-        http.expectOne(`${apiLink}/45/awaiting`);
+        http.expectOne(`${apiLink}/awaiting?subjectId=45`);
       })
     );
 
@@ -53,7 +54,7 @@ describe('ManageLeaveApplicationsService', () => {
             .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: `${apiLink}/45/awaiting`,
+              url: `${apiLink}/awaiting?subjectId=45`,
               method: 'GET',
             })
             .flush(mockLeaveApplications);
@@ -75,7 +76,7 @@ describe('ManageLeaveApplicationsService', () => {
             .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: `${apiLink}/45/awaiting`,
+              url: `${apiLink}/awaiting?subjectId=45`,
               method: 'GET',
             })
             .error(new ErrorEvent('404'));

@@ -27,8 +27,8 @@ export class LeaveApplicationService {
   public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
     const params = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
     return this._http.post<LeaveApplication>(this.url, leaveApplication, {
-      params: params,
       headers: this.headers,
+      params: params,
     });
   }
 }

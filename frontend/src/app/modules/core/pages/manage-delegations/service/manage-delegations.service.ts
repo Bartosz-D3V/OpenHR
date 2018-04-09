@@ -19,8 +19,10 @@ export class ManageDelegationsService {
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
   public getAwaitingForActionDelegationApplications(subjectId: number): Observable<Array<DelegationApplication>> {
-    return this._http.get<Array<DelegationApplication>>(`${this.url}/${subjectId}/awaiting`, {
+    const params: HttpParams = new HttpParams().set('subjectId', subjectId.toString());
+    return this._http.get<Array<DelegationApplication>>(`${this.url}/awaiting`, {
       headers: this.headers,
+      params: params,
     });
   }
 

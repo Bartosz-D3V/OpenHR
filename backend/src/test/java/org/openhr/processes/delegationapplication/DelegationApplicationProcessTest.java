@@ -10,7 +10,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openhr.application.delegationapplication.domain.DelegationApplication;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
