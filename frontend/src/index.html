@@ -30,40 +30,50 @@
     }
 
     body {
-      display: flex;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      align-items: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
       -ms-flex-align: center;
+      -ms-flex-pack: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
       -webkit-box-pack: center;
       -webkit-justify-content: center;
-      -ms-flex-pack: center;
+      align-items: center;
+      display: -ms-flexbox;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      justify-content: center;
     }
 
     body {
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
     app-root {
-      font-family: 'Roboto', sans-serif;
-      display: flex;
-      justify-content: center;
       align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      width: 100vw;
       background-color: #3F51B5;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Roboto', sans-serif;
+      height: 100vh;
+      justify-content: center;
+      width: 100vw;
     }
 
-    .spinner {
+    .c-spinner {
       margin-top: 5%;
       animation: rotator 1.4s linear infinite;
       -webkit-animation: rotator 1.4s linear infinite;
+    }
+
+    .c-spinner__path {
+      -ms-transform-origin: center;
+      -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+      -webkit-transform-origin: center;
+      animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+      stroke-dasharray: 187;
+      stroke-dashoffset: 0;
+      transform-origin: center;
     }
 
     @-webkit-keyframes rotator {
@@ -88,16 +98,6 @@
         -webkit-transform: rotate(270deg);
         transform: rotate(270deg);
       }
-    }
-
-    .path {
-      stroke-dasharray: 187;
-      stroke-dashoffset: 0;
-      transform-origin: center;
-      animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
-      -webkit-transform-origin: center;
-      -ms-transform-origin: center;
-      -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
     }
 
     @-webkit-keyframes colors {
@@ -150,14 +150,14 @@
       }
 
       50% {
-        stroke-dashoffset: 46.75;
         -webkit-transform: rotate(135deg);
+        stroke-dashoffset: 46.75;
         transform: rotate(135deg);
       }
 
       100% {
-        stroke-dashoffset: 187;
         -webkit-transform: rotate(450deg);
+        stroke-dashoffset: 187;
         transform: rotate(450deg);
       }
     }
@@ -168,14 +168,14 @@
       }
 
       50% {
-        stroke-dashoffset: 46.75;
         -webkit-transform: rotate(135deg);
+        stroke-dashoffset: 46.75;
         transform: rotate(135deg);
       }
 
       100% {
-        stroke-dashoffset: 187;
         -webkit-transform: rotate(450deg);
+        stroke-dashoffset: 187;
         transform: rotate(450deg);
       }
     }
@@ -183,11 +183,11 @@
   <h1>
     OpenHR
   </h1>
-  <h3 style="text-align: center; font-style: italic;">
+  <h3 style="font-style: italic; text-align: center;">
     Modern, Open Source HR management system
   </h3>
-  <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-    <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+  <svg class="c-spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+    <circle class="c-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
   </svg>
 </app-root>
 <noscript>
