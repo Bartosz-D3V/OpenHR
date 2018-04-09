@@ -3,6 +3,9 @@
     "*.{js,ts}": [
       "npm run pretty",
       "git add"
+    ],
+    "*.java": [
+      "bash ./mvnw com.coveo:fmt-maven-plugin:format"
     ]
   }
 }
