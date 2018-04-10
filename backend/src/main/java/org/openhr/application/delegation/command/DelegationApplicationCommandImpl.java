@@ -24,6 +24,8 @@ public class DelegationApplicationCommandImpl implements DelegationApplicationCo
   public String startDelegationProcess(final Subject subject, final DelegationApplication delegationApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("subject", subject);
+    parameters.put("userId", subject.getUser().getUserId());
+    parameters.put("emailAddress", subject.getContactInformation().getEmail());
     parameters.put("delegationApplication", delegationApplication);
     return runtimeService.startProcessInstanceByKey("delegation-application", parameters).getProcessInstanceId();
   }
