@@ -7,8 +7,6 @@ import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +28,8 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   public String startLeaveApplicationProcess(final Subject subject, final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("subject", subject);
+    parameters.put("userId", subject.getUser().getUserId());
+    parameters.put("emailAddress", subject.getContactInformation().getEmail());
     parameters.put("leaveApplication", leaveApplication);
     parameters.put("applicationId", leaveApplication.getApplicationId());
     return runtimeService.startProcessInstanceByKey("leave-application", parameters).getProcessInstanceId();
