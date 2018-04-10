@@ -5,6 +5,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.enumeration.Role;
+import org.openhr.common.util.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +20,12 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 
   public UserDAOImpl(final SessionFactory sessionFactory) {
     super(sessionFactory);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUser(final long userId) {
+    return (User) super.get(User.class, userId);
   }
 
   @Override
@@ -37,8 +44,8 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
   @Transactional(propagation = Propagation.REQUIRED)
   public User updateUser(final long userId, final User user) {
     final User savedUser = (User) super.get(User.class, userId);
-    BeanUtils.copyProperties(user, savedUser, "userId");
-    BeanUtils.copyProperties(user.getUserRoles(), savedUser.getUserRoles());
+    BeanUtil.copyNotNullProperties(user, savedUser, "userId");
+    BeanUtil.copyNotNullProperties(user.getUserRoles(), savedUser.getUserRoles(), "user");
     super.merge(savedUser);
     return savedUser;
   }

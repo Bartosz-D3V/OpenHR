@@ -1,13 +1,16 @@
 package org.openhr.application.user.service;
 
+import org.openhr.application.subject.service.SubjectService;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.dto.PasswordDTO;
+import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.repository.UserRepository;
 import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.common.exception.ValidationException;
+import org.openhr.common.proxy.worker.WorkerProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +29,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public User getUserBySubjectId(final long subjectId) throws UserDoesNotExist {
-    final User user = userRepository.getUserBySubjectId(subjectId);
-    if (user == null) {
-      throw new UserDoesNotExist("Requested user does not exist");
-    }
-    return user;
+  public User getUser(final long userId) {
+    return userRepository.getUser(userId);
   }
-
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void registerUser(final User user) throws UserAlreadyExists {
     final boolean isUsernameFree = isUsernameFree(user.getUsername());
     if (!isUsernameFree) {
@@ -63,10 +61,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUserBySubjectId(final long subjectId) {
+    return userRepository.getUserBySubjectId(subjectId);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updatePassword(final long subjectId, final PasswordDTO passwordDTO)
-    throws UserDoesNotExist, ValidationException {
-    final User user = getUserBySubjectId(subjectId);
+  public void updateNotificationsSettings(final long userId, final boolean notificationsTurnedOn) {
+    userRepository.updateNotificationsSettings(userId, notificationsTurnedOn);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void updatePassword(final long userId, final PasswordDTO passwordDTO) throws ValidationException,
+    SubjectDoesNotExistException {
+    final User user = getUser(userId);
     if (validCredentials(user.getUsername(), passwordDTO.getOldPassword())) {
       user.setPassword(authenticationService.encodePassword(passwordDTO.getNewPassword()));
       userRepository.updateUser(user.getUserId(), user);
@@ -92,5 +102,11 @@ public class UserServiceImpl implements UserService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long findSubjectId(final String username) throws SubjectDoesNotExistException {
     return userRepository.findSubjectId(username);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public boolean notificationsEnabled(final long userId) {
+    return getUser(userId).isNotificationsTurnedOn();
   }
 }

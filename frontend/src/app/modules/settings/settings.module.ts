@@ -11,6 +11,7 @@ import {
   MatButtonModule,
   MatIconModule,
   MatTabsModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -37,6 +38,7 @@ import { AccountComponent } from './pages/account/account.component';
     AppRoutingModule,
     MatIconModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
   ],
   declarations: [AccountComponent, SettingsComponent],
 })
