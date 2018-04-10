@@ -9,7 +9,9 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "manifest.json",
+        "browserconfig.xml"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -18,6 +20,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "serviceWorker": true,
       "styles": [
         "styles.scss"
       ],

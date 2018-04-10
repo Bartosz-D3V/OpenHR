@@ -182,6 +182,12 @@
   dependencies:
     tslib "^1.7.1"
 
+"@angular/service-worker@^5.2.9":
+  version "5.2.9"
+  resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-5.2.9.tgz#47ee439f2f896ac701fee271d046589a6c46b6af"
+  dependencies:
+    tslib "^1.7.1"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -5779,6 +5785,10 @@ prepend-http@^1.0.0:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
+
+prettier@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.11.1.tgz#61e43fc4cd44e68f2b0dfc2c38cd4bb0fccdcc75"
 
 pretty-error@^2.0.2:
   version "2.1.1"
