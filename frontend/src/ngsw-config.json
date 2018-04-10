@@ -1,0 +1,46 @@
+{
+  "index": "/index.html",
+  "appData": {
+    "name": "OpenHR",
+    "description": "OpenHR - Modern, Open Source HR management system"
+  },
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html"
+        ],
+        "versionedFiles": [
+          "/*.bundle.css",
+          "/*.bundle.js",
+          "/*.chunk.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**"
+        ]
+      }
+    },
+    {
+      "name": "external",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "urls": [
+          "https://fonts.googleapis.com/icon?family=Material+Icons*",
+          "https://fonts.googleapis.com/css?family=Work+Sans",
+          "https://fonts.googleapis.com/css?family=Roboto:100,400"
+        ]
+      }
+    }
+  ]
+}
