@@ -1,7 +1,7 @@
 package org.openhr.application.employee.facade;
 
-import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.manager.domain.Manager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

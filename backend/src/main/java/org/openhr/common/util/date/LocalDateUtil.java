@@ -17,8 +17,8 @@ public final class LocalDateUtil {
     LocalDate localDateIt = startDate;
     long freeDays = 0;
     while (localDateIt.isBefore(endDate) || localDateIt.isEqual(endDate)) {
-      if (localDateIt.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
-        localDateIt.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+      if (localDateIt.getDayOfWeek().equals(DayOfWeek.SATURDAY)
+          || localDateIt.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
         freeDays++;
       }
       localDateIt = localDateIt.plusDays(1L);

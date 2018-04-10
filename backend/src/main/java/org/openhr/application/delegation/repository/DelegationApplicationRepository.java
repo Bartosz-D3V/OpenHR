@@ -1,5 +1,6 @@
 package org.openhr.application.delegation.repository;
 
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -14,16 +15,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 public class DelegationApplicationRepository {
   private final DelegationApplicationDAO delegationApplicationDAO;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final SessionFactory sessionFactory;
 
-  public DelegationApplicationRepository(final DelegationApplicationDAO delegationApplicationDAO,
-                                         final SessionFactory sessionFactory) {
+  public DelegationApplicationRepository(
+      final DelegationApplicationDAO delegationApplicationDAO,
+      final SessionFactory sessionFactory) {
     this.delegationApplicationDAO = delegationApplicationDAO;
     this.sessionFactory = sessionFactory;
   }
@@ -35,10 +35,7 @@ public class DelegationApplicationRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Country.class);
-      countries = criteria
-        .setReadOnly(true)
-        .setCacheable(true)
-        .list();
+      countries = criteria.setReadOnly(true).setCacheable(true).list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -47,7 +44,8 @@ public class DelegationApplicationRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public DelegationApplication createDelegationApplication(final DelegationApplication delegationApplication) {
+  public DelegationApplication createDelegationApplication(
+      final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.createDelegationApplication(delegationApplication);
   }
 
@@ -57,7 +55,8 @@ public class DelegationApplicationRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
+  public DelegationApplication updateDelegationApplication(
+      final DelegationApplication delegationApplication) {
     return delegationApplicationDAO.updateDelegationApplication(delegationApplication);
   }
 
@@ -68,10 +67,12 @@ public class DelegationApplicationRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(DelegationApplication.class);
-      leaveApplications = criteria.createAlias("subject", "subject")
-        .add(Restrictions.eq("subject.subjectId", subjectId))
-        .setReadOnly(true)
-        .list();
+      leaveApplications =
+          criteria
+              .createAlias("subject", "subject")
+              .add(Restrictions.eq("subject.subjectId", subjectId))
+              .setReadOnly(true)
+              .list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -82,17 +83,19 @@ public class DelegationApplicationRepository {
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
-  public List<DelegationApplication> getAwaitingForActionDelegationApplications(final long subjectId) {
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(
+      final long subjectId) {
     List<DelegationApplication> filteredLeaveApplications;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      filteredLeaveApplications = session
-        .createCriteria(DelegationApplication.class)
-        .createAlias("assignee", "assignee")
-        .add(Restrictions.eq("terminated", false))
-        .add(Restrictions.eq("assignee.subjectId", subjectId))
-        .setReadOnly(true)
-        .list();
+      filteredLeaveApplications =
+          session
+              .createCriteria(DelegationApplication.class)
+              .createAlias("assignee", "assignee")
+              .add(Restrictions.eq("terminated", false))
+              .add(Restrictions.eq("assignee.subjectId", subjectId))
+              .setReadOnly(true)
+              .list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;

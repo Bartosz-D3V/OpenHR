@@ -1,5 +1,12 @@
 package org.openhr.application.holiday.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,27 +18,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class HolidayServiceTest {
-  private final static BankHoliday newYearsDay = new BankHoliday("New Year", LocalDate.of(2020, 1, 1), null, false);
-  private final static BankHoliday christmasDay = new BankHoliday("Christmas Day", LocalDate.of(2020, 12, 24), null, false);
+  private static final BankHoliday newYearsDay =
+      new BankHoliday("New Year", LocalDate.of(2020, 1, 1), null, false);
+  private static final BankHoliday christmasDay =
+      new BankHoliday("Christmas Day", LocalDate.of(2020, 12, 24), null, false);
   private static Set<BankHoliday> bankHolidaySet;
   private static BankHolidays bankHolidays;
 
-  @Autowired
-  private HolidayService holidayService;
+  @Autowired private HolidayService holidayService;
 
-  @MockBean
-  private BankHolidaysService bankHolidaysService;
+  @MockBean private BankHolidaysService bankHolidaysService;
 
   @Before
   public void setUp() {
@@ -46,7 +45,9 @@ public class HolidayServiceTest {
     bankHolidays.setEvents(new HashSet<>());
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
-    final long daysDiff = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 6), LocalDate.of(2020, 1, 9));
+    final long daysDiff =
+        holidayService.getWorkingDaysBetweenIncl(
+            LocalDate.of(2020, 1, 6), LocalDate.of(2020, 1, 9));
 
     assertEquals(4, daysDiff);
   }
@@ -56,8 +57,12 @@ public class HolidayServiceTest {
     bankHolidays.setEvents(bankHolidaySet);
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
-    final long daysDiff1 = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
-    final long daysDiff2 = holidayService.getWorkingDaysBetweenIncl(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
+    final long daysDiff1 =
+        holidayService.getWorkingDaysBetweenIncl(
+            LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
+    final long daysDiff2 =
+        holidayService.getWorkingDaysBetweenIncl(
+            LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
 
     assertEquals(2, daysDiff1);
     assertEquals(0, daysDiff2);

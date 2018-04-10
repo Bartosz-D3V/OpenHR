@@ -1,18 +1,16 @@
 package org.openhr.application.manager.dao;
 
+import java.util.Set;
 import org.hibernate.SessionFactory;
-import org.openhr.application.hr.domain.HrTeamMember;
-import org.openhr.common.dao.BaseDAO;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.util.bean.BeanUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Repository
 @Transactional
@@ -38,18 +36,26 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   @Transactional(propagation = Propagation.REQUIRED)
   public Manager updateManager(final Manager manager) {
     final Manager savedManager = getManager(manager.getSubjectId());
-    BeanUtil.copyNotNullProperties(manager.getPersonalInformation(), savedManager.getPersonalInformation(),
-      "personalInformationId");
-    BeanUtil.copyNotNullProperties(manager.getContactInformation(), savedManager.getContactInformation(),
-      "contactInformationId");
-    BeanUtil.copyNotNullProperties(manager.getContactInformation().getAddress(),
-      savedManager.getContactInformation().getAddress());
-    BeanUtil.copyNotNullProperties(manager.getEmployeeInformation(), savedManager.getEmployeeInformation(),
-      "employeeInformationId");
-    BeanUtil.copyNotNullProperties(manager.getHrInformation(), savedManager.getHrInformation(),
-      "hrInformationId");
+    BeanUtil.copyNotNullProperties(
+        manager.getPersonalInformation(),
+        savedManager.getPersonalInformation(),
+        "personalInformationId");
+    BeanUtil.copyNotNullProperties(
+        manager.getContactInformation(),
+        savedManager.getContactInformation(),
+        "contactInformationId");
+    BeanUtil.copyNotNullProperties(
+        manager.getContactInformation().getAddress(),
+        savedManager.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(
+        manager.getEmployeeInformation(),
+        savedManager.getEmployeeInformation(),
+        "employeeInformationId");
+    BeanUtil.copyNotNullProperties(
+        manager.getHrInformation(), savedManager.getHrInformation(), "hrInformationId");
     BeanUtil.copyNotNullProperties(manager.getRole(), savedManager.getRole());
-    BeanUtil.copyNotNullProperties(manager.getUser(), savedManager.getUser(), "userId", "userRoles");
+    BeanUtil.copyNotNullProperties(
+        manager.getUser(), savedManager.getUser(), "userId", "userRoles");
     BeanUtil.copyNotNullProperties(manager.getEmployees(), savedManager.getEmployees());
     BeanUtil.copyNotNullProperties(manager.getHrTeamMember(), savedManager.getHrTeamMember());
     super.merge(savedManager);
@@ -77,7 +83,7 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
-    throws SubjectDoesNotExistException {
+      throws SubjectDoesNotExistException {
     final Set<Manager> managers = hrTeamMember.getManagers();
     manager.setHrTeamMember(hrTeamMember);
     managers.add(manager);

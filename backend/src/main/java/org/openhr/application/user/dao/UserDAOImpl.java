@@ -1,18 +1,16 @@
 package org.openhr.application.user.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.SessionFactory;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.util.bean.BeanUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 @Transactional

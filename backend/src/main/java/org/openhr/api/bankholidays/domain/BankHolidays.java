@@ -7,8 +7,7 @@ public class BankHolidays implements Serializable {
   private String division;
   private Set<BankHoliday> events;
 
-  public BankHolidays() {
-  }
+  public BankHolidays() {}
 
   public BankHolidays(final String division, final Set<BankHoliday> events) {
     this.division = division;

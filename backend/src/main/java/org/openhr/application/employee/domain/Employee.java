@@ -2,6 +2,11 @@ package org.openhr.application.employee.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -10,18 +15,12 @@ import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.io.Serializable;
-
 @Entity
 @JsonIdentityInfo(
   generator = ObjectIdGenerators.PropertyGenerator.class,
   property = "subjectId",
-  scope = Long.class)
+  scope = Long.class
+)
 public class Employee extends Subject implements Serializable {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "FK_MANAGER")
@@ -31,8 +30,12 @@ public class Employee extends Subject implements Serializable {
     super();
   }
 
-  public Employee(final PersonalInformation personalInformation, final ContactInformation contactInformation,
-                  final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
+  public Employee(
+      final PersonalInformation personalInformation,
+      final ContactInformation contactInformation,
+      final EmployeeInformation employeeInformation,
+      final HrInformation hrInformation,
+      final User user) {
     super(personalInformation, contactInformation, employeeInformation, hrInformation, user);
   }
 

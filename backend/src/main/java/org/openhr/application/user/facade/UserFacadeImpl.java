@@ -2,9 +2,9 @@ package org.openhr.application.user.facade;
 
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.dto.PasswordDTO;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
-import org.openhr.application.user.service.UserService;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class UserFacadeImpl implements UserFacade {
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updatePassword(final long userId, final PasswordDTO passwordDTO)
-    throws UserDoesNotExist, ValidationException, SubjectDoesNotExistException {
+      throws UserDoesNotExist, ValidationException, SubjectDoesNotExistException {
     userService.updatePassword(userId, passwordDTO);
   }
 

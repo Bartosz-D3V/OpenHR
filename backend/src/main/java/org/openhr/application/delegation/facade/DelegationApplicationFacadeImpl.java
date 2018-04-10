@@ -1,5 +1,6 @@
 package org.openhr.application.delegation.facade;
 
+import java.util.List;
 import org.openhr.application.delegation.command.DelegationApplicationCommand;
 import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.application.delegation.service.DelegationApplicationService;
@@ -11,17 +12,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class DelegationApplicationFacadeImpl implements DelegationApplicationFacade {
   private final DelegationApplicationService delegationApplicationService;
   private final DelegationApplicationCommand delegationApplicationCommand;
   private final SubjectService subjectService;
 
-  public DelegationApplicationFacadeImpl(final DelegationApplicationService delegationApplicationService,
-                                         final DelegationApplicationCommand delegationApplicationCommand,
-                                         final SubjectService subjectService) {
+  public DelegationApplicationFacadeImpl(
+      final DelegationApplicationService delegationApplicationService,
+      final DelegationApplicationCommand delegationApplicationCommand,
+      final SubjectService subjectService) {
     this.delegationApplicationService = delegationApplicationService;
     this.delegationApplicationCommand = delegationApplicationCommand;
     this.subjectService = subjectService;
@@ -35,12 +35,12 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public DelegationApplication startDelegationApplicationProcess(final long subjectId,
-                                                                 final DelegationApplication delegationApplication)
-    throws SubjectDoesNotExistException {
+  public DelegationApplication startDelegationApplicationProcess(
+      final long subjectId, final DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException {
     final Subject subject = subjectService.getSubjectDetails(subjectId);
-    final DelegationApplication savedDelegationApplication = delegationApplicationService
-      .createDelegationApplication(subject, delegationApplication);
+    final DelegationApplication savedDelegationApplication =
+        delegationApplicationService.createDelegationApplication(subject, delegationApplication);
     delegationApplicationCommand.startDelegationProcess(subject, savedDelegationApplication);
     return savedDelegationApplication;
   }
@@ -53,9 +53,10 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void updateDelegationApplication(final String processInstanceId,
-                                          final DelegationApplication delegationApplication) {
-    delegationApplicationCommand.amendDelegationApplication(processInstanceId, delegationApplication);
+  public void updateDelegationApplication(
+      final String processInstanceId, final DelegationApplication delegationApplication) {
+    delegationApplicationCommand.amendDelegationApplication(
+        processInstanceId, delegationApplication);
   }
 
   @Override
@@ -66,7 +67,8 @@ public class DelegationApplicationFacadeImpl implements DelegationApplicationFac
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<DelegationApplication> getAwaitingForActionDelegationApplications(final long subjectId) {
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(
+      final long subjectId) {
     return delegationApplicationService.getAwaitingForActionDelegationApplications(subjectId);
   }
 

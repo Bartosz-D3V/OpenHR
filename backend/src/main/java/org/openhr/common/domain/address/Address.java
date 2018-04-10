@@ -1,9 +1,9 @@
 package org.openhr.common.domain.address;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Embeddable
 public class Address implements Serializable {
@@ -32,8 +32,13 @@ public class Address implements Serializable {
     super();
   }
 
-  public Address(final String firstLineAddress, final String secondLineAddress, final String thirdLineAddress,
-                 final String postcode, final String city, String country) {
+  public Address(
+      final String firstLineAddress,
+      final String secondLineAddress,
+      final String thirdLineAddress,
+      final String postcode,
+      final String city,
+      String country) {
     this.firstLineAddress = firstLineAddress;
     this.secondLineAddress = secondLineAddress;
     this.thirdLineAddress = thirdLineAddress;

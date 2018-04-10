@@ -1,5 +1,6 @@
 package org.openhr.application.dashboard.facade;
 
+import java.util.List;
 import org.openhr.application.dashboard.dto.MonthSummaryDTO;
 import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.service.DashboardService;
@@ -7,8 +8,6 @@ import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class DashboardFacadeImpl implements DashboardFacade {

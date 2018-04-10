@@ -1,11 +1,10 @@
 package org.openhr.application.manager.facade;
 
+import java.util.List;
+import java.util.Set;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-
-import java.util.List;
-import java.util.Set;
 
 public interface ManagerFacade {
   Manager getManager(long subjectId);

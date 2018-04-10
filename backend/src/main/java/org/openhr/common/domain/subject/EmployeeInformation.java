@@ -1,7 +1,7 @@
 package org.openhr.common.domain.subject;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
+import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "EMPLOYEE_INFORMATION")
@@ -46,8 +45,13 @@ public class EmployeeInformation implements Serializable {
     super();
   }
 
-  public EmployeeInformation(final String nationalInsuranceNumber, final String position, final String department,
-                             final String employeeNumber, final LocalDate startDate, final LocalDate endDate) {
+  public EmployeeInformation(
+      final String nationalInsuranceNumber,
+      final String position,
+      final String department,
+      final String employeeNumber,
+      final LocalDate startDate,
+      final LocalDate endDate) {
     this.nationalInsuranceNumber = nationalInsuranceNumber;
     this.position = position;
     this.department = department;

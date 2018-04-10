@@ -12,16 +12,16 @@ public interface SubjectDAO {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
   void updateSubjectContactInformation(long subjectId, ContactInformation contactInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
   void updateSubjectEmployeeInformation(long subjectId, EmployeeInformation employeeInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
-  void updateSubjectHRInformation(long subjectId, HrInformation hrInformation) throws HibernateException;
+  void updateSubjectHRInformation(long subjectId, HrInformation hrInformation)
+      throws HibernateException;
 
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
-
 }

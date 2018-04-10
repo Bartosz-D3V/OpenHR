@@ -41,7 +41,8 @@ public class HrFacadeImpl implements HrFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void addManagerToHr(final long hrTeamMemberId, final long managerId) throws SubjectDoesNotExistException {
+  public void addManagerToHr(final long hrTeamMemberId, final long managerId)
+      throws SubjectDoesNotExistException {
     hrService.addManagerToHr(hrTeamMemberId, managerId);
   }
 }

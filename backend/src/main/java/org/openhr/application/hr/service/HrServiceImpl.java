@@ -18,9 +18,10 @@ public class HrServiceImpl implements HrService {
   private final HrRepository hrRepository;
   private final WorkerProxy workerProxy;
 
-  public HrServiceImpl(final AuthenticationService authenticationService,
-                       final HrRepository hrRepository,
-                       final WorkerProxy workerProxy) {
+  public HrServiceImpl(
+      final AuthenticationService authenticationService,
+      final HrRepository hrRepository,
+      final WorkerProxy workerProxy) {
     this.authenticationService = authenticationService;
     this.hrRepository = hrRepository;
     this.workerProxy = workerProxy;
@@ -58,7 +59,8 @@ public class HrServiceImpl implements HrService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void addManagerToHr(final long hrTeamMemberId, final long managerId) throws SubjectDoesNotExistException {
+  public void addManagerToHr(final long hrTeamMemberId, final long managerId)
+      throws SubjectDoesNotExistException {
     final HrTeamMember hrTeamMember = getHrTeamMember(hrTeamMemberId);
     final Manager manager = workerProxy.getManager(managerId);
     hrRepository.addManagerToHr(hrTeamMember, manager);
