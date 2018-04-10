@@ -18,7 +18,11 @@ public class BankHolidaysController {
     this.bankHolidaysFacade = bankHolidaysFacade;
   }
 
-  @RequestMapping(value = "/{country}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(
+    value = "/{country}",
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
   @ResponseBody
   public BankHolidays getBankHolidays(@PathVariable(name = "country") final String country) {
     return bankHolidaysFacade.getBankHolidays(country);

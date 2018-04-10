@@ -1,13 +1,12 @@
 package org.openhr.application.delegation.domain;
 
-import org.openhr.common.domain.application.Application;
-import org.openhr.common.domain.country.Country;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import org.openhr.common.domain.application.Application;
+import org.openhr.common.domain.country.Country;
 
 @Entity
 @Table(name = "DELEGATION_APPLICATION")

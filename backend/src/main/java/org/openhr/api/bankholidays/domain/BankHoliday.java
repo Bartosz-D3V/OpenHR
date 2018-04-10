@@ -9,10 +9,10 @@ public class BankHoliday implements Serializable {
   private String notes;
   private boolean bunting;
 
-  public BankHoliday() {
-  }
+  public BankHoliday() {}
 
-  public BankHoliday(final String title, final LocalDate date, final String notes, final boolean bunting) {
+  public BankHoliday(
+      final String title, final LocalDate date, final String notes, final boolean bunting) {
     this.title = title;
     this.date = date;
     this.notes = notes;

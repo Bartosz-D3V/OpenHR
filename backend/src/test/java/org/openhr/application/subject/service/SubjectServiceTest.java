@@ -1,10 +1,16 @@
 package org.openhr.application.subject.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.subject.repository.SubjectRepository;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Subject;
@@ -15,26 +21,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.when;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class SubjectServiceTest {
 
-  @Autowired
-  private SubjectService subjectService;
+  @Autowired private SubjectService subjectService;
 
-  @MockBean
-  private SubjectRepository subjectRepository;
+  @MockBean private SubjectRepository subjectRepository;
 
-  @MockBean
-  private HolidayService holidayService;
+  @MockBean private HolidayService holidayService;
 
   @Test
   public void getLeftAllowanceInDaysShouldReturnDiffBetweenAllowedLeaveAndUsedLeave() {
@@ -46,18 +42,20 @@ public class SubjectServiceTest {
 
   @Test(expected = ValidationException.class)
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeftLeaveAllowance()
-    throws ValidationException {
+      throws ValidationException {
     when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
     when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
     when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
-    final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
+    final LeaveApplication leaveApplication =
+        new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(
+        new Employee(), leaveApplication);
   }
 
   @Test(expected = ValidationException.class)
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
-    throws ValidationException {
+      throws ValidationException {
     when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
     when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
     when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
@@ -66,8 +64,10 @@ public class SubjectServiceTest {
     final HrInformation hrInformation = new HrInformation();
     hrInformation.setAllowance(25L);
     subject.setHrInformation(hrInformation);
-    final LeaveApplication leaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
+    final LeaveApplication leaveApplication =
+        new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(new Employee(), leaveApplication);
+    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(
+        new Employee(), leaveApplication);
   }
 }

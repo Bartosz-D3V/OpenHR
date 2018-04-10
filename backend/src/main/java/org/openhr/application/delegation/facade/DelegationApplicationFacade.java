@@ -1,20 +1,21 @@
 package org.openhr.application.delegation.facade;
 
+import java.util.List;
 import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 
-import java.util.List;
-
 public interface DelegationApplicationFacade {
   List<Country> getCountries();
 
-  DelegationApplication startDelegationApplicationProcess(long subjectId, DelegationApplication delegationApplication)
-    throws SubjectDoesNotExistException;
+  DelegationApplication startDelegationApplicationProcess(
+      long subjectId, DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException;
 
   DelegationApplication getDelegationApplication(long delegationApplicationId);
 
-  void updateDelegationApplication(String processInstanceId, DelegationApplication delegationApplication);
+  void updateDelegationApplication(
+      String processInstanceId, DelegationApplication delegationApplication);
 
   List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);
 

@@ -1,5 +1,7 @@
 package org.openhr.application.manager.repository;
 
+import java.util.List;
+import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,9 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Set;
-
 @Repository
 @Transactional
 public class ManagerRepository {
@@ -24,8 +23,7 @@ public class ManagerRepository {
   private final SessionFactory sessionFactory;
   private final ManagerDAO managerDAO;
 
-  public ManagerRepository(final SessionFactory sessionFactory,
-                           final ManagerDAO managerDAO) {
+  public ManagerRepository(final SessionFactory sessionFactory, final ManagerDAO managerDAO) {
     this.sessionFactory = sessionFactory;
     this.managerDAO = managerDAO;
   }
@@ -36,9 +34,7 @@ public class ManagerRepository {
     List<Manager> managers;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      managers = session.createCriteria(Manager.class)
-        .setReadOnly(true)
-        .list();
+      managers = session.createCriteria(Manager.class).setReadOnly(true).list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -68,13 +64,14 @@ public class ManagerRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void addEmployeeToManager(final Manager manager, final Employee employee) throws SubjectDoesNotExistException {
+  public void addEmployeeToManager(final Manager manager, final Employee employee)
+      throws SubjectDoesNotExistException {
     managerDAO.addEmployeeToManager(manager, employee);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
   public Manager setHrToManager(final Manager manager, final HrTeamMember hrTeamMember)
-    throws SubjectDoesNotExistException {
+      throws SubjectDoesNotExistException {
     return managerDAO.setHrToManager(manager, hrTeamMember);
   }
 }

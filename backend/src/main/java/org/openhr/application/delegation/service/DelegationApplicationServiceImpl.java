@@ -1,5 +1,6 @@
 package org.openhr.application.delegation.service;
 
+import java.util.List;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.application.delegation.repository.DelegationApplicationRepository;
@@ -13,15 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class DelegationApplicationServiceImpl implements DelegationApplicationService {
   private final DelegationApplicationRepository delegationApplicationRepository;
   private final EmployeeService employeeService;
 
-  public DelegationApplicationServiceImpl(final DelegationApplicationRepository delegationApplicationRepository,
-                                          final EmployeeService employeeService) {
+  public DelegationApplicationServiceImpl(
+      final DelegationApplicationRepository delegationApplicationRepository,
+      final EmployeeService employeeService) {
     this.delegationApplicationRepository = delegationApplicationRepository;
     this.employeeService = employeeService;
   }
@@ -34,8 +34,8 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public DelegationApplication createDelegationApplication(final Subject subject,
-                                                           final DelegationApplication delegationApplication) {
+  public DelegationApplication createDelegationApplication(
+      final Subject subject, final DelegationApplication delegationApplication) {
     delegationApplication.setSubject(subject);
     return delegationApplicationRepository.createDelegationApplication(delegationApplication);
   }
@@ -48,14 +48,16 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public DelegationApplication updateDelegationApplication(final DelegationApplication delegationApplication) {
+  public DelegationApplication updateDelegationApplication(
+      final DelegationApplication delegationApplication) {
     return delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public DelegationApplication saveProcessInstanceId(final DelegationApplication delegationApplication,
-                                                     final ExecutionEntityImpl delegateExecution) {
+  public DelegationApplication saveProcessInstanceId(
+      final DelegationApplication delegationApplication,
+      final ExecutionEntityImpl delegateExecution) {
     delegationApplication.setProcessInstanceId(delegateExecution.getProcessInstanceId());
     return delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
@@ -68,7 +70,8 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<DelegationApplication> getAwaitingForActionDelegationApplications(final long subjectId) {
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(
+      final long subjectId) {
     return delegationApplicationRepository.getAwaitingForActionDelegationApplications(subjectId);
   }
 

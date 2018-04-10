@@ -1,19 +1,18 @@
 package org.openhr.common.util.date;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class LocalDateUtilTest {
-  private final static LocalDate mockDate1 = LocalDate.of(2020, 1, 1);
-  private final static LocalDate mockDate2 = LocalDate.of(2020, 1, 10);
+  private static final LocalDate mockDate1 = LocalDate.of(2020, 1, 1);
+  private static final LocalDate mockDate2 = LocalDate.of(2020, 1, 10);
 
   @Test
   public void diffDaysShouldReturnDifferenceBetweenDatesExcludingStartDate() {

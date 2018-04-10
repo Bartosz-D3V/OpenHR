@@ -1,17 +1,15 @@
 package org.openhr.common.converter;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openhr.common.converter.LocalDatePersistenceConverter;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Date;
 import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -53,5 +51,4 @@ public class LocalDatePersistenceConverterTest {
 
     assertEquals(LocalDate.of(2017, 12, 4), actualDate);
   }
-
 }

@@ -3,6 +3,10 @@
     "*.{js,ts}": [
       "npm run pretty",
       "git add"
+    ],
+    "*.java": [
+      "npm run google-format",
+      "git add"
     ]
   }
 }

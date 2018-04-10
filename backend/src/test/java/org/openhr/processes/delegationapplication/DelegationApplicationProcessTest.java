@@ -1,5 +1,14 @@
 package org.openhr.processes.delegationapplication;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -30,47 +39,42 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.subethamail.wiser.Wiser;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.when;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
 @Transactional(propagation = Propagation.NEVER)
 public class DelegationApplicationProcessTest {
-  private final Employee mockEmployee = new Employee(
-    new PersonalInformation("John", "Xavier", "Alex", null),
-    new ContactInformation("", "j.x@mail.com", null), new EmployeeInformation(), new HrInformation(),
-    new User(UUID.randomUUID().toString().substring(0, 19), ""));
-  private final Manager mockManager = new Manager(
-    new PersonalInformation("John", "Xavier", "Alex", null),
-    new ContactInformation("", "j.x@mail.com", null), new EmployeeInformation(), new HrInformation(),
-    new User(UUID.randomUUID().toString().substring(0, 19), ""));
-  private final HrTeamMember mockHrTeamMember = new HrTeamMember(
-    new PersonalInformation("John", "Xavier", "Alex", null),
-    new ContactInformation("", "j.x@mail.com", null), new EmployeeInformation(), new HrInformation(),
-    new User(UUID.randomUUID().toString().substring(0, 19), ""));
-  private final DelegationApplication mockDelegationApplication = new DelegationApplication(LocalDate.now(),
-    LocalDate.now().plusDays(10));
+  private final Employee mockEmployee =
+      new Employee(
+          new PersonalInformation("John", "Xavier", "Alex", null),
+          new ContactInformation("", "j.x@mail.com", null),
+          new EmployeeInformation(),
+          new HrInformation(),
+          new User(UUID.randomUUID().toString().substring(0, 19), ""));
+  private final Manager mockManager =
+      new Manager(
+          new PersonalInformation("John", "Xavier", "Alex", null),
+          new ContactInformation("", "j.x@mail.com", null),
+          new EmployeeInformation(),
+          new HrInformation(),
+          new User(UUID.randomUUID().toString().substring(0, 19), ""));
+  private final HrTeamMember mockHrTeamMember =
+      new HrTeamMember(
+          new PersonalInformation("John", "Xavier", "Alex", null),
+          new ContactInformation("", "j.x@mail.com", null),
+          new EmployeeInformation(),
+          new HrInformation(),
+          new User(UUID.randomUUID().toString().substring(0, 19), ""));
+  private final DelegationApplication mockDelegationApplication =
+      new DelegationApplication(LocalDate.now(), LocalDate.now().plusDays(10));
 
-  @MockBean
-  private UserService userService;
+  @MockBean private UserService userService;
 
-  @Autowired
-  private RuntimeService runtimeService;
+  @Autowired private RuntimeService runtimeService;
 
-  @Autowired
-  private TaskService taskService;
+  @Autowired private TaskService taskService;
 
-  @Autowired
-  private SessionFactory sessionFactory;
+  @Autowired private SessionFactory sessionFactory;
 
   private final Wiser wiser = new Wiser();
 
@@ -105,7 +109,8 @@ public class DelegationApplicationProcessTest {
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
 
     assertFalse(processInstance.isSuspended());
   }
@@ -116,15 +121,18 @@ public class DelegationApplicationProcessTest {
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
     final Session session = sessionFactory.getCurrentSession();
     final DelegationApplication delegationApplication =
-      session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
 
     assertEquals("Manager reviews application", task.getName());
-    assertEquals(processInstance.getProcessInstanceId(), delegationApplication.getProcessInstanceId());
+    assertEquals(
+        processInstance.getProcessInstanceId(), delegationApplication.getProcessInstanceId());
   }
 
   @Test
@@ -133,17 +141,20 @@ public class DelegationApplicationProcessTest {
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     params = new HashMap<>();
     params.put("approvedByManager", false);
     params.put("delegationApplication", mockDelegationApplication);
     taskService.complete(task.getId(), params);
-    final Task task2 = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final Task task2 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
     final Session session = sessionFactory.getCurrentSession();
-    final DelegationApplication actualDelegationApplication = session.get(DelegationApplication.class,
-      mockDelegationApplication.getApplicationId());
+    final DelegationApplication actualDelegationApplication =
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
     final Employee actualEmployee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertEquals("Amend the application", task2.getName());
@@ -157,18 +168,22 @@ public class DelegationApplicationProcessTest {
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     params = new HashMap<>();
     params.put("approvedByManager", true);
     params.put("delegationApplication", mockDelegationApplication);
     taskService.complete(task.getId(), params);
-    final Task task2 = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final Task task2 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
     final Session session = sessionFactory.getCurrentSession();
-    final DelegationApplication delegationApplication = session.get(DelegationApplication.class,
-      mockDelegationApplication.getApplicationId());
-    final HrTeamMember hrTeamMember = session.get(HrTeamMember.class, mockHrTeamMember.getSubjectId());
+    final DelegationApplication delegationApplication =
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
+    final HrTeamMember hrTeamMember =
+        session.get(HrTeamMember.class, mockHrTeamMember.getSubjectId());
 
     assertEquals("HR reviews application", task2.getName());
     assertTrue(delegationApplication.isApprovedByManager());
@@ -184,8 +199,10 @@ public class DelegationApplicationProcessTest {
     params.put("emailAddress", mockEmployee.getContactInformation().getEmail());
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     params = new HashMap<>();
     params.put("approvedByManager", true);
     params.put("delegationApplication", mockDelegationApplication);
@@ -194,12 +211,13 @@ public class DelegationApplicationProcessTest {
     params = new HashMap<>();
     params.put("approvedByHR", true);
     params.put("delegationApplication", mockDelegationApplication);
-    final Task task2 = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final Task task2 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task2.getId(), params);
 
     final Session session = sessionFactory.getCurrentSession();
-    final DelegationApplication delegationApplication = session.get(DelegationApplication.class,
-      mockDelegationApplication.getApplicationId());
+    final DelegationApplication delegationApplication =
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
 
     assertTrue(delegationApplication.isApprovedByManager());
     assertTrue(delegationApplication.isApprovedByHR());
@@ -213,8 +231,10 @@ public class DelegationApplicationProcessTest {
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     params = new HashMap<>();
     params.put("approvedByManager", true);
     params.put("delegationApplication", mockDelegationApplication);
@@ -223,12 +243,13 @@ public class DelegationApplicationProcessTest {
     params = new HashMap<>();
     params.put("approvedByHR", false);
     params.put("delegationApplication", mockDelegationApplication);
-    final Task task2 = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final Task task2 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task2.getId(), params);
 
     final Session session = sessionFactory.getCurrentSession();
-    final DelegationApplication delegationApplication = session.get(DelegationApplication.class,
-      mockDelegationApplication.getApplicationId());
+    final DelegationApplication delegationApplication =
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
     final Employee employee = session.get(Employee.class, mockEmployee.getSubjectId());
 
     assertFalse(delegationApplication.isApprovedByHR());
@@ -241,8 +262,10 @@ public class DelegationApplicationProcessTest {
     params.put("subject", mockManager);
     params.put("delegationApplication", mockDelegationApplication);
 
-    final ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("delegation-application", params);
-    final Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
     assertEquals("HR reviews application", task.getName());
   }
@@ -260,7 +283,7 @@ public class DelegationApplicationProcessTest {
 
     final Session session = sessionFactory.getCurrentSession();
     final DelegationApplication delegationApplication =
-      session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
+        session.get(DelegationApplication.class, mockDelegationApplication.getApplicationId());
 
     assertTrue(delegationApplication.isApprovedByHR());
     assertTrue(delegationApplication.isTerminated());

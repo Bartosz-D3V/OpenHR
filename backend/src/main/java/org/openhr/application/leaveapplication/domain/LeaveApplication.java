@@ -1,7 +1,7 @@
 package org.openhr.application.leaveapplication.domain;
 
-import org.openhr.common.domain.application.Application;
-
+import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,9 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
+import org.openhr.common.domain.application.Application;
 
 @Entity
 @Table(name = "LEAVE_APPLICATION")

@@ -1,13 +1,12 @@
 package org.openhr.application.authentication.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
 import org.openhr.common.enumeration.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -59,5 +58,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     hrUserRoles.add(userRole);
     return hrUserRoles;
   }
-
 }

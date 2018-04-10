@@ -1,9 +1,8 @@
 package org.openhr.application.authentication.service;
 
+import java.util.List;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
-
-import java.util.List;
 
 public interface AuthenticationService {
   String encodePassword(String password);

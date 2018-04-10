@@ -1,7 +1,6 @@
 package org.openhr.common.domain.subject;
 
-import org.openhr.common.domain.address.Address;
-
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+import org.openhr.common.domain.address.Address;
 
 @Entity
 @Table(name = "CONTACT_INFORMATION")
@@ -26,8 +25,7 @@ public class ContactInformation implements Serializable {
   @Size(max = 40)
   private String email;
 
-  @Embedded
-  private Address address;
+  @Embedded private Address address;
 
   public ContactInformation() {
     super();

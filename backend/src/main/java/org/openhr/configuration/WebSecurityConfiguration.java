@@ -1,5 +1,7 @@
 package org.openhr.configuration;
 
+import java.util.Arrays;
+import java.util.List;
 import org.openhr.security.RestAuthenticationEntryPoint;
 import org.openhr.security.SkipPathRequestMatcher;
 import org.openhr.security.filter.AjaxAuthenticationFilter;
@@ -21,9 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,19 +31,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/employees";
   private static final String TOKEN_REFRESH_ENTRY_POINT = "/auth/token";
 
-  @Autowired
-  private AuthenticationManager authenticationManager;
+  @Autowired private AuthenticationManager authenticationManager;
   private final AjaxAuthenticationProvider ajaxAuthenticationProvider;
   private final JWTAuthenticationProvider jwtAuthenticationProvider;
   private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
   private final JWTAuthenticationFailureHandler jwtAuthenticationFailureHandler;
   private final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
 
-  public WebSecurityConfiguration(final AjaxAuthenticationProvider ajaxAuthenticationProvider,
-                                  final JWTAuthenticationProvider jwtAuthenticationProvider,
-                                  final RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-                                  final JWTAuthenticationFailureHandler jwtAuthenticationFailureHandler,
-                                  final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler) {
+  public WebSecurityConfiguration(
+      final AjaxAuthenticationProvider ajaxAuthenticationProvider,
+      final JWTAuthenticationProvider jwtAuthenticationProvider,
+      final RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+      final JWTAuthenticationFailureHandler jwtAuthenticationFailureHandler,
+      final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler) {
     this.ajaxAuthenticationProvider = ajaxAuthenticationProvider;
     this.jwtAuthenticationProvider = jwtAuthenticationProvider;
     this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
@@ -54,23 +53,32 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(final HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.csrf().disable()
-      .exceptionHandling()
-      .authenticationEntryPoint(restAuthenticationEntryPoint)
-      .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .authorizeRequests()
-      .antMatchers(FORM_BASED_LOGIN_ENTRY_POINT).permitAll()
-      .antMatchers(HttpMethod.POST, TOKEN_REFRESH_ENTRY_POINT).permitAll()
-      .antMatchers(HttpMethod.POST, FORM_BASED_REGISTER_ENTRY_POINT).permitAll()
-      .and()
-      .authorizeRequests()
-      .anyRequest().authenticated()
-      .and()
-      .addFilterBefore(buildAjaxAuthenticationFilter(FORM_BASED_LOGIN_ENTRY_POINT), UsernamePasswordAuthenticationFilter.class)
-      .addFilterBefore(buildJWTTokenAuthenticationFilter("/**/*"), UsernamePasswordAuthenticationFilter.class);
+    httpSecurity
+        .csrf()
+        .disable()
+        .exceptionHandling()
+        .authenticationEntryPoint(restAuthenticationEntryPoint)
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
+        .antMatchers(FORM_BASED_LOGIN_ENTRY_POINT)
+        .permitAll()
+        .antMatchers(HttpMethod.POST, TOKEN_REFRESH_ENTRY_POINT)
+        .permitAll()
+        .antMatchers(HttpMethod.POST, FORM_BASED_REGISTER_ENTRY_POINT)
+        .permitAll()
+        .and()
+        .authorizeRequests()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .addFilterBefore(
+            buildAjaxAuthenticationFilter(FORM_BASED_LOGIN_ENTRY_POINT),
+            UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(
+            buildJWTTokenAuthenticationFilter("/**/*"), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean
@@ -87,18 +95,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private AjaxAuthenticationFilter buildAjaxAuthenticationFilter(final String loginEntryPoint) {
     final AjaxAuthenticationFilter ajaxAuthenticationFilter =
-      new AjaxAuthenticationFilter(loginEntryPoint, jwtAuthenticationSuccessHandler,
-        jwtAuthenticationFailureHandler);
+        new AjaxAuthenticationFilter(
+            loginEntryPoint, jwtAuthenticationSuccessHandler, jwtAuthenticationFailureHandler);
     ajaxAuthenticationFilter.setAuthenticationManager(authenticationManager);
     return ajaxAuthenticationFilter;
   }
 
   private JWTTokenAuthenticationFilter buildJWTTokenAuthenticationFilter(final String pattern) {
-    final List<String> pathsToSkip = Arrays.asList(TOKEN_REFRESH_ENTRY_POINT, FORM_BASED_LOGIN_ENTRY_POINT,
-      FORM_BASED_REGISTER_ENTRY_POINT);
+    final List<String> pathsToSkip =
+        Arrays.asList(
+            TOKEN_REFRESH_ENTRY_POINT,
+            FORM_BASED_LOGIN_ENTRY_POINT,
+            FORM_BASED_REGISTER_ENTRY_POINT);
     final SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, pattern);
     final JWTTokenAuthenticationFilter jwtTokenAuthenticationFilter =
-      new JWTTokenAuthenticationFilter(matcher, jwtAuthenticationFailureHandler);
+        new JWTTokenAuthenticationFilter(matcher, jwtAuthenticationFailureHandler);
     jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager);
     return jwtTokenAuthenticationFilter;
   }

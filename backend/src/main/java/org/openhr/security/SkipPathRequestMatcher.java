@@ -1,12 +1,11 @@
 package org.openhr.security;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SkipPathRequestMatcher implements RequestMatcher {
   private final OrRequestMatcher matchers;
@@ -16,10 +15,8 @@ public class SkipPathRequestMatcher implements RequestMatcher {
     if (pathsToSkip == null) {
       throw new IllegalArgumentException("List of paths cannot be null");
     }
-    final List<RequestMatcher> requestMatchers = pathsToSkip
-      .stream()
-      .map(AntPathRequestMatcher::new)
-      .collect(Collectors.toList());
+    final List<RequestMatcher> requestMatchers =
+        pathsToSkip.stream().map(AntPathRequestMatcher::new).collect(Collectors.toList());
     matchers = new OrRequestMatcher(requestMatchers);
     processingMatcher = new AntPathRequestMatcher(processingPath);
   }
