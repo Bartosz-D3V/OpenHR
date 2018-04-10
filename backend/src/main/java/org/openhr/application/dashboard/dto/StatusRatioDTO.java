@@ -4,8 +4,7 @@ public class StatusRatioDTO {
   private long accepted;
   private long rejected;
 
-  public StatusRatioDTO() {
-  }
+  public StatusRatioDTO() {}
 
   public long getAccepted() {
     return accepted;

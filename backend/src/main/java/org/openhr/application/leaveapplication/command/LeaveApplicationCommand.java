@@ -1,10 +1,9 @@
 package org.openhr.application.leaveapplication.command;
 
+import java.util.List;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
-
-import java.util.List;
 
 public interface LeaveApplicationCommand {
 

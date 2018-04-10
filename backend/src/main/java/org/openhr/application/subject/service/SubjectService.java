@@ -15,13 +15,13 @@ public interface SubjectService {
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
   void updateSubjectContactInformation(long subjectId, ContactInformation contactInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
   void updateSubjectEmployeeInformation(long subjectId, EmployeeInformation employeeInformation)
-    throws HibernateException, SubjectDoesNotExistException;
+      throws HibernateException, SubjectDoesNotExistException;
 
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
@@ -31,7 +31,8 @@ public interface SubjectService {
 
   long getUsedAllowance(long subjectId);
 
-  void subtractDaysFromSubjectAllowanceExcludingFreeDays(Subject subject, LeaveApplication leaveApplication) throws ValidationException;
+  void subtractDaysFromSubjectAllowanceExcludingFreeDays(
+      Subject subject, LeaveApplication leaveApplication) throws ValidationException;
 
   void revertSubtractedDaysForApplication(Subject subject, LeaveApplication leaveApplication);
 

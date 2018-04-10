@@ -2,14 +2,12 @@ package org.openhr.security.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.jsonwebtoken.Claims;
-
 import java.io.Serializable;
 
 public class JWTAccessToken implements Serializable {
   private final String rawToken;
 
-  @JsonIgnore
-  private Claims claims;
+  @JsonIgnore private Claims claims;
 
   public JWTAccessToken(final String rawToken, final Claims claims) {
     this.rawToken = rawToken;

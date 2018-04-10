@@ -1,16 +1,13 @@
 package org.openhr.application.user.service;
 
-import org.openhr.application.subject.service.SubjectService;
+import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.dto.PasswordDTO;
-import org.openhr.common.domain.subject.Subject;
+import org.openhr.application.user.repository.UserRepository;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
-import org.openhr.application.user.repository.UserRepository;
-import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.common.exception.ValidationException;
-import org.openhr.common.proxy.worker.WorkerProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +18,8 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final AuthenticationService authenticationService;
 
-  public UserServiceImpl(final UserRepository userRepository,
-                         final AuthenticationService authenticationService) {
+  public UserServiceImpl(
+      final UserRepository userRepository, final AuthenticationService authenticationService) {
     this.userRepository = userRepository;
     this.authenticationService = authenticationService;
   }
@@ -74,8 +71,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updatePassword(final long userId, final PasswordDTO passwordDTO) throws ValidationException,
-    SubjectDoesNotExistException {
+  public void updatePassword(final long userId, final PasswordDTO passwordDTO)
+      throws ValidationException, SubjectDoesNotExistException {
     final User user = getUser(userId);
     if (validCredentials(user.getUsername(), passwordDTO.getOldPassword())) {
       user.setPassword(authenticationService.encodePassword(passwordDTO.getNewPassword()));

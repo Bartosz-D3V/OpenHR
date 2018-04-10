@@ -1,13 +1,19 @@
 package org.openhr.application.user.repository;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.ContactInformation;
-import org.openhr.application.employee.domain.Employee;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
@@ -19,28 +25,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 public class UserRepositoryTest {
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
-  @Autowired
-  private SessionFactory sessionFactory;
+  @Autowired private SessionFactory sessionFactory;
 
   @Test
   public void getUserBySubjectIdShouldReturnAssociatedUserObject() {
-    final Employee employee = new Employee(new PersonalInformation("John", "Test", null, null),
-      new ContactInformation(), new EmployeeInformation(), new HrInformation(),
-      new User("root1", "password"));
+    final Employee employee =
+        new Employee(
+            new PersonalInformation("John", "Test", null, null),
+            new ContactInformation(),
+            new EmployeeInformation(),
+            new HrInformation(),
+            new User("root1", "password"));
     final Session session = sessionFactory.getCurrentSession();
     session.save(employee);
     session.flush();
@@ -110,7 +111,8 @@ public class UserRepositoryTest {
   public void findSubjectIdShouldReturnSubjectIdByUsername() throws SubjectDoesNotExistException {
     final User mockUser1 = new User("Kopernik", "password");
     final Subject subject = new Employee();
-    subject.setPersonalInformation(new PersonalInformation("John", "Black", "Alex", LocalDate.now()));
+    subject.setPersonalInformation(
+        new PersonalInformation("John", "Black", "Alex", LocalDate.now()));
     subject.setUser(mockUser1);
     subject.setContactInformation(new ContactInformation());
     subject.setEmployeeInformation(new EmployeeInformation());

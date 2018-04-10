@@ -1,5 +1,7 @@
 package org.openhr.application.leaveapplication.repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -16,9 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Repository
 @Transactional
 public class LeaveApplicationRepository {
@@ -27,31 +26,34 @@ public class LeaveApplicationRepository {
   private final SessionFactory sessionFactory;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public LeaveApplicationRepository(final LeaveApplicationDAO leaveApplicationDAO,
-                                    final SessionFactory sessionFactory) {
+  public LeaveApplicationRepository(
+      final LeaveApplicationDAO leaveApplicationDAO, final SessionFactory sessionFactory) {
     this.leaveApplicationDAO = leaveApplicationDAO;
     this.sessionFactory = sessionFactory;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public boolean dateRangeAlreadyBooked(final long subjectId, final LocalDate startDate, final LocalDate endDate) {
+  public boolean dateRangeAlreadyBooked(
+      final long subjectId, final LocalDate startDate, final LocalDate endDate) {
     final int numOfResults;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
-      numOfResults = criteria
-        .createAlias("subject", "subject")
-        .add(Restrictions.eq("subject.subjectId", subjectId))
-        .add(Restrictions.eq("approvedByManager", true))
-        .add(Restrictions.eq("approvedByHR", true))
-        .add(Restrictions.conjunction()
-          .add(Restrictions.ge("endDate", startDate))
-          .add(Restrictions.le("startDate", endDate)))
-        .setMaxResults(1)
-        .setReadOnly(true)
-        .setCacheable(true)
-        .list()
-        .size();
+      numOfResults =
+          criteria
+              .createAlias("subject", "subject")
+              .add(Restrictions.eq("subject.subjectId", subjectId))
+              .add(Restrictions.eq("approvedByManager", true))
+              .add(Restrictions.eq("approvedByHR", true))
+              .add(
+                  Restrictions.conjunction()
+                      .add(Restrictions.ge("endDate", startDate))
+                      .add(Restrictions.le("startDate", endDate)))
+              .setMaxResults(1)
+              .setReadOnly(true)
+              .setCacheable(true)
+              .list()
+              .size();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -67,12 +69,13 @@ public class LeaveApplicationRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
-      filteredLeaveApplications = criteria
-        .createAlias("assignee", "assignee")
-        .add(Restrictions.eq("terminated", false))
-        .add(Restrictions.eq("assignee.subjectId", subjectId))
-        .setReadOnly(true)
-        .list();
+      filteredLeaveApplications =
+          criteria
+              .createAlias("assignee", "assignee")
+              .add(Restrictions.eq("terminated", false))
+              .add(Restrictions.eq("assignee.subjectId", subjectId))
+              .setReadOnly(true)
+              .list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -87,11 +90,13 @@ public class LeaveApplicationRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveType.class);
-      leaveType = (LeaveType) criteria
-        .add(Restrictions.eq("leaveTypeId", leaveTypeId))
-        .setReadOnly(true)
-        .setCacheable(true)
-        .uniqueResult();
+      leaveType =
+          (LeaveType)
+              criteria
+                  .add(Restrictions.eq("leaveTypeId", leaveTypeId))
+                  .setReadOnly(true)
+                  .setCacheable(true)
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -101,7 +106,8 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId)
+      throws ApplicationDoesNotExistException {
     return leaveApplicationDAO.getLeaveApplication(leaveApplicationId);
   }
 
@@ -112,10 +118,12 @@ public class LeaveApplicationRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(LeaveApplication.class);
-      leaveApplications = criteria.createAlias("subject", "subject")
-        .add(Restrictions.eq("subject.subjectId", subjectId))
-        .setReadOnly(true)
-        .list();
+      leaveApplications =
+          criteria
+              .createAlias("subject", "subject")
+              .add(Restrictions.eq("subject.subjectId", subjectId))
+              .setReadOnly(true)
+              .list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -125,13 +133,15 @@ public class LeaveApplicationRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication) {
+  public LeaveApplication createLeaveApplication(
+      final Subject subject, final LeaveApplication leaveApplication) {
     return leaveApplicationDAO.createLeaveApplication(subject, leaveApplication);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
-    throws ApplicationDoesNotExistException {
+  public LeaveApplication updateLeaveApplication(
+      final long leaveApplicationId, final LeaveApplication leaveApplication)
+      throws ApplicationDoesNotExistException {
     return leaveApplicationDAO.updateLeaveApplication(leaveApplicationId, leaveApplication);
   }
 

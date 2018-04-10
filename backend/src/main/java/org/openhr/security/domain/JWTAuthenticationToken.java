@@ -1,18 +1,17 @@
 package org.openhr.security.domain;
 
+import java.io.Serializable;
+import java.util.Collection;
 import org.openhr.application.user.domain.UserContext;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 public class JWTAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
   private String rawAccessToken;
   private UserContext userContext;
 
-  public JWTAuthenticationToken(final UserContext userContext,
-                                final Collection<? extends GrantedAuthority> authorities) {
+  public JWTAuthenticationToken(
+      final UserContext userContext, final Collection<? extends GrantedAuthority> authorities) {
     super(authorities);
     this.eraseCredentials();
     this.userContext = userContext;

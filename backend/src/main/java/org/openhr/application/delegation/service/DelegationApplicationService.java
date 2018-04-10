@@ -1,23 +1,23 @@
 package org.openhr.application.delegation.service;
 
+import java.util.List;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;
 
-import java.util.List;
-
 public interface DelegationApplicationService {
   List<Country> getCountries();
 
-  DelegationApplication createDelegationApplication(Subject subject, DelegationApplication delegationApplication);
+  DelegationApplication createDelegationApplication(
+      Subject subject, DelegationApplication delegationApplication);
 
   DelegationApplication getDelegationApplication(long delegationApplicationId);
 
   DelegationApplication updateDelegationApplication(DelegationApplication delegationApplication);
 
-  DelegationApplication saveProcessInstanceId(DelegationApplication delegationApplication,
-                                              ExecutionEntityImpl delegateExecution);
+  DelegationApplication saveProcessInstanceId(
+      DelegationApplication delegationApplication, ExecutionEntityImpl delegateExecution);
 
   List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);
 

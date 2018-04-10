@@ -1,5 +1,12 @@
 package org.openhr.application.dashboard.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,24 +19,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DashboardServiceTest {
   private final List<LeaveApplication> leaveApplications = new ArrayList<>();
 
-  @Autowired
-  private DashboardService dashboardService;
+  @Autowired private DashboardService dashboardService;
 
-  @MockBean
-  private DashboardRepository dashboardRepository;
+  @MockBean private DashboardRepository dashboardRepository;
 
   @Before
   public void setUp() {

@@ -18,8 +18,8 @@ public interface UserFacade {
 
   void updateNotificationsSettings(long userId, boolean notificationsTurnedOn);
 
-  void updatePassword(long userId, PasswordDTO passwordDTO) throws UserDoesNotExist, ValidationException,
-    SubjectDoesNotExistException;
+  void updatePassword(long userId, PasswordDTO passwordDTO)
+      throws UserDoesNotExist, ValidationException, SubjectDoesNotExistException;
 
   User findByUsername(String username) throws UserDoesNotExist;
 }

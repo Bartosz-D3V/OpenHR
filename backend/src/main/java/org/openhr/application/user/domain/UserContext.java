@@ -1,8 +1,7 @@
 package org.openhr.application.user.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
 
 public class UserContext {
   private final String username;
