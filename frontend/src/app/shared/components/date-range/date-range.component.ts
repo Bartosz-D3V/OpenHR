@@ -36,7 +36,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Input() public mobileFlexProperty?: number;
 
-  @Input() public showDescription? = false;
+  @Input() public showDescription?;
 
   @Input() public startDate?: MomentInput;
 
