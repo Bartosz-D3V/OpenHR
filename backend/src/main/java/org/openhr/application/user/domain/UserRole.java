@@ -1,6 +1,5 @@
 package org.openhr.application.user.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,11 +24,13 @@ public class UserRole {
   @Column(name = "USER_ROLE")
   private Role role;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "USER_ID", nullable = false)
   private User user;
 
-  public UserRole() {}
+  public UserRole() {
+    super();
+  }
 
   public UserRole(final Role role) {
     this.role = role;
