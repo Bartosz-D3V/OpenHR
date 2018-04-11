@@ -2,7 +2,7 @@
   "scripts": {
     "lint-staged": "lint-staged --config .lintstagedrc",
     "pretty": "prettier --write **/*.{js,ts}",
-	"google-format": "bash ./tools/google-format.sh"
+    "google-format": "bash ./tools/google-format.sh"
   },
   "dependencies": {},
   "devDependencies": {
