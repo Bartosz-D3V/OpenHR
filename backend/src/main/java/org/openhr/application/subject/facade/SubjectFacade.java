@@ -8,7 +8,11 @@ import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 
+import java.util.List;
+
 public interface SubjectFacade {
+  List<Subject> getSubjects();
+
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)

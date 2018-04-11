@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class SubjectServiceImpl implements SubjectService {
   private final SubjectRepository subjectRepository;
@@ -30,6 +32,12 @@ public class SubjectServiceImpl implements SubjectService {
     this.subjectRepository = subjectRepository;
     this.workerProxy = workerProxy;
     this.holidayService = holidayService;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Subject> getSubjects() {
+    return subjectRepository.getSubjects();
   }
 
   @Override

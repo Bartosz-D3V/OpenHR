@@ -11,7 +11,11 @@ import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 
+import java.util.List;
+
 public interface SubjectService {
+  List<Subject> getSubjects();
+
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
