@@ -199,7 +199,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
     const employeeId: number = (<Employee>$event.option.value).subjectId;
     this.fetchSelectedEmployee(employeeId);
-    this.fetchManagers();
+    this.fetchSupervisors();
   }
 
   public save(): void {
