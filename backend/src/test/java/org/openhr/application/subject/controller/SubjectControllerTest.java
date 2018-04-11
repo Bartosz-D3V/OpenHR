@@ -13,6 +13,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,9 +39,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SubjectController.class)
@@ -83,7 +82,7 @@ public class SubjectControllerTest {
     when(subjectFacade.getSubjects()).thenReturn(subjectList);
 
     final MvcResult result =
-      mockMvc.perform(get("/subjects")).andExpect(status().isOk()).andReturn();
+        mockMvc.perform(get("/subjects")).andExpect(status().isOk()).andReturn();
     assertNull(result.getResolvedException());
     assertEquals(subjectsAsJson, result.getResponse().getContentAsString());
   }

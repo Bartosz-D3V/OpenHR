@@ -31,7 +31,7 @@ import { ManageEmployeesDataService } from './service/manage-employees-data.serv
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
   private $employee: ISubscription;
-  private $managers: ISubscription;
+  private $supervisors: ISubscription;
   public isLoadingResults: boolean;
   public stepNumber = 0;
   public employees: Array<Employee>;
@@ -178,8 +178,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     );
   }
 
-  public fetchManagers(): void {
-    this.$managers = this._managerService.getManagers().subscribe(
+  public fetchSupervisors(): void {
+    this.$supervisors = this._managerService.getManagers().subscribe(
       (response: Array<Manager>) => {
         this.managers = response;
         this.filteredManagers = this.reduceManagers(response);
@@ -236,8 +236,8 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     if (this.$employee !== undefined) {
       this.$employee.unsubscribe();
     }
-    if (this.$managers !== undefined) {
-      this.$managers.unsubscribe();
+    if (this.$supervisors !== undefined) {
+      this.$supervisors.unsubscribe();
     }
   }
 }
