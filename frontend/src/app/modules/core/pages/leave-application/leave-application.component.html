@@ -18,7 +18,8 @@
                       *ngIf="selectorType === 'Range'; else single_date_template"
                       [requireStartDate]="selectorType === 'Range'"
                       [requireEndDate]="selectorType === 'Range'" [startDate]="leaveApplication.startDate"
-                      [endDate]="leaveApplication.endDate" (startDateChange)="setStartDate($event)"
+                      [showDescription]="true" [endDate]="leaveApplication.endDate"
+                      (startDateChange)="setStartDate($event)"
                       (endDateChange)="setEndDate($event)"
                       (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
       <ng-template class="c-drawer__element" #single_date_template>
