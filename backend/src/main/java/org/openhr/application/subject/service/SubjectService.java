@@ -1,6 +1,5 @@
 package org.openhr.application.subject.service;
 
-import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
@@ -13,8 +12,6 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 
 public interface SubjectService {
-  List<Subject> getSubjects();
-
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)

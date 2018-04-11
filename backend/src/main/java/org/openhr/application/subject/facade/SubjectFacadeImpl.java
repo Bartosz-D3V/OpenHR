@@ -1,6 +1,5 @@
 package org.openhr.application.subject.facade;
 
-import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.service.SubjectService;
@@ -20,12 +19,6 @@ public class SubjectFacadeImpl implements SubjectFacade {
 
   public SubjectFacadeImpl(final SubjectService myDetailsService) {
     this.subjectService = myDetailsService;
-  }
-
-  @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Subject> getSubjects() {
-    return subjectService.getSubjects();
   }
 
   @Override
