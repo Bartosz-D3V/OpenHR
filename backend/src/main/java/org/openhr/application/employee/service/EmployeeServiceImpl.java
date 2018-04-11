@@ -35,6 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     user.setPassword(encodedPassword);
     user.setUserRoles(authenticationService.setBasicUserRoles(user));
     employee.setRole(Role.EMPLOYEE);
+    employee.setUser(user);
 
     return employeeRepository.createEmployee(employee);
   }

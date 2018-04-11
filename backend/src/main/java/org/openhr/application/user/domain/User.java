@@ -3,6 +3,7 @@ package org.openhr.application.user.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class User implements Serializable {
   @Column(name = "NOTIFICATIONS")
   private boolean notificationsTurnedOn;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JsonBackReference
   private List<UserRole> userRoles;
 
