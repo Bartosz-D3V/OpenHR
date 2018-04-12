@@ -10,6 +10,7 @@ import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.util.bean.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -41,13 +42,33 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
     return subject;
   }
 
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public Subject updateSubject(final long subjectId, final Subject subject)
+      throws SubjectDoesNotExistException {
+    final Subject savedSubject = getSubjectDetails(subjectId);
+    BeanUtil.copyNotNullProperties(
+        subject.getContactInformation(), savedSubject.getContactInformation());
+    BeanUtil.copyNotNullProperties(
+        subject.getContactInformation().getAddress(),
+        savedSubject.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(
+        subject.getEmployeeInformation(), savedSubject.getEmployeeInformation());
+    BeanUtil.copyNotNullProperties(subject.getHrInformation(), savedSubject.getHrInformation());
+    BeanUtil.copyNotNullProperties(
+        subject.getPersonalInformation(), savedSubject.getPersonalInformation());
+    BeanUtil.copyNotNullProperties(subject.getRole(), savedSubject.getRole());
+    super.merge(savedSubject);
+    return savedSubject;
+  }
+
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   protected Subject getExistingSubjectDetails(final long subjectId) throws HibernateException {
     return (Subject) super.get(Subject.class, subjectId);
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectPersonalInformation(
       final long subjectId, final PersonalInformation personalInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -57,7 +78,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectContactInformation(
       final long subjectId, final ContactInformation contactInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -67,7 +88,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectEmployeeInformation(
       final long subjectId, final EmployeeInformation employeeInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -77,7 +98,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.MANDATORY, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
       throws HibernateException {
     final Subject subject = getExistingSubjectDetails(subjectId);
@@ -86,7 +107,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void deleteSubject(final long subjectId) throws SubjectDoesNotExistException {
     try {
       final Session session = sessionFactory.getCurrentSession();

@@ -21,32 +21,34 @@ import { EmployeeInformation } from '@shared/domain/subject/employee-information
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Manager } from '@shared/domain/subject/manager';
 import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
+import { Role } from '@shared/domain/subject/role';
 
 @Component({
   selector: 'app-manage-employees-data',
   templateUrl: './manage-employees-data.component.html',
   styleUrls: ['./manage-employees-data.component.scss'],
-  providers: [ManageEmployeesDataService, EmployeeService, ManagerService, ResponsiveHelperService],
+  providers: [ManageEmployeesDataService, EmployeeService, SubjectDetailsService, ResponsiveHelperService],
 })
 export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
-  private $employees: ISubscription;
   private $employee: ISubscription;
+  private $subjects: ISubscription;
   private $supervisors: ISubscription;
   public isLoadingResults: boolean;
   public stepNumber = 0;
-  public employees: Array<Employee>;
-  public managers: Array<Manager>;
-  public subject: Employee;
-  public filteredEmployees: Observable<Array<Employee>>;
-  public filteredManagers: Observable<Array<Manager>>;
+  public subjects: Array<Subject>;
+  public supervisors: Array<Subject>;
+  public subject: Subject;
+  public filteredSubjects: Observable<Array<Subject>>;
+  public filteredSupervisors: Observable<Array<Subject>>;
   public employeeForm: FormGroup;
-  public employeesCtrl: FormControl = new FormControl();
-  public managersCtrl: FormControl = new FormControl();
+  public subjectsCtrl: FormControl = new FormControl();
+  public supervisorsCtrl: FormControl = new FormControl();
 
   constructor(
     private _manageEmployeesDataService: ManageEmployeesDataService,
     private _employeeService: EmployeeService,
-    private _managerService: ManagerService,
+    private _subjectDetailsService: SubjectDetailsService,
     private _responsiveHelper: ResponsiveHelperService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService,
@@ -54,7 +56,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.fetchEmployees();
+    this.fetchSubjects();
   }
 
   ngOnDestroy(): void {
@@ -128,20 +130,20 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       role: [this.subject.role],
     });
 
-    this.managersCtrl.setValue(this.subject.manager);
-    this.managersCtrl.setValidators(Validators.required);
+    this.supervisorsCtrl.setValidators(Validators.required);
+    this.supervisorsCtrl.setValue(this.getSubjectSupervisor(this.subject));
   }
 
-  public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
-    return this.employeesCtrl.valueChanges.pipe(
+  public reduceSubjects(subjects: Array<Employee>): Observable<Array<Subject>> {
+    return this.subjectsCtrl.valueChanges.pipe(
       startWith(''),
       map(lastName => (typeof lastName === 'string' ? lastName : '')),
       map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
     );
   }
 
-  public reduceManagers(subjects: Array<Manager>): Observable<Array<Subject>> {
-    return this.managersCtrl.valueChanges.pipe(
+  public reduceSupervisors(subjects: Array<Subject>): Observable<Array<Subject>> {
+    return this.supervisorsCtrl.valueChanges.pipe(
       startWith(''),
       map(lastName => (typeof lastName === 'string' ? lastName : '')),
       map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
@@ -152,11 +154,11 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     return subjects.filter(subject => subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
-  public fetchEmployees(): void {
-    this.$employees = this._manageEmployeesDataService.getEmployees().subscribe(
-      (response: Array<Employee>) => {
-        this.employees = response;
-        this.filteredEmployees = this.reduceEmployees(response);
+  public fetchSubjects(): void {
+    this.$subjects = this._subjectDetailsService.getSubjects().subscribe(
+      (response: Array<Subject>) => {
+        this.subjects = response;
+        this.filteredSubjects = this.reduceSubjects(response);
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -164,10 +166,10 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     );
   }
 
-  public fetchSelectedEmployee(employeeId: number): void {
+  public fetchSelectedSubject(subjectId: number): void {
     this.isLoadingResults = true;
-    this.$employee = this._employeeService.getEmployee(employeeId).subscribe(
-      (response: Employee) => {
+    this.$employee = this._subjectDetailsService.getSubjectById(subjectId).subscribe(
+      (response: Subject) => {
         this.subject = response;
         this.constructForm();
         this.isLoadingResults = false;
@@ -179,10 +181,10 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public fetchSupervisors(): void {
-    this.$supervisors = this._managerService.getManagers().subscribe(
+    this.$supervisors = this._manageEmployeesDataService.getSupervisors().subscribe(
       (response: Array<Manager>) => {
-        this.managers = response;
-        this.filteredManagers = this.reduceManagers(response);
+        this.supervisors = response;
+        this.filteredSupervisors = this.reduceSupervisors(response);
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -197,23 +199,23 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
-    const employeeId: number = (<Employee>$event.option.value).subjectId;
-    this.fetchSelectedEmployee(employeeId);
+    const subjectId: number = (<Employee>$event.option.value).subjectId;
+    this.fetchSelectedSubject(subjectId);
     this.fetchSupervisors();
   }
 
   public save(): void {
-    const updatedEmployee: Employee = <Employee>this.employeeForm.value;
-    const updatedManger: Manager = <Manager>this.managersCtrl.value;
+    const updatedSubject: Subject = <Subject>this.employeeForm.value;
+    const updatedSupervisor: Subject = <Subject>this.supervisorsCtrl.value;
     Observable.zip(
-      this._employeeService.updateEmployee(updatedEmployee),
-      this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
-      (employee: Employee, manager: Manager) => ({ employee, manager })
+      this._subjectDetailsService.updateSubject(updatedSubject),
+      this._manageEmployeesDataService.updateSubjectsSupervisor(updatedSubject.subjectId, updatedSupervisor.subjectId),
+      (subject: Subject) => ({ subject })
     ).subscribe(
       pair => {
-        const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
+        const msg = `Employee with id ${pair.subject.subjectId} has been updated`;
         this._notificationService.openSnackBar(msg, 'OK');
-        this.subject = pair.employee;
+        this.subject = pair.subject;
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -221,18 +223,19 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     );
   }
 
+  public getSubjectSupervisor(subject: Subject): Subject {
+    return subject.role === Role.EMPLOYEE ? subject['manager'] : this.subject.role === Role.MANAGER ? subject['hrTeamMember'] : null;
+  }
+
   public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
   }
 
   public isValid(): boolean {
-    return this.employeeForm.valid && this.managersCtrl.valid;
+    return this.employeeForm.valid && this.supervisorsCtrl.valid;
   }
 
   private unsubscribeAll(): void {
-    if (this.$employees !== undefined) {
-      this.$employees.unsubscribe();
-    }
     if (this.$employee !== undefined) {
       this.$employee.unsubscribe();
     }

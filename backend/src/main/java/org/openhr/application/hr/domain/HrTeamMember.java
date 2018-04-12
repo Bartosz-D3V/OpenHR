@@ -48,4 +48,10 @@ public class HrTeamMember extends Subject implements Serializable {
   public void setManagers(final Set<Manager> managers) {
     this.managers = managers;
   }
+
+  public void addManager(final Manager manager) {
+    final Set<Manager> managers = getManagers();
+    managers.add(manager);
+    setManagers(managers);
+  }
 }
