@@ -1,6 +1,6 @@
 package org.openhr.application.subject.controller;
 
-import org.hibernate.HibernateException;
+import java.util.List;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.facade.SubjectFacade;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -8,6 +8,7 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/subjects")
 public class SubjectController {
@@ -31,7 +30,10 @@ public class SubjectController {
     this.subjectFacade = subjectFacade;
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+  @RequestMapping(
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
   public List<Subject> getSubjects() {
@@ -45,7 +47,7 @@ public class SubjectController {
   )
   @ResponseBody
   public Subject getSubjectDetails(@PathVariable final long subjectId)
-    throws SubjectDoesNotExistException {
+      throws SubjectDoesNotExistException {
     return subjectFacade.getSubjectDetails(subjectId);
   }
 
@@ -56,7 +58,7 @@ public class SubjectController {
   )
   @ResponseBody
   public LightweightSubjectDTO getLightweightSubject(@PathVariable final long subjectId)
-    throws SubjectDoesNotExistException {
+      throws SubjectDoesNotExistException {
     return subjectFacade.getLightweightSubject(subjectId);
   }
 
@@ -66,9 +68,9 @@ public class SubjectController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   public void updateSubjectPersonalInformation(
-    @RequestParam final long subjectId,
-    @RequestBody final PersonalInformation personalInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+      @RequestParam final long subjectId,
+      @RequestBody final PersonalInformation personalInformation)
+      throws SubjectDoesNotExistException {
     subjectFacade.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
@@ -78,8 +80,8 @@ public class SubjectController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   public void updateSubjectContactInformation(
-    @RequestParam final long subjectId, @RequestBody final ContactInformation contactInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+      @RequestParam final long subjectId, @RequestBody final ContactInformation contactInformation)
+      throws SubjectDoesNotExistException {
     subjectFacade.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
@@ -89,15 +91,23 @@ public class SubjectController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   public void updateSubjectEmployeeInformation(
-    @RequestParam final long subjectId,
-    @RequestBody final EmployeeInformation employeeInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+      @RequestParam final long subjectId,
+      @RequestBody final EmployeeInformation employeeInformation)
+      throws SubjectDoesNotExistException {
     subjectFacade.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @RequestMapping(method = RequestMethod.DELETE)
   public void deleteSubject(@RequestParam final long subjectId)
-    throws HibernateException, SubjectDoesNotExistException {
+      throws SubjectDoesNotExistException {
     subjectFacade.deleteSubject(subjectId);
+  }
+
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void setSubjectSupervisor(
+      @PathVariable final long subjectId, @RequestParam final long supervisorId)
+      throws ValidationException, SubjectDoesNotExistException {
+    this.subjectFacade.setSubjectSupervisor(subjectId, supervisorId);
   }
 }

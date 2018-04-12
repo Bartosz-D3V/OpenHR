@@ -1,5 +1,6 @@
 package org.openhr.application.subject.facade;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -7,13 +8,14 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-
-import java.util.List;
+import org.openhr.common.exception.ValidationException;
 
 public interface SubjectFacade {
   List<Subject> getSubjects();
 
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
+
+  Subject updateSubject(long subjectId, Subject subject) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
       throws HibernateException, SubjectDoesNotExistException;
@@ -27,4 +29,7 @@ public interface SubjectFacade {
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
+
+  void setSubjectSupervisor(long subjectId, long supervisorId)
+      throws ValidationException, SubjectDoesNotExistException;
 }

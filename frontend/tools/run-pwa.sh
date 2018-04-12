@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 PATH=$PATH:$(npm bin)
 set -x
 

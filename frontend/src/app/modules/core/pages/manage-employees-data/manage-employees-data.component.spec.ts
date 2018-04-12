@@ -219,7 +219,7 @@ describe('ManageEmployeesDataComponent', () => {
 
   it('displaySubject method should call fetchSelectEmployee with received selected subject id', () => {
     spyOn(component, 'fetchSelectedEmployee');
-    spyOn(component, 'fetchManagers');
+    spyOn(component, 'fetchSupervisors');
     const mockMatOption: MatOption = new MatOption(null, null, null, null);
     employee1.subjectId = 1;
     mockMatOption.value = employee1;
@@ -227,7 +227,7 @@ describe('ManageEmployeesDataComponent', () => {
     component.displaySubject($event);
 
     expect(component.fetchSelectedEmployee).toHaveBeenCalledWith(1);
-    expect(component.fetchManagers).toHaveBeenCalled();
+    expect(component.fetchSupervisors).toHaveBeenCalled();
   });
 
   describe('fetchSelectedEmployee method', () => {
@@ -251,11 +251,11 @@ describe('ManageEmployeesDataComponent', () => {
     });
   });
 
-  describe('fetchManagers method', () => {
+  describe('fetchSupervisors method', () => {
     it('should call managerService and immediately invoke reducer method', () => {
       spyOn(component, 'reduceManagers');
       spyOn(component['_managerService'], 'getManagers').and.returnValue(Observable.of([manager1]));
-      component.fetchManagers();
+      component.fetchSupervisors();
 
       expect(component.managers).toEqual([manager1]);
       expect(component.reduceManagers).toHaveBeenCalledWith([manager1]);
@@ -264,7 +264,7 @@ describe('ManageEmployeesDataComponent', () => {
     it('should call errorResolver in case of an error', () => {
       spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_managerService'], 'getManagers').and.returnValue(_throw('Error'));
-      component.fetchManagers();
+      component.fetchSupervisors();
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });

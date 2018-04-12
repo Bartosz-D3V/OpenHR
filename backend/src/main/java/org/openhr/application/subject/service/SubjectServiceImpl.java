@@ -1,8 +1,12 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
+import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.holiday.service.HolidayService;
+import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.repository.SubjectRepository;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -16,8 +20,6 @@ import org.openhr.common.proxy.worker.WorkerProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
@@ -44,6 +46,13 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return subjectRepository.getSubjectDetails(subjectId);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public Subject updateSubject(final long subjectId, final Subject subject)
+      throws SubjectDoesNotExistException {
+    return subjectRepository.updateSubject(subjectId, subject);
   }
 
   @Override
@@ -150,5 +159,47 @@ public class SubjectServiceImpl implements SubjectService {
       default:
         return null;
     }
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void setSubjectSupervisor(final long subjectId, final long supervisorId)
+      throws SubjectDoesNotExistException, ValidationException {
+    final Subject subject = getSubjectDetails(subjectId);
+    final Subject supervisor = getSubjectDetails(supervisorId);
+    if (relationshipIsValid(subject, supervisor)) {
+      if (subject.getRole() == Role.EMPLOYEE && supervisor.getRole() == Role.MANAGER) {
+        final Employee employee = workerProxy.getEmployee(subjectId);
+        final Manager manager = workerProxy.getManager(supervisorId);
+        employee.setManager(manager);
+        manager.addEmployee(employee);
+        subjectRepository.updateSubject(employee.getSubjectId(), employee);
+        subjectRepository.updateSubject(manager.getSubjectId(), manager);
+      } else if (subject.getRole() == Role.MANAGER && supervisor.getRole() == Role.HRTEAMMEMBER) {
+        final Manager manager = workerProxy.getManager(subjectId);
+        final HrTeamMember hrTeamMember = workerProxy.getHrTeamMember(supervisorId);
+        manager.setHrTeamMember(hrTeamMember);
+        hrTeamMember.addManager(manager);
+        subjectRepository.updateSubject(manager.getSubjectId(), manager);
+        subjectRepository.updateSubject(hrTeamMember.getSubjectId(), hrTeamMember);
+      }
+    }
+  }
+
+  private boolean relationshipIsValid(final Subject subject, final Subject supervisor)
+      throws ValidationException {
+    if (subject.getSubjectId() == supervisor.getSubjectId()) {
+      throw new ValidationException("Cannot assign yourself as a supervisor");
+    }
+    if (subject.getRole() == Role.EMPLOYEE && supervisor.getRole() == Role.HRTEAMMEMBER) {
+      throw new ValidationException("Employee cannot be assigned to HR");
+    }
+    if (subject.getRole() == Role.MANAGER && supervisor.getRole() == Role.MANAGER) {
+      throw new ValidationException("Manager cannot be assigned to Manager");
+    }
+    if (subject.getRole() == Role.HRTEAMMEMBER && supervisor.getRole() == Role.HRTEAMMEMBER) {
+      throw new ValidationException("HR cannot be assigned to HR");
+    }
+    return true;
   }
 }

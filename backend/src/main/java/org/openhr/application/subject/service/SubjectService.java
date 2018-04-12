@@ -1,5 +1,6 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
@@ -11,12 +12,12 @@ import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 
-import java.util.List;
-
 public interface SubjectService {
   List<Subject> getSubjects();
 
   Subject getSubjectDetails(long subjectId) throws SubjectDoesNotExistException;
+
+  Subject updateSubject(long subjectId, Subject subject) throws SubjectDoesNotExistException;
 
   void updateSubjectPersonalInformation(long subjectId, PersonalInformation personalInformation)
       throws HibernateException, SubjectDoesNotExistException;
@@ -43,4 +44,7 @@ public interface SubjectService {
   Role getSubjectRole(long subjectId) throws SubjectDoesNotExistException;
 
   Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;
+
+  void setSubjectSupervisor(long subjectId, long supervisorId)
+      throws SubjectDoesNotExistException, ValidationException;
 }

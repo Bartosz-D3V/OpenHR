@@ -1,5 +1,6 @@
 package org.openhr.application.subject.repository;
 
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -21,8 +22,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 @Transactional
 public class SubjectRepository {
@@ -38,7 +37,7 @@ public class SubjectRepository {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   @SuppressWarnings("unchecked")
   public List<Subject> getSubjects() {
-    List<Subject> subjects;
+    final List<Subject> subjects;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
@@ -54,6 +53,12 @@ public class SubjectRepository {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return this.subjectDAO.getSubjectDetails(subjectId);
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public Subject updateSubject(final long subjectId, final Subject subject)
+      throws SubjectDoesNotExistException {
+    return subjectDAO.updateSubject(subjectId, subject);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)

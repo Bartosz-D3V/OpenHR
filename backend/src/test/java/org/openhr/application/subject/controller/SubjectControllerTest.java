@@ -38,9 +38,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RunWith(SpringRunner.class)
 @WebMvcTest(SubjectController.class)
 public class SubjectControllerTest {
@@ -72,20 +69,6 @@ public class SubjectControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-  }
-
-  @Test
-  @WithMockUser()
-  public void getSubjectsShouldReturnSubjects() throws Exception {
-    final List<Subject> subjectList = new ArrayList<>();
-    subjectList.add(mockSubject);
-    final String subjectsAsJson = objectMapper.writeValueAsString(subjectList);
-    when(subjectFacade.getSubjects()).thenReturn(subjectList);
-
-    final MvcResult result =
-      mockMvc.perform(get("/subjects")).andExpect(status().isOk()).andReturn();
-    assertNull(result.getResolvedException());
-    assertEquals(subjectsAsJson, result.getResponse().getContentAsString());
   }
 
   @Test

@@ -7,7 +7,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { ErrorResolverService } from '../error-resolver/error-resolver.service';
 import { SystemVariables } from '@config/system-variables';
 import { Subject } from '../../domain/subject/subject';
 import { JwtHelperService } from '../jwt/jwt-helper.service';
@@ -21,42 +20,35 @@ export class SubjectDetailsService {
     Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  private handleError(error: any): void {
-    this._errorResolver.createAlert(error);
+  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
+
+  public getSubjects(): Observable<Array<Subject>> {
+    return this._http.get<Array<Subject>>(this.url, {
+      headers: this.headers,
+    });
   }
 
-  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService, private _errorResolver: ErrorResolverService) {}
-
   public getCurrentSubject(): Observable<Subject> {
-    return this._http
-      .get<Subject>(`${this.url}/${this._jwtHelper.getSubjectId()}`, {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
+    return this._http.get<Subject>(`${this.url}/${this._jwtHelper.getSubjectId()}`, {
+      headers: this.headers,
+    });
   }
 
   public getSubjectById(subjectId: number): Observable<Subject> {
-    return this._http
-      .get<Subject>(`${this.url}/${subjectId}`, {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
+    return this._http.get<Subject>(`${this.url}/${subjectId}`, {
+      headers: this.headers,
+    });
   }
 
   public createSubject(subject: Subject): Observable<Subject> {
-    return this._http
-      .post(this.url, subject, {
-        headers: this.headers,
-      })
-      .catch((error: any) => {
-        this.handleError(error);
-        return Observable.of(error);
-      });
+    return this._http.post<Subject>(this.url, subject, {
+      headers: this.headers,
+    });
+  }
+
+  public updateSubject(updatedSubject: Subject): Observable<Subject> {
+    return this._http.put<Subject>(`${this.url}/${updatedSubject.subjectId}`, updatedSubject, {
+      headers: this.headers,
+    });
   }
 }
