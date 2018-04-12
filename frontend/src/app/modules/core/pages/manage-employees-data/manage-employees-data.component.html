@@ -3,11 +3,11 @@
 
   <mat-form-field fxLayoutAlign="center" fxFlex="100">
     <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="autoEmployees"
-           [formControl]="employeesCtrl">
+           [formControl]="subjectsCtrl">
     <mat-autocomplete #autoEmployees="matAutocomplete" [displayWith]="displayFullName"
                       (optionSelected)="displaySubject($event)">
-      <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
-        <span>{{employee.personalInformation.firstName}} {{ employee.personalInformation.lastName }}</span>
+      <mat-option *ngFor="let subject of filteredSubjects | async" [value]="subject">
+        <span>{{subject.personalInformation.firstName}} {{ subject.personalInformation.lastName }}</span>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
@@ -260,14 +260,14 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <input matInput placeholder="Manager" aria-label="Manager" [matAutocomplete]="autoManagers"
-                   [formControl]="managersCtrl">
-            <mat-autocomplete #autoManagers="matAutocomplete" [displayWith]="displayFullName">
-              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager">
-                <span>{{manager.personalInformation.firstName}} {{ manager.personalInformation.lastName }}</span>
+            <input matInput placeholder="Supervisor" aria-label="Supervisor" [matAutocomplete]="autoSupervisors"
+                   [formControl]="supervisorsCtrl">
+            <mat-autocomplete #autoSupervisors="matAutocomplete" [displayWith]="displayFullName">
+              <mat-option *ngFor="let supervisor of filteredSupervisors | async" [value]="supervisor">
+                <span>{{supervisor.personalInformation.firstName}} {{ supervisor.personalInformation.lastName }}</span>
               </mat-option>
             </mat-autocomplete>
-            <mat-error *ngIf="managersCtrl.hasError('required')">
+            <mat-error *ngIf="supervisorsCtrl.hasError('required')">
               Employee must have a manager
             </mat-error>
           </mat-form-field>
