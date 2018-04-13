@@ -178,7 +178,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     );
   }
 
-  public fetchSupervisors(): void {
+  public fetchManagers(): void {
     this.$supervisors = this._managerService.getManagers().subscribe(
       (response: Array<Manager>) => {
         this.managers = response;
@@ -199,7 +199,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
     const employeeId: number = (<Employee>$event.option.value).subjectId;
     this.fetchSelectedEmployee(employeeId);
-    this.fetchSupervisors();
+    this.fetchManagers();
   }
 
   public save(): void {

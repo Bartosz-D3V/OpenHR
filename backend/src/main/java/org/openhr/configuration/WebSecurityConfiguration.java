@@ -67,7 +67,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers(HttpMethod.POST, TOKEN_REFRESH_ENTRY_POINT)
         .permitAll()
-        .antMatchers(HttpMethod.POST, FORM_BASED_REGISTER_ENTRY_POINT)
+        .antMatchers(FORM_BASED_REGISTER_ENTRY_POINT)
         .permitAll()
         .and()
         .authorizeRequests()

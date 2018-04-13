@@ -3,7 +3,6 @@ package org.openhr.application.hr.repository;
 import org.openhr.application.hr.dao.HrDAO;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
-import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class HrRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
+  public void deleteHrTeamMember(final long subjectId) {
     hrDAO.deleteHrTeamMember(subjectId);
   }
 
