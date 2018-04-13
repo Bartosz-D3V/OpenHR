@@ -3,29 +3,19 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatFormFieldModule, MatInputModule, MatPaginatorModule, MatTableModule } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
 
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { WorkerInformation } from '@shared/domain/subject/employee-information';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { EmployeesService } from './service/employees.service';
-import { EmployeesComponent } from './employees.component';
-import { EmployeeData } from './employee-data';
-import { Employee } from '@shared/domain/subject/employee';
+import { WorkersComponent } from './employees.component';
+import { WorkerData } from './worker-data';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 
-describe('EmployeesComponent', () => {
-  let component: EmployeesComponent;
-  let fixture: ComponentFixture<EmployeesComponent>;
-
-  @Injectable()
-  class FakeEmployeesService {
-    public getEmployees(): Observable<Array<string>> {
-      return Observable.of([]);
-    }
-  }
+describe('WorkersComponent', () => {
+  let component: WorkersComponent;
+  let fixture: ComponentFixture<WorkersComponent>;
 
   @Injectable()
   class FakeErrorResolverService {
@@ -35,12 +25,12 @@ describe('EmployeesComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [CapitalizePipe, PageHeaderComponent, EmployeesComponent],
+        declarations: [CapitalizePipe, PageHeaderComponent, WorkersComponent],
         imports: [HttpClientTestingModule, NoopAnimationsModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule],
         providers: [
           {
-            provide: EmployeesService,
-            useClass: FakeEmployeesService,
+            provide: WorkersService,
+            useClass: FakeWorkersService,
           },
           {
             provide: ErrorResolverService,
@@ -52,7 +42,7 @@ describe('EmployeesComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeesComponent);
+    fixture = TestBed.createComponent(WorkersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -71,30 +61,30 @@ describe('EmployeesComponent', () => {
     expect(component.dataSource.filter).toEqual('1234 some text');
   });
 
-  it('simplifyEmployeeArray method should convert array of Employee objects into array of EmployeeData object', () => {
-    spyOn(component, 'simplifyEmployeeObject').and.callThrough();
-    const mockArray: Array<Employee> = [];
-    const mockEmployee1 = new Employee(
+  it('simplifyWorkerArray method should convert array of Worker objects into array of WorkerData object', () => {
+    spyOn(component, 'simplifyWorkerObject').and.callThrough();
+    const mockArray: Array<Worker> = [];
+    const mockWorker1 = new Worker(
       new PersonalInformation('Jack', 'Strong', null, null),
       null,
-      new EmployeeInformation(null, 'Spy', null, null, null, null),
+      new WorkerInformation(null, 'Spy', null, null, null, null),
       null,
       null
     );
-    const mockEmployee2 = new Employee(
+    const mockWorker2 = new Worker(
       new PersonalInformation('Mikolaj', 'Kopernik', null, null),
       null,
-      new EmployeeInformation(null, 'Astronomic', null, null, null, null),
+      new WorkerInformation(null, 'Astronomic', null, null, null, null),
       null,
       null
     );
-    mockEmployee1.subjectId = 1;
-    mockEmployee2.subjectId = 2;
-    mockArray.push(mockEmployee1);
-    mockArray.push(mockEmployee2);
-    const convertedArray: Array<EmployeeData> = component.simplifyEmployeeArray(mockArray);
+    mockWorker1.subjectId = 1;
+    mockWorker2.subjectId = 2;
+    mockArray.push(mockWorker1);
+    mockArray.push(mockWorker2);
+    const convertedArray: Array<WorkerData> = component.simplifyWorkerArray(mockArray);
 
-    expect(component.simplifyEmployeeObject).toHaveBeenCalledTimes(2);
+    expect(component.simplifyWorkerObject).toHaveBeenCalledTimes(2);
     expect(convertedArray[0]).toBeDefined();
     expect(convertedArray[0].id).toBe(1);
     expect(convertedArray[0].name).toEqual('Jack Strong');
@@ -105,18 +95,18 @@ describe('EmployeesComponent', () => {
     expect(convertedArray[1].position).toEqual('Astronomic');
   });
 
-  it('simplifyEmployeeObject method should create simplified object from Employee object', () => {
-    let result: EmployeeData;
-    let employee: Employee;
-    employee = new Employee(
+  it('simplifyWorkerObject method should create simplified object from Worker object', () => {
+    let result: WorkerData;
+    let employee: Worker;
+    employee = new Worker(
       new PersonalInformation('John', 'Xavier', null, null),
       null,
-      new EmployeeInformation(null, 'Senior Tester', null, null, null, null),
+      new WorkerInformation(null, 'Senior Tester', null, null, null, null),
       null,
       Role.EMPLOYEE
     );
     employee.subjectId = 1;
-    result = component.simplifyEmployeeObject(employee);
+    result = component.simplifyWorkerObject(employee);
 
     expect(result).toBeDefined();
     expect(result.id).toBe(1);
