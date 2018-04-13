@@ -1,5 +1,6 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
@@ -10,8 +11,6 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
-
-import java.util.List;
 
 public interface SubjectService {
   List<Subject> getSubjects();
