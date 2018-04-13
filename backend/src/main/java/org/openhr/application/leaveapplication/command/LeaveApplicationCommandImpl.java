@@ -8,6 +8,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
       final Subject subject, final LeaveApplication leaveApplication) {
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put("subject", subject);
+    parameters.put("user", subject.getUser());
     parameters.put("userId", subject.getUser().getUserId());
     parameters.put("emailAddress", subject.getContactInformation().getEmail());
     parameters.put("leaveApplication", leaveApplication);
@@ -61,20 +63,22 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
   }
 
   @Override
-  public void rejectLeaveApplicationByHr(final String processInstanceId) {
+  public void rejectLeaveApplicationByHr(final String processInstanceId, final User user) {
     final Map<String, Object> args = new HashMap<>();
     final Task task =
         taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("approvedByHR", false);
+    args.put("user", user);
     taskService.complete(task.getId(), args);
   }
 
   @Override
-  public void approveLeaveApplicationByHr(final String processInstanceId) {
+  public void approveLeaveApplicationByHr(final String processInstanceId, final User user) {
     final Map<String, Object> args = new HashMap<>();
     final Task task =
         taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("approvedByHR", true);
+    args.put("user", user);
     taskService.complete(task.getId(), args);
   }
 
