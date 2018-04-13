@@ -1,5 +1,6 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -16,8 +17,6 @@ import org.openhr.common.proxy.worker.WorkerProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {

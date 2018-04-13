@@ -18,6 +18,12 @@ export class EmployeeService {
 
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
+  public getEmployees(): Observable<Array<Employee>> {
+    return this._http.get<Array<Employee>>(this.url, {
+      headers: this.headers,
+    });
+  }
+
   public getEmployee(employeeId: number): Observable<Employee> {
     return this._http.get<Employee>(`${this.url}/${employeeId}`, {
       headers: this.headers,

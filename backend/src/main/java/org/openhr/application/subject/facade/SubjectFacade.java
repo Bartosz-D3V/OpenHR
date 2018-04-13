@@ -1,5 +1,6 @@
 package org.openhr.application.subject.facade;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -7,8 +8,6 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-
-import java.util.List;
 
 public interface SubjectFacade {
   List<Subject> getSubjects();
