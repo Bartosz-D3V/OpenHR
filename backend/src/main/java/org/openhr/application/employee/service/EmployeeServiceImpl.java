@@ -1,5 +1,6 @@
 package org.openhr.application.employee.service;
 
+import java.util.List;
 import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.repository.EmployeeRepository;
@@ -23,6 +24,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Employee> getEmployees() {
+    return employeeRepository.getEmployees();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Employee getEmployee(final long subjectId) {
     return employeeRepository.getEmployee(subjectId);
   }

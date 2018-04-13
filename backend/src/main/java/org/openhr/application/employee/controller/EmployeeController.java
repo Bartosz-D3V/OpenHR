@@ -1,5 +1,6 @@
 package org.openhr.application.employee.controller;
 
+import java.util.List;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.facade.EmployeeFacade;
 import org.openhr.application.manager.domain.Manager;
@@ -20,6 +21,16 @@ public class EmployeeController {
 
   public EmployeeController(final EmployeeFacade employeeFacade) {
     this.employeeFacade = employeeFacade;
+  }
+
+  @RequestMapping(
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public List<Employee> getEmployees() {
+    return employeeFacade.getEmployees();
   }
 
   @RequestMapping(
