@@ -1,5 +1,6 @@
 package org.openhr.application.subject.repository;
 
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -31,6 +32,22 @@ public class SubjectRepository {
   public SubjectRepository(final SessionFactory sessionFactory, final SubjectDAO subjectDAO) {
     this.sessionFactory = sessionFactory;
     this.subjectDAO = subjectDAO;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<Subject> getSubjects() {
+    List<Subject> subjects;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      subjects = (List<Subject>) criteria.list();
+      session.flush();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return subjects;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

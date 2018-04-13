@@ -13,6 +13,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +71,20 @@ public class SubjectControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+  }
+
+  @Test
+  @WithMockUser()
+  public void getSubjectsShouldReturnSubjects() throws Exception {
+    final List<Subject> subjectList = new ArrayList<>();
+    subjectList.add(mockSubject);
+    final String subjectsAsJson = objectMapper.writeValueAsString(subjectList);
+    when(subjectFacade.getSubjects()).thenReturn(subjectList);
+
+    final MvcResult result =
+        mockMvc.perform(get("/subjects")).andExpect(status().isOk()).andReturn();
+    assertNull(result.getResolvedException());
+    assertEquals(subjectsAsJson, result.getResponse().getContentAsString());
   }
 
   @Test

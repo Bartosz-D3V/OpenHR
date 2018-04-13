@@ -1,5 +1,6 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -30,6 +31,12 @@ public class SubjectServiceImpl implements SubjectService {
     this.subjectRepository = subjectRepository;
     this.workerProxy = workerProxy;
     this.holidayService = holidayService;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Subject> getSubjects() {
+    return subjectRepository.getSubjects();
   }
 
   @Override
