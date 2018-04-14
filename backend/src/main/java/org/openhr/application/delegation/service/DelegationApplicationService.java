@@ -38,4 +38,6 @@ public interface DelegationApplicationService {
   void rejectByHr(DelegationApplication delegationApplication);
 
   void terminateDelegationApplication(DelegationApplication delegationApplication);
+
+  void resumeDelegationApplication(DelegationApplication delegationApplication);
 }

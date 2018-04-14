@@ -138,4 +138,11 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
     delegationApplication.setTerminated(true);
     delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void resumeDelegationApplication(final DelegationApplication delegationApplication) {
+    delegationApplication.setTerminated(false);
+    delegationApplicationRepository.updateDelegationApplication(delegationApplication);
+  }
 }

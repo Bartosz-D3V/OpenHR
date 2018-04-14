@@ -14,7 +14,7 @@ public interface DelegationApplicationFacade {
 
   DelegationApplication getDelegationApplication(long delegationApplicationId);
 
-  void updateDelegationApplication(
+  DelegationApplication updateDelegationApplication(
       String processInstanceId, DelegationApplication delegationApplication);
 
   List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);

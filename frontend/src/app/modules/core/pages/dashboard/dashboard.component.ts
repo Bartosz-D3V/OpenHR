@@ -59,10 +59,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isLoadingResults = true;
-    this.chartOptions = this.getChartOptions();
-    this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
-    this.fetchChartsData();
+    // this.isLoadingResults = true;
+    // this.chartOptions = this.getChartOptions();
+    // this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
+    // this.fetchChartsData();
   }
 
   ngAfterViewInit(): void {

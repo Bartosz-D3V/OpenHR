@@ -18,6 +18,7 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
+import { Application } from '@shared/domain/application/application';
 
 @Component({
   selector: 'app-delegation',
@@ -58,6 +59,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
     this.formTemplate.resetForm();
     this.applicationForm.get('delegation').reset({ budget: 0 });
     this.dateRange.reset();
+    this.delegationApplication = null;
   }
 
   ngOnInit(): void {
@@ -154,9 +156,27 @@ export class DelegationComponent implements OnInit, OnDestroy {
     const application: DelegationApplication = <DelegationApplication>form.get('delegation').value;
     application.startDate = this.dateRange.startDate;
     application.endDate = this.dateRange.endDate;
+    this.delegationApplication ? this.updateApplication(this.delegationApplication) : this.createApplication(application);
+  }
+
+  public createApplication(application: DelegationApplication): void {
     this._delegationService.createDelegationApplication(application).subscribe(
       (response: DelegationApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
+        this.resetForm();
+        this._notificationService.openSnackBar(message, 'OK');
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public updateApplication(application: DelegationApplication): void {
+    delete application['subject'];
+    this._delegationService.updateDelegationApplication(application).subscribe(
+      (response: DelegationApplication) => {
+        const message = `Application with id ${response.applicationId} has been updated`;
         this.resetForm();
         this._notificationService.openSnackBar(message, 'OK');
       },

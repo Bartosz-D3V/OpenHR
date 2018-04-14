@@ -92,11 +92,11 @@ public class DelegationApplicationController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseBody
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void updateDelegationApplication(
+  @ResponseStatus(HttpStatus.OK)
+  public DelegationApplication updateDelegationApplication(
       @RequestParam final String processInstanceId,
       @RequestBody final DelegationApplication delegationApplication) {
-    delegationApplicationFacade.updateDelegationApplication(
+    return delegationApplicationFacade.updateDelegationApplication(
         processInstanceId, delegationApplication);
   }
 

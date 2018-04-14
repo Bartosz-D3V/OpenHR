@@ -5,6 +5,7 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,17 +138,15 @@ public class DelegationApplicationProcessTest {
 
   @Test
   public void afterApplicationIsBeingRejectedByManagerItShouldBeMarkedAsRejectedAndAssignedBack() {
-    Map<String, Object> params = new HashMap<>();
+    final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockEmployee);
     params.put("delegationApplication", mockDelegationApplication);
+    params.put("approvedByManager", false);
 
     final ProcessInstance processInstance =
         runtimeService.startProcessInstanceByKey("delegation-application", params);
     final Task task =
         taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-    params = new HashMap<>();
-    params.put("approvedByManager", false);
-    params.put("delegationApplication", mockDelegationApplication);
     taskService.complete(task.getId(), params);
     final Task task2 =
         taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -160,6 +159,30 @@ public class DelegationApplicationProcessTest {
     assertEquals("Amend the application", task2.getName());
     assertFalse(actualDelegationApplication.isApprovedByManager());
     assertEquals(actualEmployee, actualDelegationApplication.getAssignee());
+  }
+
+  @Test
+  public void afterAssigningBackApplicantShouldUpdateApplication() {
+    final Map<String, Object> params = new HashMap<>();
+    params.put("subject", mockEmployee);
+    params.put("delegationApplication", mockDelegationApplication);
+    params.put("approvedByManager", false);
+    final ProcessInstance processInstance =
+        runtimeService.startProcessInstanceByKey("delegation-application", params);
+    final Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    taskService.complete(task.getId(), params);
+
+    mockDelegationApplication.setBudget(new BigDecimal(1200));
+    final Task task2 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    final Map<String, Object> param = new HashMap<>();
+    param.put("delegationApplication", mockDelegationApplication);
+    taskService.complete(task2.getId(), param);
+    final Task task3 =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+
+    assertEquals("Manager reviews application", task3.getName());
   }
 
   @Test

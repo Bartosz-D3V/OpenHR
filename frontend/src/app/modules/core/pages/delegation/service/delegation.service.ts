@@ -32,6 +32,14 @@ export class DelegationService {
     });
   }
 
+  public updateDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
+    const params: HttpParams = new HttpParams().set('processInstanceId', application.processInstanceId);
+    return this._http.put<DelegationApplication>(this.url, application, {
+      params: params,
+      headers: this.headers,
+    });
+  }
+
   public getDelegationApplication(applicationId: number): Observable<DelegationApplication> {
     return this._http.get<DelegationApplication>(`${this.url}/${applicationId}`, {
       headers: this.headers,
