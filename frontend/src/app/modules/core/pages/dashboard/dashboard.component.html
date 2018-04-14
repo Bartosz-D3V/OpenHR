@@ -19,7 +19,8 @@
     <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
   </div>
 
-  <div class="c-dashboard__chart" fxFlex.gt-md="47" fxFlex.md="100" fxFlex.lt-sm="100">
+  <div class="c-dashboard__chart" fxFlex.gt-md="47" fxFlex.md="100" fxFlex.lt-sm="100"
+       *ngIf="role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER'">
     <canvas #applicationsStatusRatioChart id="applicationsStatusRatioChart">{{ applicationsStatusRatioChart }}</canvas>
   </div>
 

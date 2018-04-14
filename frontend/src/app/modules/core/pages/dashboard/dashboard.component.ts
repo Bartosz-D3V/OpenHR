@@ -11,18 +11,21 @@ import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
 import { ApplicationsStatusRadio } from '@modules/core/pages/dashboard/domain/applications-status-radio';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
 import { Month } from '@shared/constants/enumeration/month';
+import { Role } from '@shared/domain/subject/role';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [DashboardService, SubjectDetailsService],
+  providers: [DashboardService, SubjectDetailsService, JwtHelperService],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
   private chartOptions: Object;
+  public role: Role;
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
   public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
@@ -38,6 +41,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _dashboardService: DashboardService,
     private _subjectService: SubjectDetailsService,
+    private _jwtHelper: JwtHelperService,
     private _errorResolver: ErrorResolverService
   ) {}
 
@@ -57,6 +61,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.isLoadingResults = true;
     this.chartOptions = this.getChartOptions();
+    this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
     this.fetchChartsData();
   }
 
