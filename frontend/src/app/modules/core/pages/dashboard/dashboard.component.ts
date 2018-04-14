@@ -15,6 +15,7 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
 import { Month } from '@shared/constants/enumeration/month';
 import { Role } from '@shared/domain/subject/role';
+import { TotalExpenditure } from '@modules/core/pages/dashboard/domain/total-expenditure';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
   public isLoadingResults: boolean;
   public allowanceLeft: number;
+  public totalDelegationExpenditure: TotalExpenditure;
 
   @ViewChild('monthlySummariesChart') public monthlySummariesCanvas: ElementRef;
 
@@ -59,16 +61,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.isLoadingResults = true;
-    // this.chartOptions = this.getChartOptions();
-    // this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
-    // this.fetchChartsData();
+    this.isLoadingResults = true;
+    this.chartOptions = this.getChartOptions();
+    this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
+    this.fetchChartsData();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.createMonthlySummaryChart();
-    this.createApplicationsStatusRatioChart();
   }
 
   ngOnDestroy(): void {
@@ -89,26 +90,21 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  public createApplicationsStatusRatioChart(): void {
-    this.$dashboardService = this._dashboardService.getApplicationsStatusRatio().subscribe(
-      (val: ApplicationsStatusRadio) => {
-        this.buildApplicationsStatusRatio(val);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
-  }
-
   public fetchChartsData(): void {
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
       this._dashboardService.getSubjectsOnLeave(),
-      (subject: Subject, subjectsOnLeave: Array<Subject>) => ({ subject, subjectsOnLeave })
+      this._dashboardService.getTotalDelegationExpenditures(),
+      (subject: Subject, subjectsOnLeave: Array<Subject>, totalExpenditure: TotalExpenditure) => ({
+        subject,
+        subjectsOnLeave,
+        totalExpenditure,
+      })
     ).subscribe(
       pair => {
         this.subject = pair.subject;
         this.dataSource.data = pair.subjectsOnLeave;
+        this.totalDelegationExpenditure = pair.totalExpenditure;
         this.isLoadingResults = false;
         this.setAllowanceInfo(pair.subject);
       },
@@ -132,23 +128,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             data: chartData.data,
             borderColor: '#3cba9f',
             fill: false,
-          },
-        ],
-      },
-      options: this.chartOptions,
-    });
-  }
-
-  private buildApplicationsStatusRatio(chartData: ApplicationsStatusRadio): void {
-    this.applicationsStatusRatioCanvas = new Chart(this.applicationsStatusRatioCanvas.nativeElement.getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: ['Accepted', 'Rejected'],
-        datasets: [
-          {
-            data: [chartData.accepted, chartData.rejected],
-            borderColor: '#3cba9f',
-            fill: true,
           },
         ],
       },
