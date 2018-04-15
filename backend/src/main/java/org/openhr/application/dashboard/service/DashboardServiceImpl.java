@@ -1,8 +1,10 @@
 package org.openhr.application.dashboard.service;
 
+import java.math.BigDecimal;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import org.openhr.application.dashboard.dto.DelegationExpenditureDTO;
 import org.openhr.application.dashboard.dto.MonthSummaryDTO;
 import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.repository.DashboardRepository;
@@ -34,6 +36,19 @@ public class DashboardServiceImpl implements DashboardService {
     final List<LeaveApplication> leaveApplications =
         dashboardRepository.getCurrentYearStatusRatio();
     return convertToStatusRatio(leaveApplications);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public DelegationExpenditureDTO getDelegationExpenditures(final int year) {
+    final BigDecimal totalExpenditures =
+        dashboardRepository.getDelegationExpenditures(year) != null
+            ? dashboardRepository.getDelegationExpenditures(year)
+            : new BigDecimal(0);
+    final DelegationExpenditureDTO delegationExpenditureDTO = new DelegationExpenditureDTO();
+    delegationExpenditureDTO.setYear(year);
+    delegationExpenditureDTO.setTotalExpenditure(totalExpenditures);
+    return delegationExpenditureDTO;
   }
 
   @Override

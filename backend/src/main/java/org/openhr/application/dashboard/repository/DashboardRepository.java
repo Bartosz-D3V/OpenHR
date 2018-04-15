@@ -1,5 +1,6 @@
 package org.openhr.application.dashboard.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -8,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.Subject;
 import org.slf4j.Logger;
@@ -80,6 +82,27 @@ public class DashboardRepository {
       throw e;
     }
     return monthlyReport;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public BigDecimal getDelegationExpenditures(final int year) {
+    BigDecimal totalExpenditures;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(DelegationApplication.class);
+      totalExpenditures =
+          (BigDecimal)
+              criteria
+                  .add(Restrictions.eq("approvedByHR", true))
+                  .add(Restrictions.gt("startDate", LocalDate.of(year, 1, 1)))
+                  .add(Restrictions.le("startDate", LocalDate.of(year, 12, 31)))
+                  .setProjection(Projections.sum("budget"))
+                  .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return totalExpenditures;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
