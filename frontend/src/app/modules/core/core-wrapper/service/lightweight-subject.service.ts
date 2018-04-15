@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 import { Observable } from 'rxjs/Observable';
 
-import { User } from '@shared/domain/user/user';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { SystemVariables } from '@config/system-variables';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 
 @Injectable()
 export class LightweightSubjectService {
@@ -18,9 +17,9 @@ export class LightweightSubjectService {
 
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService, private _errorResolver: ErrorResolverService) {}
 
-  public getUser(userId: number): Observable<User> {
+  public getUser(userId: number): Observable<LightweightSubject> {
     return this._http
-      .get<User>(`${this.url}/${userId}`, {
+      .get<LightweightSubject>(`${this.url}/${userId}`, {
         headers: this.headers,
       })
       .catch((error: any) => {

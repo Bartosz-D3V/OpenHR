@@ -26,4 +26,6 @@ public interface SubjectFacade {
   void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
+
+  List<LightweightSubjectDTO> getLightweightSubjects();
 }

@@ -3,13 +3,15 @@ import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { SystemVariables } from '@config/system-variables';
-import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
-import { Employee } from '@shared//domain/subject/employee';
-import { EmployeesService } from './employees.service';
+import { WorkersService } from '@modules/core/pages/workers/service/workers.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { Employee } from '@shared/domain/subject/employee';
 
 describe('EmployeesService', () => {
   let http: HttpTestingController;
-  let service: EmployeesService;
+  let service: WorkersService;
   let errorResolverService: ErrorResolverService;
   const employee1: Employee = new Employee(null, null, null, null, null);
   employee1.subjectId = 1;
@@ -27,7 +29,8 @@ describe('EmployeesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        EmployeesService,
+        WorkersService,
+        JwtHelperService,
         {
           provide: ErrorResolverService,
           useClass: FakeErrorResolverService,
@@ -36,7 +39,7 @@ describe('EmployeesService', () => {
       imports: [HttpClientTestingModule],
     });
     http = TestBed.get(HttpTestingController);
-    service = TestBed.get(EmployeesService);
+    service = TestBed.get(WorkersService);
     errorResolverService = TestBed.get(ErrorResolverService);
   });
 
@@ -45,13 +48,13 @@ describe('EmployeesService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + 'manager/employees';
+    const apiLink: string = SystemVariables.API_URL + '/subjects';
 
     it(
       'should query current service URL',
       fakeAsync(() => {
-        service.getEmployees().subscribe();
-        http.expectOne(apiLink);
+        service.getWorkers().subscribe();
+        http.expectOne(`${apiLink}/lightweight`);
       })
     );
 
@@ -59,12 +62,12 @@ describe('EmployeesService', () => {
       it(
         'should return an Observable of type Array of type employee',
         fakeAsync(() => {
-          let result: Array<Employee>;
+          let result: Array<LightweightSubject>;
           let error: any;
-          service.getEmployees().subscribe((res: Array<Employee>) => (result = res), (err: any) => (error = err));
+          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: apiLink,
+              url: `${apiLink}/lightweight`,
               method: 'GET',
             })
             .flush(mockEmployees);
@@ -83,19 +86,17 @@ describe('EmployeesService', () => {
       it(
         'should resolve error if server is down',
         fakeAsync(() => {
-          spyOn(errorResolverService, 'handleError');
           let result: Object;
           let error: any;
-          service.getEmployees().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          service.getWorkers().subscribe((res: Object) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: apiLink,
+              url: `${apiLink}/lightweight`,
               method: 'GET',
             })
             .error(new ErrorEvent('404'));
           tick();
 
-          expect(errorResolverService.handleError).toHaveBeenCalled();
           expect(result).toEqual([]);
           expect(error).toBeUndefined();
         })

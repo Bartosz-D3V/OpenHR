@@ -97,13 +97,15 @@ public class SubjectRepository {
           (LightweightSubjectDTO)
               criteria
                   .createAlias("personalInformation", "personalInfo")
+                  .createAlias("employeeInformation", "employeeInfo")
                   .add(Restrictions.eq("subjectId", subjectId))
                   .setProjection(
                       Projections.distinct(
                           Projections.projectionList()
                               .add(Projections.property("subjectId"), "subjectId")
                               .add(Projections.property("personalInfo.firstName"), "firstName")
-                              .add(Projections.property("personalInfo.lastName"), "lastName")))
+                              .add(Projections.property("personalInfo.lastName"), "lastName")
+                              .add(Projections.property("employeeInfo.position"), "position")))
                   .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
                   .uniqueResult();
       session.flush();
@@ -116,6 +118,37 @@ public class SubjectRepository {
     }
 
     return lightweightSubjectDTO;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    List<LightweightSubjectDTO> lightweightSubjectDTOS;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      lightweightSubjectDTOS =
+          (List<LightweightSubjectDTO>)
+              criteria
+                  .createAlias("personalInformation", "personalInfo")
+                  .createAlias("employeeInformation", "employeeInfo")
+                  .setProjection(
+                      Projections.distinct(
+                          Projections.projectionList()
+                              .add(Projections.property("subjectId"), "subjectId")
+                              .add(Projections.property("personalInfo.firstName"), "firstName")
+                              .add(Projections.property("personalInfo.lastName"), "lastName")
+                              .add(Projections.property("employeeInfo.position"), "position")))
+                  .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
+                  .setReadOnly(true)
+                  .list();
+      session.flush();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return lightweightSubjectDTOS;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { User } from '../../domain/user/user';
 import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 
 @Component({
   selector: 'app-avatar',
@@ -11,7 +11,7 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
   providers: [JwtHelperService],
 })
 export class AvatarComponent {
-  @Input() public user: User;
+  @Input() public user: LightweightSubject;
 
   constructor(private _jwtHelper: JwtHelperService, private _router: Router) {}
 

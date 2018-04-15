@@ -1,6 +1,12 @@
-<app-page-header [header]="'Employees'"></app-page-header>
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Employees'"></app-page-header>
 
-<section class="c-drawer">
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -9,12 +15,12 @@
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.subjectId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.name}}%</mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="position">
@@ -27,7 +33,7 @@
       </mat-row>
     </mat-table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
 
 </section>

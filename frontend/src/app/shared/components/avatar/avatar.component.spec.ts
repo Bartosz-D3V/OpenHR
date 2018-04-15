@@ -2,16 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatMenuModule } from '@angular/material';
 
-import { User } from '../../domain/user/user';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { AvatarComponent } from './avatar.component';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
-import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let jwtHelper: JwtHelperService;
-  const mockUser: User = new User(2199, 'John', 'Test');
+  const mockUser: LightweightSubject = new LightweightSubject(2199, 'John', 'Test', 'Tester');
 
   beforeEach(
     async(() => {

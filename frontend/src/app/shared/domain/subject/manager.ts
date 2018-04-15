@@ -5,9 +5,11 @@ import { ContactInformation } from './contact-information';
 import { EmployeeInformation } from './employee-information';
 import { HrInformation } from './hr-information';
 import { Role } from './role';
+import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 
 export class Manager extends Subject {
   public employees?: Set<Employee>;
+  public hrTeamMember?: HrTeamMember;
 
   constructor(
     personalInformation: PersonalInformation,
@@ -15,9 +17,11 @@ export class Manager extends Subject {
     employeeInformation: EmployeeInformation,
     hrInformation: HrInformation,
     role: Role,
-    employees?: Set<Employee>
+    employees?: Set<Employee>,
+    hrTeamMember?: HrTeamMember
   ) {
     super(personalInformation, contactInformation, employeeInformation, hrInformation, role);
     this.employees = employees;
+    this.hrTeamMember = hrTeamMember;
   }
 }

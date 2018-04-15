@@ -30,6 +30,8 @@ public interface SubjectService {
 
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
 
+  List<LightweightSubjectDTO> getLightweightSubjects();
+
   long getLeftAllowanceInDays(long subjectId);
 
   long getUsedAllowance(long subjectId);
