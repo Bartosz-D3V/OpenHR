@@ -8,7 +8,7 @@ import { Subject } from '@shared/domain/subject/subject';
 import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
 import { ApplicationsStatusRadio } from '@modules/core/pages/dashboard/domain/applications-status-radio';
 import { TotalExpenditure } from '@modules/core/pages/dashboard/domain/total-expenditure';
-import moment = require('moment');
+import * as moment from 'moment';
 
 @Injectable()
 export class DashboardService {
