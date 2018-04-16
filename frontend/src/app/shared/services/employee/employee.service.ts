@@ -30,6 +30,12 @@ export class EmployeeService {
     });
   }
 
+  public createEmployee(employee: Employee): Observable<Employee> {
+    return this._http.post<Employee>(this.url, employee, {
+      headers: this.headers,
+    });
+  }
+
   public updateEmployee(employee: Employee): Observable<Employee> {
     return this._http.put<Employee>(`${this.url}/${employee.subjectId}`, employee, {
       headers: this.headers,

@@ -138,48 +138,48 @@ describe('AddEmployeeComponent', () => {
   describe('First name validator', () => {
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
+      component.newSubjectForm.get(['personalInformation', 'firstName']).setValue(name);
 
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeTruthy();
+      expect(component.newSubjectForm.get(['personalInformation', 'firstName']).valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(emptyText);
+      component.newSubjectForm.get(['personalInformation', 'firstName']).setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
+      expect(component.newSubjectForm.get(['personalInformation', 'firstName']).valid).toBeFalsy();
     });
   });
 
   describe('Last name validator', () => {
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
+      component.newSubjectForm.get(['personalInformation', 'lastName']).setValue(name);
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeTruthy();
+      expect(component.newSubjectForm.get(['personalInformation', 'lastName']).valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(emptyText);
+      component.newSubjectForm.get(['personalInformation', 'lastName']).setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
+      expect(component.newSubjectForm.get(['personalInformation', 'lastName']).valid).toBeFalsy();
     });
   });
 
   describe('Date of birth validator', () => {
     it('should mark form as valid if input is not empty', () => {
       const dob: Date = new Date('11 October 1960 15:00 UTC');
-      component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
+      component.newSubjectForm.get(['personalInformation', 'dateOfBirth']).setValue(dob);
 
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeTruthy();
+      expect(component.newSubjectForm.get(['personalInformation', 'dateOfBirth']).valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('dobFormControl').setValue(emptyText);
+      component.newSubjectForm.get(['personalInformation', 'dateOfBirth']).setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
+      expect(component.newSubjectForm.get(['personalInformation', 'dateOfBirth']).valid).toBeFalsy();
     });
   });
 
@@ -187,7 +187,7 @@ describe('AddEmployeeComponent', () => {
     let postcodeFormControl: AbstractControl;
 
     beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
+      postcodeFormControl = component.newSubjectForm.get(['contactInformation', 'address', 'postcode']);
       postcodeFormControl.reset();
     });
 
@@ -212,7 +212,7 @@ describe('AddEmployeeComponent', () => {
     let emailFormControl: AbstractControl;
 
     beforeEach(() => {
-      emailFormControl = component.contactInformationFormGroup.controls['emailFormControl'];
+      emailFormControl = component.newSubjectForm.get(['contactInformation', 'email']);
       emailFormControl.reset();
     });
 
@@ -237,7 +237,7 @@ describe('AddEmployeeComponent', () => {
     let telephoneFormControl: AbstractControl;
 
     beforeEach(() => {
-      telephoneFormControl = component.contactInformationFormGroup.controls['telephoneFormControl'];
+      telephoneFormControl = component.newSubjectForm.get(['contactInformation', 'telephone']);
       telephoneFormControl.reset();
     });
 
@@ -288,7 +288,7 @@ describe('AddEmployeeComponent', () => {
     let postcodeFormControl: AbstractControl;
 
     beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
+      postcodeFormControl = component.newSubjectForm.get(['contactInformation', 'address', 'postcode']);
       postcodeFormControl.reset();
     });
 
@@ -327,7 +327,7 @@ describe('AddEmployeeComponent', () => {
     let ninFormControl: AbstractControl;
 
     beforeEach(() => {
-      ninFormControl = component.employeeDetailsFormGroup.controls['ninFormControl'];
+      ninFormControl = component.newSubjectForm.get(['employeeInformation', 'nationalInsuranceNumber']);
       ninFormControl.reset();
     });
 
@@ -362,55 +362,16 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
-  it('Checkbox for self-assign employee should be ticked by default', () => {
-    const selfAssignFormControl: AbstractControl = component.employeeDetailsFormGroup.controls['selfAssignFormControl'];
-
-    expect(selfAssignFormControl.value).toBeTruthy();
-  });
-
   describe('isValid method', () => {
-    let spy1: Spy;
-    let spy2: Spy;
-    let spy3: Spy;
-
-    const setFormGroupSpies = function(firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
-      spy1.and.returnValue(firstGroupFlag);
-      spy2.and.returnValue(secondGroupFlag);
-      spy3.and.returnValue(thirdGroupFlag);
-    };
-
-    beforeEach(() => {
-      spy1 = spyOnProperty(component.personalInformationFormGroup, 'valid', 'get');
-      spy2 = spyOnProperty(component.contactInformationFormGroup, 'valid', 'get');
-      spy3 = spyOnProperty(component.employeeDetailsFormGroup, 'valid', 'get');
-    });
-
-    it('should return true if all formGroups are valid', () => {
-      setFormGroupSpies(true, true, true);
+    it('should return true if form is valid', () => {
+      spyOnProperty(component.newSubjectForm, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });
 
-    it('should return false if at least one formGroup is invalid', () => {
-      setFormGroupSpies(false, true, true);
-      expect(component.isValid()).toBeFalsy();
+    it('should return false if form is not valid', () => {
+      spyOnProperty(component.newSubjectForm, 'valid', 'get').and.returnValue(false);
 
-      setFormGroupSpies(true, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, false, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
   });
@@ -446,12 +407,12 @@ describe('AddEmployeeComponent', () => {
   describe('arePasswordsIdentical', () => {
     it('arePasswordsIdentical should return true if passwords are the same', () => {
       expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeFalsy();
+      expect(component.newSubjectForm.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeFalsy();
     });
 
     it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
       expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeTruthy();
+      expect(component.newSubjectForm.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeTruthy();
     });
   });
 
@@ -459,7 +420,7 @@ describe('AddEmployeeComponent', () => {
     it('should call createSubject method if the form is valid', () => {
       spyOn(component, 'createSubject');
       spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, false);
+      component.save(false);
 
       expect(component.createSubject).toHaveBeenCalled();
     });
@@ -467,7 +428,7 @@ describe('AddEmployeeComponent', () => {
     it('should not call createSubject method if the form is not valid', () => {
       spyOn(component, 'createSubject');
       spyOn(component, 'isValid').and.returnValue(false);
-      component.submitForm(mockSubject, false);
+      component.save(false);
 
       expect(component.createSubject).not.toHaveBeenCalled();
     });
@@ -475,7 +436,7 @@ describe('AddEmployeeComponent', () => {
     it('should call assignEmployeeToManager method if the selfAssign is true', () => {
       spyOn(component, 'assignEmployeeToManager');
       spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, true);
+      component.save(true);
 
       expect(component.assignEmployeeToManager).toHaveBeenCalled();
     });
@@ -483,27 +444,9 @@ describe('AddEmployeeComponent', () => {
     it('should not call assignEmployeeToManager method if the selfAssign is false', () => {
       spyOn(component, 'assignEmployeeToManager');
       spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, false);
+      component.save(false);
 
       expect(component.assignEmployeeToManager).not.toHaveBeenCalled();
-    });
-  });
-
-  xdescribe('create subject method', () => {
-    it('should call service method if the form is valid', () => {
-      spyOn(subjectDetailsService, 'createSubject');
-
-      component.createSubject(mockSubject);
-
-      expect(subjectDetailsService.createSubject).toHaveBeenCalled();
-    });
-
-    it('should not call service method if the form is invalid', () => {
-      spyOn(subjectDetailsService, 'createSubject');
-
-      component.createSubject(mockSubject);
-
-      expect(subjectDetailsService.createSubject).not.toHaveBeenCalled();
     });
   });
 });

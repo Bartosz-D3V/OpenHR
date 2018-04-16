@@ -21,4 +21,10 @@ export class ManagerService {
       headers: this.headers,
     });
   }
+
+  public createManager(manager: Manager): Observable<Manager> {
+    return this._http.post<Manager>(this.url, manager, {
+      headers: this.headers,
+    });
+  }
 }

@@ -1,11 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { Subject } from '@shared/domain/subject/subject';
-import { RegisterDetails } from '@shared/domain/register/register-details';
+import { EmployeeService } from '@shared/services/employee/employee.service';
+import { ManagerService } from '@shared/services/manager/manager.service';
+import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
+import { Role } from '@shared/domain/subject/role';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-add-employee',
@@ -17,17 +24,33 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   private $newSubject: ISubscription;
   public newSubjectForm: FormGroup;
   public subject: Subject;
-  public registerDetails: RegisterDetails;
-
   public stepNumber = 0;
 
-  constructor(private _subjectDetailsService: SubjectDetailsService, private _fb: FormBuilder) {}
+  constructor(
+    private _employeeService: EmployeeService,
+    private _managerService: ManagerService,
+    private _hrService: HrTeamMemberService,
+    private _notificationService: NotificationService,
+    private _errorResolver: ErrorResolverService,
+    private _fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
   }
 
   ngOnDestroy(): void {}
+
+  private getServiceMethod(subject: Subject): Observable<Subject> {
+    switch (subject.role) {
+      case Role.EMPLOYEE:
+        return this._employeeService.createEmployee(subject);
+      case Role.MANAGER:
+        return this._managerService.createManager(subject);
+      case Role.HRTEAMMEMBER:
+        return this._hrService.createHrTeamMember(subject);
+    }
+  }
 
   public buildForm(): void {
     this.newSubjectForm = this._fb.group({
@@ -60,9 +83,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         nationalInsuranceNumber: [Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)])],
         position: [],
         department: [],
-        employeeNumber: [employeeInfo.employeeNumber, Validators.required],
-        startDate: [employeeInfo.startDate],
-        endDate: [employeeInfo.endDate],
+        employeeNumber: [Validators.required],
+        startDate: [],
+        endDate: [],
       }),
       hrInformation: this._fb.group({
         allowance: [Validators.min(0)],
@@ -104,8 +127,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public submitForm(subject: Subject, selfAssign: boolean): void {
+  public save(selfAssign: boolean): void {
     if (this.isValid()) {
+      const subject: Subject = <Subject>this.newSubjectForm.value;
       this.createSubject(subject);
       if (selfAssign) {
         this.assignEmployeeToManager();
@@ -114,7 +138,15 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public createSubject(subject: Subject): void {
-    this.$newSubject = this._subjectDetailsService.createSubject(subject).subscribe();
+    this.$newSubject = this.getServiceMethod(subject).subscribe(
+      (response: Subject) => {
+        const message = `Person with id ${response.subjectId} has been created`;
+        this._notificationService.openSnackBar(message, 'OK');
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
   }
 
   public assignEmployeeToManager(): void {
