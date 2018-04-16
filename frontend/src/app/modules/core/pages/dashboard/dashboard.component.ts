@@ -8,14 +8,14 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
 import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
 import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
-import { ApplicationsStatusRadio } from '@modules/core/pages/dashboard/domain/applications-status-radio';
+import { TotalExpenditure } from '@modules/core/pages/dashboard/domain/total-expenditure';
+import { ChartConfig } from '@modules/core/pages/dashboard/constants/chart-config';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
-import { Month } from '@shared/constants/enumeration/month';
 import { Role } from '@shared/domain/subject/role';
-import { TotalExpenditure } from '@modules/core/pages/dashboard/domain/total-expenditure';
+import { Month } from '@shared/constants/enumeration/month';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +25,6 @@ import { TotalExpenditure } from '@modules/core/pages/dashboard/domain/total-exp
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
-  private chartOptions: Object;
   public role: Role;
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
@@ -35,8 +34,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public totalDelegationExpenditure: TotalExpenditure;
 
   @ViewChild('monthlySummariesChart') public monthlySummariesCanvas: ElementRef;
-
-  @ViewChild('applicationsStatusRatioChart') public applicationsStatusRatioCanvas: ElementRef;
 
   @ViewChild(MatPaginator) public paginator: MatPaginator;
 
@@ -62,14 +59,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoadingResults = true;
-    this.chartOptions = this.getChartOptions();
     this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
     this.fetchChartsData();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.createMonthlySummaryChart();
   }
 
   ngOnDestroy(): void {
@@ -78,26 +73,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public createMonthlySummaryChart(): void {
-    this.$dashboardService = this._dashboardService.getMonthlyReport().subscribe(
-      (val: Array<MonthSummary>) => {
-        const chartData: ChartData = DashboardComponent.splitMonthlySummaries(val);
-        this.buildMonthlySummariesChart(chartData);
-      },
-      (err: any) => {
-        this._errorResolver.handleError(err);
-      }
-    );
-  }
-
   public fetchChartsData(): void {
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
       this._dashboardService.getSubjectsOnLeave(),
+      this._dashboardService.getMonthlyReport(),
       this._dashboardService.getTotalDelegationExpenditures(),
-      (subject: Subject, subjectsOnLeave: Array<Subject>, totalExpenditure: TotalExpenditure) => ({
+      (subject: Subject, subjectsOnLeave: Array<Subject>, monthlyReport: Array<MonthSummary>, totalExpenditure: TotalExpenditure) => ({
         subject,
         subjectsOnLeave,
+        monthlyReport,
         totalExpenditure,
       })
     ).subscribe(
@@ -105,8 +90,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.subject = pair.subject;
         this.dataSource.data = pair.subjectsOnLeave;
         this.totalDelegationExpenditure = pair.totalExpenditure;
-        this.isLoadingResults = false;
+        this.buildMonthlySummariesChart(DashboardComponent.splitMonthlySummaries(pair.monthlyReport));
         this.setAllowanceInfo(pair.subject);
+        this.isLoadingResults = false;
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -126,42 +112,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         datasets: [
           {
             data: chartData.data,
-            borderColor: '#3cba9f',
+            borderColor: '#3CBA9F',
             fill: false,
           },
         ],
       },
-      options: this.chartOptions,
+      options: ChartConfig.chartOptions,
     });
-  }
-
-  private getChartOptions(): Object {
-    return {
-      legend: {
-        display: false,
-      },
-      scales: {
-        xAxes: [
-          {
-            display: true,
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-        yAxes: [
-          {
-            display: true,
-            ticks: {
-              beginAtZero: true,
-              fixedStepSize: 1,
-              userCallback: label => {
-                return Math.floor(label);
-              },
-            },
-          },
-        ],
-      },
-    };
   }
 }
