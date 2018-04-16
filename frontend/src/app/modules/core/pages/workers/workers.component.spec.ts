@@ -25,7 +25,7 @@ describe('WorkersComponent', () => {
 
   @Injectable()
   class FakeErrorResolverService {
-    public createAlert(error: any): void {}
+    public handleError(error: any): void {}
   }
 
   beforeEach(

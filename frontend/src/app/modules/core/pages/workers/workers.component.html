@@ -11,7 +11,7 @@
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 
-  <div class="c-table mat-elevation-z8">
+  <div class="c-table">
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
