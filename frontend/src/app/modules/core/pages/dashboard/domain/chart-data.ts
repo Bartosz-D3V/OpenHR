@@ -1,4 +1,4 @@
 export interface ChartData {
-  labels: Array<string>;
+  labels: Array<any>;
   data: Array<number>;
 }

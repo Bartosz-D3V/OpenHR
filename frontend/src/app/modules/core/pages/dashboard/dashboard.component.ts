@@ -15,6 +15,7 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { Subject } from '@shared/domain/subject/subject';
 import { Role } from '@shared/domain/subject/role';
+import { Month } from '@shared/constants/enumeration/month';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,8 +45,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   public static splitMonthlySummaries(monthlySummaries: Array<MonthSummary>): ChartData {
-    const monthLabels: Array<string> = monthlySummaries.map((element: MonthSummary) => {
-      return element.month.toString();
+    const monthLabels: Array<Month> = monthlySummaries.map((element: MonthSummary) => {
+      return element.month;
     });
     const dataSet: Array<number> = monthlySummaries.map((element: MonthSummary) => {
       return element.numberOfApplications;
