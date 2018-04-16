@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -18,11 +18,9 @@ export class WorkersComponent implements OnInit, OnDestroy {
   public isLoadingResults: boolean;
   public workers: Array<LightweightSubject>;
   public tableColumns: Array<string> = ['id', 'name', 'position'];
-  public dataSource: MatTableDataSource<LightweightSubject>;
+  public dataSource: MatTableDataSource<LightweightSubject> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) public paginator: MatPaginator;
-
-  @ViewChild(MatSort) public sort: MatSort;
 
   constructor(private _workersService: WorkersService, private _errorResolver: ErrorResolverService) {}
 
@@ -41,9 +39,8 @@ export class WorkersComponent implements OnInit, OnDestroy {
     this.$workers = this._workersService.getWorkers().subscribe(
       (result: Array<LightweightSubject>) => {
         this.workers = result;
-        this.dataSource = new MatTableDataSource(this.workers);
+        this.dataSource.data = result;
         this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
         this.isLoadingResults = false;
       },
       (httpErrorResponse: HttpErrorResponse) => {

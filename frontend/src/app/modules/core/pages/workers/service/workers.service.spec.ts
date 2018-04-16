@@ -1,46 +1,28 @@
-import { Injectable } from '@angular/core';
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { SystemVariables } from '@config/system-variables';
 import { WorkersService } from '@modules/core/pages/workers/service/workers.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { Employee } from '@shared/domain/subject/employee';
 
-describe('EmployeesService', () => {
+describe('WorkersService', () => {
   let http: HttpTestingController;
   let service: WorkersService;
-  let errorResolverService: ErrorResolverService;
   const employee1: Employee = new Employee(null, null, null, null, null);
   employee1.subjectId = 1;
   const employee2: Employee = new Employee(null, null, null, null, null);
   employee2.subjectId = 2;
   const mockEmployees: Array<Employee> = [employee1, employee2];
 
-  @Injectable()
-  class FakeErrorResolverService {
-    public handleError(error: any): void {}
-
-    public createAlert(error: any): void {}
-  }
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        WorkersService,
-        JwtHelperService,
-        {
-          provide: ErrorResolverService,
-          useClass: FakeErrorResolverService,
-        },
-      ],
+      providers: [WorkersService, JwtHelperService],
       imports: [HttpClientTestingModule],
     });
     http = TestBed.get(HttpTestingController);
     service = TestBed.get(WorkersService);
-    errorResolverService = TestBed.get(ErrorResolverService);
   });
 
   it('should be created', () => {
@@ -71,7 +53,6 @@ describe('EmployeesService', () => {
               method: 'GET',
             })
             .flush(mockEmployees);
-
           tick();
 
           expect(error).toBeUndefined();
@@ -86,9 +67,9 @@ describe('EmployeesService', () => {
       it(
         'should resolve error if server is down',
         fakeAsync(() => {
-          let result: Object;
+          let result: Array<LightweightSubject>;
           let error: any;
-          service.getWorkers().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
               url: `${apiLink}/lightweight`,
@@ -97,8 +78,9 @@ describe('EmployeesService', () => {
             .error(new ErrorEvent('404'));
           tick();
 
-          expect(result).toEqual([]);
-          expect(error).toBeUndefined();
+          expect(result).toBeUndefined();
+          expect(error).toBeDefined();
+          expect(error.message).toBe('Http failure response for /api/subjects/lightweight: 0 ');
         })
       );
     });
