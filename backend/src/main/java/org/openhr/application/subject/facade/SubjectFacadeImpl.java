@@ -71,4 +71,10 @@ public class SubjectFacadeImpl implements SubjectFacade {
       throws SubjectDoesNotExistException {
     return subjectService.getLightweightSubject(subjectId);
   }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    return subjectService.getLightweightSubjects();
+  }
 }

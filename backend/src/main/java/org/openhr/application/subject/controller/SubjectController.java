@@ -63,6 +63,17 @@ public class SubjectController {
   }
 
   @RequestMapping(
+    value = "/lightweight",
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    return subjectFacade.getLightweightSubjects();
+  }
+
+  @RequestMapping(
     value = "personal-information",
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}

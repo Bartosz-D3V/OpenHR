@@ -85,6 +85,12 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    return subjectRepository.getLightweightSubjects();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeftAllowanceInDays(final long subjectId) {
     return subjectRepository.getAllowance(subjectId)
         - subjectRepository.getUsedAllowance(subjectId);

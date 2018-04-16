@@ -50,7 +50,7 @@ import { LeaveApplicationComponent } from './pages/leave-application/leave-appli
 import { AboutComponent } from './pages/about/about.component';
 import { DelegationComponent } from './pages/delegation/delegation.component';
 import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
-import { EmployeesComponent } from './pages/employees/employees.component';
+import { WorkersComponent } from './pages/workers/workers.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
 import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
@@ -110,7 +110,7 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     AvatarComponent,
     InitialsPipe,
     CoreWrapperComponent,
-    EmployeesComponent,
+    WorkersComponent,
     AddEmployeeComponent,
     ManageLeaveApplicationsComponent,
     ManageEmployeesDataComponent,

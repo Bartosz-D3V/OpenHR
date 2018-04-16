@@ -10,7 +10,7 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
-import { User } from '@shared/domain/user/user';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { AppComponent } from '@boot/app.component';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
 import { CoreWrapperComponent } from './core-wrapper.component';
@@ -18,7 +18,7 @@ import { CoreWrapperComponent } from './core-wrapper.component';
 describe('CoreComponent', () => {
   let component: CoreWrapperComponent;
   let fixture: ComponentFixture<CoreWrapperComponent>;
-  const mockUser: User = new User(1, 'John', 'Test');
+  const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Test', 'Tester');
 
   beforeEach(
     async(() => {
@@ -59,7 +59,7 @@ describe('CoreComponent', () => {
 
     it('should fetch and assign all values to the User object', () => {
       component.ngOnInit();
-      const actualUser: User = component.user;
+      const actualUser: LightweightSubject = component.user;
 
       expect(actualUser).toBeDefined();
       expect(actualUser.subjectId).toEqual(mockUser.subjectId);

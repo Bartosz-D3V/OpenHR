@@ -1,43 +1,28 @@
-import { Injectable } from '@angular/core';
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { SystemVariables } from '@config/system-variables';
-import { ErrorResolverService } from '@shared//services/error-resolver/error-resolver.service';
-import { Employee } from '@shared//domain/subject/employee';
-import { EmployeesService } from './employees.service';
+import { WorkersService } from '@modules/core/pages/workers/service/workers.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { Employee } from '@shared/domain/subject/employee';
 
-describe('EmployeesService', () => {
+describe('WorkersService', () => {
   let http: HttpTestingController;
-  let service: EmployeesService;
-  let errorResolverService: ErrorResolverService;
+  let service: WorkersService;
   const employee1: Employee = new Employee(null, null, null, null, null);
   employee1.subjectId = 1;
   const employee2: Employee = new Employee(null, null, null, null, null);
   employee2.subjectId = 2;
   const mockEmployees: Array<Employee> = [employee1, employee2];
 
-  @Injectable()
-  class FakeErrorResolverService {
-    public handleError(error: any): void {}
-
-    public createAlert(error: any): void {}
-  }
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        EmployeesService,
-        {
-          provide: ErrorResolverService,
-          useClass: FakeErrorResolverService,
-        },
-      ],
+      providers: [WorkersService, JwtHelperService],
       imports: [HttpClientTestingModule],
     });
     http = TestBed.get(HttpTestingController);
-    service = TestBed.get(EmployeesService);
-    errorResolverService = TestBed.get(ErrorResolverService);
+    service = TestBed.get(WorkersService);
   });
 
   it('should be created', () => {
@@ -45,13 +30,13 @@ describe('EmployeesService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + 'manager/employees';
+    const apiLink: string = SystemVariables.API_URL + '/subjects';
 
     it(
       'should query current service URL',
       fakeAsync(() => {
-        service.getEmployees().subscribe();
-        http.expectOne(apiLink);
+        service.getWorkers().subscribe();
+        http.expectOne(`${apiLink}/lightweight`);
       })
     );
 
@@ -59,16 +44,15 @@ describe('EmployeesService', () => {
       it(
         'should return an Observable of type Array of type employee',
         fakeAsync(() => {
-          let result: Array<Employee>;
+          let result: Array<LightweightSubject>;
           let error: any;
-          service.getEmployees().subscribe((res: Array<Employee>) => (result = res), (err: any) => (error = err));
+          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: apiLink,
+              url: `${apiLink}/lightweight`,
               method: 'GET',
             })
             .flush(mockEmployees);
-
           tick();
 
           expect(error).toBeUndefined();
@@ -83,21 +67,20 @@ describe('EmployeesService', () => {
       it(
         'should resolve error if server is down',
         fakeAsync(() => {
-          spyOn(errorResolverService, 'handleError');
-          let result: Object;
+          let result: Array<LightweightSubject>;
           let error: any;
-          service.getEmployees().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: apiLink,
+              url: `${apiLink}/lightweight`,
               method: 'GET',
             })
             .error(new ErrorEvent('404'));
           tick();
 
-          expect(errorResolverService.handleError).toHaveBeenCalled();
-          expect(result).toEqual([]);
-          expect(error).toBeUndefined();
+          expect(result).toBeUndefined();
+          expect(error).toBeDefined();
+          expect(error.message).toBe('Http failure response for /api/subjects/lightweight: 0 ');
         })
       );
     });

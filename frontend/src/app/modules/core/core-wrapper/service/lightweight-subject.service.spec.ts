@@ -6,7 +6,7 @@ import { MatDialogModule } from '@angular/material';
 import { SystemVariables } from '@config/system-variables';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { User } from '@shared/domain/user/user';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { LightweightSubjectService } from './lightweight-subject.service';
 
 describe('LightweightSubjectService', () => {
@@ -28,7 +28,7 @@ describe('LightweightSubjectService', () => {
 
   describe('API Access method', () => {
     const apiLink: string = SystemVariables.API_URL + '/subjects';
-    const mockUser: User = new User(1, 'John', 'Black');
+    const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Black', 'Tester');
 
     describe('getCurrentSubject', () => {
       beforeEach(() => {
