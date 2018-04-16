@@ -18,7 +18,6 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
-import { Application } from '@shared/domain/application/application';
 
 @Component({
   selector: 'app-delegation',

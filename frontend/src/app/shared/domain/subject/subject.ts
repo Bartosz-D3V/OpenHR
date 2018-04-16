@@ -3,6 +3,7 @@ import { ContactInformation } from './contact-information';
 import { EmployeeInformation } from './employee-information';
 import { HrInformation } from './hr-information';
 import { Role } from './role';
+import { User } from '@modules/settings/pages/settings/domain/user';
 
 export abstract class Subject {
   public subjectId: number;
@@ -11,6 +12,7 @@ export abstract class Subject {
   public employeeInformation: EmployeeInformation;
   public hrInformation: HrInformation;
   public role: Role;
+  public user?: User;
 
   constructor(
     personalInformation: PersonalInformation,

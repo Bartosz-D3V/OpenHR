@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
@@ -15,69 +15,66 @@ import { RegisterDetails } from '@shared/domain/register/register-details';
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
   private $newSubject: ISubscription;
+  public newSubjectForm: FormGroup;
   public subject: Subject;
   public registerDetails: RegisterDetails;
 
-  public personalInformationFormGroup: FormGroup = new FormGroup({
-    firstNameFormControl: new FormControl('', [Validators.required]),
-
-    lastNameFormControl: new FormControl('', [Validators.required]),
-
-    middleNameFormControl: new FormControl('', []),
-
-    dobFormControl: new FormControl('', [Validators.required]),
-
-    positionFormControl: new FormControl({ disabled: true }, []),
-  });
-
-  public contactInformationFormGroup: FormGroup = new FormGroup({
-    emailFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.EMAIL)]),
-
-    telephoneFormControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-      Validators.minLength(7),
-      Validators.maxLength(11),
-    ]),
-
-    firstLineAddressFormControl: new FormControl('', []),
-
-    secondLineAddressFormControl: new FormControl('', []),
-
-    thirdLineAddressFormControl: new FormControl('', []),
-
-    postcodeFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)]),
-
-    cityFormControl: new FormControl('', []),
-
-    countryFormControl: new FormControl('', []),
-  });
-
-  public employeeDetailsFormGroup: FormGroup = new FormGroup({
-    ninFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.NIN)]),
-
-    startDateFormControl: new FormControl('', []),
-
-    endDateFormControl: new FormControl('', []),
-
-    selfAssignFormControl: new FormControl([]),
-  });
-
-  public loginInformationFormGroup: FormGroup = new FormGroup({
-    passwordFormControl: new FormControl('', [Validators.required]),
-
-    repeatPasswordFormControl: new FormControl('', [Validators.required]),
-
-    usernameFormControl: new FormControl('', [Validators.required]),
-  });
-
   public stepNumber = 0;
 
-  constructor(private _subjectDetailsService: SubjectDetailsService) {}
+  constructor(private _subjectDetailsService: SubjectDetailsService, private _fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.buildForm();
+  }
 
   ngOnDestroy(): void {}
+
+  public buildForm(): void {
+    this.newSubjectForm = this._fb.group({
+      personalInformation: this._fb.group({
+        firstName: [Validators.required],
+        middleName: [],
+        lastName: [Validators.required],
+        dateOfBirth: [Validators.required],
+      }),
+      contactInformation: this._fb.group({
+        telephone: [
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(RegularExpressions.NUMBERS_ONLY),
+            Validators.minLength(7),
+            Validators.maxLength(11),
+          ]),
+        ],
+        email: [Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)])],
+        address: this._fb.group({
+          firstLineAddress: [],
+          secondLineAddress: [],
+          thirdLineAddress: [],
+          postcode: [Validators.compose([Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)])],
+          city: [],
+          country: [],
+        }),
+      }),
+      employeeInformation: this._fb.group({
+        nationalInsuranceNumber: [Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)])],
+        position: [],
+        department: [],
+        employeeNumber: [employeeInfo.employeeNumber, Validators.required],
+        startDate: [employeeInfo.startDate],
+        endDate: [employeeInfo.endDate],
+      }),
+      hrInformation: this._fb.group({
+        allowance: [Validators.min(0)],
+        usedAllowance: [Validators.min(0)],
+      }),
+      role: [],
+      user: this._fb.group({
+        password: [Validators.required],
+        username: [Validators.required],
+      }),
+    });
+  }
 
   public setStep(stepNumber: number): void {
     this.stepNumber = stepNumber;
@@ -96,12 +93,12 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.personalInformationFormGroup.valid && this.contactInformationFormGroup.valid && this.employeeDetailsFormGroup.valid;
+    return this.newSubjectForm.valid;
   }
 
   public arePasswordsIdentical(password1: string, password2: string): boolean {
     if (password1 !== password2) {
-      this.loginInformationFormGroup.controls['repeatPasswordFormControl'].setErrors({ passwordDoNotMatch: true });
+      this.newSubjectForm.get(['user', 'password']).setErrors({ passwordDoNotMatch: true });
       return false;
     }
     return true;
