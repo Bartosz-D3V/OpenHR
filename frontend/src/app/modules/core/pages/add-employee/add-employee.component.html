@@ -11,13 +11,13 @@
           <mat-panel-title>
             Personal information
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description class="c-drawer__icon">
             <mat-icon>account_circle</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form formGroupName="personalInformation" fxLayout.gt-sm="row wrap"
-              fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+        <form formGroupName="personalInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-first-name"></label>
             <input matInput required="required" placeholder="First name" formControlName="firstName"
                    id="personal-details-first-name" name="firstName">
@@ -27,13 +27,13 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-middle-name"></label>
             <input matInput placeholder="Middle name" id="personal-details-middle-name"
                    formControlName="middleName" name="middleName">
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-last-name"></label>
             <input matInput required="required" placeholder="Last name" formControlName="lastName"
                    id="personal-details-last-name" name="lastName">
@@ -43,7 +43,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-date-of-birth"></label>
             <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth"
                    id="personal-details-date-of-birth" name="dateOfBirth">
@@ -65,13 +65,13 @@
           <mat-panel-title>
             Contact information
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description class="c-drawer__icon">
             <mat-icon>phone</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form formGroupName="contactInformation" fxLayout.gt-sm="row wrap"
-              fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+        <form formGroupName="contactInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <span matPrefix>+44 (0) &nbsp;</span>
             <label for="personal-details-telephone"></label>
             <input type="tel" matInput placeholder="Telephone" formControlName="telephone"
@@ -95,7 +95,7 @@
             <mat-icon matSuffix>mode_edit</mat-icon>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-email"></label>
             <input type="email" matInput placeholder="Email" formControlName="email"
                    id="personal-details-email" name="email">
@@ -109,26 +109,27 @@
             </mat-error>
           </mat-form-field>
 
-          <div formGroupName="address">
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <div formGroupName="address" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-1st-line-address"></label>
               <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
                      id="personal-details-1st-line-address" name="firstLineAddress">
             </mat-form-field>
 
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-2nd-line-address"></label>
               <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddress"
                      id="personal-details-2nd-line-address" name="secondLine">
             </mat-form-field>
 
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-3rd-line-address"></label>
               <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
                      id="personal-details-3rd-line-address" name="thirdLineAddress">
             </mat-form-field>
 
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-postcode"></label>
               <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
                      id="personal-details-postcode" name="postcode">
@@ -142,13 +143,13 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-city"></label>
               <input type="text" matInput placeholder="City" formControlName="city"
                      id="personal-details-city" name="city">
             </mat-form-field>
 
-            <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
               <label for="personal-details-country"></label>
               <input type="text" matInput placeholder="Country" formControlName="country"
                      id="personal-details-country" name="country">
@@ -166,14 +167,14 @@
           <mat-panel-title>
             Employee details
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description class="c-drawer__icon">
             <mat-icon>perm_identity</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <form formGroupName="employeeInformation" fxLayout.gt-sm="row wrap"
-              fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+        <form formGroupName="employeeInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-nin"></label>
             <input type="text" matInput placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber" id="personal-details-nin" name="nin">
@@ -188,7 +189,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-position"></label>
             <input type="text" matInput placeholder="Position" formControlName="position"
                    id="personal-details-position" name="position">
@@ -198,13 +199,13 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-department"></label>
             <input type="text" matInput placeholder="Department" formControlName="department"
                    id="personal-details-department" name="department">
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-employee-number"></label>
             <input type="text" matInput placeholder="Employee number" formControlName="employeeNumber"
                    id="personal-details-employee-number" name="employeeNumber">
@@ -214,14 +215,14 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
                    formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
@@ -238,18 +239,26 @@
           <mat-panel-title>
             HR Information
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description class="c-drawer__icon">
             <mat-icon>people_outline</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
         <form formGroupName="hrInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input type="number" matInput placeholder="Allowance"
                    formControlName="allowance" name="allowance">
-            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'allowance']).hasError('min')">
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'allowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('required')">
+              Allowance is required
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'allowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('pattern')">
+              Allowance can contains only numerical value
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'allowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('min')">
               Allowance cannot be negative
             </mat-error>
           </mat-form-field>
@@ -257,8 +266,17 @@
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
                    formControlName="usedAllowance">
-            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).hasError('min')">
-              Used allowance cannot be negative
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('required')">
+              Allowance is required
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('pattern')">
+              Allowance can contains only numerical value
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
+            newSubjectForm.get(['hrInformation', 'allowance']).hasError('min')">
+              Allowance cannot be negative
             </mat-error>
           </mat-form-field>
         </form>
@@ -274,8 +292,8 @@
           <mat-panel-title>
             Role
           </mat-panel-title>
-          <mat-panel-description>
-            <mat-icon>perm_identity</mat-icon>
+          <mat-panel-description class="c-drawer__icon">
+            <mat-icon>star_outline</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -287,6 +305,10 @@
                 {{ role }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="newSubjectForm.get('role').touched &&
+            newSubjectForm.get('role').hasError('required')">
+              Role is required
+            </mat-error>
           </mat-form-field>
         </div>
         <mat-action-row>
@@ -300,13 +322,13 @@
           <mat-panel-title>
             Login information
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description class="c-drawer__icon">
             <mat-icon>vpn_key</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form formGroupName="user" fxLayout.gt-sm="row wrap"
-              fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+        <form formGroupName="user" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="account-details-username"></label>
             <input matInput #username type="text" required="required" placeholder="Username"
                    formControlName="username" id="account-details-username" name="username">
@@ -316,24 +338,24 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="account-details-password"></label>
             <input matInput #password type="password" required="required" placeholder="Password"
                    formControlName="password" id="account-details-password" name="password">
+            <mat-error *ngIf="newSubjectForm.get(['user', 'password']).touched &&
+            !arePasswordsIdentical(password.value, repeatedPassword.value)">
+              Passwords do not match
+            </mat-error>
             <mat-error *ngIf="newSubjectForm.get(['user', 'password']).touched &&
             newSubjectForm.get(['user', 'password']).hasError('required')">
               Password is required
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex="33" fxFlex.sm="50" fxFlex.xs="100">
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="account-details-repeat-password"></label>
             <input matInput #repeatedPassword type="password" required="required" placeholder="Password"
                    id="account-details-repeat-password" name="password">
-            <mat-error *ngIf="newSubjectForm.get(['user', 'password']).touched &&
-            !arePasswordsIdentical(password.value, repeatedPassword.value)">
-              Passwords do not match
-            </mat-error>
           </mat-form-field>
         </form>
         <mat-action-row>
