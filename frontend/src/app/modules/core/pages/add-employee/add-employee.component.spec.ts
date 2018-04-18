@@ -9,6 +9,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
+  MatOptionModule,
   MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
@@ -87,6 +88,7 @@ describe('AddEmployeeComponent', () => {
           MatInputModule,
           MatCheckboxModule,
           MatSnackBarModule,
+          MatOptionModule,
         ],
         providers: [
           JwtHelperService,
