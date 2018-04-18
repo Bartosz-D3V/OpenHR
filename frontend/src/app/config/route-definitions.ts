@@ -83,7 +83,7 @@ export const routeDefinitions: Routes = [
         path: 'add-employee',
         component: AddEmployeeComponent,
         outlet: 'core',
-        canActivate: [HrTeamMemberGuard],
+        canActivate: [ManagerGuard],
         pathMatch: 'full',
       },
       {

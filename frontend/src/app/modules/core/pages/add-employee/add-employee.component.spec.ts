@@ -9,6 +9,8 @@ import {
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
+  MatOptionModule,
+  MatSelectModule,
   MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
@@ -29,8 +31,8 @@ import { PersonalInformation } from '@shared/domain/subject/personal-information
 import { Employee } from '@shared/domain/subject/employee';
 import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Manager } from '@shared/domain/subject/manager';
-import { AddEmployeeComponent } from './add-employee.component';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { AddEmployeeComponent } from './add-employee.component';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -87,6 +89,8 @@ describe('AddEmployeeComponent', () => {
           MatInputModule,
           MatCheckboxModule,
           MatSnackBarModule,
+          MatOptionModule,
+          MatSelectModule,
         ],
         providers: [
           JwtHelperService,

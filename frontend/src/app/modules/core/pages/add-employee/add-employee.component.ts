@@ -22,6 +22,7 @@ import { ResponsiveHelperService } from '@shared/services/responsive-helper/resp
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
   private $newSubject: ISubscription;
+  public roles: Array<Role> = [Role.EMPLOYEE, Role.MANAGER, Role.HRTEAMMEMBER];
   public newSubjectForm: FormGroup;
   public subject: Subject;
   public stepNumber = 0;
@@ -100,7 +101,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
           Validators.compose([Validators.required, Validators.min(0), Validators.pattern(RegularExpressions.NUMBERS_ONLY)]),
         ],
       }),
-      role: [''],
+      role: ['', Validators.required],
       user: this._fb.group({
         password: ['', Validators.required],
         username: ['', Validators.required],
