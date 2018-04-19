@@ -9,7 +9,7 @@ export abstract class Application {
   public terminated: boolean;
   public processInstanceId: string;
 
-  constructor(
+  protected constructor(
     applicationId: number,
     startDate: MomentInput,
     endDate: MomentInput,
