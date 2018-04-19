@@ -13,6 +13,8 @@ import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service'
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { CustomValidators } from '@shared/util/validators/custom-validators';
+import { ObjectHelper } from '@shared/util/helpers/object-helper';
 
 @Component({
   selector: 'app-add-employee',
@@ -47,13 +49,22 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
+  private resetForm(): void {
+    this.newSubjectForm.reset();
+    this.newSubjectForm.markAsPristine();
+    this.newSubjectForm.markAsUntouched();
+  }
+
   private getServiceMethod(subject: Subject): Observable<Subject> {
     switch (subject.role) {
       case Role.EMPLOYEE:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
         return this._employeeService.createEmployee(subject);
       case Role.MANAGER:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
         return this._managerService.createManager(subject);
       case Role.HRTEAMMEMBER:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
         return this._hrService.createHrTeamMember(subject);
     }
   }
@@ -102,25 +113,22 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         ],
       }),
       role: ['', Validators.required],
-      user: this._fb.group({
-        password: ['', Validators.required],
-        username: ['', Validators.required],
-      }),
+      user: this._fb.group(
+        {
+          password: ['', Validators.required],
+          repeatPassword: ['', Validators.required],
+          username: ['', Validators.required],
+        },
+        { validator: CustomValidators.validatePasswords }
+      ),
     });
-  }
-
-  public arePasswordsIdentical(password1: string, password2: string): boolean {
-    if (password1 !== password2) {
-      this.newSubjectForm.get(['user', 'password']).setErrors({ passwordDoNotMatch: true });
-      return false;
-    }
-    return true;
   }
 
   public save(): void {
     if (this.isValid()) {
       const subject: Subject = <Subject>this.newSubjectForm.value;
       this.createSubject(subject);
+      this.resetForm();
     }
   }
 

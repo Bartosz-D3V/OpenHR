@@ -596,22 +596,6 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
-  describe('arePasswordsIdentical', () => {
-    beforeEach(() => {
-      component.buildForm();
-    });
-
-    it('arePasswordsIdentical should return true if passwords are the same', () => {
-      expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
-      expect(component.newSubjectForm.get(['user', 'password']).hasError('passwordDoNotMatch')).toBeFalsy();
-    });
-
-    it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
-      expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
-      expect(component.newSubjectForm.get(['user', 'password']).hasError('passwordDoNotMatch')).toBeTruthy();
-    });
-  });
-
   describe('submitForm method', () => {
     it('should call createSubject method if the form is valid', () => {
       spyOn(component, 'createSubject');
