@@ -267,16 +267,16 @@
             <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
                    formControlName="usedAllowance">
             <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
-            newSubjectForm.get(['hrInformation', 'allowance']).hasError('required')">
-              Allowance is required
+            newSubjectForm.get(['hrInformation', 'usedAllowance']).hasError('required')">
+              Used allowance is required
             </mat-error>
             <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
-            newSubjectForm.get(['hrInformation', 'allowance']).hasError('pattern')">
-              Allowance can contains only numerical value
+            newSubjectForm.get(['hrInformation', 'usedAllowance']).hasError('pattern')">
+              Used allowance can contains only numerical value
             </mat-error>
             <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
-            newSubjectForm.get(['hrInformation', 'allowance']).hasError('min')">
-              Allowance cannot be negative
+            newSubjectForm.get(['hrInformation', 'usedAllowance']).hasError('min')">
+              Used allowance cannot be negative
             </mat-error>
           </mat-form-field>
         </form>
@@ -343,10 +343,6 @@
             <input matInput #password type="password" required="required" placeholder="Password"
                    formControlName="password" id="account-details-password" name="password">
             <mat-error *ngIf="newSubjectForm.get(['user', 'password']).touched &&
-            !arePasswordsIdentical(password.value, repeatedPassword.value)">
-              Passwords do not match
-            </mat-error>
-            <mat-error *ngIf="newSubjectForm.get(['user', 'password']).touched &&
             newSubjectForm.get(['user', 'password']).hasError('required')">
               Password is required
             </mat-error>
@@ -355,7 +351,15 @@
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="account-details-repeat-password"></label>
             <input matInput #repeatedPassword type="password" required="required" placeholder="Password"
-                   id="account-details-repeat-password" name="password">
+                   id="account-details-repeat-password" name="password" formControlName="repeatPassword">
+            <mat-error *ngIf="newSubjectForm.get(['user', 'repeatPassword']).touched &&
+            newSubjectForm.get(['user', 'repeatPassword']).hasError('passwordDoNotMatch')">
+              Passwords do not match
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['user', 'repeatPassword']).touched &&
+            newSubjectForm.get(['user', 'repeatPassword']).hasError('required')">
+              Password is required
+            </mat-error>
           </mat-form-field>
         </form>
         <mat-action-row>
