@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
-
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
 
 import { LoginBoxComponent } from './login-box.component';
 import { LoginService } from './service/login.service';
