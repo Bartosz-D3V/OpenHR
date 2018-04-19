@@ -10,6 +10,7 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Application } from '@shared/domain/application/application';
 import { MyApplicationsService } from './service/my-applications.service';
+import { el } from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-my-applications',

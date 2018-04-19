@@ -82,7 +82,7 @@ public class DelegationApplicationController {
   )
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public List<DelegationApplication> getAwaitingForActionLeaveApplications(
+  public List<DelegationApplication> getAwaitingForActionDelegationApplications(
       @RequestParam final long subjectId) {
     return delegationApplicationFacade.getAwaitingForActionDelegationApplications(subjectId);
   }

@@ -357,12 +357,5 @@ describe('DelegationComponent', () => {
 
       expect(component.isValid()).toBeFalsy();
     });
-
-    xit('should return true if form does not have any errors', () => {
-      spyOnProperty(component.applicationForm, 'valid', 'get').and.returnValue(true);
-      spyOnProperty(component.dateRange.dateRangeGroup, 'valid', 'get').and.returnValue(true);
-
-      expect(component.isValid()).toBeTruthy();
-    });
   });
 });
