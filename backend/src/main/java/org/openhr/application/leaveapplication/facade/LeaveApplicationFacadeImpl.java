@@ -102,8 +102,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final LeaveApplication leaveApplication =
         leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(null);
-    leaveApplicationCommand.rejectLeaveApplicationByHr(
-        processInstanceId, leaveApplication.getSubject().getUser());
+    leaveApplicationCommand.rejectLeaveApplicationByHr(processInstanceId);
     leaveApplicationService.updateLeaveApplication(
         leaveApplication.getApplicationId(), leaveApplication);
   }
@@ -117,8 +116,7 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
     final LeaveApplication leaveApplication =
         leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(null);
-    leaveApplicationCommand.approveLeaveApplicationByHr(
-        processInstanceId, leaveApplication.getSubject().getUser());
+    leaveApplicationCommand.approveLeaveApplicationByHr(processInstanceId);
     leaveApplicationService.updateLeaveApplication(
         leaveApplication.getApplicationId(), leaveApplication);
   }

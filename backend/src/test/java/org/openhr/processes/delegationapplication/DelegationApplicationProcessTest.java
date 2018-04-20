@@ -218,7 +218,7 @@ public class DelegationApplicationProcessTest {
     when(userService.notificationsEnabled(mockEmployee.getUser().getUserId())).thenReturn(true);
     Map<String, Object> params = new HashMap<>();
     params.put("subject", mockEmployee);
-    params.put("user", mockEmployee.getUser());
+    params.put("userId", mockEmployee.getUser().getUserId());
     params.put("emailAddress", mockEmployee.getContactInformation().getEmail());
     params.put("delegationApplication", mockDelegationApplication);
 
@@ -298,7 +298,7 @@ public class DelegationApplicationProcessTest {
     when(userService.notificationsEnabled(mockEmployee.getUser().getUserId())).thenReturn(true);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockHrTeamMember);
-    params.put("user", mockEmployee.getUser());
+    params.put("userId", mockEmployee.getUser().getUserId());
     params.put("emailAddress", mockEmployee.getContactInformation().getEmail());
     params.put("delegationApplication", mockDelegationApplication);
 
