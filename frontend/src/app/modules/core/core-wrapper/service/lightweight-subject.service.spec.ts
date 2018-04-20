@@ -29,10 +29,6 @@ describe('LightweightSubjectService', () => {
     const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Black', 'Tester');
 
     describe('getCurrentSubject', () => {
-      beforeEach(() => {
-        spyOn(service['_jwtHelper'], 'getSubjectId').and.returnValue(1);
-      });
-
       it(
         'should query current service URL',
         fakeAsync(() => {

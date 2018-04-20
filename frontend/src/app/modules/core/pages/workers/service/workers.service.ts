@@ -12,10 +12,9 @@ export class WorkersService {
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
-  constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
+  constructor(private _http: HttpClient) {}
 
   public getWorkers(): Observable<Array<LightweightSubject>> {
     return this._http.get<Array<LightweightSubject>>(`${this.url}/lightweight`, {
