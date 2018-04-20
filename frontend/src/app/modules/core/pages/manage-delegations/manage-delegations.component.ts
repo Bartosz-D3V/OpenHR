@@ -1,21 +1,28 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ISubscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
-import { ISubscription } from 'rxjs/Subscription';
 import { ManageDelegationsService } from '@modules/core/pages/manage-delegations/service/manage-delegations.service';
+import { LightweightSubjectService } from '@modules/core/core-wrapper/service/lightweight-subject.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 
 @Component({
   selector: 'app-manage-delegations',
   templateUrl: './manage-delegations.component.html',
   styleUrls: ['./manage-delegations.component.scss'],
-  providers: [ManageDelegationsService, JwtHelperService, NotificationService],
+  providers: [LightweightSubjectService, ManageDelegationsService, JwtHelperService, NotificationService],
 })
 export class ManageDelegationsComponent implements OnInit, OnDestroy {
   private $delegationApplications: ISubscription;
+  private $subjects: ISubscription;
+  private subjects: Map<string, LightweightSubject> = new Map<string, LightweightSubject>();
   public delegationApplications: Array<DelegationApplication>;
   public isLoadingResults: boolean;
   public displayedColumns: Array<string> = [
@@ -34,6 +41,7 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) public paginator: MatPaginator;
 
   constructor(
+    private _lightweightSubjectService: LightweightSubjectService,
     private _manageDelegationsService: ManageDelegationsService,
     private _jwtHelper: JwtHelperService,
     private _notificationService: NotificationService,
@@ -46,8 +54,15 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.$delegationApplications !== undefined) {
+    this.unsubscribeAll();
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$delegationApplications) {
       this.$delegationApplications.unsubscribe();
+    }
+    if (this.$subjects) {
+      this.$subjects.unsubscribe();
     }
   }
 
@@ -92,5 +107,15 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
         this._errorResolver.handleError(httpErrorResponse.error);
       }
     );
+  }
+
+  public getSubjectFullName(subjectId: number): LightweightSubject {
+    if (!this.subjects.has(subjectId.toString())) {
+      this.$subjects = this._lightweightSubjectService.getUser(subjectId).subscribe((res: LightweightSubject) => {
+        this.subjects.set(subjectId.toString(), res);
+        return res;
+      });
+    }
+    return this.subjects.get(subjectId.toString());
   }
 }

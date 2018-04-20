@@ -29,8 +29,10 @@
       <ng-container matColumnDef="employeeName">
         <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication">
-          {{delegationApplication.subject.personalInformation.firstName}}
-          {{delegationApplication.subject.personalInformation.lastName}}
+          <div *ngIf="getSubjectFullName(delegationApplication.subjectId) as subject; else loadingTemplate">
+            {{subject.firstName}} {{subject.lastName}}
+          </div>
+          <ng-template #loadingTemplate>loading...</ng-template>
         </mat-cell>
       </ng-container>
 
