@@ -156,13 +156,13 @@ OpenHR
                   sourceRef="sid-2E1B57BC-D3CF-4FBC-9A38-24AE3DC5EDC1"
                   targetRef="sid-379A3B1C-3859-450F-A505-4F0A67A0A8FA">
       <conditionExpression xsi:type="tFormalExpression">
-        <![CDATA[${userServiceImpl.notificationsEnabled(user.userId) == false}]]></conditionExpression>
+        <![CDATA[${userServiceImpl.notificationsEnabled(userId) == false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-B40FC062-DFEC-4286-85DE-60137CC04402" name="Notifications off"
                   sourceRef="sid-329D2ECC-0051-4827-B934-95029BBCE98C"
                   targetRef="sid-379A3B1C-3859-450F-A505-4F0A67A0A8FA">
       <conditionExpression xsi:type="tFormalExpression">
-        <![CDATA[${userServiceImpl.notificationsEnabled(user.userId) == false}]]></conditionExpression>
+        <![CDATA[${userServiceImpl.notificationsEnabled(userId) == false}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_leave-application">
