@@ -1,6 +1,10 @@
 package org.openhr.common.domain.application;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -54,7 +58,10 @@ public abstract class Application implements Serializable {
 
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(optional = false)
-  @JoinColumn(name = "APPLICANT_ID")
+  @JoinColumn(name = "APPLICANT_FK")
+  @JsonProperty("subjectId")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.None.class, property = "subjectId")
+  @JsonIdentityReference(alwaysAsId = true)
   private Subject subject;
 
   @ManyToOne

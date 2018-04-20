@@ -14,8 +14,8 @@ export class LightweightSubjectService {
 
   constructor(private _http: HttpClient) {}
 
-  public getUser(userId: number): Observable<LightweightSubject> {
-    return this._http.get<LightweightSubject>(`${this.url}/${userId}`, {
+  public getUser(subjectId: number): Observable<LightweightSubject> {
+    return this._http.get<LightweightSubject>(`${this.url}/${subjectId}`, {
       headers: this.headers,
     });
   }

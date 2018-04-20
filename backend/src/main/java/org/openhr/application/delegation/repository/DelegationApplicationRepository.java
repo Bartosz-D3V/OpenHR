@@ -92,8 +92,10 @@ public class DelegationApplicationRepository {
           session
               .createCriteria(DelegationApplication.class)
               .createAlias("assignee", "assignee")
-              .add(Restrictions.eq("terminated", false))
-              .add(Restrictions.eq("assignee.subjectId", subjectId))
+              .add(
+                  Restrictions.conjunction()
+                      .add(Restrictions.eq("terminated", false))
+                      .add(Restrictions.eq("assignee.subjectId", subjectId)))
               .setReadOnly(true)
               .list();
     } catch (final HibernateException e) {

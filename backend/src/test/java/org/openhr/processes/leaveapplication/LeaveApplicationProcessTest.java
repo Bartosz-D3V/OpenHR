@@ -224,7 +224,7 @@ public class LeaveApplicationProcessTest {
         leaveApplicationService.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
-    params.put("user", mockSubject.getUser());
+    params.put("userId", mockSubject.getUser().getUserId());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
@@ -272,7 +272,7 @@ public class LeaveApplicationProcessTest {
         leaveApplicationService.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
-    params.put("user", mockSubject.getUser());
+    params.put("userId", mockSubject.getUser().getUserId());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("leaveApplication", leaveApplication);
     params.put("applicationId", leaveApplication.getApplicationId());
@@ -345,7 +345,7 @@ public class LeaveApplicationProcessTest {
         leaveApplicationService.createLeaveApplication(mockSubject, mockLeaveApplication);
     final Map<String, Object> params = new HashMap<>();
     params.put("subject", mockSubject);
-    params.put("user", mockSubject.getUser());
+    params.put("userId", mockSubject.getUser().getUserId());
     params.put("emailAddress", mockSubject.getContactInformation().getEmail());
     params.put("applicationId", leaveApplication.getApplicationId());
     runtimeService.startProcessInstanceByKey("leave-application", params);
