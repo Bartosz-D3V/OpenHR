@@ -155,7 +155,7 @@ OpenHR
                   sourceRef="sid-3BA1F306-C1C0-4624-9B16-ED1224078AA3"
                   targetRef="sid-95D9E746-3F89-4B0B-9A3D-168F2E42A15A">
       <conditionExpression xsi:type="tFormalExpression">
-        <![CDATA[${userServiceImpl.notificationsEnabled(user.userId) == false}]]></conditionExpression>
+        <![CDATA[${userServiceImpl.notificationsEnabled(userId) == false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-5727CFA4-F536-4EA9-A106-E9C4B27561E0" name="Notifications on"
                   sourceRef="sid-3BA1F306-C1C0-4624-9B16-ED1224078AA3"
