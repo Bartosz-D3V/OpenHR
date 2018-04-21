@@ -43,7 +43,7 @@ public class SubjectServiceTest {
   @Test(expected = ValidationException.class)
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeftLeaveAllowance()
       throws ValidationException {
-    when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
+    when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
     when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
     when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
     final LeaveApplication leaveApplication =
@@ -56,7 +56,7 @@ public class SubjectServiceTest {
   @Test(expected = ValidationException.class)
   public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
       throws ValidationException {
-    when(holidayService.getWorkingDaysBetweenIncl(anyObject(), anyObject())).thenReturn(4L);
+    when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
     when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
     when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
 

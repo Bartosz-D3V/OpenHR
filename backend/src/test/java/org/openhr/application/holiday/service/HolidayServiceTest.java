@@ -25,6 +25,8 @@ public class HolidayServiceTest {
       new BankHoliday("New Year", LocalDate.of(2020, 1, 1), null, false);
   private static final BankHoliday christmasDay =
       new BankHoliday("Christmas Day", LocalDate.of(2020, 12, 24), null, false);
+  private static final BankHoliday easterMonday =
+      new BankHoliday("Easter Monday", LocalDate.of(2018, 4, 2), null, false);
   private static Set<BankHoliday> bankHolidaySet;
   private static BankHolidays bankHolidays;
 
@@ -38,6 +40,7 @@ public class HolidayServiceTest {
     bankHolidaySet = new HashSet<>();
     bankHolidaySet.add(newYearsDay);
     bankHolidaySet.add(christmasDay);
+    bankHolidaySet.add(easterMonday);
   }
 
   @Test
@@ -46,8 +49,7 @@ public class HolidayServiceTest {
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
     final long daysDiff =
-        holidayService.getWorkingDaysBetweenIncl(
-            LocalDate.of(2020, 1, 6), LocalDate.of(2020, 1, 9));
+        holidayService.getWorkingDaysInBetween(LocalDate.of(2020, 1, 6), LocalDate.of(2020, 1, 9));
 
     assertEquals(4, daysDiff);
   }
@@ -58,13 +60,14 @@ public class HolidayServiceTest {
     when(bankHolidaysService.getBankHolidays(anyString())).thenReturn(bankHolidays);
 
     final long daysDiff1 =
-        holidayService.getWorkingDaysBetweenIncl(
-            LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
+        holidayService.getWorkingDaysInBetween(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 5));
     final long daysDiff2 =
-        holidayService.getWorkingDaysBetweenIncl(
-            LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
+        holidayService.getWorkingDaysInBetween(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 1));
+    final long daysDiff3 =
+        holidayService.getWorkingDaysInBetween(LocalDate.of(2018, 4, 1), LocalDate.of(2018, 4, 7));
 
     assertEquals(2, daysDiff1);
     assertEquals(0, daysDiff2);
+    assertEquals(4, daysDiff3);
   }
 }
