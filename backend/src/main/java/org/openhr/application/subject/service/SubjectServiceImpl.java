@@ -107,7 +107,7 @@ public class SubjectServiceImpl implements SubjectService {
   public void subtractDaysFromSubjectAllowanceExcludingFreeDays(
       final Subject subject, final LeaveApplication leaveApplication) throws ValidationException {
     final long allowanceToSubtract =
-        holidayService.getWorkingDaysBetweenIncl(
+        holidayService.getWorkingDaysInBetween(
             leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long newUsedAllowance = getUsedAllowance(subject.getSubjectId()) + allowanceToSubtract;
     if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
@@ -126,7 +126,7 @@ public class SubjectServiceImpl implements SubjectService {
   public void revertSubtractedDaysForApplication(
       final Subject subject, final LeaveApplication leaveApplication) {
     final long allowanceSubtracted =
-        holidayService.getWorkingDaysBetweenIncl(
+        holidayService.getWorkingDaysInBetween(
             leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long currentlyUsedAllowance = subject.getHrInformation().getUsedAllowance();
     final long newUsedAllowance = currentlyUsedAllowance + allowanceSubtracted;
