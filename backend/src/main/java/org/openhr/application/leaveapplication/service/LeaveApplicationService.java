@@ -1,5 +1,6 @@
 package org.openhr.application.leaveapplication.service;
 
+import java.io.IOException;
 import java.util.List;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
@@ -42,4 +43,7 @@ public interface LeaveApplicationService {
   LeaveType getLeaveTypeById(long leaveTypeId);
 
   long getLeaveApplicationIdByProcessId(String processInstanceId);
+
+  byte[] getLeaveApplicationICSFile(long leaveApplicationId)
+      throws ApplicationDoesNotExistException, IOException;
 }

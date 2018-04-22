@@ -1,12 +1,12 @@
 package org.openhr.application.leaveapplication.facade;
 
+import java.io.IOException;
 import java.util.List;
 import org.openhr.application.leaveapplication.command.LeaveApplicationCommand;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.service.LeaveApplicationService;
 import org.openhr.application.subject.service.SubjectService;
-import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -129,19 +129,13 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
-    return leaveApplicationCommand.getProcessTasks(processInstanceId);
-  }
-
-  @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<String> getActiveProcessesId() {
-    return leaveApplicationCommand.getActiveProcessesId();
-  }
-
-  @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveType> getLeaveTypes() {
     return leaveApplicationService.getLeaveTypes();
+  }
+
+  @Override
+  public byte[] getLeaveApplicationICSFile(final long leaveApplicationId)
+      throws ApplicationDoesNotExistException, IOException {
+    return leaveApplicationService.getLeaveApplicationICSFile(leaveApplicationId);
   }
 }
