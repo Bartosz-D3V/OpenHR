@@ -1,11 +1,11 @@
 package org.openhr.application.leaveapplication.controller;
 
+import java.io.IOException;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
-import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
@@ -131,23 +131,15 @@ public class LeaveApplicationController {
   }
 
   @RequestMapping(
-    value = "/tasks/{processInstanceId}",
+    value = "/{leaveApplicationId}/ics",
     method = RequestMethod.GET,
-    produces = {MediaType.APPLICATION_JSON_VALUE}
+    produces = {"text/calendar"}
   )
   @ResponseBody
-  public List<TaskDefinition> getProcessTasks(@PathVariable final String processInstanceId) {
-    return leaveApplicationFacade.getProcessTasks(processInstanceId);
-  }
-
-  @RequestMapping(
-    value = "processes",
-    method = RequestMethod.GET,
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseBody
-  public List<String> getActiveProcessesId() {
-    return leaveApplicationFacade.getActiveProcessesId();
+  @ResponseStatus(HttpStatus.OK)
+  public byte[] getLeaveApplicationICSFile(@PathVariable final long leaveApplicationId)
+      throws ApplicationDoesNotExistException, IOException {
+    return leaveApplicationFacade.getLeaveApplicationICSFile(leaveApplicationId);
   }
 
   @RequestMapping(
