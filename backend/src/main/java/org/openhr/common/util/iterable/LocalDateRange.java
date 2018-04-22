@@ -17,6 +17,14 @@ public class LocalDateRange implements Iterable<LocalDate> {
     this.endDate = endDate;
   }
 
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
   @Override
   public Iterator<LocalDate> iterator() {
     return stream().iterator();
