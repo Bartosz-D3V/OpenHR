@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatCheckboxModule,
@@ -9,62 +9,60 @@ import {
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatSnackBarModule,
   MatToolbarModule,
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
-import Spy = jasmine.Spy;
 
-import { Address } from '@shared/domain/subject/address';
-import { EmployeeInformation } from '@shared/domain/subject/employee-information';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { Subject } from '@shared/domain/subject/subject';
-import { ContactInformation } from '@shared/domain/subject/contact-information';
-import { PersonalInformation } from '@shared/domain/subject/personal-information';
-import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { HrInformation } from '@shared/domain/subject/hr-information';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
+import { ManagerService } from '@shared/services/manager/manager.service';
+import { EmployeeService } from '@shared/services/employee/employee.service';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Employee } from '@shared/domain/subject/employee';
+import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
+import { Manager } from '@shared/domain/subject/manager';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { AddEmployeeComponent } from './add-employee.component';
-import { Role } from '@shared/domain/subject/role';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
   let fixture: ComponentFixture<AddEmployeeComponent>;
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
-  const mockAddress: Address = new Address('firstLineAddress', 'secondLineAddress', 'thirdLineAddress', 'postcode', 'city', 'country');
-  const mockContactInformation: ContactInformation = new ContactInformation('123456789', 'john.x@company.com', mockAddress);
-  const mockEmployeeInformation: EmployeeInformation = new EmployeeInformation(
-    'WR 41 45 55 C',
-    'Tester',
-    'Core',
-    'WOR923',
-    '2020-02-08',
-    '2020-02-08'
-  );
-  const mockHrInformation: HrInformation = new HrInformation(25, 5);
-  const mockSubject: Subject = new Employee(
-    mockPersonalInformation,
-    mockContactInformation,
-    mockEmployeeInformation,
-    mockHrInformation,
-    Role.EMPLOYEE
-  );
-  let subjectDetailsService: SubjectDetailsService;
 
   @Injectable()
-  class FakeSubjectDetailsService {
-    public getCurrentSubject(): any {
-      return Observable.of(mockSubject);
+  class FakeEmployeeService {
+    public createEmployee(employee: Employee): Observable<Employee> {
+      return Observable.of(employee);
     }
+  }
 
-    public createSubject(subject: Subject): any {
-      return Observable.of(subject);
+  @Injectable()
+  class FakeManagerService {
+    public createManager(manager: Manager): Observable<Manager> {
+      return Observable.of(manager);
     }
+  }
+
+  @Injectable()
+  class FakeHrTeamMemberService {
+    public createHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
+      return Observable.of(hrTeamMember);
+    }
+  }
+
+  @Injectable()
+  class FakeNotificationService {
+    public openSnackbar(msg: string, btn: string): void {}
   }
 
   @Injectable()
@@ -90,12 +88,28 @@ describe('AddEmployeeComponent', () => {
           MatFormFieldModule,
           MatInputModule,
           MatCheckboxModule,
+          MatSnackBarModule,
+          MatOptionModule,
+          MatSelectModule,
         ],
         providers: [
           JwtHelperService,
+          ResponsiveHelperService,
           {
-            provide: SubjectDetailsService,
-            useClass: FakeSubjectDetailsService,
+            provide: EmployeeService,
+            useClass: FakeEmployeeService,
+          },
+          {
+            provide: ManagerService,
+            useClass: FakeManagerService,
+          },
+          {
+            provide: HrTeamMemberService,
+            useClass: FakeHrTeamMemberService,
+          },
+          {
+            provide: NotificationService,
+            useClass: FakeNotificationService,
           },
           {
             provide: ErrorResolverService,
@@ -110,12 +124,12 @@ describe('AddEmployeeComponent', () => {
     fixture = TestBed.createComponent(AddEmployeeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    subjectDetailsService = TestBed.get(SubjectDetailsService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   it('should contains stepNumber variable set to 0', () => {
     expect(component.stepNumber).toBeDefined();
     expect(component.stepNumber).toEqual(0);
@@ -135,282 +149,421 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
-  describe('First name validator', () => {
-    it('should mark form as valid if input is not empty', () => {
-      const name = 'Test';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
-
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeTruthy();
+  describe('Form reactive controller', () => {
+    beforeAll(() => {
+      component.buildForm();
     });
 
-    it('should mark form as invalid if input is empty', () => {
-      const emptyText = '';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(emptyText);
+    describe('First name validator', () => {
+      let firstNameFormControl: AbstractControl;
 
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
-    });
-  });
+      beforeEach(() => {
+        firstNameFormControl = component.newSubjectForm.get(['personalInformation', 'firstName']);
+      });
 
-  describe('Last name validator', () => {
-    it('should mark form as valid if input is not empty', () => {
-      const name = 'Test';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
+      it('should mark form as valid if input is not empty', () => {
+        const name = 'Test';
+        firstNameFormControl.setValue(name);
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeTruthy();
-    });
+        expect(firstNameFormControl.valid).toBeTruthy();
+      });
 
-    it('should mark form as invalid if input is empty', () => {
-      const emptyText = '';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(emptyText);
+      it('should mark form as invalid if input is empty', () => {
+        firstNameFormControl.setValue('');
+        firstNameFormControl.markAsTouched();
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
-    });
-  });
-
-  describe('Date of birth validator', () => {
-    it('should mark form as valid if input is not empty', () => {
-      const dob: Date = new Date('11 October 1960 15:00 UTC');
-      component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
-
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeTruthy();
+        expect(firstNameFormControl.valid).toBeFalsy();
+      });
     });
 
-    it('should mark form as invalid if input is empty', () => {
-      const emptyText = '';
-      component.personalInformationFormGroup.get('dobFormControl').setValue(emptyText);
+    describe('Last name validator', () => {
+      let lastNameFormControl: AbstractControl;
 
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
-    });
-  });
+      beforeEach(() => {
+        lastNameFormControl = component.newSubjectForm.get(['personalInformation', 'lastName']);
+      });
 
-  describe('Postcode validator', () => {
-    let postcodeFormControl: AbstractControl;
+      it('should mark form as valid if input is not empty', () => {
+        const name = 'Test';
+        lastNameFormControl.setValue(name);
 
-    beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
-      postcodeFormControl.reset();
-    });
+        expect(lastNameFormControl.valid).toBeTruthy();
+      });
 
-    it('should mark form as invalid if input is empty or postcode is invalid', () => {
-      const invalidPostcode = '11 HG2';
+      it('should mark form as invalid if input is empty', () => {
+        lastNameFormControl.setValue('');
+        lastNameFormControl.markAsTouched();
 
-      expect(postcodeFormControl.valid).toBeFalsy();
-      postcodeFormControl.reset();
-      postcodeFormControl.setValue(invalidPostcode);
-      expect(postcodeFormControl.valid).toBeFalsy();
+        expect(lastNameFormControl.valid).toBeFalsy();
+      });
     });
 
-    it('should mark form as valid if input is filled and postcode is valid', () => {
-      const validPostcode = 'SW9 1HZ';
-      postcodeFormControl.setValue(validPostcode);
+    describe('Date of birth validator', () => {
+      let dateOfBirthFormControl: AbstractControl;
 
-      expect(postcodeFormControl.valid).toBeTruthy();
-    });
-  });
+      beforeEach(() => {
+        dateOfBirthFormControl = component.newSubjectForm.get(['personalInformation', 'dateOfBirth']);
+      });
 
-  describe('Email validator', () => {
-    let emailFormControl: AbstractControl;
+      it('should mark form as valid if input is not empty', () => {
+        const dob: Date = new Date('11 October 1960 15:00 UTC');
+        dateOfBirthFormControl.setValue(dob);
 
-    beforeEach(() => {
-      emailFormControl = component.contactInformationFormGroup.controls['emailFormControl'];
-      emailFormControl.reset();
-    });
+        expect(dateOfBirthFormControl.valid).toBeTruthy();
+      });
 
-    it('should mark form as invalid if input is empty or email is invalid', () => {
-      const invalidEmail = 'test@.com';
+      it('should mark form as invalid if input is empty', () => {
+        dateOfBirthFormControl.setValue('');
+        dateOfBirthFormControl.markAsTouched();
 
-      expect(emailFormControl.valid).toBeFalsy();
-      emailFormControl.reset();
-      emailFormControl.setValue(invalidEmail);
-      expect(emailFormControl.valid).toBeFalsy();
+        expect(dateOfBirthFormControl.valid).toBeFalsy();
+      });
     });
 
-    it('should mark form as valid if input is filled and email is valid', () => {
-      const validEmail = 'test@test.com';
-      emailFormControl.setValue(validEmail);
+    describe('Postcode validator', () => {
+      let postcodeFormControl: AbstractControl;
 
-      expect(emailFormControl.valid).toBeTruthy();
-    });
-  });
+      beforeEach(() => {
+        postcodeFormControl = component.newSubjectForm.get(['contactInformation', 'address', 'postcode']);
+        postcodeFormControl.reset();
+      });
 
-  describe('Telephone validator', () => {
-    let telephoneFormControl: AbstractControl;
+      it('should mark form as invalid if input is empty ', () => {
+        postcodeFormControl.setValue('');
+        postcodeFormControl.markAsTouched();
 
-    beforeEach(() => {
-      telephoneFormControl = component.contactInformationFormGroup.controls['telephoneFormControl'];
-      telephoneFormControl.reset();
-    });
+        expect(postcodeFormControl.valid).toBeFalsy();
+      });
 
-    it('should mark form as invalid if input is empty', () => {
-      expect(telephoneFormControl.valid).toBeFalsy();
-    });
+      it('should mark form as invalid if input is invalid', () => {
+        const invalidPostcode = '11 HG2';
 
-    it('should mark form as invalid if input is less than 7 digits', () => {
-      const invalidTelephone = '123456';
-      telephoneFormControl.setValue(invalidTelephone);
+        postcodeFormControl.setValue(invalidPostcode);
+        expect(postcodeFormControl.valid).toBeFalsy();
+      });
 
-      expect(telephoneFormControl.valid).toBeFalsy();
-    });
+      it('should mark form as valid if input is filled and postcode is valid', () => {
+        const validPostcode = 'SW9 1HZ';
+        postcodeFormControl.setValue(validPostcode);
 
-    it('should mark form as invalid if input is greater than 11 digits', () => {
-      const invalidTelephone = '123456789101112';
-      telephoneFormControl.setValue(invalidTelephone);
-
-      expect(telephoneFormControl.valid).toBeFalsy();
+        expect(postcodeFormControl.valid).toBeTruthy();
+      });
     });
 
-    it('should mark form as valid if input is between 7 and 11 digits', () => {
-      const validTelephone1 = '1234567';
-      const validTelephone2 = '12345678911';
-      const validTelephone3 = '12345678';
+    describe('Email validator', () => {
+      let emailFormControl: AbstractControl;
 
-      telephoneFormControl.setValue(validTelephone1);
-      expect(telephoneFormControl.valid).toBeTruthy();
-      telephoneFormControl.reset();
+      beforeEach(() => {
+        emailFormControl = component.newSubjectForm.get(['contactInformation', 'email']);
+        emailFormControl.reset();
+      });
 
-      telephoneFormControl.setValue(validTelephone2);
-      expect(telephoneFormControl.valid).toBeTruthy();
-      telephoneFormControl.reset();
+      it('should mark form as invalid if input is empty', () => {
+        emailFormControl.setValue('');
+        emailFormControl.markAsTouched();
 
-      telephoneFormControl.setValue(validTelephone3);
-      expect(telephoneFormControl.valid).toBeTruthy();
+        expect(emailFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if input is invalid', () => {
+        const invalidEmail = 'test@.com';
+        emailFormControl.setValue(invalidEmail);
+
+        expect(emailFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as valid if input is filled and email is valid', () => {
+        const validEmail = 'test@test.com';
+        emailFormControl.setValue(validEmail);
+
+        expect(emailFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as valid if input is filled and email is valid', () => {
+        const validEmail = 'test@test.com';
+        emailFormControl.setValue(validEmail);
+
+        expect(emailFormControl.valid).toBeTruthy();
+      });
     });
 
-    it('should mark form as invalid if input contains letters', () => {
-      const invalidTelephone1 = '1234567abc';
+    describe('Telephone validator', () => {
+      let telephoneFormControl: AbstractControl;
 
-      telephoneFormControl.setValue(invalidTelephone1);
-      expect(telephoneFormControl.valid).toBeFalsy();
-    });
-  });
+      beforeEach(() => {
+        telephoneFormControl = component.newSubjectForm.get(['contactInformation', 'telephone']);
+        telephoneFormControl.reset();
+      });
 
-  describe('Postcode validator', () => {
-    let postcodeFormControl: AbstractControl;
+      it('should mark form as invalid if input is empty', () => {
+        telephoneFormControl.setValue('');
+        telephoneFormControl.markAsTouched();
 
-    beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
-      postcodeFormControl.reset();
-    });
+        expect(telephoneFormControl.valid).toBeFalsy();
+      });
 
-    it('should mark form as invalid if input is empty', () => {
-      expect(postcodeFormControl.valid).toBeFalsy();
-    });
+      it('should mark form as invalid if input is less than 7 digits', () => {
+        const invalidTelephone = '123456';
+        telephoneFormControl.setValue(invalidTelephone);
 
-    it('should mark form as invalid if postcode is not recognised as UK postcode', () => {
-      const invalidPostcode1 = '1WW 098';
-      const invalidPostcode2 = 'X 08';
+        expect(telephoneFormControl.valid).toBeFalsy();
+      });
 
-      postcodeFormControl.setValue(invalidPostcode1);
-      expect(postcodeFormControl.valid).toBeFalsy();
-      postcodeFormControl.reset();
+      it('should mark form as invalid if input is greater than 11 digits', () => {
+        const invalidTelephone = '123456789101112';
+        telephoneFormControl.setValue(invalidTelephone);
 
-      postcodeFormControl.setValue(invalidPostcode2);
-      expect(postcodeFormControl.valid).toBeFalsy();
-      postcodeFormControl.reset();
-    });
+        expect(telephoneFormControl.valid).toBeFalsy();
+      });
 
-    it('should mark for as valid if postcode is recognised as UK postcode', () => {
-      const exampleValidPostcode1 = 'CR2 6XH';
-      const exampleValidPostcode2 = 'M1 1AE';
+      it('should mark form as valid if input is between 7 and 11 digits', () => {
+        const validTelephone1 = '1234567';
+        const validTelephone2 = '12345678911';
+        const validTelephone3 = '12345678';
 
-      postcodeFormControl.setValue(exampleValidPostcode1);
-      expect(postcodeFormControl.valid).toBeTruthy();
-      postcodeFormControl.reset();
+        telephoneFormControl.setValue(validTelephone1);
+        expect(telephoneFormControl.valid).toBeTruthy();
+        telephoneFormControl.reset();
 
-      postcodeFormControl.setValue(exampleValidPostcode2);
-      expect(postcodeFormControl.valid).toBeTruthy();
-      postcodeFormControl.reset();
-    });
-  });
+        telephoneFormControl.setValue(validTelephone2);
+        expect(telephoneFormControl.valid).toBeTruthy();
+        telephoneFormControl.reset();
 
-  describe('NIN validator', () => {
-    let ninFormControl: AbstractControl;
+        telephoneFormControl.setValue(validTelephone3);
+        expect(telephoneFormControl.valid).toBeTruthy();
+      });
 
-    beforeEach(() => {
-      ninFormControl = component.employeeDetailsFormGroup.controls['ninFormControl'];
-      ninFormControl.reset();
-    });
+      it('should mark form as invalid if input contains letters', () => {
+        const invalidTelephone1 = '1234567abc';
 
-    it('should mark form as invalid if input is empty', () => {
-      expect(ninFormControl.valid).toBeFalsy();
+        telephoneFormControl.setValue(invalidTelephone1);
+        expect(telephoneFormControl.valid).toBeFalsy();
+      });
     });
 
-    it('should mark form as invalid if NIN is not recognised as UK NIN', () => {
-      const invalidNIN1 = 'WR 49 45 55 X';
-      const invalidNIN2 = 'W 2 49 35 C';
+    describe('Postcode validator', () => {
+      let postcodeFormControl: AbstractControl;
 
-      ninFormControl.setValue(invalidNIN1);
-      expect(ninFormControl.valid).toBeFalsy();
-      ninFormControl.reset();
+      beforeEach(() => {
+        postcodeFormControl = component.newSubjectForm.get(['contactInformation', 'address', 'postcode']);
+        postcodeFormControl.reset();
+      });
 
-      ninFormControl.setValue(invalidNIN2);
-      expect(ninFormControl.valid).toBeFalsy();
-      ninFormControl.reset();
+      it('should mark form as invalid if input is empty', () => {
+        postcodeFormControl.setValue('');
+        postcodeFormControl.markAsTouched();
+
+        expect(postcodeFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if postcode is not recognised as UK postcode', () => {
+        const invalidPostcode1 = '1WW 098';
+        const invalidPostcode2 = 'X 08';
+
+        postcodeFormControl.setValue(invalidPostcode1);
+        expect(postcodeFormControl.valid).toBeFalsy();
+        postcodeFormControl.reset();
+
+        postcodeFormControl.setValue(invalidPostcode2);
+        expect(postcodeFormControl.valid).toBeFalsy();
+        postcodeFormControl.reset();
+      });
+
+      it('should mark for as valid if postcode is recognised as UK postcode', () => {
+        const exampleValidPostcode1 = 'CR2 6XH';
+        const exampleValidPostcode2 = 'M1 1AE';
+
+        postcodeFormControl.setValue(exampleValidPostcode1);
+        expect(postcodeFormControl.valid).toBeTruthy();
+        postcodeFormControl.reset();
+
+        postcodeFormControl.setValue(exampleValidPostcode2);
+        expect(postcodeFormControl.valid).toBeTruthy();
+        postcodeFormControl.reset();
+      });
     });
 
-    it('should mark for as valid if postcode is recognised as UK NIN', () => {
-      const exampleValidNIN1 = 'WR 41 45 55 C';
-      const exampleValidNIN2 = 'AX 60 93 31 B';
+    describe('NIN validator', () => {
+      let ninFormControl: AbstractControl;
 
-      ninFormControl.setValue(exampleValidNIN1);
-      expect(ninFormControl.valid).toBeTruthy();
-      ninFormControl.reset();
+      beforeEach(() => {
+        ninFormControl = component.newSubjectForm.get(['employeeInformation', 'nationalInsuranceNumber']);
+      });
 
-      ninFormControl.setValue(exampleValidNIN2);
-      expect(ninFormControl.valid).toBeTruthy();
-      ninFormControl.reset();
+      afterEach(() => {
+        ninFormControl.reset();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        ninFormControl.markAsTouched();
+
+        expect(ninFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if NIN is not recognised as UK NIN', () => {
+        const invalidNIN1 = 'WR 49 45 55 X';
+        const invalidNIN2 = 'W 2 49 35 C';
+
+        ninFormControl.setValue(invalidNIN1);
+        expect(ninFormControl.valid).toBeFalsy();
+
+        ninFormControl.setValue(invalidNIN2);
+        expect(ninFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark for as valid if postcode is recognised as UK NIN', () => {
+        const exampleValidNIN1 = 'WR 41 45 55 C';
+        const exampleValidNIN2 = 'AX 60 93 31 B';
+
+        ninFormControl.setValue(exampleValidNIN1);
+        expect(ninFormControl.valid).toBeTruthy();
+
+        ninFormControl.setValue(exampleValidNIN2);
+        expect(ninFormControl.valid).toBeTruthy();
+      });
     });
-  });
 
-  it('Checkbox for self-assign employee should be ticked by default', () => {
-    const selfAssignFormControl: AbstractControl = component.employeeDetailsFormGroup.controls['selfAssignFormControl'];
+    describe('Employee number validator', () => {
+      let employeeNumberFormControl: AbstractControl;
 
-    expect(selfAssignFormControl.value).toBeTruthy();
+      beforeEach(() => {
+        employeeNumberFormControl = component.newSubjectForm.get(['employeeInformation', 'employeeNumber']);
+      });
+
+      it('should mark form as valid if input is not empty', () => {
+        const code = '12HX';
+        employeeNumberFormControl.setValue(code);
+
+        expect(employeeNumberFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        employeeNumberFormControl.setValue('');
+        employeeNumberFormControl.markAsTouched();
+
+        expect(employeeNumberFormControl.valid).toBeFalsy();
+      });
+    });
+
+    describe('Allowance validator', () => {
+      let allowanceFormControl: AbstractControl;
+
+      beforeEach(() => {
+        allowanceFormControl = component.newSubjectForm.get(['hrInformation', 'allowance']);
+      });
+
+      it('should mark form as valid if input is not empty, numerical and greater than 0', () => {
+        const allowance = '30';
+        allowanceFormControl.setValue(allowance);
+
+        expect(allowanceFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        allowanceFormControl.setValue('');
+
+        expect(allowanceFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if input is not numerical', () => {
+        allowanceFormControl.setValue('Test');
+
+        expect(allowanceFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if input is less than 0', () => {
+        allowanceFormControl.setValue(-23);
+
+        expect(allowanceFormControl.valid).toBeFalsy();
+      });
+    });
+
+    describe('Used allowance validator', () => {
+      let usedAllowanceFormControl: AbstractControl;
+
+      beforeEach(() => {
+        usedAllowanceFormControl = component.newSubjectForm.get(['hrInformation', 'usedAllowance']);
+      });
+
+      it('should mark form as valid if input is not empty, numerical and greater than 0', () => {
+        const allowance = '30';
+        usedAllowanceFormControl.setValue(allowance);
+
+        expect(usedAllowanceFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        usedAllowanceFormControl.setValue('');
+
+        expect(usedAllowanceFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if input is not numerical', () => {
+        usedAllowanceFormControl.setValue('Test');
+
+        expect(usedAllowanceFormControl.valid).toBeFalsy();
+      });
+
+      it('should mark form as invalid if input is less than 0', () => {
+        usedAllowanceFormControl.setValue(-23);
+
+        expect(usedAllowanceFormControl.valid).toBeFalsy();
+      });
+    });
+
+    describe('Username validator', () => {
+      let usernameFormControl: AbstractControl;
+
+      beforeEach(() => {
+        usernameFormControl = component.newSubjectForm.get(['user', 'username']);
+      });
+
+      it('should mark form as valid if input is not empty', () => {
+        const user = 'user';
+        usernameFormControl.setValue(user);
+
+        expect(usernameFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        usernameFormControl.setValue('');
+
+        expect(usernameFormControl.valid).toBeFalsy();
+      });
+    });
+
+    describe('Password validator', () => {
+      let passwordFormControl: AbstractControl;
+
+      beforeEach(() => {
+        passwordFormControl = component.newSubjectForm.get(['user', 'password']);
+      });
+
+      it('should mark form as valid if input is not empty', () => {
+        const password = 'password';
+        passwordFormControl.setValue(password);
+
+        expect(passwordFormControl.valid).toBeTruthy();
+      });
+
+      it('should mark form as invalid if input is empty', () => {
+        passwordFormControl.setValue('');
+
+        expect(passwordFormControl.valid).toBeFalsy();
+      });
+    });
   });
 
   describe('isValid method', () => {
-    let spy1: Spy;
-    let spy2: Spy;
-    let spy3: Spy;
-
-    const setFormGroupSpies = function(firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
-      spy1.and.returnValue(firstGroupFlag);
-      spy2.and.returnValue(secondGroupFlag);
-      spy3.and.returnValue(thirdGroupFlag);
-    };
-
-    beforeEach(() => {
-      spy1 = spyOnProperty(component.personalInformationFormGroup, 'valid', 'get');
-      spy2 = spyOnProperty(component.contactInformationFormGroup, 'valid', 'get');
-      spy3 = spyOnProperty(component.employeeDetailsFormGroup, 'valid', 'get');
-    });
-
-    it('should return true if all formGroups are valid', () => {
-      setFormGroupSpies(true, true, true);
+    it('should return true if form is valid', () => {
+      spyOnProperty(component.newSubjectForm, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });
 
-    it('should return false if at least one formGroup is invalid', () => {
-      setFormGroupSpies(false, true, true);
-      expect(component.isValid()).toBeFalsy();
+    it('should return false if form is not valid', () => {
+      spyOnProperty(component.newSubjectForm, 'valid', 'get').and.returnValue(false);
 
-      setFormGroupSpies(true, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, false, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
   });
@@ -443,23 +596,11 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
-  describe('arePasswordsIdentical', () => {
-    it('arePasswordsIdentical should return true if passwords are the same', () => {
-      expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeFalsy();
-    });
-
-    it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
-      expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
-      expect(component.loginInformationFormGroup.controls['repeatPasswordFormControl'].hasError('passwordDoNotMatch')).toBeTruthy();
-    });
-  });
-
   describe('submitForm method', () => {
     it('should call createSubject method if the form is valid', () => {
       spyOn(component, 'createSubject');
       spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, false);
+      component.save();
 
       expect(component.createSubject).toHaveBeenCalled();
     });
@@ -467,43 +608,31 @@ describe('AddEmployeeComponent', () => {
     it('should not call createSubject method if the form is not valid', () => {
       spyOn(component, 'createSubject');
       spyOn(component, 'isValid').and.returnValue(false);
-      component.submitForm(mockSubject, false);
+      component.save();
 
       expect(component.createSubject).not.toHaveBeenCalled();
     });
-
-    it('should call assignEmployeeToManager method if the selfAssign is true', () => {
-      spyOn(component, 'assignEmployeeToManager');
-      spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, true);
-
-      expect(component.assignEmployeeToManager).toHaveBeenCalled();
-    });
-
-    it('should not call assignEmployeeToManager method if the selfAssign is false', () => {
-      spyOn(component, 'assignEmployeeToManager');
-      spyOn(component, 'isValid').and.returnValue(true);
-      component.submitForm(mockSubject, false);
-
-      expect(component.assignEmployeeToManager).not.toHaveBeenCalled();
-    });
   });
 
-  xdescribe('create subject method', () => {
-    it('should call service method if the form is valid', () => {
-      spyOn(subjectDetailsService, 'createSubject');
+  describe('isMobile', () => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-      component.createSubject(mockSubject);
+        expect(component.isMobile()).toBeTruthy();
+      })
+    );
 
-      expect(subjectDetailsService.createSubject).toHaveBeenCalled();
-    });
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-    it('should not call service method if the form is invalid', () => {
-      spyOn(subjectDetailsService, 'createSubject');
-
-      component.createSubject(mockSubject);
-
-      expect(subjectDetailsService.createSubject).not.toHaveBeenCalled();
-    });
+        expect(component.isMobile()).toBeFalsy();
+      })
+    );
   });
 });

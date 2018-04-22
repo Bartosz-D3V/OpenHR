@@ -10,15 +10,15 @@
   <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
   <mat-card>
     <form [formGroup]="applicationForm">
-      <div formGroupName="name" fxLayout.gt-xs="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
+      <form formGroupName="name" fxLayout.gt-xs="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
            fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-subject-id"></label>
           <input matInput placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
                  formControlName="subjectId">
         </mat-form-field>
-        <mat-error *ngIf="applicationForm.get(['name', 'subjectId']).invalid &&
-          applicationForm.get(['name', 'subjectId']).errors.required">
+        <mat-error *ngIf="applicationForm.get(['name', 'subjectId']).touched &&
+          applicationForm.get(['name', 'subjectId']).hasError('required')">
           Subject ID is required
         </mat-error>
 
@@ -26,8 +26,8 @@
           <label for="delegation-first-name"></label>
           <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first">
         </mat-form-field>
-        <mat-error *ngIf="applicationForm.get(['name', 'first']).invalid &&
-          applicationForm.get(['name', 'first']).errors.required">
+        <mat-error *ngIf="applicationForm.get(['name', 'first']).touched &&
+          applicationForm.get(['name', 'first']).hasError('required')">
           First name is required
         </mat-error>
 
@@ -41,20 +41,20 @@
           <label for="delegation-last-name"></label>
           <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last">
         </mat-form-field>
-        <mat-error *ngIf="applicationForm.get(['name', 'last']).invalid &&
-          applicationForm.get(['name', 'last']).errors.required">
+        <mat-error *ngIf="applicationForm.get(['name', 'last']).touched &&
+          applicationForm.get(['name', 'last']).hasError('required')">
           Last name is required
         </mat-error>
-      </div>
+      </form>
 
-      <div formGroupName="organisation" fxLayout.gt-xs="row wrap"
+      <form formGroupName="organisation" fxLayout.gt-xs="row wrap"
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-position"></label>
           <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position">
         </mat-form-field>
-        <mat-error *ngIf="applicationForm.get(['organisation', 'position']).invalid &&
-          applicationForm.get(['organisation', 'position']).errors.required">
+        <mat-error *ngIf="applicationForm.get(['organisation', 'position']).touched &&
+          applicationForm.get(['organisation', 'position']).hasError('required')">
           Position is required
         </mat-error>
 
@@ -63,9 +63,9 @@
           <input matInput placeholder="Department" id="delegation-department" name="department"
                  formControlName="department">
         </mat-form-field>
-      </div>
+      </form>
 
-      <div formGroupName="delegation" fxLayout.gt-xs="row wrap"
+      <form formGroupName="delegation" fxLayout.gt-xs="row wrap"
            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
@@ -77,8 +77,7 @@
             </mat-option>
           </mat-autocomplete>
           <mat-error *ngIf="applicationForm.get(['delegation', 'country']).touched &&
-          applicationForm.get(['delegation', 'country']).invalid &&
-          applicationForm.get(['delegation', 'country']).errors.required">
+          applicationForm.get(['delegation', 'country']).hasError('required')">
             Destination country is required
           </mat-error>
         </mat-form-field>
@@ -87,8 +86,7 @@
           <label for="delegation-city"></label>
           <input #city matInput placeholder="City" id="delegation-city" name="city" formControlName="city">
           <mat-error *ngIf="applicationForm.get(['delegation', 'city']).touched &&
-          applicationForm.get(['delegation', 'city']).invalid &&
-          applicationForm.get(['delegation', 'city']).errors.required">
+          applicationForm.get(['delegation', 'city']).hasError('required')">
             Destination city is required
           </mat-error>
         </mat-form-field>
@@ -98,8 +96,7 @@
           <input #objective matInput placeholder="Objective" id="delegation-objective" name="objective"
                  formControlName="objective">
           <mat-error *ngIf="applicationForm.get(['delegation', 'objective']).touched &&
-          applicationForm.get(['delegation', 'objective']).invalid &&
-          applicationForm.get(['delegation', 'objective']).errors.required">
+          applicationForm.get(['delegation', 'objective']).hasError('required')">
             Objective is required
           </mat-error>
         </mat-form-field>
@@ -108,22 +105,50 @@
           <label for="delegation-budget"></label>
           <input matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
           <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
-          applicationForm.get(['delegation', 'budget']).invalid &&
-          applicationForm.get(['delegation', 'budget']).errors.required">
+          applicationForm.get(['delegation', 'budget']).hasError('required')">
             Budget is required
           </mat-error>
           <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
           applicationForm.get(['delegation', 'budget']).invalid &&
-          applicationForm.get(['delegation', 'budget']).errors.min">
+          applicationForm.get(['delegation', 'budget']).hasError('min')">
             Budget cannot be negative
           </mat-error>
         </mat-form-field>
 
-        <app-date-range #dateRange fxFlex="100" [mainFlexProperty]="50" [mobileFlexProperty]="100"
-                        (updateStartDate)="setStartDate($event)" (updateEndDate)="setEndDate($event)"></app-date-range>
-      </div>
-      <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid()" (click)="save()">Submit
-      </button>
+        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+                 formControlName="startDate" name="startDate">
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
+          <mat-error *ngIf="(applicationForm.get(['delegation', 'startDate']).touched ||
+          applicationForm.get(['delegation', 'endDate']).touched) &&
+          applicationForm.get(['delegation', 'startDate']).hasError('dateRangeNotValid')">
+            Start date cannot be after end date
+          </mat-error>
+          <mat-error *ngIf="applicationForm.get(['delegation', 'startDate']).touched &&
+          applicationForm.get(['delegation', 'startDate']).hasError('required')">
+            Start date is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
+          <mat-error *ngIf="(applicationForm.get(['delegation', 'endDate']).touched ||
+          applicationForm.get(['delegation', 'startDate']).touched) &&
+          applicationForm.get(['delegation', 'endDate']).hasError('dateRangeNotValid')">
+            End date cannot be before start date
+          </mat-error>
+          <mat-error *ngIf="applicationForm.get(['delegation', 'endDate']).touched &&
+          applicationForm.get(['delegation', 'endDate']).hasError('required')">
+            End date is required
+          </mat-error>
+        </mat-form-field>
+      </form>
     </form>
+
   </mat-card>
+  <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid()" (click)="save()">Submit
+  </button>
 </section>

@@ -1,5 +1,9 @@
 package org.openhr.application.manager.repository;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
+import javax.transaction.Transactional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -15,24 +19,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
 public class ManagerRepositoryTest {
-  private final static Manager mockManager = new Manager(
-    new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
-    new ContactInformation(), new EmployeeInformation(), new HrInformation(), new User("421", ""));
+  private static final Manager mockManager =
+      new Manager(
+          new PersonalInformation("John", "Black", "Alex", LocalDate.now()),
+          new ContactInformation(),
+          new EmployeeInformation(),
+          new HrInformation(),
+          new User("421", ""));
 
-  @Autowired
-  private SessionFactory sessionFactory;
+  @Autowired private SessionFactory sessionFactory;
 
-  @Autowired
-  private ManagerDAO managerDAO;
+  @Autowired private ManagerDAO managerDAO;
 
   @Test
   public void getManagerShouldReturnManagerById() {

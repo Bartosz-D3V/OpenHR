@@ -1,5 +1,6 @@
 package org.openhr.application.leaveapplication.dao;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 @Transactional
 public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplicationDAO {
@@ -32,8 +31,10 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LeaveApplication getLeaveApplication(final long leaveApplicationId) throws ApplicationDoesNotExistException {
-    final LeaveApplication leaveApplication = (LeaveApplication) super.get(LeaveApplication.class, leaveApplicationId);
+  public LeaveApplication getLeaveApplication(final long leaveApplicationId)
+      throws ApplicationDoesNotExistException {
+    final LeaveApplication leaveApplication =
+        (LeaveApplication) super.get(LeaveApplication.class, leaveApplicationId);
 
     if (leaveApplication == null) {
       log.error("Application could not be found");
@@ -45,8 +46,8 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication createLeaveApplication(final Subject subject, final LeaveApplication leaveApplication)
-    throws HibernateException {
+  public LeaveApplication createLeaveApplication(
+      final Subject subject, final LeaveApplication leaveApplication) throws HibernateException {
     leaveApplication.setSubject(subject);
     super.save(leaveApplication);
 
@@ -55,8 +56,9 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public LeaveApplication updateLeaveApplication(final long leaveApplicationId, final LeaveApplication leaveApplication)
-    throws ApplicationDoesNotExistException, HibernateException {
+  public LeaveApplication updateLeaveApplication(
+      final long leaveApplicationId, final LeaveApplication leaveApplication)
+      throws ApplicationDoesNotExistException, HibernateException {
     final LeaveApplication savedLeaveApplication = getLeaveApplication(leaveApplicationId);
     BeanUtils.copyProperties(leaveApplication, savedLeaveApplication, "subject", "assignee");
     super.merge(savedLeaveApplication);
@@ -70,11 +72,14 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
     long applicationId;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      applicationId = (long) session.createCriteria(LeaveApplication.class)
-        .add(Restrictions.eq("processInstanceId", processInstanceId))
-        .setProjection(Projections.property("applicationId"))
-        .setCacheable(true)
-        .uniqueResult();
+      applicationId =
+          (long)
+              session
+                  .createCriteria(LeaveApplication.class)
+                  .add(Restrictions.eq("processInstanceId", processInstanceId))
+                  .setProjection(Projections.property("applicationId"))
+                  .setCacheable(true)
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -89,11 +94,14 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
     Subject applicant = null;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      applicant = (Subject) session.createCriteria(LeaveApplication.class)
-        .add(Restrictions.eq("applicationId", applicationId))
-        .setProjection(Projections.property("subject"))
-        .setReadOnly(true)
-        .uniqueResult();
+      applicant =
+          (Subject)
+              session
+                  .createCriteria(LeaveApplication.class)
+                  .add(Restrictions.eq("applicationId", applicationId))
+                  .setProjection(Projections.property("subject"))
+                  .setReadOnly(true)
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
     }
@@ -107,11 +115,14 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
     Subject assignee = null;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      assignee = (Subject) session.createCriteria(LeaveApplication.class)
-        .add(Restrictions.eq("applicationId", applicationId))
-        .setProjection(Projections.property("assignee"))
-        .setReadOnly(true)
-        .uniqueResult();
+      assignee =
+          (Subject)
+              session
+                  .createCriteria(LeaveApplication.class)
+                  .add(Restrictions.eq("applicationId", applicationId))
+                  .setProjection(Projections.property("assignee"))
+                  .setReadOnly(true)
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
     }

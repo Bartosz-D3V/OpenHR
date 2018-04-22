@@ -6,11 +6,9 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.common.exception.ValidationException;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
-  User getUserBySubjectId(long subjectId) throws UserDoesNotExist;
+  User getUser(long userId);
 
   User getUserByUsername(String username) throws UserDoesNotExist;
 
@@ -18,11 +16,18 @@ public interface UserService {
 
   void registerUser(User user) throws UserAlreadyExists;
 
-  void updatePassword(long subjectId, PasswordDTO passwordDTO) throws UserDoesNotExist, ValidationException;
+  User getUserBySubjectId(long subjectId);
+
+  void updateNotificationsSettings(long userId, boolean notificationsTurnedOn);
+
+  void updatePassword(long userId, PasswordDTO passwordDTO)
+      throws UserDoesNotExist, ValidationException, SubjectDoesNotExistException;
 
   boolean validCredentials(String username, String password) throws UserDoesNotExist;
 
   boolean isUsernameFree(String username);
 
   long findSubjectId(String username) throws SubjectDoesNotExistException;
+
+  boolean notificationsEnabled(long userId);
 }

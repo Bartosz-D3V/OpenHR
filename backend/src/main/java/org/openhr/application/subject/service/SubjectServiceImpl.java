@@ -1,5 +1,6 @@
 package org.openhr.application.subject.service;
 
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -23,12 +24,19 @@ public class SubjectServiceImpl implements SubjectService {
   private final WorkerProxy workerProxy;
   private final HolidayService holidayService;
 
-  public SubjectServiceImpl(final SubjectRepository subjectRepository,
-                            final WorkerProxy workerProxy,
-                            final HolidayService holidayService) {
+  public SubjectServiceImpl(
+      final SubjectRepository subjectRepository,
+      final WorkerProxy workerProxy,
+      final HolidayService holidayService) {
     this.subjectRepository = subjectRepository;
     this.workerProxy = workerProxy;
     this.holidayService = holidayService;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Subject> getSubjects() {
+    return subjectRepository.getSubjects();
   }
 
   @Override
@@ -39,41 +47,53 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+  public void updateSubjectPersonalInformation(
+      final long subjectId, final PersonalInformation personalInformation)
+      throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+  public void updateSubjectContactInformation(
+      final long subjectId, final ContactInformation contactInformation)
+      throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
-    throws HibernateException, SubjectDoesNotExistException {
+  public void updateSubjectEmployeeInformation(
+      final long subjectId, final EmployeeInformation employeeInformation)
+      throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteSubject(final long subjectId) throws HibernateException, SubjectDoesNotExistException {
+  public void deleteSubject(final long subjectId)
+      throws HibernateException, SubjectDoesNotExistException {
     subjectRepository.deleteSubject(subjectId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
+  public LightweightSubjectDTO getLightweightSubject(final long subjectId)
+      throws SubjectDoesNotExistException {
     return subjectRepository.getLightweightSubject(subjectId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    return subjectRepository.getLightweightSubjects();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeftAllowanceInDays(final long subjectId) {
-    return subjectRepository.getAllowance(subjectId) - subjectRepository.getUsedAllowance(subjectId);
+    return subjectRepository.getAllowance(subjectId)
+        - subjectRepository.getUsedAllowance(subjectId);
   }
 
   @Override
@@ -84,11 +104,11 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(final Subject subject,
-                                                                final LeaveApplication leaveApplication)
-    throws ValidationException {
-    final long allowanceToSubtract = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
-      leaveApplication.getEndDate());
+  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(
+      final Subject subject, final LeaveApplication leaveApplication) throws ValidationException {
+    final long allowanceToSubtract =
+        holidayService.getWorkingDaysInBetween(
+            leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long newUsedAllowance = getUsedAllowance(subject.getSubjectId()) + allowanceToSubtract;
     if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException("Not enough leave allowance");
@@ -97,18 +117,22 @@ public class SubjectServiceImpl implements SubjectService {
       throw new ValidationException("Leave is too long");
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
-    subjectRepository.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+    subjectRepository.updateSubjectHRInformation(
+        subject.getSubjectId(), subject.getHrInformation());
   }
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void revertSubtractedDaysForApplication(final Subject subject, final LeaveApplication leaveApplication) {
-    final long allowanceSubtracted = holidayService.getWorkingDaysBetweenIncl(leaveApplication.getStartDate(),
-      leaveApplication.getEndDate());
+  public void revertSubtractedDaysForApplication(
+      final Subject subject, final LeaveApplication leaveApplication) {
+    final long allowanceSubtracted =
+        holidayService.getWorkingDaysInBetween(
+            leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long currentlyUsedAllowance = subject.getHrInformation().getUsedAllowance();
     final long newUsedAllowance = currentlyUsedAllowance + allowanceSubtracted;
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
-    subjectRepository.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
+    subjectRepository.updateSubjectHRInformation(
+        subject.getSubjectId(), subject.getHrInformation());
   }
 
   @Override

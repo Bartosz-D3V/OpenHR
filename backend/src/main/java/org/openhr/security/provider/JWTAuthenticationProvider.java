@@ -3,6 +3,9 @@ package org.openhr.security.provider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openhr.application.user.domain.UserContext;
 import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAuthenticationToken;
@@ -12,10 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import java.util.Base64;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class JWTAuthenticationProvider implements AuthenticationProvider {
@@ -27,15 +26,16 @@ public class JWTAuthenticationProvider implements AuthenticationProvider {
 
   @Override
   @SuppressWarnings("unchecked")
-  public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+  public Authentication authenticate(final Authentication authentication)
+      throws AuthenticationException {
     final String rawToken = (String) authentication.getCredentials();
-    final String encodedKey = base64Encoder.encodeToString(SecurityConfigConstants.SECRET.getBytes());
+    final String encodedKey =
+        base64Encoder.encodeToString(SecurityConfigConstants.SECRET.getBytes());
     final Jws<Claims> jwsClaims = Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(rawToken);
     final String subject = jwsClaims.getBody().getSubject();
     final List<String> scopes = jwsClaims.getBody().get("scopes", List.class);
-    final List<GrantedAuthority> authorities = scopes.stream()
-      .map(SimpleGrantedAuthority::new)
-      .collect(Collectors.toList());
+    final List<GrantedAuthority> authorities =
+        scopes.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     final UserContext context = new UserContext(subject, authorities);
 
     return new JWTAuthenticationToken(context, context.getAuthorities());

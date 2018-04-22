@@ -1,9 +1,9 @@
 package org.openhr.application.employee.dao;
 
 import org.hibernate.SessionFactory;
-import org.openhr.common.dao.BaseDAO;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.util.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
@@ -32,18 +32,26 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
   @Transactional(propagation = Propagation.MANDATORY)
   public Employee updateEmployee(final long subjectId, final Employee employee) {
     final Employee savedEmployee = getEmployee(subjectId);
-    BeanUtil.copyNotNullProperties(employee.getPersonalInformation(), savedEmployee.getPersonalInformation(),
-      "personalInformationId");
-    BeanUtil.copyNotNullProperties(employee.getContactInformation(), savedEmployee.getContactInformation(),
-      "contactInformationId");
-    BeanUtil.copyNotNullProperties(employee.getContactInformation().getAddress(),
-      employee.getContactInformation().getAddress());
-    BeanUtil.copyNotNullProperties(employee.getEmployeeInformation(), savedEmployee.getEmployeeInformation(),
-      "employeeInformationId");
-    BeanUtils.copyProperties(employee.getHrInformation(), savedEmployee.getHrInformation(),
-      "hrInformationId");
+    BeanUtil.copyNotNullProperties(
+        employee.getPersonalInformation(),
+        savedEmployee.getPersonalInformation(),
+        "personalInformationId");
+    BeanUtil.copyNotNullProperties(
+        employee.getContactInformation(),
+        savedEmployee.getContactInformation(),
+        "contactInformationId");
+    BeanUtil.copyNotNullProperties(
+        employee.getContactInformation().getAddress(),
+        employee.getContactInformation().getAddress());
+    BeanUtil.copyNotNullProperties(
+        employee.getEmployeeInformation(),
+        savedEmployee.getEmployeeInformation(),
+        "employeeInformationId");
+    BeanUtils.copyProperties(
+        employee.getHrInformation(), savedEmployee.getHrInformation(), "hrInformationId");
     BeanUtil.copyNotNullProperties(employee.getRole(), savedEmployee.getRole());
-    BeanUtil.copyNotNullProperties(employee.getUser(), savedEmployee.getUser(), "userId", "userRoles");
+    BeanUtil.copyNotNullProperties(
+        employee.getUser(), savedEmployee.getUser(), "userId", "userRoles");
     super.merge(savedEmployee);
     return savedEmployee;
   }

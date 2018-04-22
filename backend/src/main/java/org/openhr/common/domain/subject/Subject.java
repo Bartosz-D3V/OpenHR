@@ -1,11 +1,7 @@
 package org.openhr.common.domain.subject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.openhr.application.user.domain.User;
-import org.openhr.common.enumeration.Role;
-
+import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +14,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import java.io.Serializable;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.openhr.application.user.domain.User;
+import org.openhr.common.enumeration.Role;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -29,48 +28,71 @@ public abstract class Subject implements Serializable {
     name = "ID_GENERATOR",
     strategy = "enhanced-sequence",
     parameters = {
-      @Parameter(
-        name = "sequence_name",
-        value = "SUBJECT_SEQUENCE_ID"
-      ),
-      @Parameter(
-        name = "initial_value",
-        value = "1"
-      )
+      @Parameter(name = "sequence_name", value = "SUBJECT_SEQUENCE_ID"),
+      @Parameter(name = "initial_value", value = "1")
     }
   )
   @GeneratedValue(generator = "ID_GENERATOR")
   private long subjectId;
 
   @JoinColumn(unique = true, name = "PERSONAL_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(
+    fetch = FetchType.EAGER,
+    optional = false,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private PersonalInformation personalInformation;
 
   @JoinColumn(unique = true, name = "CONTACT_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(
+    fetch = FetchType.EAGER,
+    optional = false,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private ContactInformation contactInformation;
 
   @JoinColumn(unique = true, name = "EMPLOYEE_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(
+    fetch = FetchType.EAGER,
+    optional = false,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private EmployeeInformation employeeInformation;
 
   @JoinColumn(unique = true, name = "HR_INFORMATION_ID")
-  @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(
+    fetch = FetchType.EAGER,
+    optional = false,
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
+  )
   private HrInformation hrInformation;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
   @JsonBackReference
-  @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL, optional = false)
+  @OneToOne(
+    fetch = FetchType.EAGER,
+    orphanRemoval = true,
+    cascade = CascadeType.ALL,
+    optional = false
+  )
   private User user;
 
   public Subject() {
     super();
   }
 
-  public Subject(final PersonalInformation personalInformation, final ContactInformation contactInformation,
-                 final EmployeeInformation employeeInformation, final HrInformation hrInformation, final User user) {
+  public Subject(
+      final PersonalInformation personalInformation,
+      final ContactInformation contactInformation,
+      final EmployeeInformation employeeInformation,
+      final HrInformation hrInformation,
+      final User user) {
     super();
     this.personalInformation = personalInformation;
     this.contactInformation = contactInformation;

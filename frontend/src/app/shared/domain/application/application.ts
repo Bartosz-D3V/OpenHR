@@ -8,15 +8,17 @@ export abstract class Application {
   public approvedByHR: boolean;
   public terminated: boolean;
   public processInstanceId: string;
+  public subjectId?: number;
 
-  constructor(
+  protected constructor(
     applicationId: number,
     startDate: MomentInput,
     endDate: MomentInput,
     approvedByManager: boolean,
     approvedByHR: boolean,
     terminated: boolean,
-    processInstanceId: string
+    processInstanceId: string,
+    subjectId?: number
   ) {
     this.applicationId = applicationId;
     this.startDate = startDate;
@@ -25,5 +27,6 @@ export abstract class Application {
     this.approvedByHR = approvedByHR;
     this.terminated = terminated;
     this.processInstanceId = processInstanceId;
+    this.subjectId = subjectId ? subjectId : null;
   }
 }

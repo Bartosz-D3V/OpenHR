@@ -1,0 +1,40 @@
+package org.openhr.common.util.iterable;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+public class LocalDateRange implements Iterable<LocalDate> {
+
+  private final LocalDate startDate;
+  private final LocalDate endDate;
+
+  public LocalDateRange(final LocalDate startDate, final LocalDate endDate) {
+    this.startDate = startDate;
+    this.endDate = endDate;
+  }
+
+  @Override
+  public Iterator<LocalDate> iterator() {
+    return stream().iterator();
+  }
+
+  private Stream<LocalDate> stream() {
+    return Stream.iterate(startDate, d -> d.plusDays(1))
+        .limit(ChronoUnit.DAYS.between(startDate, endDate) + 1);
+  }
+
+  @Override
+  public void forEach(Consumer<? super LocalDate> action) {
+    /** TODO needs to be implemented */
+  }
+
+  @Override
+  public Spliterator<LocalDate> spliterator() {
+    /** TODO needs to be implemented */
+    return null;
+  }
+}

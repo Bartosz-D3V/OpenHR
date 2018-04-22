@@ -1,12 +1,21 @@
-<app-page-header [header]="'Settings'"></app-page-header>
-<section class="c-drawer">
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Settings'"></app-page-header>
+
+  <div fxLayoutAlign="center center" fxFlex="100">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+</section>
+
+<section class="c-drawer" *ngIf="!isLoadingResults">
   <mat-toolbar [color]="'primary'">Settings</mat-toolbar>
   <mat-card>
     <div fxLayout="row" fxLayout.md="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="space-around"
          fxLayoutAlign.xs="center center">
       <mat-slide-toggle #darkModeOn [ngModel]="darkModeOn" (click)="turnDarkMode(darkModeOn.value)">Dark mode
       </mat-slide-toggle>
-      <mat-slide-toggle #notifications [ngModel]="notificationsOn">Notifications</mat-slide-toggle>
+      <mat-slide-toggle #notificationsTurnedOn [(ngModel)]="user.notificationsTurnedOn" (change)="updateUser()">
+        Notifications
+      </mat-slide-toggle>
     </div>
   </mat-card>
 </section>

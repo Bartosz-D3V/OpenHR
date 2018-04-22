@@ -1,12 +1,10 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import { MatDialogModule } from '@angular/material';
 
 import { SystemVariables } from '@config/system-variables';
-import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { User } from '@shared/domain/user/user';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { LightweightSubjectService } from './lightweight-subject.service';
 
 describe('LightweightSubjectService', () => {
@@ -15,7 +13,7 @@ describe('LightweightSubjectService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LightweightSubjectService, JwtHelperService, ErrorResolverService],
+      providers: [LightweightSubjectService, JwtHelperService],
       imports: [HttpClientTestingModule, MatDialogModule],
     });
     service = TestBed.get(LightweightSubjectService);
@@ -28,13 +26,9 @@ describe('LightweightSubjectService', () => {
 
   describe('API Access method', () => {
     const apiLink: string = SystemVariables.API_URL + '/subjects';
-    const mockUser: User = new User(1, 'John', 'Black');
+    const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Black', 'Tester');
 
     describe('getCurrentSubject', () => {
-      beforeEach(() => {
-        spyOn(service['_jwtHelper'], 'getSubjectId').and.returnValue(1);
-      });
-
       it(
         'should query current service URL',
         fakeAsync(() => {
@@ -67,8 +61,6 @@ describe('LightweightSubjectService', () => {
       it(
         'should resolve error if server is down',
         fakeAsync(() => {
-          spyOn(service['_errorResolver'], 'handleError');
-
           let result: Object;
           let error: any;
           service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
@@ -79,8 +71,6 @@ describe('LightweightSubjectService', () => {
             })
             .error(new ErrorEvent('404'));
           tick();
-
-          expect(service['_errorResolver'].handleError).toHaveBeenCalled();
         })
       );
     });

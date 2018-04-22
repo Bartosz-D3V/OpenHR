@@ -71,6 +71,10 @@ describe('DateRangeComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should not display description by default', () => {
+    expect(component.showDescription).toBeFalsy();
+  });
+
   it('ngOnInit should trigger validation methods', () => {
     spyOn(component, 'validateStartDateField');
     spyOn(component, 'validateEndDateField');

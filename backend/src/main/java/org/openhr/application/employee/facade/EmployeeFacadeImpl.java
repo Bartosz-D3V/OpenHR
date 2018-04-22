@@ -1,7 +1,8 @@
 package org.openhr.application.employee.facade;
 
-import org.openhr.application.employee.service.EmployeeService;
+import java.util.List;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.manager.domain.Manager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +14,12 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 
   public EmployeeFacadeImpl(final EmployeeService employeeService) {
     this.employeeService = employeeService;
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Employee> getEmployees() {
+    return employeeService.getEmployees();
   }
 
   @Override

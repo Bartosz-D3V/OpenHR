@@ -1,5 +1,12 @@
 package org.openhr.application.user.service;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.authentication.service.AuthenticationService;
@@ -11,29 +18,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Transactional
 public class UserServiceTest {
-  @Autowired
-  private UserService userService;
+  @Autowired private UserService userService;
 
-  @MockBean
-  private AuthenticationService authenticationService;
+  @MockBean private AuthenticationService authenticationService;
 
-  @MockBean
-  private UserRepository userRepository;
+  @MockBean private UserRepository userRepository;
 
   @Test(expected = UserDoesNotExist.class)
-  public void findByUsernameShouldReturnUserDoesNotExistIfUserDoesNotExist() throws UserDoesNotExist {
+  public void findByUsernameShouldReturnUserDoesNotExistIfUserDoesNotExist()
+      throws UserDoesNotExist {
     when(userRepository.getUserByUsername("Mock")).thenReturn(null);
     userService.getUserByUsername("Mock");
   }
@@ -60,7 +59,8 @@ public class UserServiceTest {
   }
 
   @Test
-  public void validCredentialsShouldReturnTrueIfUserExistsAndPasswordsMatch() throws UserDoesNotExist {
+  public void validCredentialsShouldReturnTrueIfUserExistsAndPasswordsMatch()
+      throws UserDoesNotExist {
     when(userRepository.getUserByUsername(anyString())).thenReturn(new User());
     when(authenticationService.passwordsMatch(anyString(), anyString())).thenReturn(true);
 

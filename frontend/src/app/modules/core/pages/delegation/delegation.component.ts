@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import { map, startWith } from 'rxjs/operators';
@@ -13,17 +13,18 @@ import { DelegationService } from '@modules/core/pages/delegation/service/delega
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
-import { DateRangeComponent } from '@shared/components/date-range/date-range.component';
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 import { Subject } from '@shared/domain/subject/subject';
 import { Country } from '@shared/domain/country/country';
+import { CustomValidators } from '@shared/util/validators/custom-validators';
 
 @Component({
   selector: 'app-delegation',
   templateUrl: './delegation.component.html',
   styleUrls: ['./delegation.component.scss'],
-  providers: [SubjectDetailsService, DelegationService, NotificationService],
+  providers: [SubjectDetailsService, DelegationService, NotificationService, ResponsiveHelperService],
 })
 export class DelegationComponent implements OnInit, OnDestroy {
   private $delegation: ISubscription;
@@ -34,29 +35,28 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public countries: Array<Country>;
   public delegationApplication: DelegationApplication;
 
-  @ViewChild('dateRange') public dateRange: DateRangeComponent;
-
-  @ViewChild(FormGroupDirective) public formTemplate: FormGroupDirective;
-
   constructor(
     private _delegationService: DelegationService,
     private _subjectDetails: SubjectDetailsService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService,
+    private _responsiveHelper: ResponsiveHelperService,
     private _fb: FormBuilder,
     private _route: ActivatedRoute
   ) {
     this._route.params.subscribe((param?: Params) => {
-      if (param) {
-        this.fetchDelegationApplication(param['id']);
+      const applicationId: number = param['id'];
+      if (applicationId) {
+        this.fetchDelegationApplication(applicationId);
       }
     });
   }
 
   private resetForm(): void {
-    this.formTemplate.resetForm();
+    this.applicationForm.reset();
+    this.applicationForm.markAsUntouched();
+    this.applicationForm.markAsPristine();
     this.applicationForm.get('delegation').reset({ budget: 0 });
-    this.dateRange.reset();
   }
 
   ngOnInit(): void {
@@ -81,15 +81,20 @@ export class DelegationComponent implements OnInit, OnDestroy {
         position: [this.subject.employeeInformation.position, Validators.required],
         department: [this.subject.employeeInformation.department],
       }),
-      delegation: this._fb.group({
-        country: [this.delegationApplication ? this.delegationApplication.country : '', Validators.required],
-        city: [this.delegationApplication ? this.delegationApplication.city : '', Validators.required],
-        objective: [this.delegationApplication ? this.delegationApplication.objective : '', Validators.required],
-        budget: [
-          this.delegationApplication ? this.delegationApplication.budget : 0,
-          Validators.compose([Validators.required, Validators.min(0)]),
-        ],
-      }),
+      delegation: this._fb.group(
+        {
+          country: [this.delegationApplication ? this.delegationApplication.country : '', Validators.required],
+          city: [this.delegationApplication ? this.delegationApplication.city : '', Validators.required],
+          objective: [this.delegationApplication ? this.delegationApplication.objective : '', Validators.required],
+          budget: [
+            this.delegationApplication ? this.delegationApplication.budget : 0,
+            Validators.compose([Validators.required, Validators.min(0)]),
+          ],
+          startDate: [this.delegationApplication ? this.delegationApplication.startDate : '', Validators.compose([Validators.required])],
+          endDate: [this.delegationApplication ? this.delegationApplication.endDate : '', Validators.compose([Validators.required])],
+        },
+        { validator: CustomValidators.validateDateRange }
+      ),
     });
 
     this.filteredCountries = this.reduceCountries(this.countries);
@@ -123,6 +128,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
       (val: DelegationApplication) => {
         this.delegationApplication = val;
         this.isLoadingResults = false;
+        this.constructForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -151,8 +157,10 @@ export class DelegationComponent implements OnInit, OnDestroy {
   public save(): void {
     const form: AbstractControl = this.applicationForm;
     const application: DelegationApplication = <DelegationApplication>form.get('delegation').value;
-    application.startDate = this.dateRange.startDate;
-    application.endDate = this.dateRange.endDate;
+    this.delegationApplication ? this.updateApplication(this.delegationApplication) : this.createApplication(application);
+  }
+
+  public createApplication(application: DelegationApplication): void {
     this._delegationService.createDelegationApplication(application).subscribe(
       (response: DelegationApplication) => {
         const message = `Application with id ${response.applicationId} has been created`;
@@ -165,7 +173,25 @@ export class DelegationComponent implements OnInit, OnDestroy {
     );
   }
 
+  public updateApplication(application: DelegationApplication): void {
+    delete application['subject'];
+    this._delegationService.updateDelegationApplication(application).subscribe(
+      (response: DelegationApplication) => {
+        const message = `Application with id ${response.applicationId} has been updated`;
+        this.resetForm();
+        this._notificationService.openSnackBar(message, 'OK');
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
   public isValid(): boolean {
-    return this.applicationForm.get('delegation').valid && this.dateRange.dateRangeGroup.valid;
+    return this.applicationForm.get('delegation').valid;
+  }
+
+  public isMobile(): boolean {
+    return this._responsiveHelper.isMobile();
   }
 }

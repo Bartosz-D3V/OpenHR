@@ -1,11 +1,12 @@
 package org.openhr.common.domain.application;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.openhr.common.domain.subject.Subject;
-
-import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +16,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.openhr.common.domain.subject.Subject;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -27,14 +29,8 @@ public abstract class Application implements Serializable {
     name = "APP_ID_GENERATOR",
     strategy = "enhanced-sequence",
     parameters = {
-      @Parameter(
-        name = "sequence_name",
-        value = "APPLICATION_SEQUENCE_ID"
-      ),
-      @Parameter(
-        name = "initial_value",
-        value = "1"
-      )
+      @Parameter(name = "sequence_name", value = "APPLICATION_SEQUENCE_ID"),
+      @Parameter(name = "initial_value", value = "1")
     }
   )
   @GeneratedValue(generator = "APP_ID_GENERATOR")
@@ -62,7 +58,10 @@ public abstract class Application implements Serializable {
 
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(optional = false)
-  @JoinColumn(name = "APPLICANT_ID")
+  @JoinColumn(name = "APPLICANT_FK")
+  @JsonProperty("subjectId")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.None.class, property = "subjectId")
+  @JsonIdentityReference(alwaysAsId = true)
   private Subject subject;
 
   @ManyToOne
@@ -158,14 +157,22 @@ public abstract class Application implements Serializable {
 
     final Application that = (Application) o;
 
-    return getApplicationId() == that.getApplicationId() && isApprovedByManager() == that.isApprovedByManager() &&
-      isApprovedByHR() == that.isApprovedByHR() && isTerminated() == that.isTerminated() &&
-      (getStartDate() != null ? getStartDate().equals(that.getStartDate()) :
-        that.getStartDate() == null) && (getEndDate() != null ? getEndDate().equals(that.getEndDate()) :
-      that.getEndDate() == null) && (getProcessInstanceId() != null ?
-      getProcessInstanceId().equals(that.getProcessInstanceId()) :
-      that.getProcessInstanceId() == null) && getSubject().equals(that.getSubject()) && (getAssignee() != null ?
-      getAssignee().equals(that.getAssignee()) :
-      that.getAssignee() == null);
+    return getApplicationId() == that.getApplicationId()
+        && isApprovedByManager() == that.isApprovedByManager()
+        && isApprovedByHR() == that.isApprovedByHR()
+        && isTerminated() == that.isTerminated()
+        && (getStartDate() != null
+            ? getStartDate().equals(that.getStartDate())
+            : that.getStartDate() == null)
+        && (getEndDate() != null
+            ? getEndDate().equals(that.getEndDate())
+            : that.getEndDate() == null)
+        && (getProcessInstanceId() != null
+            ? getProcessInstanceId().equals(that.getProcessInstanceId())
+            : that.getProcessInstanceId() == null)
+        && getSubject().equals(that.getSubject())
+        && (getAssignee() != null
+            ? getAssignee().equals(that.getAssignee())
+            : that.getAssignee() == null);
   }
 }

@@ -153,7 +153,7 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public fetchEmployees(): void {
-    this.$employees = this._manageEmployeesDataService.getEmployees().subscribe(
+    this.$employees = this._employeeService.getEmployees().subscribe(
       (response: Array<Employee>) => {
         this.employees = response;
         this.filteredEmployees = this.reduceEmployees(response);

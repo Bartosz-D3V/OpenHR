@@ -1,5 +1,5 @@
 <section fxLayout="row wrap">
-  <app-page-header [header]="'Manage leave applications'"></app-page-header>
+  <app-page-header [header]="'Manage delegations'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -29,8 +29,10 @@
       <ng-container matColumnDef="employeeName">
         <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication">
-          {{delegationApplication.subject.personalInformation.firstName}}
-          {{delegationApplication.subject.personalInformation.lastName}}
+          <div *ngIf="getSubjectFullName(delegationApplication.subjectId) as subject; else loadingTemplate">
+            {{subject.firstName}} {{subject.lastName}}
+          </div>
+          <ng-template #loadingTemplate>loading...</ng-template>
         </mat-cell>
       </ng-container>
 

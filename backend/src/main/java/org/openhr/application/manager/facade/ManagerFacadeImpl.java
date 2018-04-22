@@ -1,15 +1,14 @@
 package org.openhr.application.manager.facade;
 
+import java.util.List;
+import java.util.Set;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
-import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.application.manager.service.ManagerService;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
 
 @Component
 public class ManagerFacadeImpl implements ManagerFacade {
@@ -52,13 +51,15 @@ public class ManagerFacadeImpl implements ManagerFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void addEmployeeToManager(final long managerId, final long subjectId) throws SubjectDoesNotExistException {
+  public void addEmployeeToManager(final long managerId, final long subjectId)
+      throws SubjectDoesNotExistException {
     managerService.addEmployeeToManager(managerId, subjectId);
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager setHrToManager(final long managerId, final long hrTeamMemberId) throws SubjectDoesNotExistException {
+  public Manager setHrToManager(final long managerId, final long hrTeamMemberId)
+      throws SubjectDoesNotExistException {
     return managerService.setHrToManager(managerId, hrTeamMemberId);
   }
 }

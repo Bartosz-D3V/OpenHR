@@ -1,5 +1,6 @@
 package org.openhr.application.subject.repository;
 
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -28,10 +29,25 @@ public class SubjectRepository {
   private final SessionFactory sessionFactory;
   private final SubjectDAO subjectDAO;
 
-  public SubjectRepository(final SessionFactory sessionFactory,
-                           final SubjectDAO subjectDAO) {
+  public SubjectRepository(final SessionFactory sessionFactory, final SubjectDAO subjectDAO) {
     this.sessionFactory = sessionFactory;
     this.subjectDAO = subjectDAO;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<Subject> getSubjects() {
+    List<Subject> subjects;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      subjects = (List<Subject>) criteria.list();
+      session.flush();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    return subjects;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -40,20 +56,23 @@ public class SubjectRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectPersonalInformation(final long subjectId, final PersonalInformation personalInformation)
-    throws SubjectDoesNotExistException {
+  public void updateSubjectPersonalInformation(
+      final long subjectId, final PersonalInformation personalInformation)
+      throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectPersonalInformation(subjectId, personalInformation);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectContactInformation(final long subjectId, final ContactInformation contactInformation)
-    throws SubjectDoesNotExistException {
+  public void updateSubjectContactInformation(
+      final long subjectId, final ContactInformation contactInformation)
+      throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectContactInformation(subjectId, contactInformation);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void updateSubjectEmployeeInformation(final long subjectId, final EmployeeInformation employeeInformation)
-    throws SubjectDoesNotExistException {
+  public void updateSubjectEmployeeInformation(
+      final long subjectId, final EmployeeInformation employeeInformation)
+      throws SubjectDoesNotExistException {
     this.subjectDAO.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
 
@@ -68,20 +87,27 @@ public class SubjectRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public LightweightSubjectDTO getLightweightSubject(final long subjectId) throws SubjectDoesNotExistException {
+  public LightweightSubjectDTO getLightweightSubject(final long subjectId)
+      throws SubjectDoesNotExistException {
     LightweightSubjectDTO lightweightSubjectDTO;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
-      lightweightSubjectDTO = (LightweightSubjectDTO) criteria
-        .createAlias("personalInformation", "personalInfo")
-        .add(Restrictions.eq("subjectId", subjectId))
-        .setProjection(Projections.distinct(Projections.projectionList()
-          .add(Projections.property("subjectId"), "subjectId")
-          .add(Projections.property("personalInfo.firstName"), "firstName")
-          .add(Projections.property("personalInfo.lastName"), "lastName")))
-        .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
-        .uniqueResult();
+      lightweightSubjectDTO =
+          (LightweightSubjectDTO)
+              criteria
+                  .createAlias("personalInformation", "personalInfo")
+                  .createAlias("employeeInformation", "employeeInfo")
+                  .add(Restrictions.eq("subjectId", subjectId))
+                  .setProjection(
+                      Projections.distinct(
+                          Projections.projectionList()
+                              .add(Projections.property("subjectId"), "subjectId")
+                              .add(Projections.property("personalInfo.firstName"), "firstName")
+                              .add(Projections.property("personalInfo.lastName"), "lastName")
+                              .add(Projections.property("employeeInfo.position"), "position")))
+                  .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
+                  .uniqueResult();
       session.flush();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -95,16 +121,49 @@ public class SubjectRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LightweightSubjectDTO> getLightweightSubjects() {
+    List<LightweightSubjectDTO> lightweightSubjectDTOS;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(Subject.class);
+      lightweightSubjectDTOS =
+          (List<LightweightSubjectDTO>)
+              criteria
+                  .createAlias("personalInformation", "personalInfo")
+                  .createAlias("employeeInformation", "employeeInfo")
+                  .setProjection(
+                      Projections.distinct(
+                          Projections.projectionList()
+                              .add(Projections.property("subjectId"), "subjectId")
+                              .add(Projections.property("personalInfo.firstName"), "firstName")
+                              .add(Projections.property("personalInfo.lastName"), "lastName")
+                              .add(Projections.property("employeeInfo.position"), "position")))
+                  .setResultTransformer(Transformers.aliasToBean(LightweightSubjectDTO.class))
+                  .setReadOnly(true)
+                  .list();
+      session.flush();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return lightweightSubjectDTOS;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getAllowance(final long subjectId) {
     long allowance;
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
-      allowance = (long) criteria
-        .createAlias("hrInformation", "hrInformation")
-        .add(Restrictions.eq("subjectId", subjectId))
-        .setProjection(Projections.property("hrInformation.allowance"))
-        .uniqueResult();
+      allowance =
+          (long)
+              criteria
+                  .createAlias("hrInformation", "hrInformation")
+                  .add(Restrictions.eq("subjectId", subjectId))
+                  .setProjection(Projections.property("hrInformation.allowance"))
+                  .uniqueResult();
       session.flush();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -119,11 +178,13 @@ public class SubjectRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(Subject.class);
-      usedAllowance = (long) criteria
-        .createAlias("hrInformation", "hrInformation")
-        .add(Restrictions.eq("subjectId", subjectId))
-        .setProjection(Projections.property("hrInformation.usedAllowance"))
-        .uniqueResult();
+      usedAllowance =
+          (long)
+              criteria
+                  .createAlias("hrInformation", "hrInformation")
+                  .add(Restrictions.eq("subjectId", subjectId))
+                  .setProjection(Projections.property("hrInformation.usedAllowance"))
+                  .uniqueResult();
       session.flush();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());

@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
 import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { AvatarComponent } from '../avatar/avatar.component';
@@ -12,7 +13,7 @@ import { SidenavComponent } from './sidenav.component';
 import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
 
 describe('SidenavComponent', () => {
-  const mockUser: User = new User(2199, 'John', 'Test');
+  const mockUser: LightweightSubject = new LightweightSubject(2199, 'John', 'Test', 'Tester');
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 

@@ -1,11 +1,10 @@
 package org.openhr.application.manager.dao;
 
+import java.util.Set;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.SubjectDoesNotExistException;
-
-import java.util.Set;
 
 public interface ManagerDAO {
 
@@ -19,5 +18,6 @@ public interface ManagerDAO {
 
   void addEmployeeToManager(Manager manager, Employee employee) throws SubjectDoesNotExistException;
 
-  Manager setHrToManager(Manager manager, HrTeamMember hrTeamMember) throws SubjectDoesNotExistException;
+  Manager setHrToManager(Manager manager, HrTeamMember hrTeamMember)
+      throws SubjectDoesNotExistException;
 }

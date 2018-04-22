@@ -2,12 +2,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MatDialogModule } from '@angular/material';
+import { MomentInput } from 'moment';
 
 import { SystemVariables } from '@config/system-variables';
-import { LeaveApplication } from '@shared//domain/application/leave-application';
-import { JwtHelperService } from '@shared//services/jwt/jwt-helper.service';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ManageLeaveApplicationsService } from './manage-leave-applications.service';
-import { MomentInput } from 'moment';
 
 describe('ManageLeaveApplicationsService', () => {
   let service: ManageLeaveApplicationsService;
@@ -32,13 +32,13 @@ describe('ManageLeaveApplicationsService', () => {
   });
 
   describe('API access methods', () => {
-    const apiLink: string = SystemVariables.API_URL + '/leave-application';
+    const apiLink: string = SystemVariables.API_URL + '/leave-applications';
 
     it(
       'should query current service URL',
       fakeAsync(() => {
         service.getAwaitingForActionLeaveApplications(45).subscribe();
-        http.expectOne(`${apiLink}/45/awaiting`);
+        http.expectOne(`${apiLink}/awaiting?subjectId=45`);
       })
     );
 
@@ -53,7 +53,7 @@ describe('ManageLeaveApplicationsService', () => {
             .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: `${apiLink}/45/awaiting`,
+              url: `${apiLink}/awaiting?subjectId=45`,
               method: 'GET',
             })
             .flush(mockLeaveApplications);
@@ -75,7 +75,7 @@ describe('ManageLeaveApplicationsService', () => {
             .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
-              url: `${apiLink}/45/awaiting`,
+              url: `${apiLink}/awaiting?subjectId=45`,
               method: 'GET',
             })
             .error(new ErrorEvent('404'));

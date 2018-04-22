@@ -10,7 +10,7 @@ import { AboutComponent } from '@modules/core/pages/about/about.component';
 import { CoreWrapperComponent } from '@modules/core/core-wrapper/core-wrapper.component';
 import { AccountComponent } from '@modules/settings/pages/account/account.component';
 import { SettingsComponent } from '@modules/settings/pages/settings/settings.component';
-import { EmployeesComponent } from '@modules/core/pages/employees/employees.component';
+import { WorkersComponent } from '@modules/core/pages/workers/workers.component';
 import { AddEmployeeComponent } from '@modules/core/pages/add-employee/add-employee.component';
 import { LoginComponent } from '@modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '@modules/core/pages/manage-leave-applications/manage-leave-applications.component';
@@ -68,7 +68,7 @@ export const routeDefinitions: Routes = [
       },
       {
         path: 'employees',
-        component: EmployeesComponent,
+        component: WorkersComponent,
         outlet: 'core',
         pathMatch: 'full',
       },
@@ -83,7 +83,7 @@ export const routeDefinitions: Routes = [
         path: 'add-employee',
         component: AddEmployeeComponent,
         outlet: 'core',
-        canActivate: [HrTeamMemberGuard],
+        canActivate: [ManagerGuard],
         pathMatch: 'full',
       },
       {

@@ -6,9 +6,196 @@
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OpenHR - Modern, Open Source HR management system">
+
+  <meta name="theme-color" content="#3F51B5">
+  <meta name="msapplication-TileColor" content="#3F51B5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="OpenHR - Modern, Open Source HR management system">
+  <meta name="msapplication-config" content="browserconfig.xml">
+
+  <link rel="manifest" href="manifest.json"/>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="apple-touch-startup-image" href="assets/icons/favicon-32x32.png">
+  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#3F51B5">
 </head>
 <body>
-<app-root></app-root>
+<app-root>
+  <style type="text/css">
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      -ms-flex-align: center;
+      -ms-flex-pack: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      align-items: center;
+      display: -ms-flexbox;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      justify-content: center;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    app-root {
+      align-items: center;
+      background-color: #3F51B5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: center;
+      width: 100vw;
+    }
+
+    .c-spinner {
+      margin-top: 5%;
+      animation: rotator 1.4s linear infinite;
+      -webkit-animation: rotator 1.4s linear infinite;
+    }
+
+    .c-spinner__path {
+      -ms-transform-origin: center;
+      -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+      -webkit-transform-origin: center;
+      animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+      stroke-dasharray: 187;
+      stroke-dashoffset: 0;
+      transform-origin: center;
+    }
+
+    @-webkit-keyframes rotator {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+      }
+    }
+
+    @keyframes rotator {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(270deg);
+        transform: rotate(270deg);
+      }
+    }
+
+    @-webkit-keyframes colors {
+      0% {
+        stroke: #4285F4;
+      }
+
+      25% {
+        stroke: #DE3E35;
+      }
+
+      50% {
+        stroke: #F7C223;
+      }
+
+      75% {
+        stroke: #1B9A59;
+      }
+
+      100% {
+        stroke: #4285F4;
+      }
+    }
+
+    @keyframes colors {
+      0% {
+        stroke: #4285F4;
+      }
+
+      25% {
+        stroke: #DE3E35;
+      }
+
+      50% {
+        stroke: #F7C223;
+      }
+
+      75% {
+        stroke: #1B9A59;
+      }
+
+      100% {
+        stroke: #4285F4;
+      }
+    }
+
+    @-webkit-keyframes dash {
+      0% {
+        stroke-dashoffset: 187;
+      }
+
+      50% {
+        -webkit-transform: rotate(135deg);
+        stroke-dashoffset: 46.75;
+        transform: rotate(135deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(450deg);
+        stroke-dashoffset: 187;
+        transform: rotate(450deg);
+      }
+    }
+
+    @keyframes dash {
+      0% {
+        stroke-dashoffset: 187;
+      }
+
+      50% {
+        -webkit-transform: rotate(135deg);
+        stroke-dashoffset: 46.75;
+        transform: rotate(135deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(450deg);
+        stroke-dashoffset: 187;
+        transform: rotate(450deg);
+      }
+    }
+  </style>
+  <h1>
+    OpenHR
+  </h1>
+  <h3 style="font-style: italic; text-align: center;">
+    Modern, Open Source HR management system
+  </h3>
+  <svg class="c-spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+    <circle class="c-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+  </svg>
+</app-root>
+<noscript>
+  <h1 style="text-align: center;">
+    Sorry, but OpenHR is not available without JavaScript
+  </h1>
+  <h3 style="text-align: center;">
+    Please turn on JavaScript in browser's settings
+  </h3>
+</noscript>
 </body>
 </html>

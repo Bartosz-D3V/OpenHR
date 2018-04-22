@@ -18,9 +18,10 @@ public class WorkerProxyImpl implements WorkerProxy {
   private final ManagerService managerService;
   private final HrService hrService;
 
-  public WorkerProxyImpl(@Lazy final EmployeeService employeeService,
-                         @Lazy final ManagerService managerService,
-                         @Lazy final HrService hrService) {
+  public WorkerProxyImpl(
+      @Lazy final EmployeeService employeeService,
+      @Lazy final ManagerService managerService,
+      @Lazy final HrService hrService) {
     this.employeeService = employeeService;
     this.managerService = managerService;
     this.hrService = hrService;

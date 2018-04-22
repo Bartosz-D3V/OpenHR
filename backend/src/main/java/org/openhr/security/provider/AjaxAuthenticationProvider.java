@@ -1,9 +1,11 @@
 package org.openhr.security.provider;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserContext;
-import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.application.user.service.UserService;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -14,9 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
   private final UserService userService;
@@ -26,7 +25,8 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
   }
 
   @Override
-  public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+  public Authentication authenticate(final Authentication authentication)
+      throws AuthenticationException {
     if (authentication == null) {
       throw new InsufficientAuthenticationException("Authentication was not provided");
     }
@@ -49,10 +49,11 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
     if (user.getUserRoles() == null) {
       throw new InsufficientAuthenticationException("User has no roles");
     }
-    final List<GrantedAuthority> authorities = user.getUserRoles()
-      .stream()
-      .map(authority -> new SimpleGrantedAuthority(authority.getUserRole().getRole()))
-      .collect(Collectors.toList());
+    final List<GrantedAuthority> authorities =
+        user.getUserRoles()
+            .stream()
+            .map(authority -> new SimpleGrantedAuthority(authority.getUserRole().getRole()))
+            .collect(Collectors.toList());
     final UserContext userContext = new UserContext(user.getUsername(), authorities);
 
     return new UsernamePasswordAuthenticationToken(userContext, null, userContext.getAuthorities());

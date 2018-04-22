@@ -7,26 +7,31 @@ import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { LightweightSubjectService } from '@modules/core/core-wrapper/service/lightweight-subject.service';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
 
 @Component({
   selector: 'app-manage-leave-applications',
   templateUrl: './manage-leave-applications.component.html',
   styleUrls: ['./manage-leave-applications.component.scss'],
-  providers: [ManageLeaveApplicationsService, JwtHelperService, NotificationService],
+  providers: [ManageLeaveApplicationsService, LightweightSubjectService, JwtHelperService, NotificationService],
 })
 export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
-
   private $leaveApplications: ISubscription;
+  private $subjects: ISubscription;
+  private subjects: Map<string, LightweightSubject> = new Map<string, LightweightSubject>();
   public leaveApplications: Array<LeaveApplication>;
   public isLoadingResults: boolean;
   public displayedColumns: Array<string> = ['applicationId', 'from', 'to', 'employeeName', 'info', 'reject', 'approve'];
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication>;
 
+  @ViewChild(MatPaginator) private paginator: MatPaginator;
+
   constructor(
     private _manageLeaveApplicationsService: ManageLeaveApplicationsService,
+    private _lightweightSubjectService: LightweightSubjectService,
     private _jwtHelper: JwtHelperService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService
@@ -38,7 +43,16 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.$leaveApplications.unsubscribe();
+    this.unsubscribeAll();
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$leaveApplications) {
+      this.$leaveApplications.unsubscribe();
+    }
+    if (this.$subjects) {
+      this.$subjects.unsubscribe();
+    }
   }
 
   public fetchLeaveApplications(): void {
@@ -83,5 +97,15 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
         this._errorResolver.handleError(httpErrorResponse.error);
       }
     );
+  }
+
+  public getSubjectFullName(subjectId: number): LightweightSubject {
+    if (!this.subjects.has(subjectId.toString())) {
+      this.$subjects = this._lightweightSubjectService.getUser(subjectId).subscribe((res: LightweightSubject) => {
+        this.subjects.set(subjectId.toString(), res);
+        return res;
+      });
+    }
+    return this.subjects.get(subjectId.toString());
   }
 }

@@ -1,10 +1,11 @@
 package org.openhr.application.employee.service;
 
+import java.util.List;
 import org.openhr.application.authentication.service.AuthenticationService;
-import org.openhr.application.employee.repository.EmployeeRepository;
-import org.openhr.application.user.domain.User;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.employee.repository.EmployeeRepository;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.application.user.domain.User;
 import org.openhr.common.enumeration.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,13 +16,21 @@ public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeRepository employeeRepository;
   private final AuthenticationService authenticationService;
 
-  public EmployeeServiceImpl(final EmployeeRepository employeeRepository,
-                             final AuthenticationService authenticationService) {
+  public EmployeeServiceImpl(
+      final EmployeeRepository employeeRepository,
+      final AuthenticationService authenticationService) {
     this.employeeRepository = employeeRepository;
     this.authenticationService = authenticationService;
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Employee> getEmployees() {
+    return employeeRepository.getEmployees();
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Employee getEmployee(final long subjectId) {
     return employeeRepository.getEmployee(subjectId);
   }
@@ -34,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     user.setPassword(encodedPassword);
     user.setUserRoles(authenticationService.setBasicUserRoles(user));
     employee.setRole(Role.EMPLOYEE);
+    employee.setUser(user);
 
     return employeeRepository.createEmployee(employee);
   }

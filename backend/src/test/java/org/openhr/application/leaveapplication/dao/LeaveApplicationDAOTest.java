@@ -1,5 +1,8 @@
 package org.openhr.application.leaveapplication.dao;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
@@ -22,35 +25,42 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LeaveApplicationDAOTest {
-  private final Address mockAddress = new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London",
-    "UK");
-  private final PersonalInformation mockPersonalInformation = new PersonalInformation("John", "Alex", null, null);
-  private final ContactInformation mockContactInformation = new ContactInformation("0123456789", "j.x@g.com",
-    mockAddress);
-  private final EmployeeInformation mockEmployeeInformation = new EmployeeInformation("S8821 B", "Tester",
-    "Core", "12A", null, null);
+  private final Address mockAddress =
+      new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London", "UK");
+  private final PersonalInformation mockPersonalInformation =
+      new PersonalInformation("John", "Alex", null, null);
+  private final ContactInformation mockContactInformation =
+      new ContactInformation("0123456789", "j.x@g.com", mockAddress);
+  private final EmployeeInformation mockEmployeeInformation =
+      new EmployeeInformation("S8821 B", "Tester", "Core", "12A", null, null);
   private final HrInformation mockHrInformation = new HrInformation(25L);
-  private final Employee mockEmployee = new Employee(mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck40", "testPass"));
-  private final Manager mockManager = new Manager(mockPersonalInformation,
-    mockContactInformation, mockEmployeeInformation, mockHrInformation, new User("Mck42", "testPass"));
-  private final LeaveApplication mockLeaveApplication = new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
-  private final LeaveType leaveType = new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
+  private final Employee mockEmployee =
+      new Employee(
+          mockPersonalInformation,
+          mockContactInformation,
+          mockEmployeeInformation,
+          mockHrInformation,
+          new User("Mck40", "testPass"));
+  private final Manager mockManager =
+      new Manager(
+          mockPersonalInformation,
+          mockContactInformation,
+          mockEmployeeInformation,
+          mockHrInformation,
+          new User("Mck42", "testPass"));
+  private final LeaveApplication mockLeaveApplication =
+      new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));
+  private final LeaveType leaveType =
+      new LeaveType("Annual Leave", "Just a annual leave you've waited for!");
 
-  @Autowired
-  private SessionFactory sessionFactory;
+  @Autowired private SessionFactory sessionFactory;
 
-  @Autowired
-  private LeaveApplicationDAO leaveApplicationDAO;
+  @Autowired private LeaveApplicationDAO leaveApplicationDAO;
 
   @Before
   public void setUp() {
@@ -73,14 +83,17 @@ public class LeaveApplicationDAOTest {
     final Session session = sessionFactory.getCurrentSession();
     mockLeaveApplication.setSubject(mockEmployee);
     session.save(mockLeaveApplication);
-    final LeaveApplication actualLeaveApplication = leaveApplicationDAO.
-      getLeaveApplication(mockLeaveApplication.getApplicationId());
+    final LeaveApplication actualLeaveApplication =
+        leaveApplicationDAO.getLeaveApplication(mockLeaveApplication.getApplicationId());
 
-    assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
+    assertEquals(
+        mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
     assertEquals(mockLeaveApplication.getEndDate(), actualLeaveApplication.getEndDate());
     assertEquals(mockLeaveApplication.getMessage(), actualLeaveApplication.getMessage());
-    assertEquals(mockLeaveApplication.getLeaveType().getLeaveTypeId(), actualLeaveApplication.getLeaveType().getLeaveTypeId());
+    assertEquals(
+        mockLeaveApplication.getLeaveType().getLeaveTypeId(),
+        actualLeaveApplication.getLeaveType().getLeaveTypeId());
   }
 
   @Test(expected = ApplicationDoesNotExistException.class)
@@ -93,20 +106,26 @@ public class LeaveApplicationDAOTest {
     final Session session = sessionFactory.getCurrentSession();
     leaveApplicationDAO.createLeaveApplication(mockEmployee, mockLeaveApplication);
     final LeaveApplication actualLeaveApplication =
-      session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
+        session.get(LeaveApplication.class, mockLeaveApplication.getApplicationId());
 
-    assertEquals(mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
+    assertEquals(
+        mockLeaveApplication.getApplicationId(), actualLeaveApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualLeaveApplication.getStartDate());
     assertEquals(mockLeaveApplication.getEndDate(), actualLeaveApplication.getEndDate());
     assertEquals(mockLeaveApplication.getMessage(), actualLeaveApplication.getMessage());
-    assertEquals(mockLeaveApplication.getLeaveType().getLeaveTypeId(), actualLeaveApplication.getLeaveType().getLeaveTypeId());
-    assertEquals(mockLeaveApplication.isApprovedByManager(), actualLeaveApplication.isApprovedByManager());
+    assertEquals(
+        mockLeaveApplication.getLeaveType().getLeaveTypeId(),
+        actualLeaveApplication.getLeaveType().getLeaveTypeId());
+    assertEquals(
+        mockLeaveApplication.isApprovedByManager(), actualLeaveApplication.isApprovedByManager());
     assertEquals(mockLeaveApplication.isApprovedByHR(), actualLeaveApplication.isApprovedByHR());
-    assertEquals(mockLeaveApplication.getProcessInstanceId(), actualLeaveApplication.getProcessInstanceId());
+    assertEquals(
+        mockLeaveApplication.getProcessInstanceId(), actualLeaveApplication.getProcessInstanceId());
   }
 
   @Test
-  public void updateLeaveApplicationShouldUpdateApplication() throws ApplicationDoesNotExistException {
+  public void updateLeaveApplicationShouldUpdateApplication()
+      throws ApplicationDoesNotExistException {
     mockLeaveApplication.setStartDate(LocalDate.of(2018, 5, 5));
     mockLeaveApplication.setEndDate(LocalDate.of(2018, 5, 10));
     mockLeaveApplication.setApprovedByManager(true);
@@ -114,21 +133,25 @@ public class LeaveApplicationDAOTest {
 
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockLeaveApplication);
-    final LeaveApplication actualUpdatedApplication = leaveApplicationDAO
-      .updateLeaveApplication(mockLeaveApplication.getApplicationId(), mockLeaveApplication);
+    final LeaveApplication actualUpdatedApplication =
+        leaveApplicationDAO.updateLeaveApplication(
+            mockLeaveApplication.getApplicationId(), mockLeaveApplication);
 
-    assertEquals(mockLeaveApplication.getApplicationId(), actualUpdatedApplication.getApplicationId());
+    assertEquals(
+        mockLeaveApplication.getApplicationId(), actualUpdatedApplication.getApplicationId());
     assertEquals(mockLeaveApplication.getStartDate(), actualUpdatedApplication.getStartDate());
     assertEquals(mockLeaveApplication.getEndDate(), actualUpdatedApplication.getEndDate());
     assertEquals(mockLeaveApplication.getMessage(), actualUpdatedApplication.getMessage());
     assertEquals(mockLeaveApplication.getLeaveType(), actualUpdatedApplication.getLeaveType());
-    assertEquals(mockLeaveApplication.isApprovedByManager(), actualUpdatedApplication.isApprovedByManager());
+    assertEquals(
+        mockLeaveApplication.isApprovedByManager(), actualUpdatedApplication.isApprovedByManager());
     assertEquals(mockLeaveApplication.isApprovedByHR(), actualUpdatedApplication.isApprovedByHR());
   }
 
   @Test(expected = ApplicationDoesNotExistException.class)
   public void updateLeaveApplicationShouldHandle404Error() throws ApplicationDoesNotExistException {
     final LeaveApplication leaveApplication = new LeaveApplication();
-    leaveApplicationDAO.updateLeaveApplication(leaveApplication.getApplicationId(), leaveApplication);
+    leaveApplicationDAO.updateLeaveApplication(
+        leaveApplication.getApplicationId(), leaveApplication);
   }
 }

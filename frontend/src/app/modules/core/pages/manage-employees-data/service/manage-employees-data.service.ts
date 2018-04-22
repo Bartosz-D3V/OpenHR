@@ -12,12 +12,11 @@ export class ManageEmployeesDataService {
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
 
-  public getEmployees(): Observable<Array<Employee>> {
+  public getManagerEmployees(): Observable<Array<Employee>> {
     return this._http.get<Array<Employee>>(`${this.url}/${this._jwtHelper.getSubjectId()}/employees`, {
       headers: this.headers,
     });

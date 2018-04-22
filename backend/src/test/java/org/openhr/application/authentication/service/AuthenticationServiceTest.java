@@ -1,5 +1,9 @@
 package org.openhr.application.authentication.service;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
@@ -9,17 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AuthenticationServiceTest {
 
-  @Autowired
-  private AuthenticationService authenticationService;
+  @Autowired private AuthenticationService authenticationService;
 
   @Test
   public void encodePasswordShouldCreateValidBCryptCiphertext() {

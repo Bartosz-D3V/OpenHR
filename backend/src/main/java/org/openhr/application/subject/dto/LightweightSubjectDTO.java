@@ -6,6 +6,7 @@ public class LightweightSubjectDTO implements Serializable {
   private long subjectId;
   private String firstName;
   private String lastName;
+  private String position;
 
   public LightweightSubjectDTO() {
     super();
@@ -33,5 +34,13 @@ public class LightweightSubjectDTO implements Serializable {
 
   public void setLastName(final String lastName) {
     this.lastName = lastName;
+  }
+
+  public String getPosition() {
+    return position;
+  }
+
+  public void setPosition(final String position) {
+    this.position = position;
   }
 }

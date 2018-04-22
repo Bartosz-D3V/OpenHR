@@ -13,7 +13,6 @@ export class DelegationService {
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
@@ -27,6 +26,14 @@ export class DelegationService {
   public createDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
     const params: HttpParams = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
     return this._http.post<DelegationApplication>(this.url, application, {
+      params: params,
+      headers: this.headers,
+    });
+  }
+
+  public updateDelegationApplication(application: DelegationApplication): Observable<DelegationApplication> {
+    const params: HttpParams = new HttpParams().set('processInstanceId', application.processInstanceId);
+    return this._http.put<DelegationApplication>(this.url, application, {
       params: params,
       headers: this.headers,
     });

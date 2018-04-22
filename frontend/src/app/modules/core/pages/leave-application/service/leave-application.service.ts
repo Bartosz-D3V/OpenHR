@@ -13,7 +13,6 @@ export class LeaveApplicationService {
   private readonly headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: 'Bearer-' + this._jwtHelper.getToken(),
   });
 
   constructor(private _http: HttpClient, private _jwtHelper: JwtHelperService) {}
@@ -27,8 +26,8 @@ export class LeaveApplicationService {
   public submitLeaveApplication(leaveApplication: LeaveApplication): Observable<LeaveApplication> {
     const params = new HttpParams().set('subjectId', this._jwtHelper.getSubjectId().toString());
     return this._http.post<LeaveApplication>(this.url, leaveApplication, {
-      params: params,
       headers: this.headers,
+      params: params,
     });
   }
 }

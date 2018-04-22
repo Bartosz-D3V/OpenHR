@@ -1,11 +1,13 @@
 package org.openhr.application.user.repository;
 
+import static org.hibernate.criterion.Restrictions.eq;
+
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
-import org.hibernate.transform.Transformers;
 import org.openhr.application.user.dao.UserDAO;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.subject.Subject;
@@ -17,10 +19,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static org.hibernate.criterion.Restrictions.eq;
-
 @Repository
 @Transactional
 public class UserRepository {
@@ -28,10 +26,14 @@ public class UserRepository {
   private final SessionFactory sessionFactory;
   private final UserDAO userDAO;
 
-  public UserRepository(final SessionFactory sessionFactory,
-                        final UserDAO userDAO) {
+  public UserRepository(final SessionFactory sessionFactory, final UserDAO userDAO) {
     this.sessionFactory = sessionFactory;
     this.userDAO = userDAO;
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUser(final long userId) {
+    return userDAO.getUser(userId);
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -39,13 +41,15 @@ public class UserRepository {
     User user;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      user = (User) session
-        .createCriteria(Subject.class)
-        .add(eq("subjectId", subjectId))
-        .setProjection(Projections.property("user"))
-        .setReadOnly(true)
-        .setCacheable(true)
-        .uniqueResult();
+      user =
+          (User)
+              session
+                  .createCriteria(Subject.class)
+                  .add(eq("subjectId", subjectId))
+                  .setProjection(Projections.property("user"))
+                  .setReadOnly(true)
+                  .setCacheable(true)
+                  .uniqueResult();
       session.flush();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
@@ -60,10 +64,7 @@ public class UserRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
-      user = (User) criteria
-        .add(eq("username", username))
-        .setMaxResults(1)
-        .uniqueResult();
+      user = (User) criteria.add(eq("username", username)).setMaxResults(1).uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -83,10 +84,12 @@ public class UserRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
-      userId = (long) criteria
-        .setProjection(Projections.property("userId"))
-        .add(eq("username", username))
-        .uniqueResult();
+      userId =
+          (long)
+              criteria
+                  .setProjection(Projections.property("userId"))
+                  .add(eq("username", username))
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -106,10 +109,12 @@ public class UserRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
-      encodedPassword = (String) criteria
-        .setProjection(Projections.property("password"))
-        .add(eq("userId", userId))
-        .uniqueResult();
+      encodedPassword =
+          (String)
+              criteria
+                  .setProjection(Projections.property("password"))
+                  .add(eq("userId", userId))
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -128,10 +133,8 @@ public class UserRepository {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(User.class);
-      usernamesInUse = criteria
-        .setProjection(Projections.property("username"))
-        .setReadOnly(true)
-        .list();
+      usernamesInUse =
+          criteria.setProjection(Projections.property("username")).setReadOnly(true).list();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -145,11 +148,14 @@ public class UserRepository {
     long subjectId;
     try {
       final Session session = sessionFactory.getCurrentSession();
-      subjectId = (long) session.createCriteria(Subject.class)
-        .setProjection(Projections.property("subjectId"))
-        .createCriteria("user")
-        .add(eq("username", username))
-        .uniqueResult();
+      subjectId =
+          (long)
+              session
+                  .createCriteria(Subject.class)
+                  .setProjection(Projections.property("subjectId"))
+                  .createCriteria("user")
+                  .add(eq("username", username))
+                  .uniqueResult();
     } catch (final HibernateException e) {
       log.error(e.getLocalizedMessage());
       throw e;
@@ -161,5 +167,12 @@ public class UserRepository {
     }
 
     return subjectId;
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void updateNotificationsSettings(final long userId, final boolean notificationsTurnedOn) {
+    final User user = getUserBySubjectId(userId);
+    user.setNotificationsTurnedOn(notificationsTurnedOn);
+    userDAO.updateUser(userId, user);
   }
 }

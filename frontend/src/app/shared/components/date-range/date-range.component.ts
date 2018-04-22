@@ -36,6 +36,8 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Input() public mobileFlexProperty?: number;
 
+  @Input() public showDescription?;
+
   @Input() public startDate?: MomentInput;
 
   @Input() public endDate?: MomentInput;
@@ -71,9 +73,19 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.$startDateChange.unsubscribe();
-    this.$endDateChange.unsubscribe();
-    this.$bankHolidays.unsubscribe();
+    this.unsubscribeAll();
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$startDateChange !== undefined) {
+      this.$startDateChange.unsubscribe();
+    }
+    if (this.$endDateChange !== undefined) {
+      this.$endDateChange.unsubscribe();
+    }
+    if (this.$bankHolidays !== undefined) {
+      this.$bankHolidays.unsubscribe();
+    }
   }
 
   private setValidators(): void {

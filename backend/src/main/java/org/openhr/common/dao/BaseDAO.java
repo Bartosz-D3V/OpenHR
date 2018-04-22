@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Abstract class that shall replace repetitive, simple Hibernate queries.
- */
+/** Abstract class that shall replace repetitive, simple Hibernate queries. */
 @Transactional
 public abstract class BaseDAO {
   private final SessionFactory sessionFactory;
