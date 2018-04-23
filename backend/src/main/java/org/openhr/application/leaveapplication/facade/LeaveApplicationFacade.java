@@ -1,6 +1,5 @@
 package org.openhr.application.leaveapplication.facade;
 
-import java.io.IOException;
 import java.util.List;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
@@ -36,7 +35,4 @@ public interface LeaveApplicationFacade {
   List<LeaveApplication> getAwaitingForActionLeaveApplications(long subjectId);
 
   List<LeaveType> getLeaveTypes();
-
-  byte[] getLeaveApplicationICSFile(long leaveApplicationId)
-      throws ApplicationDoesNotExistException, IOException;
 }

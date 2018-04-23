@@ -65,6 +65,19 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     );
   }
 
+  public downloadICS(applicationId: number): void {
+    this.$leaveApplications = this._myApplications.downloadICS(applicationId).subscribe(
+      (data: Response) => {
+        const blob: Blob = new Blob([data], { type: 'text/calendar' });
+        const url: string = window.URL.createObjectURL(blob);
+        window.open(url);
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
   public applicationIsRejected(application: Application): boolean {
     return application.terminated && !(application.approvedByManager || application.approvedByHR);
   }

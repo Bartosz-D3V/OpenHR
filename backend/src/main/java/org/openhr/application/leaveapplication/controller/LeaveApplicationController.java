@@ -1,6 +1,5 @@
 package org.openhr.application.leaveapplication.controller;
 
-import java.io.IOException;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -128,18 +127,6 @@ public class LeaveApplicationController {
   public List<LeaveApplication> getAwaitingForActionLeaveApplications(
       @RequestParam final long subjectId) {
     return leaveApplicationFacade.getAwaitingForActionLeaveApplications(subjectId);
-  }
-
-  @RequestMapping(
-    value = "/{leaveApplicationId}/ics",
-    method = RequestMethod.GET,
-    produces = {"text/calendar"}
-  )
-  @ResponseBody
-  @ResponseStatus(HttpStatus.OK)
-  public byte[] getLeaveApplicationICSFile(@PathVariable final long leaveApplicationId)
-      throws ApplicationDoesNotExistException, IOException {
-    return leaveApplicationFacade.getLeaveApplicationICSFile(leaveApplicationId);
   }
 
   @RequestMapping(

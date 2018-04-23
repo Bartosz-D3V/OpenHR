@@ -1,6 +1,5 @@
 package org.openhr.application.leaveapplication.facade;
 
-import java.io.IOException;
 import java.util.List;
 import org.openhr.application.leaveapplication.command.LeaveApplicationCommand;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -131,11 +130,5 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveType> getLeaveTypes() {
     return leaveApplicationService.getLeaveTypes();
-  }
-
-  @Override
-  public byte[] getLeaveApplicationICSFile(final long leaveApplicationId)
-      throws ApplicationDoesNotExistException, IOException {
-    return leaveApplicationService.getLeaveApplicationICSFile(leaveApplicationId);
   }
 }
