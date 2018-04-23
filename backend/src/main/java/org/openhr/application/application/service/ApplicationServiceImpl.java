@@ -30,7 +30,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     final Application application = applicationRepository.getApplication(applicationId);
     final LocalDateRange dateRange =
         new LocalDateRange(application.getStartDate(), application.getEndDate());
-    final Calendar calendar = icsService.createStartEndDateEvents(dateRange, "TEMP");
+    final Calendar calendar =
+        icsService.createStartEndDateEvents(dateRange, getApplicationDescription(applicationId));
     return StreamUtil.createFile(icsService.getICSAsBytes(calendar));
+  }
+
+  private String getApplicationDescription(final long applicationId)
+      throws ApplicationDoesNotExistException {
+    final Application application = applicationRepository.getApplication(applicationId);
+    switch (application.getApplicationType()) {
+      case LEAVE_APPLICATION:
+        return "Leave application";
+      case DELEGATION_APPLICATION:
+        return "Delegation";
+    }
+    return null;
   }
 }
