@@ -32,13 +32,11 @@ export class MyApplicationsService {
     });
   }
 
-  public downloadICS(applicationId: number): Observable<HttpResponse> {
+  public downloadICS(applicationId: number): Observable<HttpResponse<Array<number>>> {
     const headers: HttpHeaders = new HttpHeaders({
       Accept: 'text/calendar',
     });
-    return this._http.get<HttpResponse>(`${this.baseUrl}/applications/${applicationId}/ics`, {
-      headers: headers,
-      responseType: 'text/calendar',
-    });
+    const options: Object = { headers, responseType: 'text/calendar' as 'text/calendar' };
+    return this._http.get<HttpResponse<Array<number>>>(`${this.baseUrl}/applications/${applicationId}/ics`, options);
   }
 }
