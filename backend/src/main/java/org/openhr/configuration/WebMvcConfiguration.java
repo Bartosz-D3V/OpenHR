@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
-public class WebMvcConfiguration {
+public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
   @Value("${app.turnOff.cors}")
   private boolean proxyOff;
 
@@ -24,5 +26,11 @@ public class WebMvcConfiguration {
         }
       }
     };
+  }
+
+  @Override
+  public void addInterceptors(final InterceptorRegistry registry) {
+    registry.addInterceptor(new LocaleChangeInterceptor());
+    super.addInterceptors(registry);
   }
 }
