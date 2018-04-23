@@ -1,7 +1,6 @@
 package org.openhr.application.ics.service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import net.fortuna.ical4j.data.CalendarOutputter;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class IcsServiceImpl implements IcsService {
   private static final String prodId = "-//OpenHR//iCal4j 1.0//EN";
-  private static final String icsExtension = ".ics";
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   @Override
@@ -50,16 +48,5 @@ public class IcsServiceImpl implements IcsService {
       log.error(e.getLocalizedMessage());
     }
     return buffer.toByteArray();
-  }
-
-  public void generateIcsFile(final Calendar calendar, final VEvent event) {
-    final String fileName = String.valueOf(event.getDescription()) + icsExtension;
-    final CalendarOutputter calendarOutputter = new CalendarOutputter();
-    try {
-      final FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-      calendarOutputter.output(calendar, fileOutputStream);
-    } catch (final IOException e) {
-      log.error(e.getLocalizedMessage());
-    }
   }
 }

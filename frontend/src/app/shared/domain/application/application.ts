@@ -1,5 +1,7 @@
 import { MomentInput } from 'moment';
 
+import { ApplicationType } from '@shared/constants/enumeration/application-type';
+
 export abstract class Application {
   public applicationId: number;
   public startDate: MomentInput;
@@ -8,6 +10,7 @@ export abstract class Application {
   public approvedByHR: boolean;
   public terminated: boolean;
   public processInstanceId: string;
+  public applicationType?: ApplicationType;
   public subjectId?: number;
 
   protected constructor(

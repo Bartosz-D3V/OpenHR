@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.openhr.common.domain.application.Application;
 import org.openhr.common.domain.country.Country;
+import org.openhr.common.enumeration.ApplicationType;
 
 @Entity
 @Table(name = "DELEGATION_APPLICATION")
@@ -18,10 +19,12 @@ public class DelegationApplication extends Application implements Serializable {
 
   public DelegationApplication() {
     super();
+    super.applicationType = ApplicationType.DELEGATION_APPLICATION;
   }
 
   public DelegationApplication(final LocalDate startDate, final LocalDate endDate) {
     super(startDate, endDate);
+    super.applicationType = ApplicationType.DELEGATION_APPLICATION;
   }
 
   public Country getCountry() {
