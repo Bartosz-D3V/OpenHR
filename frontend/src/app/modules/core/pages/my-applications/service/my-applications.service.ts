@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
@@ -32,12 +32,11 @@ export class MyApplicationsService {
     });
   }
 
-  public downloadICS(applicationId: number): Observable<Response> {
+  public downloadICS(applicationId: number): Observable<HttpResponse<Array<number>>> {
     const headers: HttpHeaders = new HttpHeaders({
       Accept: 'text/calendar',
     });
-    return this._http.get<Response>(`${this.baseUrl}/applications/${applicationId}/ics`, {
-      headers: headers,
-    });
+    const options: Object = { headers, responseType: 'text/calendar' as 'text/calendar' };
+    return this._http.get<HttpResponse<Array<number>>>(`${this.baseUrl}/applications/${applicationId}/ics`, options);
   }
 }

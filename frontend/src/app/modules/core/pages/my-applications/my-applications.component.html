@@ -36,7 +36,7 @@
         <mat-header-cell *matHeaderCellDef>ICS</mat-header-cell>
         <mat-cell *matCellDef="let application">
           <button mat-icon-button color="accent" [disabled]="!application.terminated"
-                  (click)="downloadICS(application.applicationId)">
+                  (click)="downloadICS(application.applicationId)" download="event.ics">
             <mat-icon class="mat-24">event</mat-icon>
           </button>
         </mat-cell>
