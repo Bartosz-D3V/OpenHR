@@ -2,6 +2,7 @@ package org.openhr.application.leaveapplication.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -9,6 +10,7 @@ import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +20,15 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   private final LeaveApplicationRepository leaveApplicationRepository;
   private final SubjectService subjectService;
+  private final MessageSource messageSource;
 
   public LeaveApplicationServiceImpl(
       final LeaveApplicationRepository leaveApplicationRepository,
-      final SubjectService subjectService) {
+      final SubjectService subjectService,
+      final MessageSource messageSource) {
     this.leaveApplicationRepository = leaveApplicationRepository;
     this.subjectService = subjectService;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -57,13 +62,16 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     final LocalDate startDate = leaveApplication.getStartDate();
     final LocalDate endDate = leaveApplication.getEndDate();
     if (startDate.isAfter(endDate)) {
-      throw new ValidationException("Provided dates are not valid");
+      throw new ValidationException(
+          messageSource.getMessage(
+              "error.validation.daterangenotvalid", null, Locale.getDefault()));
     }
   }
 
   private void validateLeftAllowance(final Subject subject) throws ValidationException {
     if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
-      throw new ValidationException("No leave allowance left");
+      throw new ValidationException(
+          messageSource.getMessage("error.validation.noleftallowance", null, Locale.getDefault()));
     }
   }
 
