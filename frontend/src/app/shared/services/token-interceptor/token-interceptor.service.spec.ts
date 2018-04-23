@@ -1,9 +1,9 @@
 import { TestBed, fakeAsync } from '@angular/core/testing';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { TokenInterceptorService } from './token-interceptor.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('TokenInterceptorService', () => {
   let service: TokenInterceptorService;

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
-import { LeaveApplication } from '@shared//domain/application/leave-application';
+import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
 
 @Injectable()
@@ -29,6 +29,15 @@ export class MyApplicationsService {
     return this._http.get<Array<DelegationApplication>>(`${this.baseUrl}/delegations`, {
       params: params,
       headers: this.headers,
+    });
+  }
+
+  public downloadICS(applicationId: number): Observable<Response> {
+    const headers: HttpHeaders = new HttpHeaders({
+      Accept: 'text/calendar',
+    });
+    return this._http.get<Response>(`${this.baseUrl}/applications/${applicationId}/ics`, {
+      headers: headers,
     });
   }
 }

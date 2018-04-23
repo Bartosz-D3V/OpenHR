@@ -1,10 +1,7 @@
 package org.openhr.application.leaveapplication.service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import net.fortuna.ical4j.model.Calendar;
-import org.openhr.application.ics.service.IcsService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -12,8 +9,6 @@ import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
-import org.openhr.common.util.iterable.LocalDateRange;
-import org.openhr.common.util.stream.StreamUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,15 +18,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   private final LeaveApplicationRepository leaveApplicationRepository;
   private final SubjectService subjectService;
-  private final IcsService icsService;
 
   public LeaveApplicationServiceImpl(
       final LeaveApplicationRepository leaveApplicationRepository,
-      final SubjectService subjectService,
-      final IcsService icsService) {
+      final SubjectService subjectService) {
     this.leaveApplicationRepository = leaveApplicationRepository;
     this.subjectService = subjectService;
-    this.icsService = icsService;
   }
 
   @Override
@@ -171,17 +163,5 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
     return leaveApplicationRepository.getLeaveApplicationIdByProcessId(processInstanceId);
-  }
-
-  @Override
-  public byte[] getLeaveApplicationICSFile(final long leaveApplicationId)
-      throws ApplicationDoesNotExistException, IOException {
-    final LeaveApplication leaveApplication = getLeaveApplication(leaveApplicationId);
-    final LocalDateRange dateRange =
-        new LocalDateRange(leaveApplication.getStartDate(), leaveApplication.getEndDate());
-    final Calendar calendar =
-        icsService.createStartEndDateEvents(
-            dateRange, leaveApplication.getLeaveType().getDescription());
-    return StreamUtil.createFile(icsService.getICSAsBytes(calendar));
   }
 }
