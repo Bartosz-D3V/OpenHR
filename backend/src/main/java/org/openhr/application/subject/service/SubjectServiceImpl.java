@@ -1,6 +1,7 @@
 package org.openhr.application.subject.service;
 
 import java.util.List;
+import java.util.Locale;
 import org.hibernate.HibernateException;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -14,6 +15,7 @@ import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.openhr.common.proxy.worker.WorkerProxy;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +25,17 @@ public class SubjectServiceImpl implements SubjectService {
   private final SubjectRepository subjectRepository;
   private final WorkerProxy workerProxy;
   private final HolidayService holidayService;
+  private final MessageSource messageSource;
 
   public SubjectServiceImpl(
       final SubjectRepository subjectRepository,
       final WorkerProxy workerProxy,
-      final HolidayService holidayService) {
+      final HolidayService holidayService,
+      final MessageSource messageSource) {
     this.subjectRepository = subjectRepository;
     this.workerProxy = workerProxy;
     this.holidayService = holidayService;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -111,10 +116,13 @@ public class SubjectServiceImpl implements SubjectService {
             leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long newUsedAllowance = getUsedAllowance(subject.getSubjectId()) + allowanceToSubtract;
     if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
-      throw new ValidationException("Not enough leave allowance");
+      throw new ValidationException(
+          messageSource.getMessage(
+              "error.validation.notenoughleaveallowance", null, Locale.getDefault()));
     }
     if (allowanceToSubtract > getLeftAllowanceInDays(subject.getSubjectId())) {
-      throw new ValidationException("Leave is too long");
+      throw new ValidationException(
+          messageSource.getMessage("error.validation.leavetoolong", null, Locale.getDefault()));
     }
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
     subjectRepository.updateSubjectHRInformation(

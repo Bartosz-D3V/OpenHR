@@ -1,6 +1,7 @@
 package org.openhr.application.subject.repository;
 
 import java.util.List;
+import java.util.Locale;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -18,6 +19,7 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +30,15 @@ public class SubjectRepository {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final SessionFactory sessionFactory;
   private final SubjectDAO subjectDAO;
+  private final MessageSource messageSource;
 
-  public SubjectRepository(final SessionFactory sessionFactory, final SubjectDAO subjectDAO) {
+  public SubjectRepository(
+      final SessionFactory sessionFactory,
+      final SubjectDAO subjectDAO,
+      final MessageSource messageSource) {
     this.sessionFactory = sessionFactory;
     this.subjectDAO = subjectDAO;
+    this.messageSource = messageSource;
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -114,7 +121,8 @@ public class SubjectRepository {
       throw e;
     }
     if (lightweightSubjectDTO == null) {
-      throw new SubjectDoesNotExistException("Subject could not be found");
+      throw new SubjectDoesNotExistException(
+          messageSource.getMessage("error.subjectdoesnotexist", null, Locale.getDefault()));
     }
 
     return lightweightSubjectDTO;
