@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -58,6 +58,19 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
         this.resultsLength = applications.length;
         this.dataSource.data = applications;
         this.dataSource.paginator = this.paginator;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public downloadICS(applicationId: number): void {
+    this.$leaveApplications = this._myApplications.downloadICS(applicationId).subscribe(
+      (data: HttpResponse<any>) => {
+        const blob: Blob = new Blob([data], { type: 'text/calendar' });
+        const url: string = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);

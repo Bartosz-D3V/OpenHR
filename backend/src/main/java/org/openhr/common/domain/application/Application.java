@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -19,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.enumeration.ApplicationType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -56,6 +59,10 @@ public abstract class Application implements Serializable {
   @Column(name = "PROCESS_INSTANCE_ID")
   private String processInstanceId;
 
+  @Column(name = "TYPE", updatable = false, nullable = false)
+  @Enumerated(EnumType.STRING)
+  protected ApplicationType applicationType;
+
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(optional = false)
   @JoinColumn(name = "APPLICANT_FK")
@@ -69,11 +76,11 @@ public abstract class Application implements Serializable {
   @JsonIgnore
   private Subject assignee;
 
-  public Application() {
+  protected Application() {
     super();
   }
 
-  public Application(final LocalDate startDate, final LocalDate endDate) {
+  protected Application(final LocalDate startDate, final LocalDate endDate) {
     this.startDate = startDate;
     this.endDate = endDate;
   }
@@ -134,6 +141,10 @@ public abstract class Application implements Serializable {
     this.processInstanceId = processInstanceId;
   }
 
+  public ApplicationType getApplicationType() {
+    return applicationType;
+  }
+
   public Subject getSubject() {
     return subject;
   }
@@ -148,31 +159,5 @@ public abstract class Application implements Serializable {
 
   public void setAssignee(final Subject assignee) {
     this.assignee = assignee;
-  }
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Application)) return false;
-
-    final Application that = (Application) o;
-
-    return getApplicationId() == that.getApplicationId()
-        && isApprovedByManager() == that.isApprovedByManager()
-        && isApprovedByHR() == that.isApprovedByHR()
-        && isTerminated() == that.isTerminated()
-        && (getStartDate() != null
-            ? getStartDate().equals(that.getStartDate())
-            : that.getStartDate() == null)
-        && (getEndDate() != null
-            ? getEndDate().equals(that.getEndDate())
-            : that.getEndDate() == null)
-        && (getProcessInstanceId() != null
-            ? getProcessInstanceId().equals(that.getProcessInstanceId())
-            : that.getProcessInstanceId() == null)
-        && getSubject().equals(that.getSubject())
-        && (getAssignee() != null
-            ? getAssignee().equals(that.getAssignee())
-            : that.getAssignee() == null);
   }
 }

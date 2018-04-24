@@ -10,20 +10,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class LocalDateUtilTest {
+public class DateRangeUtilTest {
   private static final LocalDate mockDate1 = LocalDate.of(2020, 1, 1);
   private static final LocalDate mockDate2 = LocalDate.of(2020, 1, 10);
 
   @Test
   public void diffDaysShouldReturnDifferenceBetweenDatesExcludingStartDate() {
-    final long diff = LocalDateUtil.diffDaysInclEnd(mockDate1, mockDate2);
+    final long diff = DateRangeUtil.diffDaysInclEnd(mockDate1, mockDate2);
 
     assertEquals(9, diff);
   }
 
   @Test
   public void diffDaysInclBothShouldReturnDifferenceBetweenDatesIncludingStartAndEndDate() {
-    final long diff = LocalDateUtil.diffDaysInclBoth(mockDate1, mockDate2);
+    final long diff = DateRangeUtil.diffDaysInclBoth(mockDate1, mockDate2);
 
     assertEquals(10, diff);
   }
@@ -37,9 +37,9 @@ public class LocalDateUtilTest {
     final LocalDate mockDate5 = LocalDate.of(2018, 2, 4);
     final LocalDate mockDate6 = LocalDate.of(2018, 2, 18);
 
-    assertEquals(2, LocalDateUtil.getWeekendDaysBetween(mockDate1, mockDate2));
-    assertEquals(2, LocalDateUtil.getWeekendDaysBetween(mockDate3, mockDate4));
-    assertEquals(0, LocalDateUtil.getWeekendDaysBetween(mockDate1, mockDate1));
-    assertEquals(5, LocalDateUtil.getWeekendDaysBetween(mockDate5, mockDate6));
+    assertEquals(2, DateRangeUtil.getWeekendDaysBetween(mockDate1, mockDate2));
+    assertEquals(2, DateRangeUtil.getWeekendDaysBetween(mockDate3, mockDate4));
+    assertEquals(0, DateRangeUtil.getWeekendDaysBetween(mockDate1, mockDate1));
+    assertEquals(5, DateRangeUtil.getWeekendDaysBetween(mockDate5, mockDate6));
   }
 }
