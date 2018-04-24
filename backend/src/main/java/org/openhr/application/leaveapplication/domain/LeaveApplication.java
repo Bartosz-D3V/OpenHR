@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.openhr.common.domain.application.Application;
+import org.openhr.common.enumeration.ApplicationType;
 
 @Entity
 @Table(name = "LEAVE_APPLICATION")
@@ -26,10 +27,12 @@ public class LeaveApplication extends Application implements Serializable {
 
   public LeaveApplication() {
     super();
+    super.applicationType = ApplicationType.LEAVE_APPLICATION;
   }
 
   public LeaveApplication(final LocalDate startDate, final LocalDate endDate) {
     super(startDate, endDate);
+    super.applicationType = ApplicationType.LEAVE_APPLICATION;
   }
 
   public String getMessage() {

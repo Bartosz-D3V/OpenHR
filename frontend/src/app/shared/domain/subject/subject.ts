@@ -14,7 +14,7 @@ export abstract class Subject {
   public role: Role;
   public user?: User;
 
-  constructor(
+  protected constructor(
     personalInformation: PersonalInformation,
     contactInformation: ContactInformation,
     employeeInformation: EmployeeInformation,

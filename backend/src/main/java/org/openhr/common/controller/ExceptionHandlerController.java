@@ -1,5 +1,6 @@
 package org.openhr.common.controller;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.HibernateException;
 import org.openhr.common.domain.error.ErrorInfo;
@@ -67,6 +68,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ExceptionHandler(javax.validation.ValidationException.class)
   public ErrorInfo handleJavaEEValidationException(
       final HttpServletRequest req, final Exception ex) {
+    return new ErrorInfo(req.getRequestURL().toString(), ex);
+  }
+
+  @ResponseBody
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(IOException.class)
+  public ErrorInfo handleIOException(final HttpServletRequest req, final Exception ex) {
     return new ErrorInfo(req.getRequestURL().toString(), ex);
   }
 }
