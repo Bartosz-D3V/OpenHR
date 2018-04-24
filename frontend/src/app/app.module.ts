@@ -12,7 +12,6 @@ import { CoreModule } from '@modules/core/core.module';
 import { LandingModule } from '@modules/landing/landing.module';
 import { SettingsModule } from '@modules/settings/settings.module';
 import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
-import { FooterComponent } from '@shared/components/footer/footer.component';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { TokenInterceptorService } from '@shared/services/token-interceptor/token-interceptor.service';
@@ -20,7 +19,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent],
+  declarations: [AppComponent],
   imports: [
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     BrowserModule,
