@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { Application } from '@shared/domain/application/application';
 import { ApplicationType } from '@shared/constants/enumeration/application-type';
 

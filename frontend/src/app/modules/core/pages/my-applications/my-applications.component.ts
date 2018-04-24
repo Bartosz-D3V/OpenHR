@@ -70,7 +70,7 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
       (data: HttpResponse<any>) => {
         const blob: Blob = new Blob([data], { type: 'text/calendar' });
         const url: string = window.URL.createObjectURL(blob);
-        window.open(url);
+        window.open(url, '_blank');
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
