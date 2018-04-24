@@ -22,7 +22,8 @@
       "prefix": "app",
       "serviceWorker": true,
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        "../node_modules/angular-calendar/css/angular-calendar.css"
       ],
       "scripts": [],
       "stylePreprocessorOptions": {
