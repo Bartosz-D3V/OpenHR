@@ -1,0 +1,9 @@
+<div class="c-static-modal">
+  <h3 class="c-static-modal__header">Expired</h3>
+  <p class="c-static-modal__text">
+    Session has expired.
+    Please either refresh session, or logout.
+  </p>
+  <button mat-button class="c-static-modal__btn" color="accent" (click)="refreshToken()">Refresh</button>
+  <button mat-button class="c-static-modal__btn" color="warn" (click)="logout()">Logout</button>
+</div>

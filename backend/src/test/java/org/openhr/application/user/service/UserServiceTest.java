@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.repository.UserRepository;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 public class UserServiceTest {
-  @Autowired private UserService userService;
-
-  @MockBean private AuthenticationService authenticationService;
+  @SpyBean private UserService userService;
 
   @MockBean private UserRepository userRepository;
 
@@ -54,7 +51,7 @@ public class UserServiceTest {
 
   @Test
   public void validCredentialsShouldReturnFalseIfUserPasswordsDoNotMatch() throws UserDoesNotExist {
-    when(authenticationService.passwordsMatch(anyString(), anyString())).thenReturn(false);
+    when(userService.passwordsMatch(anyString(), anyString())).thenReturn(false);
     assertFalse(userService.validCredentials("Mock", "123"));
   }
 
@@ -62,7 +59,7 @@ public class UserServiceTest {
   public void validCredentialsShouldReturnTrueIfUserExistsAndPasswordsMatch()
       throws UserDoesNotExist {
     when(userRepository.getUserByUsername(anyString())).thenReturn(new User());
-    when(authenticationService.passwordsMatch(anyString(), anyString())).thenReturn(true);
+    when(userService.passwordsMatch(anyString(), anyString())).thenReturn(true);
 
     assertTrue(userService.validCredentials("Mock", "123"));
   }
