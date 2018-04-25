@@ -45,7 +45,6 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
       (response: HttpResponse<null>) => {
         const token: string = response.headers.get('Authorization');
         this._jwtHelper.saveToken(token);
-        this._jwtHelper.startIATObserver(token);
         this.onAuthenticated.emit(true);
       },
       (err: HttpResponse<null>) => {

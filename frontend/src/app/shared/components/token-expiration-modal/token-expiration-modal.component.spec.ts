@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material';
 
 import { TokenExpirationModalComponent } from './token-expiration-modal.component';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TokenExpirationModalComponent', () => {
   let component: TokenExpirationModalComponent;
@@ -28,7 +29,7 @@ describe('TokenExpirationModalComponent', () => {
             },
           },
         ],
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, HttpClientTestingModule],
       }).compileComponents();
     })
   );
