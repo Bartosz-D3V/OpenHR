@@ -6,12 +6,14 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { Credentials } from './domain/credentials';
 import { LoginService } from './service/login.service';
 import { ISubscription } from 'rxjs/Subscription';
+import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
+import { RefreshToken } from '@shared/components/login-box/domain/refresh-token';
 
 @Component({
   selector: 'app-login-box',
   templateUrl: './login-box.component.html',
   styleUrls: ['./login-box.component.scss'],
-  providers: [JwtHelperService],
+  providers: [JwtHelperService, TokenObserverService],
 })
 export class LoginBoxComponent implements OnInit, OnDestroy {
   private $loginService: ISubscription;
@@ -20,7 +22,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
 
   public loginBoxForm: FormGroup;
 
-  constructor(private _fb: FormBuilder, private _loginService: LoginService, private _jwtHelper: JwtHelperService) {}
+  constructor(private _loginService: LoginService, private _jwtHelper: JwtHelperService, private _fb: FormBuilder) {}
 
   ngOnInit() {
     this.createForm();
@@ -42,9 +44,11 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   public login(): void {
     const credentials: Credentials = <Credentials>this.loginBoxForm.value;
     this.$loginService = this._loginService.login(credentials).subscribe(
-      (response: HttpResponse<null>) => {
+      (response: HttpResponse<RefreshToken>) => {
         const token: string = response.headers.get('Authorization');
+        const refreshToken: string = response.body.refreshToken;
         this._jwtHelper.saveToken(token);
+        this._jwtHelper.saveRefreshToken(refreshToken);
         this.onAuthenticated.emit(true);
       },
       (err: HttpResponse<null>) => {

@@ -1,11 +1,11 @@
 package org.openhr.application.employee.service;
 
 import java.util.List;
-import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.repository.EmployeeRepository;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.enumeration.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,13 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeRepository employeeRepository;
-  private final AuthenticationService authenticationService;
+  private final UserService userService;
 
   public EmployeeServiceImpl(
-      final EmployeeRepository employeeRepository,
-      final AuthenticationService authenticationService) {
+      final EmployeeRepository employeeRepository, final UserService userService) {
     this.employeeRepository = employeeRepository;
-    this.authenticationService = authenticationService;
+    this.userService = userService;
   }
 
   @Override
@@ -39,9 +38,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Transactional(propagation = Propagation.MANDATORY)
   public Employee createEmployee(final Employee employee) {
     final User user = employee.getUser();
-    final String encodedPassword = authenticationService.encodePassword(user.getPassword());
+    final String encodedPassword = userService.encodePassword(user.getPassword());
     user.setPassword(encodedPassword);
-    user.setUserRoles(authenticationService.setBasicUserRoles(user));
+    user.setUserRoles(userService.setBasicUserRoles(user));
     employee.setRole(Role.EMPLOYEE);
     employee.setUser(user);
 

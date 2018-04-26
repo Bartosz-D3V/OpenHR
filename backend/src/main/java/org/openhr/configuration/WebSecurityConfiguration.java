@@ -10,6 +10,7 @@ import org.openhr.security.handler.JWTAuthenticationFailureHandler;
 import org.openhr.security.handler.JWTAuthenticationSuccessHandler;
 import org.openhr.security.provider.AjaxAuthenticationProvider;
 import org.openhr.security.provider.JWTAuthenticationProvider;
+import org.openhr.security.service.TokenExtractorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,18 +38,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
   private final JWTAuthenticationFailureHandler jwtAuthenticationFailureHandler;
   private final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
+  private final TokenExtractorService tokenExtractorService;
 
   public WebSecurityConfiguration(
       final AjaxAuthenticationProvider ajaxAuthenticationProvider,
       final JWTAuthenticationProvider jwtAuthenticationProvider,
       final RestAuthenticationEntryPoint restAuthenticationEntryPoint,
       final JWTAuthenticationFailureHandler jwtAuthenticationFailureHandler,
-      final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler) {
+      final JWTAuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
+      final TokenExtractorService tokenExtractorService) {
     this.ajaxAuthenticationProvider = ajaxAuthenticationProvider;
     this.jwtAuthenticationProvider = jwtAuthenticationProvider;
     this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
     this.jwtAuthenticationFailureHandler = jwtAuthenticationFailureHandler;
     this.jwtAuthenticationSuccessHandler = jwtAuthenticationSuccessHandler;
+    this.tokenExtractorService = tokenExtractorService;
   }
 
   @Override
@@ -109,7 +113,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             FORM_BASED_REGISTER_ENTRY_POINT);
     final SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, pattern);
     final JWTTokenAuthenticationFilter jwtTokenAuthenticationFilter =
-        new JWTTokenAuthenticationFilter(matcher, jwtAuthenticationFailureHandler);
+        new JWTTokenAuthenticationFilter(
+            matcher, jwtAuthenticationFailureHandler, tokenExtractorService);
     jwtTokenAuthenticationFilter.setAuthenticationManager(authenticationManager);
     return jwtTokenAuthenticationFilter;
   }

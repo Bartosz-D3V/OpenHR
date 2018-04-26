@@ -93,6 +93,7 @@ describe('JwtHelperService', () => {
   describe('isTokenExpired', () => {
     it('should return true if value exp within token is in the past', () => {
       spyOn(service, 'parseToken').and.returnValue({
+        iat: 2,
         exp: 0,
       });
       const isExpired: boolean = service.isTokenExpired();

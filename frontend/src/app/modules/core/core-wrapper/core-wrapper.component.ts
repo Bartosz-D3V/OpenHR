@@ -1,15 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
+import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
 
 @Component({
   selector: 'app-core-wrapper',
   templateUrl: './core-wrapper.component.html',
-  providers: [LightweightSubjectService, JwtHelperService],
+  changeDetection: ChangeDetectionStrategy.Default,
+  providers: [LightweightSubjectService, JwtHelperService, TokenObserverService],
 })
 export class CoreWrapperComponent implements OnInit, OnDestroy {
   private $user: ISubscription;
@@ -18,6 +20,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
   constructor(
     private _lightweightSubject: LightweightSubjectService,
     private _jwtHelper: JwtHelperService,
+    private _tokenObserver: TokenObserverService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute
   ) {}
@@ -27,6 +30,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
       this.user = new LightweightSubject(value.subjectId, value.firstName, value.lastName, value.position);
       this._router.navigate([{ outlets: { core: ['dashboard'] } }], { relativeTo: this._activatedRoute });
     });
+    this._tokenObserver.observe();
   }
 
   ngOnDestroy(): void {

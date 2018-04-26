@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Moment } from 'moment';
-import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/take';
 
 import { SystemVariables } from '@config/system-variables';
 import { Jwt } from '../../domain/auth/jwt';
@@ -9,13 +10,22 @@ import { Role } from '../../domain/subject/role';
 @Injectable()
 export class JwtHelperService {
   private readonly tokenPrefix: string = SystemVariables.TOKEN_PREFIX;
+  private readonly refreshTokenPrefix: string = SystemVariables.REFRESH_TOKEN_PREFIX;
 
   public saveToken(token: string): void {
     window.localStorage.setItem(this.tokenPrefix, token);
   }
 
+  public saveRefreshToken(token: string): void {
+    window.localStorage.setItem(this.refreshTokenPrefix, token);
+  }
+
   public getToken(): string {
     return window.localStorage.getItem(this.tokenPrefix);
+  }
+
+  public getRefreshToken(): string {
+    return window.localStorage.getItem(this.refreshTokenPrefix);
   }
 
   public removeToken(): void {
@@ -24,8 +34,7 @@ export class JwtHelperService {
 
   public isTokenExpired(): boolean {
     const jwt: Jwt = this.parseToken(this.getToken());
-    const expirationDate: Moment = moment.unix(jwt.exp);
-    return expirationDate.isBefore(moment());
+    return jwt.exp - jwt.iat <= 0;
   }
 
   public getUsersRole(): Array<Role> {
@@ -51,6 +60,15 @@ export class JwtHelperService {
     const base64Text: string = token.split('.')[1];
     const base64: string = base64Text.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
+  }
+
+  public startIATObserver(token: string): Observable<number> {
+    const jwt: Jwt = this.parseToken(token);
+    const duration: number = jwt.exp - jwt.iat;
+    return Observable.timer(1000, 1000)
+      .map(i => duration - i)
+      .take(duration + 1)
+      .filter(i => i <= 500);
   }
 
   public validateToken(token: string): Jwt {

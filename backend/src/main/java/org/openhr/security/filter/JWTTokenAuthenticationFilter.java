@@ -5,9 +5,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.openhr.security.SecurityConfigConstants;
 import org.openhr.security.domain.JWTAuthenticationToken;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.openhr.security.service.TokenExtractorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,25 +17,22 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
   private final AuthenticationFailureHandler failureHandler;
+  private final TokenExtractorService tokenExtractorService;
 
   public JWTTokenAuthenticationFilter(
       final RequestMatcher requiresAuthenticationRequestMatcher,
-      final AuthenticationFailureHandler failureHandler) {
+      final AuthenticationFailureHandler failureHandler,
+      final TokenExtractorService tokenExtractorService) {
     super(requiresAuthenticationRequestMatcher);
     this.failureHandler = failureHandler;
+    this.tokenExtractorService = tokenExtractorService;
   }
 
   @Override
   public Authentication attemptAuthentication(
       final HttpServletRequest request, final HttpServletResponse response)
       throws AuthenticationException {
-    final String tokenPayload = request.getHeader(SecurityConfigConstants.HEADER_STRING);
-    if (tokenPayload == null) {
-      throw new InsufficientAuthenticationException("Token was not provided");
-    }
-    final String rawToken =
-        tokenPayload.substring(
-            SecurityConfigConstants.TOKEN_PREFIX.length(), tokenPayload.length());
+    final String rawToken = tokenExtractorService.extractToken(request);
     return getAuthenticationManager().authenticate(new JWTAuthenticationToken(rawToken));
   }
 

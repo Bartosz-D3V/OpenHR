@@ -14,11 +14,15 @@ import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { AppComponent } from '@boot/app.component';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
 import { CoreWrapperComponent } from './core-wrapper.component';
+import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 describe('CoreComponent', () => {
   let component: CoreWrapperComponent;
   let fixture: ComponentFixture<CoreWrapperComponent>;
   const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Test', 'Tester');
+  let overlayContainerElement: HTMLElement;
 
   beforeEach(
     async(() => {
@@ -34,7 +38,19 @@ describe('CoreComponent', () => {
           MatIconModule,
           MatDialogModule,
         ],
-        providers: [LightweightSubjectService, ErrorResolverService],
+        providers: [
+          LightweightSubjectService,
+          ErrorResolverService,
+          TokenObserverService,
+          JwtHelperService,
+          {
+            provide: OverlayContainer,
+            useFactory: () => {
+              overlayContainerElement = document.createElement('div');
+              return { getContainerElement: () => overlayContainerElement };
+            },
+          },
+        ],
       }).compileComponents();
     })
   );
@@ -45,6 +61,7 @@ describe('CoreComponent', () => {
     fixture.detectChanges();
 
     spyOn(component['_router'], 'navigate');
+    spyOn(component['_tokenObserver'], 'observe');
   });
 
   it('should create', () => {

@@ -21,13 +21,13 @@ export class ErrorResolverService {
     this.createAlert(errorInfo.message);
   }
 
-  public createAlert(message: string): void {
+  public createAlert(message: string, header?: string): void {
     if (!this.dialogOpened) {
       const dialogRef: MatDialogRef<StaticModalComponent> = this.dialog.open(StaticModalComponent, {
         width: '250px',
         data: {
           text: message,
-          header: this.header,
+          header: !header ? this.header : header,
         },
       });
     }
