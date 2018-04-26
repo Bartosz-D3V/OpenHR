@@ -45,6 +45,7 @@ import { AvatarComponent } from '@shared/components/avatar/avatar.component';
 import { StaticModalComponent } from '@shared/components/static-modal/static-modal.component';
 import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { SharedModule } from '@modules/shared/shared.module';
+import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
 import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -119,7 +120,9 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     DashboardComponent,
     ManageDelegationsComponent,
     ApplicationTypePipe,
+    TokenExpirationModalComponent,
   ],
   providers: [JwtHelperService],
+  entryComponents: [TokenExpirationModalComponent],
 })
 export class CoreModule {}

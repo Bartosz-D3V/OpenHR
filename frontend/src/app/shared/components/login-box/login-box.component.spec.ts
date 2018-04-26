@@ -4,13 +4,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 
 import { LoginBoxComponent } from './login-box.component';
 import { LoginService } from './service/login.service';
 import { Credentials } from './domain/credentials';
+import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
+import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
 
 describe('LoginBoxComponent', () => {
   let component: LoginBoxComponent;
@@ -21,11 +23,16 @@ describe('LoginBoxComponent', () => {
   class FakeLoginService {
     login(credentials: Credentials): Observable<any> {
       return Observable.of(
-        new Response(null, {
-          headers: new Headers({
-            Authorization: 'mock-token',
-          }),
-        })
+        new Response(
+          {
+            refreshToken: 'mock-refresh-token',
+          },
+          {
+            headers: new Headers({
+              Authorization: 'mock-token',
+            }),
+          }
+        )
       );
     }
 
@@ -39,6 +46,11 @@ describe('LoginBoxComponent', () => {
     }
   }
 
+  @Injectable()
+  class FakeTokenObserverService {
+    observe(): any {}
+  }
+
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
@@ -50,11 +62,15 @@ describe('LoginBoxComponent', () => {
           MatButtonModule,
           MatIconModule,
           MatInputModule,
+          MatDialogModule,
           MatFormFieldModule,
           HttpClientTestingModule,
         ],
-        declarations: [LoginBoxComponent],
-        providers: [{ provide: LoginService, useClass: FakeLoginService }],
+        declarations: [LoginBoxComponent, TokenExpirationModalComponent],
+        providers: [
+          { provide: LoginService, useClass: FakeLoginService },
+          { provide: TokenObserverService, useClass: FakeTokenObserverService },
+        ],
       }).compileComponents();
     })
   );
