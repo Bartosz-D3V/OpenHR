@@ -10,13 +10,22 @@ import { Role } from '../../domain/subject/role';
 @Injectable()
 export class JwtHelperService {
   private readonly tokenPrefix: string = SystemVariables.TOKEN_PREFIX;
+  private readonly refreshTokenPrefix: string = SystemVariables.REFRESH_TOKEN_PREFIX;
 
   public saveToken(token: string): void {
     window.localStorage.setItem(this.tokenPrefix, token);
   }
 
+  public saveRefreshToken(token: string): void {
+    window.localStorage.setItem(this.refreshTokenPrefix, token);
+  }
+
   public getToken(): string {
     return window.localStorage.getItem(this.tokenPrefix);
+  }
+
+  public getRefreshToken(): string {
+    return window.localStorage.getItem(this.refreshTokenPrefix);
   }
 
   public removeToken(): void {
@@ -59,7 +68,7 @@ export class JwtHelperService {
     return Observable.timer(1000, 1000)
       .map(i => duration - i)
       .take(duration + 1)
-      .filter(i => i <= 0);
+      .filter(i => i <= 500);
   }
 
   public validateToken(token: string): Jwt {

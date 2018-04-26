@@ -17,10 +17,9 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { TokenInterceptorService } from '@shared/services/token-interceptor/token-interceptor.service';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-import { TokenExpirationModalComponent } from './shared/components/token-expiration-modal/token-expiration-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, TokenExpirationModalComponent],
+  declarations: [AppComponent],
   imports: [
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     BrowserModule,

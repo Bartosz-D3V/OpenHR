@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
@@ -10,12 +10,13 @@ export class TokenExpirationService {
 
   constructor(private _http: HttpClient) {}
 
-  public refreshToken(token: string): Observable<HttpResponse<null>> {
+  public refreshToken(token: string): Observable<HttpResponse<HttpHeaderResponse>> {
     const headers: HttpHeaders = new HttpHeaders({
       Authorization: `Bearer-${token}`,
     });
-    return this._http.post<null>(this.url, {
+    return this._http.post<HttpHeaderResponse>(this.url, null, {
       headers: headers,
+      observe: 'response',
     });
   }
 }
