@@ -1,10 +1,10 @@
 package org.openhr.application.hr.service;
 
-import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.repository.HrRepository;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.proxy.worker.WorkerProxy;
@@ -14,15 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class HrServiceImpl implements HrService {
-  private final AuthenticationService authenticationService;
+  private final UserService userService;
   private final HrRepository hrRepository;
   private final WorkerProxy workerProxy;
 
   public HrServiceImpl(
-      final AuthenticationService authenticationService,
+      final UserService userService,
       final HrRepository hrRepository,
       final WorkerProxy workerProxy) {
-    this.authenticationService = authenticationService;
+    this.userService = userService;
     this.hrRepository = hrRepository;
     this.workerProxy = workerProxy;
   }
@@ -37,9 +37,9 @@ public class HrServiceImpl implements HrService {
   @Transactional(propagation = Propagation.MANDATORY)
   public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) {
     final User user = hrTeamMember.getUser();
-    final String encodedPassword = authenticationService.encodePassword(user.getPassword());
+    final String encodedPassword = userService.encodePassword(user.getPassword());
     user.setPassword(encodedPassword);
-    user.setUserRoles(authenticationService.setHrUserRole(user));
+    user.setUserRoles(userService.setHrUserRole(user));
     hrTeamMember.setRole(Role.HRTEAMMEMBER);
 
     return hrRepository.addHrTeamMember(hrTeamMember);

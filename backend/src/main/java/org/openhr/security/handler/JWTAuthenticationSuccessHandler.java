@@ -1,5 +1,9 @@
 package org.openhr.security.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,22 +21,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
   private final JWTTokenFactory tokenFactory;
+  private final ObjectMapper objectMapper;
 
-  public JWTAuthenticationSuccessHandler(final JWTTokenFactory tokenFactory) {
+  public JWTAuthenticationSuccessHandler(
+      final JWTTokenFactory tokenFactory, final ObjectMapper objectMapper) {
     this.tokenFactory = tokenFactory;
+    this.objectMapper = objectMapper;
   }
 
   @Override
   public void onAuthenticationSuccess(
       final HttpServletRequest request,
       final HttpServletResponse response,
-      final Authentication authentication) {
+      final Authentication authentication)
+      throws IOException {
     final UserContext userContext = (UserContext) authentication.getPrincipal();
     final JWTAccessToken accessToken = tokenFactory.createJWTAccessToken(userContext);
+    final JWTAccessToken refreshToken = tokenFactory.createJWTRefreshToken(userContext);
+    final Map<String, String> responseBody = new HashMap<>();
 
-    response.setStatus(HttpStatus.NO_CONTENT.value());
+    responseBody.put("refreshToken", refreshToken.getRawToken());
+    response.setStatus(HttpStatus.OK.value());
     response.setHeader(SecurityConfigConstants.HEADER_STRING, accessToken.getRawToken());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    objectMapper.writeValue(response.getWriter(), responseBody);
     clearAuthenticationAttributes(request);
   }
 
