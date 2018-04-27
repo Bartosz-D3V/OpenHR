@@ -48,16 +48,18 @@ script:
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
-  - nsp check
   - cd ../backend/
   - mvn package -B -D skipTests -e
   - mvn test -B -e
+  - mvn cobertura:cobertura
   
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
+  - cd ..
 
-#after_success:
-# - codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - codecov
 
 notifications:
   email: false
