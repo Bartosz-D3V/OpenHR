@@ -16,6 +16,7 @@ cache:
   yarn: true
   directories:
      - ./frontend/node_modules
+     - $HOME/.npm
      - $HOME/.m2
 
 matrix:
@@ -50,15 +51,15 @@ script:
   - cd ../backend/
   - mvn package -B -D skipTests -e
   - mvn test -B -e
-  - mvn cobertura:cobertura
   
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
   - cd ..
 
 after_success:
-  - codecov
-  - bash <(curl -s https://codecov.io/bash) -t @TOKEN@
+  - npm install -g codecov
+  - codecov -t $TOKEN
+  - bash <(curl -s https://codecov.io/bash) -t $TOKEN
 
 notifications:
   email: false
