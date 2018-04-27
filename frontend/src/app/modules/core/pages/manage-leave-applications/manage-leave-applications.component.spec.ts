@@ -26,6 +26,7 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
@@ -182,6 +183,29 @@ describe('ManageLeaveApplicationsComponent', () => {
       component.rejectLeaveApplication('12A');
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+    });
+  });
+
+  describe('getSubjectFullName method', () => {
+    it('should fetch lightweight subject if it is not present in the map', () => {
+      component['subjects'].clear();
+      spyOn(component['_lightweightSubjectService'], 'getUser').and.returnValue(
+        Observable.of(new LightweightSubject(1, 'Mikolaj', 'Kopernik', 'Astronomist'))
+      );
+      const subject: LightweightSubject = component.getSubjectFullName(1);
+
+      expect(component['subjects'].has('1')).toBeTruthy();
+      expect(subject).toBeDefined();
+      expect(subject.lastName).toEqual('Kopernik');
+    });
+
+    it('should return lightweight subject from map if found', () => {
+      component['subjects'].set('3', new LightweightSubject(3, 'Mikolaj', 'Kopernik', 'Astronomist'));
+      const subject: LightweightSubject = component.getSubjectFullName(3);
+
+      expect(component['subjects'].has('3')).toBeTruthy();
+      expect(subject).toBeDefined();
+      expect(subject.lastName).toEqual('Kopernik');
     });
   });
 });

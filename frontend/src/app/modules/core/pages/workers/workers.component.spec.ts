@@ -11,6 +11,8 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('WorkersComponent', () => {
   let component: WorkersComponent;
@@ -64,6 +66,33 @@ describe('WorkersComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('fetchWorkers method', () => {
+    const mockWorkers: Array<LightweightSubject> = [new LightweightSubject(1, 'Robinson', 'Cruzoe', 'Sailor')];
+
+    it('should fetch the workers and attach to the data table', () => {
+      expect(component.isLoadingResults).toBeTruthy();
+      spyOn(component['_workersService'], 'getWorkers').and.returnValue(Observable.of(mockWorkers));
+      component.fetchWorkers();
+
+      expect(component.workers.length).toEqual(1);
+      expect(component.dataSource.data).toEqual(mockWorkers);
+      expect(component.isLoadingResults).toBeFalsy();
+    });
+
+    it('should call error resolver if an error occurred', () => {
+      const mockError: HttpErrorResponse = new HttpErrorResponse({
+        error: 'Unauthorized',
+        status: 401,
+      });
+      expect(component.isLoadingResults).toBeTruthy();
+      spyOn(component['_errorResolver'], 'handleError');
+      spyOn(component['_workersService'], 'getWorkers').and.returnValue(Observable.throw(mockError));
+      component.fetchWorkers();
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
   });
 
   it('applyFilter should lower-case characters and remove white space around string', () => {
