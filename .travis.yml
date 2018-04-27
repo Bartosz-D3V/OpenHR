@@ -13,9 +13,10 @@ env:
   - NODE_VERSION=node
 
 cache:
-  yarn: true
   directories:
      - ./frontend/node_modules
+     - $HOME/.cache/yarn
+     - $HOME/.npm
      - $HOME/.m2
 
 matrix:
@@ -34,7 +35,6 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - npm install -g nsp
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
@@ -48,7 +48,6 @@ script:
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
-  - nsp check
   - cd ../backend/
   - mvn package -B -D skipTests -e
   - mvn test -B -e
@@ -56,8 +55,10 @@ script:
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
 
-#after_success:
-# - codecov
+after_success:
+  - npm install -g codecov
+  - codecov -t $TOKEN
+  - bash <(curl -s https://codecov.io/bash) -t $TOKEN
 
 notifications:
   email: false
