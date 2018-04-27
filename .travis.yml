@@ -34,7 +34,6 @@ before_install:
   - sudo apt-get install -y libappindicator1 fonts-liberation
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
-  - npm install -g nsp
   - mysql -u root -e 'CREATE DATABASE openhr;'
 
 install:
@@ -58,8 +57,8 @@ after_script:
   - cd ..
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
   - codecov
+  - bash <(curl -s https://codecov.io/bash) -t @TOKEN@
 
 notifications:
   email: false
