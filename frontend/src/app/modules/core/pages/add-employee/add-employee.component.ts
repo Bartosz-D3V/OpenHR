@@ -44,28 +44,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.$newSubject !== undefined) {
+    if (this.$newSubject) {
       this.$newSubject.unsubscribe();
-    }
-  }
-
-  private resetForm(): void {
-    this.newSubjectForm.reset();
-    this.newSubjectForm.markAsPristine();
-    this.newSubjectForm.markAsUntouched();
-  }
-
-  private getServiceMethod(subject: Subject): Observable<Subject> {
-    switch (subject.role) {
-      case Role.EMPLOYEE:
-        subject = ObjectHelper.removeSubjectHelperProperties(subject);
-        return this._employeeService.createEmployee(subject);
-      case Role.MANAGER:
-        subject = ObjectHelper.removeSubjectHelperProperties(subject);
-        return this._managerService.createManager(subject);
-      case Role.HRTEAMMEMBER:
-        subject = ObjectHelper.removeSubjectHelperProperties(subject);
-        return this._hrService.createHrTeamMember(subject);
     }
   }
 
@@ -144,6 +124,20 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     );
   }
 
+  public getServiceMethod(subject: Subject): Observable<Subject> {
+    switch (subject.role) {
+      case Role.EMPLOYEE:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
+        return this._employeeService.createEmployee(subject);
+      case Role.MANAGER:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
+        return this._managerService.createManager(subject);
+      case Role.HRTEAMMEMBER:
+        subject = ObjectHelper.removeSubjectHelperProperties(subject);
+        return this._hrService.createHrTeamMember(subject);
+    }
+  }
+
   public setStep(stepNumber: number): void {
     this.stepNumber = stepNumber;
   }
@@ -158,6 +152,12 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
   public prevStep(): void {
     this.stepNumber--;
+  }
+
+  public resetForm(): void {
+    this.newSubjectForm.reset();
+    this.newSubjectForm.markAsPristine();
+    this.newSubjectForm.markAsUntouched();
   }
 
   public isValid(): boolean {

@@ -33,10 +33,12 @@ import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Manager } from '@shared/domain/subject/manager';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { AddEmployeeComponent } from './add-employee.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
   let fixture: ComponentFixture<AddEmployeeComponent>;
+  let notificationService: NotificationService;
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
 
   @Injectable()
@@ -68,6 +70,7 @@ describe('AddEmployeeComponent', () => {
   @Injectable()
   class FakeErrorResolverService {
     public createAlert(error: any): void {}
+    public handleError(error: any): void {}
   }
 
   beforeEach(
@@ -123,6 +126,7 @@ describe('AddEmployeeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEmployeeComponent);
     component = fixture.componentInstance;
+    notificationService = TestBed.get(NotificationService);
     fixture.detectChanges();
   });
 
@@ -146,6 +150,45 @@ describe('AddEmployeeComponent', () => {
       mockPersonalInformation.middleName = null;
 
       expect(mockPersonalInformation.middleName).toBeNull();
+    });
+  });
+
+  it('build form should create the form', () => {
+    component.buildForm();
+
+    expect(component.newSubjectForm).toBeDefined();
+  });
+
+  it('resetForm method should clean the form', () => {
+    component.newSubjectForm.markAsTouched();
+    component.newSubjectForm.markAsDirty();
+    component.resetForm();
+
+    expect(component.newSubjectForm.touched).toBeFalsy();
+    expect(component.newSubjectForm.dirty).toBeFalsy();
+    expect(component.newSubjectForm.pristine).toBeTruthy();
+  });
+
+  describe('save method', () => {
+    beforeEach(() => {
+      spyOn(component, 'createSubject');
+      spyOn(component, 'resetForm');
+    });
+
+    it('should not do anything if the form is not valid', () => {
+      component.newSubjectForm.setErrors({ invalid: true });
+      component.save();
+
+      expect(component.createSubject).not.toHaveBeenCalled();
+      expect(component.resetForm).not.toHaveBeenCalled();
+    });
+
+    it('should submit and clear form if form is valid', () => {
+      spyOn(component, 'isValid').and.returnValue(true);
+      component.save();
+
+      expect(component.createSubject).toHaveBeenCalled();
+      expect(component.resetForm).toHaveBeenCalled();
     });
   });
 
@@ -596,21 +639,28 @@ describe('AddEmployeeComponent', () => {
     });
   });
 
-  describe('submitForm method', () => {
-    it('should call createSubject method if the form is valid', () => {
-      spyOn(component, 'createSubject');
-      spyOn(component, 'isValid').and.returnValue(true);
-      component.save();
-
-      expect(component.createSubject).toHaveBeenCalled();
+  describe('createSubject method', () => {
+    const mockSubject: Employee = new Employee(null, null, null, null, null);
+    const mockError: HttpErrorResponse = new HttpErrorResponse({
+      error: 'Unauthorized',
+      status: 401,
     });
 
-    it('should not call createSubject method if the form is not valid', () => {
-      spyOn(component, 'createSubject');
-      spyOn(component, 'isValid').and.returnValue(false);
-      component.save();
+    it('should save subject & open a snackbar', () => {
+      spyOn(component, 'getServiceMethod').and.returnValue(Observable.of(mockSubject));
+      spyOn(component['_notificationService'], 'openSnackBar');
+      component.createSubject(mockSubject);
+      const msg = `Person with id ${mockSubject.subjectId} has been created`;
 
-      expect(component.createSubject).not.toHaveBeenCalled();
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith(msg, 'OK');
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component, 'getServiceMethod').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.createSubject(mockSubject);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
     });
   });
 
