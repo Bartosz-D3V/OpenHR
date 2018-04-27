@@ -1,5 +1,7 @@
 coverage:
   precision: 2
-parsers:
-  javascript:
-enable_partials: no
+coverage:
+  status:
+    project: on
+    patch: off
+
