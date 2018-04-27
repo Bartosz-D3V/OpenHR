@@ -1,7 +1,7 @@
 import { SiteTheme } from './site-theme';
 
 export class SiteThemes {
-  static readonly siteThemes: Array<SiteTheme> = [
+  public static readonly siteThemes: Array<SiteTheme> = [
     {
       primary: '#673AB7',
       accent: '#FFC107',

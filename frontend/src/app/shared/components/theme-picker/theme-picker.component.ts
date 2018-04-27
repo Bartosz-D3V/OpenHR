@@ -41,6 +41,7 @@ export class ThemePickerComponent implements OnInit {
   }
 
   private _getCurrentThemeFromHref(href: string): SiteTheme {
+    console.log(this.siteThemes.find(theme => theme.href === href));
     return this.siteThemes.find(theme => theme.href === href);
   }
 }

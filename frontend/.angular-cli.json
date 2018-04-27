@@ -22,7 +22,23 @@
       "prefix": "app",
       "serviceWorker": true,
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        {
+          "input": "assets/themes/pink-bluegrey.css",
+          "lazy": true
+        },
+        {
+          "input": "assets/themes/deeppurple-amber.css",
+          "lazy": true
+        },
+        {
+          "input": "assets/themes/indigo-pink.css",
+          "lazy": true
+        },
+        {
+          "input": "assets/themes/purple-green.css",
+          "lazy": true
+        }
       ],
       "scripts": [],
       "stylePreprocessorOptions": {

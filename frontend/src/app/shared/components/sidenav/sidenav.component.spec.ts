@@ -8,7 +8,6 @@ import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { User } from '../../domain/user/user';
 import { SidenavComponent } from './sidenav.component';
 import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
 

@@ -12,7 +12,6 @@ import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
 import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
-import { User } from '@shared/domain/user/user';
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
 import { CoreWrapperComponent } from './core-wrapper.component';
