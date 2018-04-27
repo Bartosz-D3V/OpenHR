@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openhr.application.user.domain.User;
 import org.openhr.application.user.domain.UserRole;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.enumeration.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,18 +18,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AuthenticationServiceTest {
 
-  @Autowired private AuthenticationService authenticationService;
+  @Autowired private UserService userService;
 
   @Test
   public void encodePasswordShouldCreateValidBCryptCiphertext() {
     final String mockPassword = "password";
 
-    assertNotEquals(authenticationService.encodePassword(mockPassword), mockPassword);
+    assertNotEquals(userService.encodePassword(mockPassword), mockPassword);
   }
 
   @Test
   public void setBasicUserRolesShouldReturnListWithMemberEnum() {
-    final List<UserRole> userRoleList = authenticationService.setBasicUserRoles(new User());
+    final List<UserRole> userRoleList = userService.setBasicUserRoles(new User());
 
     assertTrue(userRoleList.get(0).getUserRole().equals(Role.EMPLOYEE));
   }

@@ -2,6 +2,7 @@ import { MomentInput } from 'moment';
 
 import { Application } from '@shared/domain/application/application';
 import { Country } from '@shared/domain/country/country';
+import { ApplicationType } from '@shared/constants/enumeration/application-type';
 
 export class DelegationApplication extends Application {
   public country: Country;
@@ -23,6 +24,7 @@ export class DelegationApplication extends Application {
     budget: number
   ) {
     super(applicationId, startDate, endDate, approvedByManager, approvedByHR, terminated, processInstanceId);
+    this.applicationType = ApplicationType.DELEGATION_APPLICATION;
     this.country = country;
     this.city = city;
     this.objective = objective;

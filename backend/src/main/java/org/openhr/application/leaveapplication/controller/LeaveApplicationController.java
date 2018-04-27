@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
-import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
@@ -128,26 +127,6 @@ public class LeaveApplicationController {
   public List<LeaveApplication> getAwaitingForActionLeaveApplications(
       @RequestParam final long subjectId) {
     return leaveApplicationFacade.getAwaitingForActionLeaveApplications(subjectId);
-  }
-
-  @RequestMapping(
-    value = "/tasks/{processInstanceId}",
-    method = RequestMethod.GET,
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseBody
-  public List<TaskDefinition> getProcessTasks(@PathVariable final String processInstanceId) {
-    return leaveApplicationFacade.getProcessTasks(processInstanceId);
-  }
-
-  @RequestMapping(
-    value = "processes",
-    method = RequestMethod.GET,
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseBody
-  public List<String> getActiveProcessesId() {
-    return leaveApplicationFacade.getActiveProcessesId();
   }
 
   @RequestMapping(

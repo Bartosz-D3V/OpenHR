@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public final class LocalDateUtil {
+public final class DateRangeUtil {
   public static long diffDaysInclEnd(final LocalDate startDate, final LocalDate endDate) {
     return startDate.until(endDate, ChronoUnit.DAYS);
   }
@@ -23,7 +23,6 @@ public final class LocalDateUtil {
       }
       localDateIt = localDateIt.plusDays(1L);
     }
-
     return freeDays;
   }
 }

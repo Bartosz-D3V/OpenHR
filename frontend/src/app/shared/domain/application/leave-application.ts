@@ -2,6 +2,7 @@ import { MomentInput } from 'moment';
 
 import { Application } from '@shared/domain/application/application';
 import { LeaveType } from './leave-type';
+import { ApplicationType } from '@shared/constants/enumeration/application-type';
 
 export class LeaveApplication extends Application {
   public message?: string;
@@ -19,6 +20,7 @@ export class LeaveApplication extends Application {
     message?: string
   ) {
     super(applicationId, startDate, endDate, approvedByManager, approvedByHR, terminated, processInstanceId);
+    this.applicationType = ApplicationType.LEAVE_APPLICATION;
     this.leaveType = leaveType;
     this.message = message;
   }

@@ -85,7 +85,7 @@ public class JWTTokenFactoryImpl implements JWTTokenFactory {
             .setExpiration(
                 Date.from(
                     currentTime
-                        .plusMinutes(SecurityConfigConstants.EXPIRATION_TIME_IN_MINS)
+                        .plusMinutes(SecurityConfigConstants.LONG_EXPIRATION_TIME_IN_MINS)
                         .atZone(ZoneId.systemDefault())
                         .toInstant()))
             .signWith(SignatureAlgorithm.HS512, SecurityConfigConstants.SECRET.getBytes())

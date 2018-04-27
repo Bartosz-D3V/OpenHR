@@ -2,12 +2,12 @@ package org.openhr.application.manager.service;
 
 import java.util.List;
 import java.util.Set;
-import org.openhr.application.authentication.service.AuthenticationService;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.manager.repository.ManagerRepository;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.service.UserService;
 import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.proxy.worker.WorkerProxy;
@@ -19,15 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManagerServiceImpl implements ManagerService {
 
   private final ManagerRepository managerRepository;
-  private final AuthenticationService authenticationService;
+  private final UserService userService;
   private final WorkerProxy workerProxy;
 
   public ManagerServiceImpl(
       final ManagerRepository managerRepository,
-      final AuthenticationService authenticationService,
+      final UserService userService,
       final WorkerProxy workerProxy) {
     this.managerRepository = managerRepository;
-    this.authenticationService = authenticationService;
+    this.userService = userService;
     this.workerProxy = workerProxy;
   }
 
@@ -41,9 +41,9 @@ public class ManagerServiceImpl implements ManagerService {
   @Transactional(propagation = Propagation.MANDATORY)
   public Manager addManager(final Manager manager) {
     final User user = manager.getUser();
-    final String encodedPassword = authenticationService.encodePassword(user.getPassword());
+    final String encodedPassword = userService.encodePassword(user.getPassword());
     user.setPassword(encodedPassword);
-    user.setUserRoles(authenticationService.setManagerUserRole(user));
+    user.setUserRoles(userService.setManagerUserRole(user));
     manager.setRole(Role.MANAGER);
     return managerRepository.addManager(manager);
   }

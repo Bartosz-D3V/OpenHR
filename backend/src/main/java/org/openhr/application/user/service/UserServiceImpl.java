@@ -1,13 +1,19 @@
 package org.openhr.application.user.service;
 
-import org.openhr.application.authentication.service.AuthenticationService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.domain.UserRole;
 import org.openhr.application.user.dto.PasswordDTO;
 import org.openhr.application.user.repository.UserRepository;
+import org.openhr.common.enumeration.Role;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.common.exception.ValidationException;
+import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
-  private final AuthenticationService authenticationService;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final MessageSource messageSource;
 
   public UserServiceImpl(
-      final UserRepository userRepository, final AuthenticationService authenticationService) {
+      final UserRepository userRepository,
+      final BCryptPasswordEncoder bCryptPasswordEncoder,
+      final MessageSource messageSource) {
     this.userRepository = userRepository;
-    this.authenticationService = authenticationService;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -35,7 +45,8 @@ public class UserServiceImpl implements UserService {
   public User getUserByUsername(final String username) throws UserDoesNotExist {
     final User user = userRepository.getUserByUsername(username);
     if (user == null) {
-      throw new UserDoesNotExist("Requested user does not exist");
+      throw new UserDoesNotExist(
+          messageSource.getMessage("error.userdoesnotexist", null, Locale.getDefault()));
     }
     return user;
   }
@@ -51,9 +62,10 @@ public class UserServiceImpl implements UserService {
   public void registerUser(final User user) throws UserAlreadyExists {
     final boolean isUsernameFree = isUsernameFree(user.getUsername());
     if (!isUsernameFree) {
-      throw new UserAlreadyExists("Provided username is already in use");
+      throw new UserAlreadyExists(
+          messageSource.getMessage("error.useralreadyexist", null, Locale.getDefault()));
     }
-    user.setPassword(authenticationService.encodePassword(user.getPassword()));
+    user.setPassword(encodePassword(user.getPassword()));
     userRepository.registerUser(user);
   }
 
@@ -75,10 +87,11 @@ public class UserServiceImpl implements UserService {
       throws ValidationException, SubjectDoesNotExistException {
     final User user = getUser(userId);
     if (validCredentials(user.getUsername(), passwordDTO.getOldPassword())) {
-      user.setPassword(authenticationService.encodePassword(passwordDTO.getNewPassword()));
+      user.setPassword(encodePassword(passwordDTO.getNewPassword()));
       userRepository.updateUser(user.getUserId(), user);
     } else {
-      throw new ValidationException("Provided password is not valid");
+      throw new ValidationException(
+          messageSource.getMessage("error.validation.passwordnotvalid", null, Locale.getDefault()));
     }
   }
 
@@ -86,7 +99,7 @@ public class UserServiceImpl implements UserService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public boolean validCredentials(final String username, final String password) {
     final User user = userRepository.getUserByUsername(username);
-    return user != null && authenticationService.passwordsMatch(password, user.getPassword());
+    return user != null && passwordsMatch(password, user.getPassword());
   }
 
   @Override
@@ -105,5 +118,48 @@ public class UserServiceImpl implements UserService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public boolean notificationsEnabled(final long userId) {
     return getUser(userId).isNotificationsTurnedOn();
+  }
+
+  @Override
+  public final String encodePassword(final String password) {
+    String encodedPassword = null;
+    int i = 0;
+    while (i < 12) {
+      encodedPassword = bCryptPasswordEncoder.encode(password);
+      ++i;
+    }
+    return encodedPassword;
+  }
+
+  @Override
+  public boolean passwordsMatch(final String rawPassword, final String encodedPassword) {
+    return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
+  }
+
+  @Override
+  public List<UserRole> setBasicUserRoles(final User user) {
+    final List<UserRole> basicUserRoles = new ArrayList<>();
+    final UserRole userRole = new UserRole(Role.EMPLOYEE);
+    userRole.setUser(user);
+    basicUserRoles.add(userRole);
+    return basicUserRoles;
+  }
+
+  @Override
+  public List<UserRole> setManagerUserRole(final User user) {
+    final List<UserRole> managerUserRoles = new ArrayList<>();
+    final UserRole userRole = new UserRole(Role.MANAGER);
+    userRole.setUser(user);
+    managerUserRoles.add(userRole);
+    return managerUserRoles;
+  }
+
+  @Override
+  public List<UserRole> setHrUserRole(final User user) {
+    final List<UserRole> hrUserRoles = new ArrayList<>();
+    final UserRole userRole = new UserRole(Role.HRTEAMMEMBER);
+    userRole.setUser(user);
+    hrUserRoles.add(userRole);
+    return hrUserRoles;
   }
 }

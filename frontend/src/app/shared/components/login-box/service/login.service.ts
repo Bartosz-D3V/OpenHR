@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
 import { Credentials } from '../domain/credentials';
+import { RefreshToken } from '@shared/components/login-box/domain/refresh-token';
 
 @Injectable()
 export class LoginService {
@@ -15,7 +16,7 @@ export class LoginService {
 
   constructor(private _http: HttpClient) {}
 
-  public login(credentials: Credentials): Observable<HttpResponse<null>> {
+  public login(credentials: Credentials): Observable<HttpResponse<RefreshToken>> {
     return this._http.post<null>(this.url, credentials, {
       headers: this.headers,
       observe: 'response',

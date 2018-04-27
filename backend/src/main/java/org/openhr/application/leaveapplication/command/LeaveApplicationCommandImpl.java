@@ -1,14 +1,11 @@
 package org.openhr.application.leaveapplication.command;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.common.domain.process.TaskDefinition;
 import org.openhr.common.domain.subject.Subject;
 import org.springframework.stereotype.Component;
 
@@ -76,27 +73,5 @@ public class LeaveApplicationCommandImpl implements LeaveApplicationCommand {
         taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
     args.put("approvedByHR", true);
     taskService.complete(task.getId(), args);
-  }
-
-  @Override
-  public List<TaskDefinition> getProcessTasks(final String processInstanceId) {
-    return taskService
-        .createTaskQuery()
-        .processInstanceId(processInstanceId)
-        .list()
-        .stream()
-        .map(task -> new TaskDefinition(task.getId(), task.getName(), task.getProcessInstanceId()))
-        .collect(Collectors.toList());
-  }
-
-  @Override
-  public List<String> getActiveProcessesId() {
-    return runtimeService
-        .createProcessInstanceQuery()
-        .active()
-        .list()
-        .stream()
-        .map(process -> (process.getProcessInstanceId()))
-        .collect(Collectors.toList());
   }
 }

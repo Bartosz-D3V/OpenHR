@@ -1,6 +1,8 @@
 package org.openhr.application.user.service;
 
+import java.util.List;
 import org.openhr.application.user.domain.User;
+import org.openhr.application.user.domain.UserRole;
 import org.openhr.application.user.dto.PasswordDTO;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
@@ -30,4 +32,14 @@ public interface UserService {
   long findSubjectId(String username) throws SubjectDoesNotExistException;
 
   boolean notificationsEnabled(long userId);
+
+  String encodePassword(String password);
+
+  boolean passwordsMatch(String rawPassword, String encodedPassword);
+
+  List<UserRole> setBasicUserRoles(User user);
+
+  List<UserRole> setManagerUserRole(User user);
+
+  List<UserRole> setHrUserRole(User user);
 }

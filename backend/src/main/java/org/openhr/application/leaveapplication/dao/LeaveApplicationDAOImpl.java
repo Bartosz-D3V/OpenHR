@@ -1,6 +1,7 @@
 package org.openhr.application.leaveapplication.dao;
 
 import java.util.List;
+import java.util.Locale;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,7 @@ import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplicationDAO {
   private final SessionFactory sessionFactory;
+  private final MessageSource messageSource;
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  public LeaveApplicationDAOImpl(final SessionFactory sessionFactory) {
+  public LeaveApplicationDAOImpl(
+      final SessionFactory sessionFactory, final MessageSource messageSource) {
     super(sessionFactory);
     this.sessionFactory = sessionFactory;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -37,8 +42,10 @@ public class LeaveApplicationDAOImpl extends BaseDAO implements LeaveApplication
         (LeaveApplication) super.get(LeaveApplication.class, leaveApplicationId);
 
     if (leaveApplication == null) {
-      log.error("Application could not be found");
-      throw new ApplicationDoesNotExistException("Application could not be found");
+      log.error(
+          messageSource.getMessage("error.applicationdoesnotexist", null, Locale.getDefault()));
+      throw new ApplicationDoesNotExistException(
+          messageSource.getMessage("error.applicationdoesnotexist", null, Locale.getDefault()));
     }
 
     return leaveApplication;
