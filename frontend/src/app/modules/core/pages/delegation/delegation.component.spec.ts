@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +35,9 @@ import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Country } from '@shared/domain/country/country';
 import { DelegationComponent } from './delegation.component';
+import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { DelegationApplication } from '@shared/domain/application/delegation-application';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -46,6 +49,11 @@ describe('DelegationComponent', () => {
     new HrInformation(30, 10),
     Role.EMPLOYEE
   );
+  const mockError: HttpErrorResponse = new HttpErrorResponse({
+    error: 'Unauthorized',
+    status: 401,
+  });
+  const mockDelegation: DelegationApplication = new DelegationApplication(null, null, null, null, null, null, null, null, null, null, null);
 
   @Injectable()
   class FakeDelegationService {
@@ -80,6 +88,7 @@ describe('DelegationComponent', () => {
           JwtHelperService,
           NotificationService,
           ErrorResolverService,
+          ResponsiveHelperService,
           { provide: DelegationService, useClass: FakeDelegationService },
         ],
       }).compileComponents();
@@ -339,6 +348,88 @@ describe('DelegationComponent', () => {
     });
   });
 
+  describe('updateApplication method', () => {
+    it('should update and show snackbar notification', () => {
+      spyOn(component['_delegationService'], 'updateDelegationApplication').and.returnValue(Observable.of(mockDelegation));
+      spyOn(component['_notificationService'], 'openSnackBar');
+      component.updateApplication(mockDelegation);
+      const msg = `Application with id ${mockDelegation.applicationId} has been updated`;
+
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith(msg, 'OK');
+    });
+
+    it('should reset form upon sucessful execution', () => {
+      spyOn(component['_delegationService'], 'updateDelegationApplication').and.returnValue(Observable.of(mockDelegation));
+      spyOn(component, 'resetForm');
+      component.updateApplication(mockDelegation);
+
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_delegationService'], 'updateDelegationApplication').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.updateApplication(mockDelegation);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
+  });
+
+  describe('createApplication method', () => {
+    it('should create application and show snackbar notification', () => {
+      spyOn(component['_delegationService'], 'createDelegationApplication').and.returnValue(Observable.of(mockDelegation));
+      spyOn(component['_notificationService'], 'openSnackBar');
+      component.createApplication(mockDelegation);
+      const msg = `Application with id ${mockDelegation.applicationId} has been created`;
+
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith(msg, 'OK');
+    });
+
+    it('should reset form upon sucessful execution', () => {
+      spyOn(component['_delegationService'], 'createDelegationApplication').and.returnValue(Observable.of(mockDelegation));
+      spyOn(component, 'resetForm');
+      component.createApplication(mockDelegation);
+
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_delegationService'], 'createDelegationApplication').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.createApplication(mockDelegation);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
+  });
+
+  describe('fetchDelegationApplication method', () => {
+    it('should fetch data', () => {
+      spyOn(component, 'fetchData');
+      component.fetchDelegationApplication(1);
+
+      expect(component.fetchData).toHaveBeenCalled();
+    });
+
+    it('should fetch delegation applications and then construct form', () => {
+      spyOn(component, 'constructForm').and.callThrough();
+      spyOn(component['_delegationService'], 'getDelegationApplication').and.returnValue(Observable.of(mockDelegation));
+      component.fetchDelegationApplication(1);
+
+      expect(component.delegationApplication).toEqual(mockDelegation);
+      expect(component.isLoadingResults).toBeFalsy();
+      expect(component.applicationForm).toBeDefined();
+      expect(component.constructForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_delegationService'], 'getDelegationApplication').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.fetchDelegationApplication(1);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
+  });
+
   describe('displayCountryName', () => {
     it('should return country name if country was provided', () => {
       const mockCountry: Country = new Country('Vietnam', null);
@@ -357,5 +448,27 @@ describe('DelegationComponent', () => {
 
       expect(component.isValid()).toBeFalsy();
     });
+  });
+
+  describe('isMobile method', () => {
+    it(
+      'should return true if screen is less than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+
+        expect(component.isMobile()).toBeTruthy();
+      })
+    );
+
+    it(
+      'should return false if screen is greater than 480px',
+      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+        component['_responsiveHelper'] = service;
+        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+
+        expect(component.isMobile()).toBeFalsy();
+      })
+    );
   });
 });

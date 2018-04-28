@@ -52,13 +52,6 @@ export class DelegationComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetForm(): void {
-    this.applicationForm.reset();
-    this.applicationForm.markAsUntouched();
-    this.applicationForm.markAsPristine();
-    this.applicationForm.get('delegation').reset({ budget: 0 });
-  }
-
   ngOnInit(): void {
     this.fetchData();
   }
@@ -121,21 +114,6 @@ export class DelegationComponent implements OnInit, OnDestroy {
     );
   }
 
-  public fetchDelegationApplication(applicationId: number): void {
-    this.fetchData();
-    this.isLoadingResults = true;
-    this.$delegation = this._delegationService.getDelegationApplication(applicationId).subscribe(
-      (val: DelegationApplication) => {
-        this.delegationApplication = val;
-        this.isLoadingResults = false;
-        this.constructForm();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
-  }
-
   public filterCountries(countries: Array<Country>, name: string): Array<Country> {
     return countries.filter(country => country.countryName.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
@@ -154,10 +132,26 @@ export class DelegationComponent implements OnInit, OnDestroy {
     return country ? country.countryName : undefined;
   }
 
-  public save(): void {
-    const form: AbstractControl = this.applicationForm;
-    const application: DelegationApplication = <DelegationApplication>form.get('delegation').value;
-    this.delegationApplication ? this.updateApplication(this.delegationApplication) : this.createApplication(application);
+  public resetForm(): void {
+    this.applicationForm.reset();
+    this.applicationForm.markAsUntouched();
+    this.applicationForm.markAsPristine();
+    this.applicationForm.get('delegation').reset({ budget: 0 });
+  }
+
+  public fetchDelegationApplication(applicationId: number): void {
+    this.fetchData();
+    this.isLoadingResults = true;
+    this.$delegation = this._delegationService.getDelegationApplication(applicationId).subscribe(
+      (val: DelegationApplication) => {
+        this.delegationApplication = val;
+        this.isLoadingResults = false;
+        this.constructForm();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
   }
 
   public createApplication(application: DelegationApplication): void {
@@ -185,6 +179,12 @@ export class DelegationComponent implements OnInit, OnDestroy {
         this._errorResolver.handleError(httpErrorResponse.error);
       }
     );
+  }
+
+  public save(): void {
+    const form: AbstractControl = this.applicationForm;
+    const application: DelegationApplication = <DelegationApplication>form.get('delegation').value;
+    this.delegationApplication ? this.updateApplication(this.delegationApplication) : this.createApplication(application);
   }
 
   public isValid(): boolean {
