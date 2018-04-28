@@ -230,13 +230,13 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribeAll(): void {
-    if (this.$employees !== undefined) {
+    if (this.$employees) {
       this.$employees.unsubscribe();
     }
-    if (this.$employee !== undefined) {
+    if (this.$employee) {
       this.$employee.unsubscribe();
     }
-    if (this.$managers !== undefined) {
+    if (this.$managers) {
       this.$managers.unsubscribe();
     }
   }
