@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
-public class SinglePageAppResourceResolver extends PathResourceResolver {
+public final class SinglePageAppResourceResolver extends PathResourceResolver {
   @Override
   protected Resource getResource(final String resourcePath, final Resource location)
       throws IOException {
