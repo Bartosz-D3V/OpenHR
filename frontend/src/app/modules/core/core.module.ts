@@ -32,6 +32,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CalendarModule } from 'angular-calendar';
 import 'hammerjs/hammer';
 
 import { AppRoutingModule } from '../../app-routing.module';
@@ -59,6 +60,7 @@ import { MyApplicationsComponent } from './pages/my-applications/my-applications
 import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
+import { EventCalendarComponent } from '@shared/components/event-calendar/event-calendar.component';
 
 @NgModule({
   imports: [
@@ -92,9 +94,10 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    SharedModule,
+    CalendarModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     RouterModule,
     AppRoutingModule,
   ],
@@ -119,6 +122,7 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     ApplicationStatusPipe,
     DashboardComponent,
     ManageDelegationsComponent,
+    EventCalendarComponent,
     ApplicationTypePipe,
     TokenExpirationModalComponent,
   ],
