@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
 
@@ -17,11 +18,13 @@ export class TokenObserverService {
   }
 
   private openDialog(): void {
-    this.dialog.open(TokenExpirationModalComponent, {
-      width: '250px',
-      height: '175px',
-      hasBackdrop: true,
-      disableClose: true,
-    });
+    this.dialog
+      .open(TokenExpirationModalComponent, {
+        width: '250px',
+        height: '175px',
+        hasBackdrop: true,
+        disableClose: true,
+      })
+      .afterClosed(() => this.observe());
   }
 }
