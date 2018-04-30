@@ -45,13 +45,13 @@ install:
 
 script:
   - cd ../frontend/
-  - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
-  - mvn package -B -D skipTests -e
   - mvn test -B -e
-  
+  - cd ..
+  - npm run deploy
+
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
 
@@ -59,6 +59,12 @@ after_success:
   - npm install -g codecov
   - codecov -t $TOKEN
   - bash <(curl -s https://codecov.io/bash) -t $TOKEN
+
+deploy:
+  provider: heroku
+  app: OpenHR
+  api_key:
+    secure: $HEROKU_TOKEN
 
 notifications:
   email: false
