@@ -1,14 +1,15 @@
+import { Injectable } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatButtonModule, MatDialogModule, MatDialogRef } from '@angular/material';
 
 import { TokenExpirationModalComponent } from './token-expiration-modal.component';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { TokenExpirationService } from '@shared/components/token-expiration-modal/service/token-expiration.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { Injectable } from '@angular/core';
 
 describe('TokenExpirationModalComponent', () => {
   let component: TokenExpirationModalComponent;
@@ -24,7 +25,7 @@ describe('TokenExpirationModalComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [TokenExpirationModalComponent],
-        imports: [RouterTestingModule, HttpClientTestingModule],
+        imports: [RouterTestingModule, HttpClientTestingModule, FormsModule, MatDialogModule, MatButtonModule],
         providers: [
           TokenExpirationService,
           JwtHelperService,
@@ -34,6 +35,10 @@ describe('TokenExpirationModalComponent', () => {
           },
           {
             provide: MatDialogRef,
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { cancelled: false },
           },
           {
             provide: OverlayContainer,
