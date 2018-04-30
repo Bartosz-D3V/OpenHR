@@ -62,7 +62,8 @@ after_success:
 
 deploy:
   provider: heroku
-  app: OpenHR
+  app: open-hr
+  on: chore/master/heroku
   api_key:
     secure: $HEROKU_TOKEN
 

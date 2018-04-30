@@ -2,9 +2,10 @@
 
 PATH=$PATH:$(npm bin)
 set -x
-cd ../frontend
-npm run dist
-cp -R dist/. ../backend/src/main/resources/static/
+cd ./frontend
+npm run dist || exit 1
+cp -R dist/. ../backend/src/main/resources/static/ || exit 1
 cd ../backend
-mvn package -D skipTests
+mvn package -D skipTests || exit 1
 cd ..
+
