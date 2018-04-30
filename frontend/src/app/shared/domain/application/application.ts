@@ -11,6 +11,7 @@ export abstract class Application {
   public terminated: boolean;
   public processInstanceId: string;
   public applicationType?: ApplicationType;
+  public refusalReason?: string;
   public subjectId?: number;
 
   protected constructor(
@@ -21,6 +22,8 @@ export abstract class Application {
     approvedByHR: boolean,
     terminated: boolean,
     processInstanceId: string,
+    applicationType?: ApplicationType,
+    refusalReason?: string,
     subjectId?: number
   ) {
     this.applicationId = applicationId;
@@ -30,6 +33,8 @@ export abstract class Application {
     this.approvedByHR = approvedByHR;
     this.terminated = terminated;
     this.processInstanceId = processInstanceId;
+    this.applicationType = applicationType ? applicationType : null;
+    this.refusalReason = refusalReason ? refusalReason : null;
     this.subjectId = subjectId ? subjectId : null;
   }
 }

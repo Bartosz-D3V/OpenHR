@@ -24,6 +24,7 @@ describe('TokenExpirationModalComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [TokenExpirationModalComponent],
+        imports: [RouterTestingModule, HttpClientTestingModule],
         providers: [
           TokenExpirationService,
           JwtHelperService,
@@ -42,7 +43,6 @@ describe('TokenExpirationModalComponent', () => {
             },
           },
         ],
-        imports: [RouterTestingModule, HttpClientTestingModule],
       }).compileComponents();
     })
   );

@@ -1,0 +1,14 @@
+<div class="c-static-modal">
+  <h3 class="c-static-modal__header">Refusal</h3>
+  <mat-form-field class="c-static-modal__form">
+    <label for="refusal-reason"></label>
+    <textarea matInput class="c-static-modal__textarea" placeholder="Refusal reason" id="refusal-reason"
+              name="refusal-reason" [(ngModel)]="data.refusalReason"></textarea>
+  </mat-form-field>
+  <span class="c-static-modal__span">
+    <button mat-raised-button color="accent" [mat-dialog-close]="data" cdkFocusInitial>Save
+    </button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="data" (click)="cancel()">Cancel
+    </button>
+   </span>
+</div>

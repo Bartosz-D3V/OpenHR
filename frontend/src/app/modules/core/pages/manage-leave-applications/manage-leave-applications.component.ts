@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { LeaveApplication } from '@shared/domain/application/leave-application';
@@ -10,6 +11,7 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 import { LightweightSubjectService } from '@modules/core/core-wrapper/service/lightweight-subject.service';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 
 @Component({
   selector: 'app-manage-leave-applications',
@@ -34,7 +36,8 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     private _lightweightSubjectService: LightweightSubjectService,
     private _jwtHelper: JwtHelperService,
     private _notificationService: NotificationService,
-    private _errorResolver: ErrorResolverService
+    private _errorResolver: ErrorResolverService,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -53,6 +56,18 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     if (this.$subjects) {
       this.$subjects.unsubscribe();
     }
+  }
+
+  private openDialog(): Observable<any> {
+    return this._dialog
+      .open(InputModalComponent, {
+        width: '350px',
+        height: '300px',
+        hasBackdrop: true,
+        disableClose: true,
+        data: { refusalReason: null, cancelled: false },
+      })
+      .afterClosed();
   }
 
   public fetchLeaveApplications(): void {
@@ -87,16 +102,20 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   }
 
   public rejectLeaveApplication(processInstanceId: string): void {
-    this._manageLeaveApplicationsService.rejectLeaveApplicationByManager(processInstanceId).subscribe(
-      () => {
-        this.fetchLeaveApplications();
-        const message = 'Application has been rejected';
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
+    this.openDialog().subscribe((res: any) => {
+      if (!res.cancelled) {
+        this._manageLeaveApplicationsService.rejectLeaveApplicationByManager(processInstanceId, res.refusalReason).subscribe(
+          () => {
+            this.fetchLeaveApplications();
+            const message = 'Application has been rejected';
+            this._notificationService.openSnackBar(message, 'OK');
+          },
+          (httpErrorResponse: HttpErrorResponse) => {
+            this._errorResolver.handleError(httpErrorResponse.error);
+          }
+        );
       }
-    );
+    });
   }
 
   public getSubjectFullName(subjectId: number): LightweightSubject {

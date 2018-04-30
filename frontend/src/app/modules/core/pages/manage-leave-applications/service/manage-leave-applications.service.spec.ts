@@ -142,7 +142,7 @@ describe('ManageLeaveApplicationsService', () => {
         fakeAsync(() => {
           let result: any;
           let error: any;
-          service.rejectLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
+          service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
               url: `${apiLink}/hr-reject?processInstanceId=45`,
@@ -161,7 +161,7 @@ describe('ManageLeaveApplicationsService', () => {
         fakeAsync(() => {
           let result: Object;
           let error: any;
-          service.rejectLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
+          service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
           http
             .expectOne({
               url: `${apiLink}/hr-reject?processInstanceId=45`,

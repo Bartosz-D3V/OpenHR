@@ -59,6 +59,7 @@ import { MyApplicationsComponent } from './pages/my-applications/my-applications
 import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 
 @NgModule({
   imports: [
@@ -121,8 +122,9 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     ManageDelegationsComponent,
     ApplicationTypePipe,
     TokenExpirationModalComponent,
+    InputModalComponent,
   ],
   providers: [JwtHelperService],
-  entryComponents: [TokenExpirationModalComponent],
+  entryComponents: [TokenExpirationModalComponent, InputModalComponent],
 })
 export class CoreModule {}
