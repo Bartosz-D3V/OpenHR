@@ -63,6 +63,7 @@ after_success:
 deploy:
   provider: heroku
   app: open-hr
+  skip_cleanup: true
   on: chore/master/heroku
   api_key:
     secure: $HEROKU_TOKEN
