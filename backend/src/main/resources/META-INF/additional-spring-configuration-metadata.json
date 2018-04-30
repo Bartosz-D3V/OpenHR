@@ -1,11 +1,6 @@
 {
   "properties": [
     {
-      "name": "app.turnOff.cors",
-      "type": "java.lang.Boolean",
-      "description": "Switch identifying whether CORS should be turned off. Should be always true in live environment."
-    },
-    {
       "name": "mail.transport.protocol",
       "type": "java.lang.String",
       "description": "Protocol to be used."

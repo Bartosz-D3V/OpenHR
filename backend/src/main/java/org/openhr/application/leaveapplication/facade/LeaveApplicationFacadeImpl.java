@@ -70,10 +70,18 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void rejectLeaveApplicationByManager(final String processInstanceId) {
+  public void rejectLeaveApplicationByManager(
+      final String processInstanceId, final String refusalReason)
+      throws ApplicationDoesNotExistException {
     final long applicationId =
         leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
+    final LeaveApplication leaveApplication =
+        leaveApplicationService.getLeaveApplication(applicationId);
+    leaveApplication.setAssignee(null);
+    leaveApplication.setRefusalReason(refusalReason);
     leaveApplicationCommand.rejectLeaveApplicationByManager(processInstanceId, applicationId);
+    leaveApplicationService.updateLeaveApplication(
+        leaveApplication.getApplicationId(), leaveApplication);
   }
 
   @Override
@@ -94,13 +102,14 @@ public class LeaveApplicationFacadeImpl implements LeaveApplicationFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void rejectLeaveApplicationByHR(final String processInstanceId)
+  public void rejectLeaveApplicationByHR(final String processInstanceId, final String refusalReason)
       throws ApplicationDoesNotExistException {
     final long applicationId =
         leaveApplicationService.getLeaveApplicationIdByProcessId(processInstanceId);
     final LeaveApplication leaveApplication =
         leaveApplicationService.getLeaveApplication(applicationId);
     leaveApplication.setAssignee(null);
+    leaveApplication.setRefusalReason(refusalReason);
     leaveApplicationCommand.rejectLeaveApplicationByHr(processInstanceId);
     leaveApplicationService.updateLeaveApplication(
         leaveApplication.getApplicationId(), leaveApplication);

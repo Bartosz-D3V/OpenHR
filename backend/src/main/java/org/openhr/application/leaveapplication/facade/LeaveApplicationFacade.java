@@ -21,12 +21,13 @@ public interface LeaveApplicationFacade {
       long leaveApplicationId, LeaveApplication leaveApplication)
       throws ApplicationDoesNotExistException;
 
-  void rejectLeaveApplicationByManager(String processInstanceId);
+  void rejectLeaveApplicationByManager(String processInstanceId, String refusalReason)
+      throws ApplicationDoesNotExistException;
 
   void approveLeaveApplicationByManager(String processInstanceId)
       throws ApplicationDoesNotExistException, SubjectDoesNotExistException;
 
-  void rejectLeaveApplicationByHR(String processInstanceId)
+  void rejectLeaveApplicationByHR(String processInstanceId, String refusalReason)
       throws SubjectDoesNotExistException, ApplicationDoesNotExistException;
 
   void approveLeaveApplicationByHR(String processInstanceId)

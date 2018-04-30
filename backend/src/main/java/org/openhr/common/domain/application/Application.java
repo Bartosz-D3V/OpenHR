@@ -63,6 +63,9 @@ public abstract class Application implements Serializable {
   @Enumerated(EnumType.STRING)
   protected ApplicationType applicationType;
 
+  @Column(name = "REFUSAL_REASON")
+  private String refusalReason;
+
   @NotNull(message = "Subject cannot be empty")
   @ManyToOne(optional = false)
   @JoinColumn(name = "APPLICANT_FK")
@@ -143,6 +146,14 @@ public abstract class Application implements Serializable {
 
   public ApplicationType getApplicationType() {
     return applicationType;
+  }
+
+  public String getRefusalReason() {
+    return refusalReason;
+  }
+
+  public void setRefusalReason(final String refusalReason) {
+    this.refusalReason = refusalReason;
   }
 
   public Subject getSubject() {

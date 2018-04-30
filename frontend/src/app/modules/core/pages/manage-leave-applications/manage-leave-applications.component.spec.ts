@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 import {
   MatCardModule,
+  MatDialog,
   MatDialogModule,
   MatIconModule,
+  MatInputModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
@@ -24,9 +27,10 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { LeaveApplication } from '@shared/domain/application/leave-application';
+import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 import { ManageLeaveApplicationsComponent } from './manage-leave-applications.component';
 import { ManageLeaveApplicationsService } from './service/manage-leave-applications.service';
-import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 
 describe('ManageLeaveApplicationsComponent', () => {
   let component: ManageLeaveApplicationsComponent;
@@ -50,10 +54,12 @@ describe('ManageLeaveApplicationsComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [ManageLeaveApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
+        declarations: [ManageLeaveApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent, InputModalComponent],
         imports: [
           HttpClientTestingModule,
           NoopAnimationsModule,
+          FormsModule,
+          MatInputModule,
           MatDialogModule,
           MatCardModule,
           MatIconModule,
@@ -76,6 +82,7 @@ describe('ManageLeaveApplicationsComponent', () => {
             provide: ErrorResolverService,
             useClass: FakeErrorResolverService,
           },
+          MatDialog,
         ],
       }).compileComponents();
     })
@@ -163,13 +170,15 @@ describe('ManageLeaveApplicationsComponent', () => {
 
   describe('rejectLeaveApplication method', () => {
     it('should invoke service method using process instance id', () => {
+      spyOn<any>(component, 'openDialog').and.returnValue(Observable.of({ refusalReason: null, cancelled: false }));
       spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(Observable.of({}));
       component.rejectLeaveApplication('11AZ');
 
-      expect(component['_manageLeaveApplicationsService'].rejectLeaveApplicationByManager).toHaveBeenCalledWith('11AZ');
+      expect(component['_manageLeaveApplicationsService'].rejectLeaveApplicationByManager).toHaveBeenCalledWith('11AZ', null);
     });
 
     it('should open snackBar notification with success message', () => {
+      spyOn<any>(component, 'openDialog').and.returnValue(Observable.of({ refusalReason: null, cancelled: false }));
       spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(Observable.of({}));
       spyOn(component['_notificationService'], 'openSnackBar');
       component.rejectLeaveApplication('11AZ');
@@ -178,11 +187,24 @@ describe('ManageLeaveApplicationsComponent', () => {
     });
 
     it('should call errorResolver in case of an error', () => {
+      spyOn<any>(component, 'openDialog').and.returnValue(Observable.of({ refusalReason: null, cancelled: false }));
       spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager').and.returnValue(_throw('Error'));
       component.rejectLeaveApplication('12A');
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+    });
+
+    it('should do nothing if cancelled in pop-up window (modal)', () => {
+      spyOn<any>(component, 'openDialog').and.returnValue(Observable.of({ refusalReason: null, cancelled: true }));
+      spyOn(component['_manageLeaveApplicationsService'], 'rejectLeaveApplicationByManager');
+      spyOn(component['_notificationService'], 'openSnackBar');
+      spyOn(component['_errorResolver'], 'handleError');
+      component.rejectLeaveApplication('12A');
+
+      expect(component['_manageLeaveApplicationsService'].rejectLeaveApplicationByManager).not.toHaveBeenCalled();
+      expect(component['_notificationService'].openSnackBar).not.toHaveBeenCalled();
+      expect(component['_errorResolver'].handleError).not.toHaveBeenCalled();
     });
   });
 
