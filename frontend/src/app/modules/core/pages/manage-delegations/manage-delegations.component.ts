@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
@@ -23,7 +22,6 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   private $delegationApplications: ISubscription;
   private $subjects: ISubscription;
   private subjects: Map<string, LightweightSubject> = new Map<string, LightweightSubject>();
-  public delegationApplications: Array<DelegationApplication>;
   public isLoadingResults: boolean;
   public displayedColumns: Array<string> = [
     'applicationId',
@@ -72,7 +70,6 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
       .getAwaitingForActionDelegationApplications(this._jwtHelper.getSubjectId())
       .subscribe(
         (result: Array<DelegationApplication>) => {
-          this.delegationApplications = result;
           this.dataSource = new MatTableDataSource<DelegationApplication>(result);
           this.dataSource.paginator = this.paginator;
           this.isLoadingResults = false;

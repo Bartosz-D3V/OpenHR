@@ -4,6 +4,10 @@
     Session has expired.
     Please either refresh session, or logout.
   </p>
-  <button mat-raised-button class="c-static-modal__btn" color="accent" (click)="refreshToken()">Refresh</button>
-  <button mat-raised-button class="c-static-modal__btn" color="warn" (click)="logout()">Logout</button>
+  <button mat-raised-button class="c-static-modal__btn" color="accent" [mat-dialog-close]="false"
+          (click)="refreshToken()">Refresh
+  </button>
+  <button mat-raised-button class="c-static-modal__btn" color="warn" [mat-dialog-close]="true"
+          (click)="logout()">Logout
+  </button>
 </div>

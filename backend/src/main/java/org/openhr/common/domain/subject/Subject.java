@@ -29,7 +29,7 @@ public abstract class Subject implements Serializable {
     strategy = "enhanced-sequence",
     parameters = {
       @Parameter(name = "sequence_name", value = "SUBJECT_SEQUENCE_ID"),
-      @Parameter(name = "initial_value", value = "1")
+      @Parameter(name = "initial_value", value = "2")
     }
   )
   @GeneratedValue(generator = "ID_GENERATOR")

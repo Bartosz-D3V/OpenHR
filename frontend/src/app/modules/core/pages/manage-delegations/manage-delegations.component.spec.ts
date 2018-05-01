@@ -22,10 +22,16 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { ManageDelegationsService } from '@modules/core/pages/manage-delegations/service/manage-delegations.service';
+import { Observable } from 'rxjs/Observable';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('ManageDelegationsComponent', () => {
   let component: ManageDelegationsComponent;
   let fixture: ComponentFixture<ManageDelegationsComponent>;
+  const mockError: HttpErrorResponse = new HttpErrorResponse({
+    error: 'Unauthorized',
+    status: 401,
+  });
 
   @Injectable()
   class FakeErrorResolverService {
@@ -77,5 +83,59 @@ describe('ManageDelegationsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('approveDelegationApplication method', () => {
+    it('should approve delegation application', () => {
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_notificationService'], 'openSnackBar');
+      component.approveDelegationApplication('1A');
+      const msg = `Application has been accepted`;
+
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith(msg, 'OK');
+    });
+
+    it('should fetch applications after approval', () => {
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component, 'fetchDelegationApplications');
+      component.approveDelegationApplication('1A');
+
+      expect(component.fetchDelegationApplications).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.approveDelegationApplication('1A');
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
+  });
+
+  describe('approveDelegationApplication method', () => {
+    it('should approve delegation application', () => {
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_notificationService'], 'openSnackBar');
+      component.rejectDelegationApplication('1A');
+      const msg = `Application has been rejected`;
+
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith(msg, 'OK');
+    });
+
+    it('should fetch applications after approval', () => {
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component, 'fetchDelegationApplications');
+      component.rejectDelegationApplication('1A');
+
+      expect(component.fetchDelegationApplications).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.rejectDelegationApplication('1A');
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
   });
 });

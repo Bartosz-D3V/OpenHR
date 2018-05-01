@@ -16,7 +16,7 @@ import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
 export class WorkersComponent implements OnInit, OnDestroy {
   private $workers: ISubscription;
   public isLoadingResults: boolean;
-  public workers: Array<LightweightSubject>;
+  public workers: Array<LightweightSubject> = [];
   public tableColumns: Array<string> = ['id', 'name', 'position'];
   public dataSource: MatTableDataSource<LightweightSubject> = new MatTableDataSource();
 
@@ -29,7 +29,7 @@ export class WorkersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.$workers !== undefined) {
+    if (this.$workers) {
       this.$workers.unsubscribe();
     }
   }

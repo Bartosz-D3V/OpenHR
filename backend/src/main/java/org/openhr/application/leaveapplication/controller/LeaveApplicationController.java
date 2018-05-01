@@ -83,8 +83,12 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
-  public void rejectLeaveApplicationByManager(@RequestParam final String processInstanceId) {
-    leaveApplicationFacade.rejectLeaveApplicationByManager(processInstanceId);
+  @ResponseStatus(HttpStatus.OK)
+  public void rejectLeaveApplicationByManager(
+      @RequestParam final String processInstanceId,
+      @RequestBody(required = false) final String refusalReason)
+      throws ApplicationDoesNotExistException {
+    leaveApplicationFacade.rejectLeaveApplicationByManager(processInstanceId, refusalReason);
   }
 
   @RequestMapping(
@@ -92,6 +96,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @ResponseStatus(HttpStatus.OK)
   public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
@@ -102,9 +107,12 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
-  public void rejectLeaveApplicationByHR(@RequestParam final String processInstanceId)
+  @ResponseStatus(HttpStatus.OK)
+  public void rejectLeaveApplicationByHR(
+      @RequestParam final String processInstanceId,
+      @RequestBody(required = false) final String refusalReason)
       throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
-    leaveApplicationFacade.rejectLeaveApplicationByHR(processInstanceId);
+    leaveApplicationFacade.rejectLeaveApplicationByHR(processInstanceId, refusalReason);
   }
 
   @RequestMapping(
@@ -112,6 +120,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @ResponseStatus(HttpStatus.OK)
   public void approveLeaveApplicationByHR(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplicationByHR(processInstanceId);

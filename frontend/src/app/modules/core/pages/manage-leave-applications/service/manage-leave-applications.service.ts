@@ -34,10 +34,10 @@ export class ManageLeaveApplicationsService {
     });
   }
 
-  public rejectLeaveApplicationByManager(processInstanceId: string): Observable<any> {
+  public rejectLeaveApplicationByManager(processInstanceId: string, refusalReason: string): Observable<any> {
     const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams().set('processInstanceId', processInstanceId);
-    return this._http.put(`${this.url}/${url}-reject`, null, {
+    return this._http.put(`${this.url}/${url}-reject`, refusalReason, {
       headers: this.headers,
       params: params,
     });
