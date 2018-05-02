@@ -11,6 +11,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { SettingsComponent } from './settings.component';
 import { SettingsService } from './service/settings.service';
+import { User } from '@modules/settings/pages/settings/domain/user';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -126,5 +127,14 @@ describe('SettingsComponent', () => {
 
       expect(component['darkModeOn']).toBeTruthy();
     });
+  });
+
+  it('updateUser should call service', () => {
+    spyOn(component['_settingsService'], 'updateUser').and.returnValue(Observable.of({}));
+    const mockUser: User = new User();
+    component.user = mockUser;
+    component.updateUser();
+
+    expect(component['_settingsService'].updateUser).toHaveBeenCalledWith(mockUser);
   });
 });

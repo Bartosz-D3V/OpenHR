@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { SystemVariables } from '@config/system-variables';
 import { Jwt } from '../../domain/auth/jwt';
-import { JwtHelperService } from './jwt-helper.service';
 import { Role } from '../../domain/subject/role';
+import { JwtHelperService } from './jwt-helper.service';
 
 describe('JwtHelperService', () => {
   let service: JwtHelperService;
@@ -33,6 +33,7 @@ describe('JwtHelperService', () => {
     service = TestBed.get(JwtHelperService);
     service.removeToken();
     service.saveToken(mockTokenString);
+    service.saveRefreshToken(mockTokenString);
   });
 
   it('should be created', () => {
@@ -47,6 +48,16 @@ describe('JwtHelperService', () => {
     service.saveToken(mockTokenString);
 
     expect(window.localStorage.getItem(SystemVariables.TOKEN_PREFIX)).toEqual(mockTokenString);
+  });
+
+  it('getRefreshToken should return token as a string', () => {
+    expect(service.getRefreshToken()).toEqual(mockTokenString);
+  });
+
+  it('saveRefreshToken should save token into localStorage', () => {
+    service.saveRefreshToken(mockTokenString);
+
+    expect(window.localStorage.getItem(SystemVariables.REFRESH_TOKEN_PREFIX)).toEqual(mockTokenString);
   });
 
   it('removeToken should remove token from localStorage', () => {
