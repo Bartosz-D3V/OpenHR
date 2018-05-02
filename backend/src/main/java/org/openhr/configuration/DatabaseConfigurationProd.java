@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@Profile("!dev")
+@Profile("production")
 @PropertySource("classpath:application-production.properties")
 public class DatabaseConfigurationProd {
 
