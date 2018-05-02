@@ -13,7 +13,7 @@
     "e2e": "ng e2e",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
     "clean": "rm -rf ./dist ./coverage",
-    "dist": "ng build --deploy-url=/app/  --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
+    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
   },
   "private": true,
   "dependencies": {

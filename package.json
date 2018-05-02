@@ -3,7 +3,7 @@
     "lint-staged": "lint-staged --config .lintstagedrc",
     "pretty": "prettier --write **/*.{js,ts}",
     "google-format": "bash ./tools/google-format.sh",
-    "deploy-dev": "bash ./tools/deploy-dev.sh",
+    "deploy": "bash ./tools/deploy.sh",
     "start": "bash ./tools/run-app.sh"
   },
   "dependencies": {},

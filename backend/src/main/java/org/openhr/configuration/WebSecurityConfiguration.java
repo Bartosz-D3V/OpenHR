@@ -31,12 +31,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private static final String FORM_BASED_LOGIN_ENTRY_POINT = "/auth/login";
   private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/employees";
   private static final String TOKEN_REFRESH_ENTRY_POINT = "/auth/token";
-  private static final String LOGIN_FORM = "/open-hr/**";
-  private static final String STATIC_RESOURCES = "/app/**.{js,css,html,ico,jpg}";
-  private static final String STATIC_RESOURCES2 = "/**.{js,css,html,ico,jpg}";
-  private static final String STATIC_RESOURCES3 = "/open-hr/**.{js,css,html,ico,jpg}";
-  private static final String STATIC_RESOURCES4 = "/app/*.{js,css,html,ico,jpg}";
-  private static final String STATIC_RESOURCES5 = "/app/assets/*.{js,css,html,ico,jpg}";
+  private static final String STATIC_RESOURCES = "/*.{js,css,html,ico}";
+  private static final String STATIC_RESOURCES_ASSETS = "/assets/*.{ico,jpg}";
 
   @Autowired private AuthenticationManager authenticationManager;
   private final AjaxAuthenticationProvider ajaxAuthenticationProvider;
@@ -77,16 +73,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers(HttpMethod.POST, TOKEN_REFRESH_ENTRY_POINT)
         .permitAll()
-        .antMatchers(HttpMethod.GET, LOGIN_FORM)
-        .permitAll()
         .antMatchers(FORM_BASED_REGISTER_ENTRY_POINT)
         .permitAll()
-        .antMatchers(
-            STATIC_RESOURCES,
-            STATIC_RESOURCES2,
-            STATIC_RESOURCES3,
-            STATIC_RESOURCES4,
-            STATIC_RESOURCES5)
+        .antMatchers(STATIC_RESOURCES, STATIC_RESOURCES_ASSETS)
         .permitAll()
         .anyRequest()
         .permitAll()
@@ -126,12 +115,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             TOKEN_REFRESH_ENTRY_POINT,
             FORM_BASED_LOGIN_ENTRY_POINT,
             FORM_BASED_REGISTER_ENTRY_POINT,
-            LOGIN_FORM,
             STATIC_RESOURCES,
-            STATIC_RESOURCES2,
-            STATIC_RESOURCES3,
-            STATIC_RESOURCES4,
-            STATIC_RESOURCES5);
+            STATIC_RESOURCES_ASSETS);
     final SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, pattern);
     final JWTTokenAuthenticationFilter jwtTokenAuthenticationFilter =
         new JWTTokenAuthenticationFilter(
