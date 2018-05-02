@@ -32,8 +32,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private static final String FORM_BASED_REGISTER_ENTRY_POINT = "/employees";
   private static final String TOKEN_REFRESH_ENTRY_POINT = "/auth/token";
   private static final String LOGIN_FORM = "/open-hr";
-  private static final String ASSETS = "classpath:/static/assets/**.*";
-  private static final String STATIC_RESOURCES = "/**.{js,css,html,ico,jpg}";
+  private static final String STATIC_RESOURCES = "/app/**.{js,css,html,ico,jpg}";
 
   @Autowired private AuthenticationManager authenticationManager;
   private final AjaxAuthenticationProvider ajaxAuthenticationProvider;
@@ -80,8 +79,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers(STATIC_RESOURCES)
         .permitAll()
-        .antMatchers(ASSETS)
-        .permitAll()
         .anyRequest()
         .permitAll()
         .anyRequest()
@@ -121,8 +118,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             FORM_BASED_LOGIN_ENTRY_POINT,
             FORM_BASED_REGISTER_ENTRY_POINT,
             LOGIN_FORM,
-            STATIC_RESOURCES,
-            ASSETS);
+            STATIC_RESOURCES);
     final SkipPathRequestMatcher matcher = new SkipPathRequestMatcher(pathsToSkip, pattern);
     final JWTTokenAuthenticationFilter jwtTokenAuthenticationFilter =
         new JWTTokenAuthenticationFilter(
