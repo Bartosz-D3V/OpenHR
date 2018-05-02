@@ -41,7 +41,7 @@ install:
   - cd frontend/
   - yarn install
   - cd ../backend/
-  - mvn install -B -D skipTests -e
+  - mvn install -Pdev -B -D skipTests -e
 
 script:
   - cd ../frontend/
@@ -49,8 +49,8 @@ script:
   - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
-  - mvn package -B -D skipTests -e
-  - mvn test -B -e
+  - mvn package -Pdev -B -D skipTests -e
+  - mvn test -Pdev -B -e
   
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'

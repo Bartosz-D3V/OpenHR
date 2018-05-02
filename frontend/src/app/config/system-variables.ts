@@ -1,5 +1,7 @@
+import { environment } from '../../environments/environment';
+
 export class SystemVariables {
-  public static readonly API_URL = '/api';
+  public static readonly API_URL = environment.production ? '' : '/api';
   public static readonly TOKEN_PREFIX = 'openHR-TKN';
   public static readonly REFRESH_TOKEN_PREFIX = 'openHR-Refresh-TKN';
 }
