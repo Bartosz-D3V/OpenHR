@@ -6,6 +6,7 @@ import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.manager.facade.ManagerFacade;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,7 @@ public class ManagerController {
   )
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public Manager addManager(@RequestBody final Manager manager) {
+  public Manager addManager(@RequestBody final Manager manager) throws UserAlreadyExists {
     return managerFacade.addManager(manager);
   }
 

@@ -3,6 +3,7 @@ package org.openhr.application.hr.facade;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.service.HrService;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class HrFacadeImpl implements HrFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) {
+  public HrTeamMember addHrTeamMember(final HrTeamMember hrTeamMember) throws UserAlreadyExists {
     return hrService.addHrTeamMember(hrTeamMember);
   }
 
