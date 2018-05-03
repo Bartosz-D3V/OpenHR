@@ -125,14 +125,6 @@ describe('LeaveApplicationComponent', () => {
     expect(component.leaveApplication.endDate).toEqual(mockEndDate);
   });
 
-  it('setSelector should update selector type', () => {
-    component.setSelector({ source: null, value: DateSelectorType.RANGE });
-
-    expect(component.selectorType).toBeDefined();
-    expect(typeof component.selectorType).toBe('string');
-    expect(component.selectorType).toEqual(DateSelectorType.RANGE);
-  });
-
   it('setLeaveType should update selector type', () => {
     const mockLeaveType: LeaveType = new LeaveType(1, 'Holiday', 'Annual leave');
     component.leaveTypes = [mockLeaveType];
