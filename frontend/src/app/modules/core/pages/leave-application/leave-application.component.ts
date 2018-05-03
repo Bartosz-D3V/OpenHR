@@ -42,7 +42,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     leaveTypeSelectorController: new FormControl('', [Validators.required]),
     messageController: new FormControl('', [Validators.maxLength(500)]),
     dateRangeController: new FormControl('', []),
-    singleDateController: new FormControl('', []),
   });
 
   constructor(
@@ -66,11 +65,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
 
   public setEndDate(endDate: MomentInput): void {
     this.leaveApplication.endDate = endDate;
-  }
-
-  public setSelector(selector: MatRadioChange): void {
-    this.selectorType = selector.value === 'Range' ? DateSelectorType.RANGE : DateSelectorType.SINGLE;
-    this.setConditionalValidators();
   }
 
   public setLeaveType(leaveTypeCategory: string): void {
@@ -113,18 +107,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    switch (this.selectorType) {
-      case DateSelectorType.SINGLE:
-        return this.leaveApplicationFormGroup.valid;
-      case DateSelectorType.RANGE:
-      default:
-        return this.leaveApplicationFormGroup.valid && this.dateRangePickerIsValid;
-    }
-  }
-
-  private setConditionalValidators(): void {
-    if (this.selectorType === DateSelectorType.SINGLE) {
-      this.leaveApplicationFormGroup.get('singleDateController').setValidators(Validators.required);
-    }
+    return this.leaveApplicationFormGroup.valid && this.dateRangePickerIsValid;
   }
 }
