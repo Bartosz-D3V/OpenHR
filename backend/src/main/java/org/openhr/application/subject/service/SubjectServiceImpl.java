@@ -109,17 +109,12 @@ public class SubjectServiceImpl implements SubjectService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public void subtractDaysFromSubjectAllowanceExcludingFreeDays(
+  public Subject subtractDaysFromSubjectAllowanceExcludingFreeDays(
       final Subject subject, final LeaveApplication leaveApplication) throws ValidationException {
     final long allowanceToSubtract =
         holidayService.getWorkingDaysInBetween(
             leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long newUsedAllowance = getUsedAllowance(subject.getSubjectId()) + allowanceToSubtract;
-    if (newUsedAllowance > getLeftAllowanceInDays(subject.getSubjectId())) {
-      throw new ValidationException(
-          messageSource.getMessage(
-              "error.validation.notenoughleaveallowance", null, Locale.getDefault()));
-    }
     if (allowanceToSubtract > getLeftAllowanceInDays(subject.getSubjectId())) {
       throw new ValidationException(
           messageSource.getMessage("error.validation.leavetoolong", null, Locale.getDefault()));
@@ -127,6 +122,7 @@ public class SubjectServiceImpl implements SubjectService {
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
     subjectRepository.updateSubjectHRInformation(
         subject.getSubjectId(), subject.getHrInformation());
+    return subject;
   }
 
   @Override
