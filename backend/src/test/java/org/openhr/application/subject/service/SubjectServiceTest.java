@@ -40,22 +40,29 @@ public class SubjectServiceTest {
     assertEquals(15L, subjectService.getLeftAllowanceInDays(100L));
   }
 
-  @Test(expected = ValidationException.class)
-  public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeftLeaveAllowance()
+  @Test
+  public void subtractDaysFromSubjectAllowanceExcludingFreeDaysShouldUpdateHRInformation()
       throws ValidationException {
     when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
-    when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
-    when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
+    when(subjectRepository.getAllowance(anyLong())).thenReturn(25L);
+    when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(0L);
+
+    final Subject subject = new Employee();
+    final HrInformation hrInformation = new HrInformation();
+    hrInformation.setAllowance(25L);
+    subject.setHrInformation(hrInformation);
     final LeaveApplication leaveApplication =
         new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
 
-    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(
-        new Employee(), leaveApplication);
+    final Subject updatedSubject =
+        subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
+    assertEquals(subject.getHrInformation(), updatedSubject.getHrInformation());
   }
 
   @Test(expected = ValidationException.class)
-  public void subtractDaysExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
-      throws ValidationException {
+  public void
+      subtractDaysFromSubjectAllowanceExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
+          throws ValidationException {
     when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
     when(subjectRepository.getAllowance(anyLong())).thenReturn(20L);
     when(subjectRepository.getUsedAllowance(anyLong())).thenReturn(17L);
