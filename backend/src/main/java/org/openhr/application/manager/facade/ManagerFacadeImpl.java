@@ -6,6 +6,7 @@ import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.manager.service.ManagerService;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class ManagerFacadeImpl implements ManagerFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager addManager(final Manager manager) {
+  public Manager addManager(final Manager manager) throws UserAlreadyExists {
     return managerService.addManager(manager);
   }
 

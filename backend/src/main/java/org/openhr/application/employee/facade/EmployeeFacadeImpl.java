@@ -4,6 +4,7 @@ import java.util.List;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Employee createEmployee(final Employee employee) {
+  public Employee createEmployee(final Employee employee) throws UserAlreadyExists {
     return employeeService.createEmployee(employee);
   }
 
