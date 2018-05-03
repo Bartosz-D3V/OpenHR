@@ -4,6 +4,7 @@ import java.util.List;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.facade.EmployeeFacade;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +52,7 @@ public class EmployeeController {
   )
   @ResponseBody
   @ResponseStatus(code = HttpStatus.CREATED)
-  public Employee createEmployee(@RequestBody final Employee employee) {
+  public Employee createEmployee(@RequestBody final Employee employee) throws UserAlreadyExists {
     return employeeFacade.createEmployee(employee);
   }
 
