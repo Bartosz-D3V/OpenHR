@@ -9,7 +9,8 @@
 <section class="c-drawer" *ngIf="subject">
   <mat-toolbar [color]="'primary'">My details</mat-toolbar>
   <mat-accordion>
-    <mat-expansion-panel [expanded]="stepNumber === 0" (opened)="setStep(0)" hideToggle="true">
+    <mat-expansion-panel id="personal-details-personal-information" [expanded]="stepNumber === 0" (opened)="setStep(0)"
+                         hideToggle="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Personal information
@@ -24,7 +25,8 @@
           <label for="personal-details-first-name"></label>
           <input matInput required="required" placeholder="First name" formControlName="firstNameFormControl"
                  id="personal-details-first-name" name="firstName" [(ngModel)]="subject.personalInformation.firstName">
-          <mat-error *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
+          <mat-error id="personal-details-first-name-required"
+                     *ngIf="personalInformationFormGroup.controls['firstNameFormControl'].hasError('required')">
             First name is required
           </mat-error>
         </mat-form-field>
