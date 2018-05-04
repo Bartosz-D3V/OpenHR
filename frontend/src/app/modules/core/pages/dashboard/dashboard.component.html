@@ -21,17 +21,17 @@
     <app-number-indicator [number]="allowanceLeft" [description]="'Allowance left'"></app-number-indicator>
   </div>
 
-  <div class="c-dashboard__chart" fxFlex.gt-md="50" fxFlex.md="100" fxFlex.lt-sm="100" [hidden]="isLoadingResults">
+  <div class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100" [hidden]="isLoadingResults">
     <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
   </div>
 
-  <div class="c-dashboard__chart" fxFlex.gt-md="50" fxFlex.md="100" fxFlex.lt-sm="100"
+  <div class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100"
        *ngIf="(role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER') && !isLoadingResults">
     <app-number-indicator [number]="totalDelegationExpenditure.totalExpenditure | currency:'GBP'"
                           [description]="totalDelegationExpenditure.year"></app-number-indicator>
   </div>
 
-  <div class="c-dashboard__chart" fxFlex.gt-md="100" fxFlex.md="100" fxFlex.lt-sm="100" *ngIf="!isLoadingResults">
+  <div class="c-dashboard__chart" fxFlex.gt-sm="100" fxFlex.sm="100" fxFlex.lt-sm="100" *ngIf="!isLoadingResults">
 
     <h3 class="c-dashboard__label">People on leave today</h3>
     <mat-table #subjectsOnLeave [dataSource]="dataSource">
