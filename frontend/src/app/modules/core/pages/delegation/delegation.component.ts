@@ -133,10 +133,10 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   public resetForm(): void {
-    this.applicationForm.reset();
-    this.applicationForm.markAsUntouched();
-    this.applicationForm.markAsPristine();
-    this.applicationForm.get('delegation').reset({ budget: 0 });
+    const delegationForm: AbstractControl = this.applicationForm.get('delegation');
+    delegationForm.markAsUntouched();
+    delegationForm.markAsPristine();
+    delegationForm.reset({ budget: 0 });
   }
 
   public fetchDelegationApplication(applicationId: number): void {
