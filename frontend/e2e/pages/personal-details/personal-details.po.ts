@@ -24,4 +24,32 @@ export class PersonalDetailsPo {
   public static getMiddleNameField() {
     return element(by.id('personal-details-middle-name'));
   }
+
+  public static getLastNameField() {
+    return element(by.id('personal-details-last-name'));
+  }
+
+  public static getLastNameFieldWarningRequired() {
+    return element(by.id('personal-details-last-name-required'));
+  }
+
+  public static getDateOfBirthField() {
+    return element(by.id('personal-details-date-of-birth'));
+  }
+
+  public static getDateOfBirthFieldWarningRequired() {
+    return element(by.id('personal-details-date-of-birth-required'));
+  }
+
+  public static getPositionField() {
+    return element(by.id('personal-details-position'));
+  }
+
+  public static getPersonalInformationNextButton() {
+    return element(by.id('personal-details-personal-information-next'));
+  }
+
+  public static getTelephoneField() {
+    return element(by.id('personal-details-telephone'));
+  }
 }

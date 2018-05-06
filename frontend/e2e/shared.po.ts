@@ -13,7 +13,7 @@ export class SharedPo {
     return browser.wait(protractor.ExpectedConditions.presenceOf(el), 9000);
   }
 
-  public static resetValueByKeyboard(elem, length: number) {
+  public static resetValueByKeyboard(elem, length?: number) {
     length = length || 100;
     let backspaceSeries = '';
     for (let i = 0; i < length; i++) {

@@ -42,7 +42,8 @@
           <label for="personal-details-last-name"></label>
           <input matInput required="required" placeholder="Last name" formControlName="lastNameFormControl"
                  id="personal-details-last-name" name="lastName" [(ngModel)]="subject.personalInformation.lastName">
-          <mat-error *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
+          <mat-error id="personal-details-last-name-required"
+                     *ngIf="personalInformationFormGroup.controls['lastNameFormControl'].hasError('required')">
             Last name is required
           </mat-error>
         </mat-form-field>
@@ -52,7 +53,8 @@
           <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dobFormControl"
                  id="personal-details-date-of-birth" name="dateOfBirth"
                  [(ngModel)]="subject.personalInformation.dateOfBirth">
-          <mat-error *ngIf="personalInformationFormGroup.controls['dobFormControl'].hasError('required')">
+          <mat-error id="personal-details-date-of-birth-required"
+                     *ngIf="personalInformationFormGroup.controls['dobFormControl'].hasError('required')">
             Date of birth is required
           </mat-error>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -61,12 +63,13 @@
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-position"></label>
-          <input matInput required="required" placeholder="Position" formControlName="positionFormControl"
+          <input matInput placeholder="Position" formControlName="positionFormControl"
                  id="personal-details-position" name="position" [(ngModel)]="subject.employeeInformation.position">
         </mat-form-field>
       </form>
       <mat-action-row>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
+        <button id="personal-details-personal-information-next" mat-button color="primary" (click)="nextStep()">Next
+        </button>
       </mat-action-row>
     </mat-expansion-panel>
 
