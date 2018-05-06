@@ -1,6 +1,10 @@
 import { browser, by, element } from 'protractor';
 
 export class PersonalDetailsPo {
+  public static getHeader() {
+    return element(by.id('personal-details-header'));
+  }
+
   static getPersonalDetailsLinkButton() {
     return element(by.id('sidenav-personal-details'));
   }

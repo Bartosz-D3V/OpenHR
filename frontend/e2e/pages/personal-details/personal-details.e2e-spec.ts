@@ -1,35 +1,33 @@
-import { protractor } from 'protractor';
+import { browser, protractor } from 'protractor';
 
 import { PersonalDetailsPo } from './personal-details.po';
 import { SharedPo } from '../../shared.po';
 
 describe('Personal details page', () => {
   beforeAll(() => {
+    protractor.browser.waitForAngularEnabled(false);
     SharedPo.authenticate();
-  });
-
-  beforeEach(() => {
-    protractor.browser.waitForAngularEnabled(true);
+    SharedPo.waitForElement(PersonalDetailsPo.getPersonalDetailsLinkButton());
     PersonalDetailsPo.getPersonalDetailsLinkButton().click();
+    browser.sleep(5000);
+    SharedPo.waitForElement(PersonalDetailsPo.getHeader());
   });
 
   describe('Personal Information tab', () => {
-    beforeAll(() => {
-      PersonalDetailsPo.getPersonalInformationTab().click();
-    });
-
     describe('First name input field', () => {
       it('should contain first name field with current user first name', () => {
         expect(PersonalDetailsPo.getFirstNameField().isPresent()).toBeTruthy();
-        expect(PersonalDetailsPo.getFirstNameField().getText()).toBe('');
+        expect(PersonalDetailsPo.getFirstNameField().getAttribute('value')).toBe('HR');
       });
 
       it('should display error if field is empty', () => {
-        PersonalDetailsPo.getFirstNameField().click();
-        PersonalDetailsPo.getMiddleNameField().click();
-
-        expect(PersonalDetailsPo.getFirstNameFieldWarningRequired().isPresent()).toBeTruthy();
-        expect(PersonalDetailsPo.getFirstNameFieldWarningRequired().getText()).toBe('First name is required');
+        SharedPo.resetValueByKeyboard(PersonalDetailsPo.getFirstNameField(), 2);
+        PersonalDetailsPo.getMiddleNameField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getFirstNameFieldWarningRequired().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getFirstNameFieldWarningRequired().getText()).toBe('First name is required');
+          });
       });
     });
   });
