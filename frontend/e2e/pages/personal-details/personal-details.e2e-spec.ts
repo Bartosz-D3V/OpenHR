@@ -114,7 +114,60 @@ describe('Personal details page', () => {
     describe('Telephone input field', () => {
       it('should contain number field with current user telephone', () => {
         expect(PersonalDetailsPo.getTelephoneField().isPresent()).toBeTruthy();
-        expect(PersonalDetailsPo.getTelephoneField().getAttribute('value')).toBe('');
+        expect(PersonalDetailsPo.getTelephoneField().getText()).toBe('');
+      });
+
+      it('should display error if number of digits is less than 7', () => {
+        PersonalDetailsPo.getTelephoneField().sendKeys('123456');
+        PersonalDetailsPo.getEmailField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMin().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMin().getText()).toBe('Telephone number must contains at least 7 digits');
+          });
+      });
+
+      it('should display error if number of digits is greater than 11', () => {
+        PersonalDetailsPo.getTelephoneField().sendKeys('123456789123');
+        PersonalDetailsPo.getEmailField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMax().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMax().getText()).toBe('Telephone number must contains maximum 11 digits');
+          });
+      });
+
+      it('should display error if number is missing', () => {
+        SharedPo.resetValueByKeyboard(PersonalDetailsPo.getTelephoneField());
+        PersonalDetailsPo.getEmailField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getTelephoneFieldWarningRequired().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningRequired().getText()).toBe('Telephone is required');
+          });
+      });
+
+      it('should display error if number is not valid', () => {
+        PersonalDetailsPo.getTelephoneField().sendKeys('abcd-172-fg');
+        PersonalDetailsPo.getEmailField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getTelephoneFieldWarningPattern().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningPattern().getText()).toBe('Please enter a valid telephone');
+          });
+      });
+
+      it('should not display error if number is correct', () => {
+        SharedPo.resetValueByKeyboard(PersonalDetailsPo.getTelephoneField());
+        PersonalDetailsPo.getTelephoneField().sendKeys('159875365');
+        PersonalDetailsPo.getEmailField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getTelephoneFieldWarningRequired().isPresent()).toBeFalsy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMax().isPresent()).toBeFalsy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningMin().isPresent()).toBeFalsy();
+            expect(PersonalDetailsPo.getTelephoneFieldWarningPattern().isPresent()).toBeFalsy();
+          });
       });
     });
   });
