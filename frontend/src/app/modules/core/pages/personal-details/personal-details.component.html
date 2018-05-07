@@ -89,16 +89,20 @@
           <label for="personal-details-telephone"></label>
           <input type="tel" matInput placeholder="Telephone" formControlName="telephoneFormControl"
                  id="personal-details-telephone" name="telephone" [(ngModel)]="subject.contactInformation.telephone">
-          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('minlength')">
+          <mat-error id="personal-details-telephone-min"
+                     *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('minlength')">
             Telephone number must contains at least 7 digits
           </mat-error>
-          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('maxlength')">
+          <mat-error id="personal-details-telephone-max"
+                     *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('maxlength')">
             Telephone number must contains maximum 11 digits
           </mat-error>
-          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('required')">
+          <mat-error id="personal-details-telephone-required"
+                     *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('required')">
             Telephone is required
           </mat-error>
-          <mat-error *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('pattern')">
+          <mat-error id="personal-details-telephone-pattern"
+                     *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('pattern')">
             Please enter a valid telephone
           </mat-error>
           <mat-icon matSuffix>mode_edit</mat-icon>
@@ -108,10 +112,12 @@
           <label for="personal-details-email"></label>
           <input type="email" matInput placeholder="Email" formControlName="emailFormControl"
                  id="personal-details-email" name="email" [(ngModel)]="subject.contactInformation.email">
-          <mat-error *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('pattern')">
+          <mat-error id="personal-details-email-pattern"
+                     *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('pattern')">
             Please enter a valid email address
           </mat-error>
-          <mat-error *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('required')">
+          <mat-error id="personal-details-email-required"
+                     *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('required')">
             Email is required
           </mat-error>
         </mat-form-field>
@@ -142,10 +148,12 @@
           <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcodeFormControl"
                  id="personal-details-postcode" name="postcode"
                  [(ngModel)]="subject.contactInformation.address.postcode">
-          <mat-error *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('pattern')">
+          <mat-error id="personal-details-postcode-pattern"
+                     *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('pattern')">
             Please enter a valid postcode
           </mat-error>
-          <mat-error *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('required')">
+          <mat-error id="personal-details-postcode-required"
+                     *ngIf="contactInformationFormGroup.controls['postcodeFormControl'].hasError('required')">
             Postcode is required
           </mat-error>
         </mat-form-field>
@@ -165,7 +173,8 @@
       </form>
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
+        <button id="personal-details-contact-information-next" mat-button color="primary" (click)="nextStep()">Next
+        </button>
       </mat-action-row>
     </mat-expansion-panel>
 
@@ -186,10 +195,12 @@
           <input type="text" matInput placeholder="National Insurance Number" formControlName="ninFormControl"
                  id="personal-details-nin" name="nin"
                  [(ngModel)]="subject.employeeInformation.nationalInsuranceNumber">
-          <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
+          <mat-error id="personal-details-nin-required"
+                     *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
             NIN is required
           </mat-error>
-          <mat-error *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('pattern')">
+          <mat-error id="personal-details-nin-pattern"
+                     *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('pattern')">
             NIN is not correct
           </mat-error>
         </mat-form-field>
@@ -199,13 +210,14 @@
           <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
                  id="personal-details-employee-number" name="employeeNumber"
                  [(ngModel)]="subject.employeeInformation.employeeNumber">
-          <mat-error *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
+          <mat-error id="personal-details-employee-number-required"
+                     *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
             Employee ID is required
           </mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+          <input id="personal-details-start-date" matInput [matDatepicker]="startDatePicker" placeholder="Start date"
                  formControlName="startDateFormControl" name="startDate"
                  [(ngModel)]="subject.employeeInformation.startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -213,7 +225,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDateFormControl"
+          <input id="personal-details-end-date" matInput [matDatepicker]="endDatePicker" placeholder="End date"
+                 formControlName="endDateFormControl"
                  name="endDate" [(ngModel)]="subject.employeeInformation.endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #endDatePicker [touchUi]="isMobile()"></mat-datepicker>
@@ -222,7 +235,8 @@
 
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
+        <button id="personal-details-employee-information-next" mat-button color="primary" (click)="nextStep()">Next
+        </button>
       </mat-action-row>
     </mat-expansion-panel>
 
@@ -240,19 +254,21 @@
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input type="number" matInput placeholder="Allowance"
+          <input id="personal-details-allowance" type="number" matInput placeholder="Allowance"
                  formControlName="allowanceFormControl" name="allowance"
                  [ngModel]="subject.hrInformation.allowance">
-          <mat-error *ngIf="hrInformationFormGroup.controls['allowanceFormControl'].hasError('min')">
+          <mat-error id="personal-details-allowance-min"
+                     *ngIf="hrInformationFormGroup.controls['allowanceFormControl'].hasError('min')">
             Allowance cannot be negative
           </mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input type="number" matInput placeholder="Used allowance"
+          <input id="personal-details-used-allowance" type="number" matInput placeholder="Used allowance"
                  formControlName="usedAllowanceFormControl"
                  name="usedAllowance" [ngModel]="subject.hrInformation.usedAllowance">
-          <mat-error *ngIf="hrInformationFormGroup.controls['usedAllowanceFormControl'].hasError('min')">
+          <mat-error id="personal-details-used-allowance-min"
+                     *ngIf="hrInformationFormGroup.controls['usedAllowanceFormControl'].hasError('min')">
             Used allowance cannot be negative
           </mat-error>
         </mat-form-field>
@@ -260,10 +276,11 @@
 
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">End</button>
+        <button id="personal-details-hr-information-next" mat-button color="primary" (click)="nextStep()">End</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
-  <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid()" (click)="save()">Save
+  <button id="personal-details-submit-button" type="submit" class="c-btn" mat-raised-button color="accent"
+          [disabled]="!isValid()" (click)="save()">Save
   </button>
 </section>

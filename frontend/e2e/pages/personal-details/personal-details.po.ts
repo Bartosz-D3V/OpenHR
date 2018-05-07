@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { by, element } from 'protractor';
 
 export class PersonalDetailsPo {
   public static getHeader() {
@@ -7,10 +7,6 @@ export class PersonalDetailsPo {
 
   static getPersonalDetailsLinkButton() {
     return element(by.id('sidenav-personal-details'));
-  }
-
-  public static getPersonalInformationTab() {
-    return element(by.id('personal-details-personal-information'));
   }
 
   public static getFirstNameField() {
@@ -51,5 +47,109 @@ export class PersonalDetailsPo {
 
   public static getTelephoneField() {
     return element(by.id('personal-details-telephone'));
+  }
+
+  public static getTelephoneFieldWarningMin() {
+    return element(by.id('personal-details-telephone-min'));
+  }
+
+  public static getTelephoneFieldWarningMax() {
+    return element(by.id('personal-details-telephone-max'));
+  }
+
+  public static getTelephoneFieldWarningRequired() {
+    return element(by.id('personal-details-telephone-required'));
+  }
+
+  public static getTelephoneFieldWarningPattern() {
+    return element(by.id('personal-details-telephone-pattern'));
+  }
+
+  public static getEmailField() {
+    return element(by.id('personal-details-email'));
+  }
+
+  public static getEmailFieldWarningRequired() {
+    return element(by.id('personal-details-email-required'));
+  }
+
+  public static getEmailFieldWarningPattern() {
+    return element(by.id('personal-details-email-pattern'));
+  }
+
+  public static getFirstLineAddressField() {
+    return element(by.id('personal-details-1st-line-address'));
+  }
+
+  public static getSecondLineAddressField() {
+    return element(by.id('personal-details-2nd-line-address'));
+  }
+
+  public static getThirdLineAddressField() {
+    return element(by.id('personal-details-3rd-line-address'));
+  }
+
+  public static getPostocdeField() {
+    return element(by.id('personal-details-postcode'));
+  }
+
+  public static getPostodeFieldWarningPattern() {
+    return element(by.id('personal-details-postcode-pattern'));
+  }
+
+  public static getPostcodeFieldWarningRequired() {
+    return element(by.id('personal-details-postcode-required'));
+  }
+
+  public static getCityField() {
+    return element(by.id('personal-details-city'));
+  }
+
+  public static getCountryField() {
+    return element(by.id('personal-details-country'));
+  }
+
+  public static getNINField() {
+    return element(by.id('personal-details-nin'));
+  }
+
+  public static getEmployeeIDField() {
+    return element(by.id('personal-details-employee-number'));
+  }
+
+  public static getEmployeeIDFieldWarningRequired() {
+    return element(by.id('personal-details-employee-number-required'));
+  }
+
+  public static getStartDateField() {
+    return element(by.id('personal-details-start-date'));
+  }
+
+  public static getEndDateField() {
+    return element(by.id('personal-details-end-date'));
+  }
+
+  public static getEmployeeInformationNextButton() {
+    return element(by.id('personal-details-employee-information-next'));
+  }
+
+  public static getAllowanceField() {
+    return element(by.id('personal-details-allowance'));
+  }
+
+  public static getAllowanceFieldWarningMin() {
+    return element(by.id('personal-details-allowance-min'));
+  }
+
+  public static getUsedAllowanceField() {
+    return element(by.id('personal-details-used-allowance'));
+  }
+
+  public static getUsedAllowanceFieldWarningMin() {
+    return element(by.id('personal-details-used-allowance-min'));
+  }
+
+  public static getSubmitButton() {
+    return element(by.id('personal-details-submit-button'));
   }
 }
