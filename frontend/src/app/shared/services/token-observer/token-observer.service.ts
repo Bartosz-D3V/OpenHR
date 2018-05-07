@@ -16,6 +16,7 @@ export class TokenObserverService {
     this.$jwtHelper = this._jwtHelperService.startIATObserver(token).subscribe(() => {
       if (this._dialog.openDialogs.length === 0) {
         this.openDialog();
+        this.$jwtHelper.unsubscribe();
       }
     });
   }
@@ -30,6 +31,6 @@ export class TokenObserverService {
         data: { cancelled: false },
       })
       .afterClosed()
-      .subscribe((data: any) => (!data ? this.observe() : this.$jwtHelper.unsubscribe()));
+      .subscribe((data: boolean) => (!data ? this.observe() : this.$jwtHelper.unsubscribe()));
   }
 }

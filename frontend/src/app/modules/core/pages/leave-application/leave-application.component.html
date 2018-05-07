@@ -7,36 +7,15 @@
   <mat-card>
     <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="row wrap"
           fxLayoutAlign.gt-xs="start" fxLayoutAlign.lt-sm="center center" fxFlex.gt-md="50" fxFlex.lt-md="100">
-      <mat-radio-group class="c-drawer__element" fxFlex="100" name="selectorType" [selected]="range"
-                       (change)="setSelector($event)">
-        <mat-radio-button #single class="c-radio__option" value="Single" fxFlex="50">Single day
-        </mat-radio-button>
-        <mat-radio-button #range class="c-radio__option" value="Range" fxFlex="50">Range
-        </mat-radio-button>
-      </mat-radio-group>
       <app-date-range #dateRange class="c-drawer__element" fxFlex="100"
-                      *ngIf="selectorType === 'Range'; else single_date_template"
-                      [requireStartDate]="selectorType === 'Range'"
-                      [requireEndDate]="selectorType === 'Range'" [startDate]="leaveApplication.startDate"
+                      [requireStartDate]="true" [requireEndDate]="true" [startDate]="leaveApplication.startDate"
                       [showDescription]="true" [endDate]="leaveApplication.endDate"
                       (startDateChange)="setStartDate($event)"
                       (endDateChange)="setEndDate($event)"
                       (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
-      <ng-template class="c-drawer__element" #single_date_template>
-        <mat-form-field fxFlex="100">
-          <input matInput [matDatepicker]="singleDate" placeholder="Choose a date" name="singleDate"
-                 formControlName="singleDateController" (dateInput)="setStartDate($event)">
-          <mat-datepicker-toggle matSuffix [for]="singleDate"></mat-datepicker-toggle>
-          <mat-datepicker #singleDate [touchUi]="isMobile()"></mat-datepicker>
-          <mat-error *ngIf="leaveApplicationFormGroup.controls['singleDateController'].hasError('required')">
-            Date is required
-          </mat-error>
-        </mat-form-field>
-      </ng-template>
       <mat-select class="c-drawer__element" fxFlex="100" placeholder="Select a leave type"
                   formControlName="leaveTypeSelectorController" (selectionChange)="setLeaveType($event.value)">
-        <mat-option *ngFor="let leaveType of leaveTypes" name="leaveType"
-                    [value]="leaveType.leaveCategory">
+        <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.leaveCategory">
           {{leaveType.leaveCategory}}
         </mat-option>
       </mat-select>

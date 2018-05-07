@@ -11,6 +11,7 @@ import { PageHeaderComponent } from '@shared/components/page-header/page-header.
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { SettingsComponent } from './settings.component';
 import { SettingsService } from './service/settings.service';
+import { User } from '@modules/settings/pages/settings/domain/user';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -92,39 +93,12 @@ describe('SettingsComponent', () => {
     });
   });
 
-  describe('turnDarkMode', () => {
-    it('should set localStorage key to "Y" if true was passed', () => {
-      component.turnDarkMode(true);
+  it('updateUser should call service', () => {
+    spyOn(component['_settingsService'], 'updateUser').and.returnValue(Observable.of({}));
+    const mockUser: User = new User();
+    component.user = mockUser;
+    component.updateUser();
 
-      expect(window.localStorage.getItem('darkMode')).toEqual('Y');
-    });
-
-    it('should set localStorage key to "N" if false was passed', () => {
-      component.turnDarkMode(false);
-
-      expect(window.localStorage.getItem('darkMode')).toEqual('N');
-    });
-  });
-
-  describe('loadThemeSetting', () => {
-    it('should set darkModeOn field to false if "F" was retained from localStorage', () => {
-      window.localStorage.setItem('darkMode', 'F');
-      component.loadThemeSetting();
-
-      expect(component['darkModeOn']).toBeFalsy();
-    });
-
-    it('should set darkModeOn field to false if nothing was retained from localStorage', () => {
-      component.loadThemeSetting();
-
-      expect(component['darkModeOn']).toBeFalsy();
-    });
-
-    it('should set darkModeOn field to true if "Y" was retained from localStorage', () => {
-      window.localStorage.setItem('darkMode', 'Y');
-      component.loadThemeSetting();
-
-      expect(component['darkModeOn']).toBeTruthy();
-    });
+    expect(component['_settingsService'].updateUser).toHaveBeenCalledWith(mockUser);
   });
 });

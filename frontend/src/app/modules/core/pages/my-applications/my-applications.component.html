@@ -56,7 +56,8 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
         <mat-cell *matCellDef="let application">
-          <button mat-icon-button color="accent" [disabled]="!applicationIsRejected(application)"
+          <button mat-icon-button color="accent" *ngIf="application.applicationType === 'DELEGATION_APPLICATION'"
+                  [disabled]="!applicationIsRejected(application)"
                   (click)="amendApplication(application.applicationId)">
             <mat-icon class="mat-24">create</mat-icon>
           </button>

@@ -3,6 +3,7 @@ package org.openhr.application.hr.controller;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.facade.HrFacade;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,8 @@ public class HrController {
   )
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public HrTeamMember addHrTeamMember(@RequestBody final HrTeamMember hrTeamMember) {
+  public HrTeamMember addHrTeamMember(@RequestBody final HrTeamMember hrTeamMember)
+      throws UserAlreadyExists {
     return hrFacade.addHrTeamMember(hrTeamMember);
   }
 

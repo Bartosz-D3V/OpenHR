@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 import { MainGuard } from '@shared//guards/main-guard/main.guard';
 import { ManagerGuard } from '@shared//guards/manager-guard/manager.guard';
-import { HrTeamMemberGuard } from '@shared//guards/hr-team-member-guard/hr-team-member.guard';
 import { PersonalDetailsComponent } from '@modules/core/pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from '@modules/core/pages/leave-application/leave-application.component';
 import { DelegationComponent } from '@modules/core/pages/delegation/delegation.component';

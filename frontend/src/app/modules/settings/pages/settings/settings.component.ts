@@ -15,8 +15,6 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   private $settings: ISubscription;
-  private darkModeKey = 'darkMode';
-  private localStorage: Storage = window.localStorage;
   public isLoadingResults: boolean;
   public darkModeOn: boolean;
   public user: User;
@@ -36,26 +34,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadThemeSetting();
     this.fetchUser();
   }
 
   ngOnDestroy(): void {
-    if (this.$settings !== undefined) {
+    if (this.$settings) {
       this.$settings.unsubscribe();
     }
   }
 
-  public turnDarkMode(turnedOn: boolean): void {
-    this.localStorage.setItem(this.darkModeKey, SettingsComponent.booleanToFlag(turnedOn));
-  }
-
   public updateUser(): void {
     this._settingsService.updateUser(this.user).subscribe();
-  }
-
-  public loadThemeSetting(): void {
-    this.darkModeOn = SettingsComponent.flagToBoolean(this.localStorage.getItem(this.darkModeKey));
   }
 
   public fetchUser(): void {
