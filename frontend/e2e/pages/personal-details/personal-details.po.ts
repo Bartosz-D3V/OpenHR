@@ -89,11 +89,11 @@ export class PersonalDetailsPo {
     return element(by.id('personal-details-3rd-line-address'));
   }
 
-  public static getPostocdeField() {
+  public static getPostcodeField() {
     return element(by.id('personal-details-postcode'));
   }
 
-  public static getPostodeFieldWarningPattern() {
+  public static getPostcodeFieldWarningPattern() {
     return element(by.id('personal-details-postcode-pattern'));
   }
 
@@ -109,8 +109,20 @@ export class PersonalDetailsPo {
     return element(by.id('personal-details-country'));
   }
 
+  public static getContactInformationNextButton() {
+    return element(by.id('personal-details-contact-information-next'));
+  }
+
   public static getNINField() {
     return element(by.id('personal-details-nin'));
+  }
+
+  public static getNINFieldWarningPattern() {
+    return element(by.id('personal-details-nin-pattern'));
+  }
+
+  public static getNINFieldWarningRequired() {
+    return element(by.id('personal-details-nin-required'));
   }
 
   public static getEmployeeIDField() {
