@@ -20,33 +20,37 @@ import { ContactInformation } from '@shared/domain/subject/contact-information';
 import { EmployeeInformation } from '@shared/domain/subject/employee-information';
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Manager } from '@shared/domain/subject/manager';
-import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
+import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
+import { Role } from '@shared/domain/subject/role';
 
 @Component({
-  selector: 'app-manage-employees-data',
-  templateUrl: './manage-employees-data.component.html',
-  styleUrls: ['./manage-employees-data.component.scss'],
-  providers: [ManageEmployeesDataService, EmployeeService, ManagerService, ResponsiveHelperService],
+  selector: 'app-manage-workers-data',
+  templateUrl: './manage-workers-data.component.html',
+  styleUrls: ['./manage-workers-data.component.scss'],
+  providers: [EmployeeService, ManagerService, HrTeamMemberService, ResponsiveHelperService],
 })
-export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
-  private $employees: ISubscription;
+export class ManageWorkersDataComponent implements OnInit, OnDestroy {
+  private $workers: ISubscription;
   private $employee: ISubscription;
   private $managers: ISubscription;
+  private $hrTeamMembers: ISubscription;
   public isLoadingResults: boolean;
   public stepNumber = 0;
   public employees: Array<Employee>;
   public managers: Array<Manager>;
+  public hrTeamMembers: Array<HrTeamMember>;
   public subject: Employee;
-  public filteredEmployees: Observable<Array<Employee>>;
-  public filteredManagers: Observable<Array<Manager>>;
+  public filteredWorkers: Observable<Array<Subject>>;
+  public filteredSupervisors: Observable<Array<Manager>>;
   public employeeForm: FormGroup;
-  public employeesCtrl: FormControl = new FormControl();
-  public managersCtrl: FormControl = new FormControl();
+  public workersCtrl: FormControl = new FormControl();
+  public supervisorCtrl: FormControl = new FormControl();
 
   constructor(
-    private _manageEmployeesDataService: ManageEmployeesDataService,
     private _employeeService: EmployeeService,
     private _managerService: ManagerService,
+    private _hrTeamMemberService: HrTeamMemberService,
     private _responsiveHelper: ResponsiveHelperService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService,
@@ -54,11 +58,26 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.fetchEmployees();
+    this.fetchWorkers();
   }
 
   ngOnDestroy(): void {
     this.unsubscribeAll();
+  }
+
+  private unsubscribeAll(): void {
+    if (this.$workers) {
+      this.$workers.unsubscribe();
+    }
+    if (this.$employee) {
+      this.$employee.unsubscribe();
+    }
+    if (this.$managers) {
+      this.$managers.unsubscribe();
+    }
+    if (this.$hrTeamMembers) {
+      this.$hrTeamMembers.unsubscribe();
+    }
   }
 
   public setStep(stepNumber: number): void {
@@ -128,23 +147,42 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
       role: [this.subject.role],
     });
 
-    this.managersCtrl.setValue(this.subject.manager);
-    this.managersCtrl.setValidators(Validators.required);
+    this.buildSupervisorCtrl(this.subject);
   }
 
-  public reduceEmployees(subjects: Array<Employee>): Observable<Array<Subject>> {
-    return this.employeesCtrl.valueChanges.pipe(
+  public buildSupervisorCtrl(subject: Subject): void {
+    const workerRole = `ROLE_${subject.role}`;
+    switch (workerRole) {
+      case Role.EMPLOYEE:
+        const employee: Employee = <Employee>subject;
+        this.supervisorCtrl.setValue(employee.manager);
+        this.supervisorCtrl.setValidators(Validators.required);
+        break;
+      case Role.MANAGER:
+        const manager: Manager = <Manager>subject;
+        this.supervisorCtrl.setValue(manager.hrTeamMember);
+        break;
+      case Role.HRTEAMMEMBER:
+        this.supervisorCtrl.setValue(null);
+        this.supervisorCtrl.setValidators(null);
+        this.supervisorCtrl.disable();
+        break;
+    }
+  }
+
+  public reduceWorkers(subjects: Array<Subject>): Observable<Array<Subject>> {
+    return this.workersCtrl.valueChanges.pipe(
       startWith(''),
       map(lastName => (typeof lastName === 'string' ? lastName : '')),
       map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
     );
   }
 
-  public reduceManagers(subjects: Array<Manager>): Observable<Array<Subject>> {
-    return this.managersCtrl.valueChanges.pipe(
+  public reduceSupervisors(supervisor: Array<Subject>): Observable<Array<Subject>> {
+    return this.supervisorCtrl.valueChanges.pipe(
       startWith(''),
       map(lastName => (typeof lastName === 'string' ? lastName : '')),
-      map(subject => (subject ? this.filterSubjects(subjects, subject) : subjects.slice()))
+      map(subject => (subject ? this.filterSubjects(supervisor, subject) : supervisor.slice()))
     );
   }
 
@@ -152,11 +190,19 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     return subjects.filter(subject => subject.personalInformation.lastName.toLowerCase().indexOf(lastName.toLowerCase()) === 0);
   }
 
-  public fetchEmployees(): void {
-    this.$employees = this._employeeService.getEmployees().subscribe(
-      (response: Array<Employee>) => {
-        this.employees = response;
-        this.filteredEmployees = this.reduceEmployees(response);
+  public fetchWorkers(): void {
+    this.$workers = Observable.zip(
+      this._employeeService.getEmployees(),
+      this._managerService.getManagers(),
+      this._hrTeamMemberService.getHrTeamMembers(),
+      (employees: Array<Employee>, managers: Array<Manager>, hrTeamMembers: Array<HrTeamMember>) => ({ employees, managers, hrTeamMembers })
+    ).subscribe(
+      pair => {
+        this.employees = pair.employees;
+        this.managers = pair.managers;
+        this.hrTeamMembers = pair.hrTeamMembers;
+        const workers: Array<Subject> = pair.employees.concat(pair.managers).concat(pair.hrTeamMembers);
+        this.filteredWorkers = this.reduceWorkers(workers);
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -178,11 +224,55 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
     );
   }
 
+  public fetchSelectedManager(workerId: number): void {
+    this.isLoadingResults = true;
+    this.$employee = this._managerService.getManager(workerId).subscribe(
+      (response: Manager) => {
+        this.subject = response;
+        this.constructForm();
+        this.isLoadingResults = false;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  private fetchSelectedHrTeamMember(workerId: number) {
+    this.isLoadingResults = true;
+    this.$employee = this._hrTeamMemberService.getHrTeamMember(workerId).subscribe(
+      (response: HrTeamMember) => {
+        this.subject = response;
+        this.constructForm();
+        this.isLoadingResults = false;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
   public fetchManagers(): void {
+    this.isLoadingResults = true;
     this.$managers = this._managerService.getManagers().subscribe(
       (response: Array<Manager>) => {
         this.managers = response;
-        this.filteredManagers = this.reduceManagers(response);
+        this.filteredSupervisors = this.reduceSupervisors(response);
+        this.isLoadingResults = false;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public fetchHrTeamMembers(): void {
+    this.isLoadingResults = true;
+    this.$hrTeamMembers = this._hrTeamMemberService.getHrTeamMembers().subscribe(
+      (response: Array<HrTeamMember>) => {
+        this.hrTeamMembers = response;
+        this.filteredSupervisors = this.reduceSupervisors(response);
+        this.isLoadingResults = false;
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -197,14 +287,22 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public displaySubject($event: MatAutocompleteSelectedEvent): void {
-    const employeeId: number = (<Employee>$event.option.value).subjectId;
-    this.fetchSelectedEmployee(employeeId);
-    this.fetchManagers();
+    const worker: Subject = <Subject>$event.option.value;
+    const workerRole = `ROLE_${worker.role}`;
+    if (workerRole === Role.EMPLOYEE) {
+      this.fetchSelectedEmployee(worker.subjectId);
+      this.fetchManagers();
+    } else if (workerRole === Role.MANAGER) {
+      this.fetchSelectedManager(worker.subjectId);
+      this.fetchHrTeamMembers();
+    } else if (workerRole === Role.HRTEAMMEMBER) {
+      this.fetchSelectedHrTeamMember(worker.subjectId);
+    }
   }
 
   public save(): void {
     const updatedEmployee: Employee = <Employee>this.employeeForm.value;
-    const updatedManger: Manager = <Manager>this.managersCtrl.value;
+    const updatedManger: Manager = <Manager>this.supervisorCtrl.value;
     Observable.zip(
       this._employeeService.updateEmployee(updatedEmployee),
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
@@ -226,18 +324,6 @@ export class ManageEmployeesDataComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.employeeForm.valid && this.managersCtrl.valid;
-  }
-
-  private unsubscribeAll(): void {
-    if (this.$employees) {
-      this.$employees.unsubscribe();
-    }
-    if (this.$employee) {
-      this.$employee.unsubscribe();
-    }
-    if (this.$managers) {
-      this.$managers.unsubscribe();
-    }
+    return this.employeeForm.valid && this.supervisorCtrl.valid;
   }
 }

@@ -1,13 +1,13 @@
 <section fxLayout="row wrap">
-  <app-page-header [header]="'Manage employees\' data'"></app-page-header>
+  <app-page-header [header]="'Manage workers\' data'"></app-page-header>
 
   <mat-form-field fxLayoutAlign="center" fxFlex="100">
     <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="autoEmployees"
-           [formControl]="employeesCtrl">
+           [formControl]="workersCtrl">
     <mat-autocomplete #autoEmployees="matAutocomplete" [displayWith]="displayFullName"
                       (optionSelected)="displaySubject($event)">
-      <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
-        <span>{{employee.personalInformation.firstName}} {{ employee.personalInformation.lastName }}</span>
+      <mat-option *ngFor="let worker of filteredWorkers | async" [value]="worker">
+        <span>{{worker.personalInformation.firstName}} {{ worker.personalInformation.lastName }}</span>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
@@ -260,15 +260,15 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <input matInput placeholder="Manager" aria-label="Manager" [matAutocomplete]="autoManagers"
-                   [formControl]="managersCtrl">
-            <mat-autocomplete #autoManagers="matAutocomplete" [displayWith]="displayFullName">
-              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager">
-                <span>{{manager.personalInformation.firstName}} {{ manager.personalInformation.lastName }}</span>
+            <input matInput placeholder="Supervisor" aria-label="Supervisor" [matAutocomplete]="autoSupervisors"
+                   [formControl]="supervisorCtrl">
+            <mat-autocomplete #autoSupervisors="matAutocomplete" [displayWith]="displayFullName">
+              <mat-option *ngFor="let supervisor of filteredSupervisors | async" [value]="supervisor">
+                <span>{{supervisor.personalInformation.firstName}} {{ supervisor.personalInformation.lastName }}</span>
               </mat-option>
             </mat-autocomplete>
-            <mat-error *ngIf="managersCtrl.hasError('required')">
-              Employee must have a manager
+            <mat-error *ngIf="supervisorCtrl.hasError('required')">
+              Worker must have a supervisor
             </mat-error>
           </mat-form-field>
         </form>

@@ -13,7 +13,7 @@ import { WorkersComponent } from '@modules/core/pages/workers/workers.component'
 import { AddEmployeeComponent } from '@modules/core/pages/add-employee/add-employee.component';
 import { LoginComponent } from '@modules/landing/pages/login/login.component';
 import { ManageLeaveApplicationsComponent } from '@modules/core/pages/manage-leave-applications/manage-leave-applications.component';
-import { ManageEmployeesDataComponent } from '@modules/core/pages/manage-employees-data/manage-employees-data.component';
+import { ManageWorkersDataComponent } from '@modules/core/pages/manage-workers-data/manage-workers-data.component';
 import { MyApplicationsComponent } from '@modules/core/pages/my-applications/my-applications.component';
 import { DashboardComponent } from '@modules/core/pages/dashboard/dashboard.component';
 import { ManageDelegationsComponent } from '@modules/core/pages/manage-delegations/manage-delegations.component';
@@ -72,8 +72,8 @@ export const routeDefinitions: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'manage-employee-data',
-        component: ManageEmployeesDataComponent,
+        path: 'manage-workers-data',
+        component: ManageWorkersDataComponent,
         outlet: 'core',
         canActivate: [ManagerGuard],
         pathMatch: 'full',

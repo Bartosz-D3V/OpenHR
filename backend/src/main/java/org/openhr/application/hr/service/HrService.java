@@ -1,11 +1,14 @@
 package org.openhr.application.hr.service;
 
+import java.util.List;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 
 public interface HrService {
   HrTeamMember getHrTeamMember(long subjectId);
+
+  List<HrTeamMember> getHrTeamMembers();
 
   HrTeamMember addHrTeamMember(HrTeamMember hrTeamMember) throws UserAlreadyExists;
 

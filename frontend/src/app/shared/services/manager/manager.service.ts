@@ -20,6 +20,12 @@ export class ManagerService {
     });
   }
 
+  public getManager(workerId: number): Observable<Manager> {
+    return this._http.get<Manager>(`${this.url}/${workerId}`, {
+      headers: this.headers,
+    });
+  }
+
   public createManager(manager: Manager): Observable<Manager> {
     return this._http.post<Manager>(this.url, manager, {
       headers: this.headers,

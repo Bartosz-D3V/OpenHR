@@ -38,10 +38,9 @@ import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Role } from '@shared/domain/subject/role';
 import { Manager } from '@shared/domain/subject/manager';
 import { NotificationService } from '@shared/services/notification/notification.service';
-import { ManageEmployeesDataComponent } from './manage-employees-data.component';
-import { ManageEmployeesDataService } from './service/manage-employees-data.service';
+import { ManageWorkersDataComponent } from './manage-workers-data.component';
 
-describe('ManageEmployeesDataComponent', () => {
+describe('ManageWorkersDataComponent', () => {
   const employee1: Employee = new Employee(
     new PersonalInformation('Jack', 'Sparrow', null, '2000-02-02'),
     new ContactInformation('123456789', 'test@test.com', new Address('First line', 'Second line', 'Third line', 'SA2 92B', 'Gotham', 'US')),
@@ -72,15 +71,8 @@ describe('ManageEmployeesDataComponent', () => {
     Role.MANAGER
   );
   let fakeEmployeeService: EmployeeService;
-  let component: ManageEmployeesDataComponent;
-  let fixture: ComponentFixture<ManageEmployeesDataComponent>;
-
-  @Injectable()
-  class FakeManageEmployeesDataService {
-    getEmployees(): Observable<any> {
-      return Observable.of([]);
-    }
-  }
+  let component: ManageWorkersDataComponent;
+  let fixture: ComponentFixture<ManageWorkersDataComponent>;
 
   @Injectable()
   class FakeEmployeeService {
@@ -92,7 +84,7 @@ describe('ManageEmployeesDataComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [ManageEmployeesDataComponent, CapitalizePipe, PageHeaderComponent],
+        declarations: [CapitalizePipe, PageHeaderComponent],
         imports: [
           NoopAnimationsModule,
           ReactiveFormsModule,
@@ -117,7 +109,6 @@ describe('ManageEmployeesDataComponent', () => {
           NotificationService,
           ErrorResolverService,
           ResponsiveHelperService,
-          { provide: ManageEmployeesDataService, useClass: FakeManageEmployeesDataService },
           { provide: EmployeeService, useClass: FakeEmployeeService },
         ],
       }).compileComponents();
@@ -125,7 +116,7 @@ describe('ManageEmployeesDataComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageEmployeesDataComponent);
+    fixture = TestBed.createComponent(ManageWorkersDataComponent);
     fakeEmployeeService = TestBed.get(EmployeeService);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -172,24 +163,24 @@ describe('ManageEmployeesDataComponent', () => {
       expect(filteredEmployees[0]).toEqual(employee2);
     });
 
-    describe('reduceEmployees', () => {
+    describe('reduceWorkers', () => {
       let result: Array<Employee>;
 
       it('should not filter results if input is empty', () => {
-        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceWorkers(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
-        component.employeesCtrl.setValue('');
+        component.workersCtrl.setValue('');
 
         expect(result).toBeDefined();
         expect(result).toEqual(mockEmployees);
       });
 
       it('should filter results accordingly to input value', () => {
-        component.reduceEmployees(mockEmployees).subscribe((data: Array<Employee>) => {
+        component.reduceWorkers(mockEmployees).subscribe((data: Array<Employee>) => {
           result = data;
         });
-        component.employeesCtrl.setValue('Dar');
+        component.workersCtrl.setValue('Dar');
 
         expect(result).toBeDefined();
         expect(result[0]).toEqual(employee2);
@@ -217,7 +208,7 @@ describe('ManageEmployeesDataComponent', () => {
     });
   });
 
-  it('displaySubject method should call fetchSelectEmployee with received selected subject id', () => {
+  it('displaySubject method should call fetchSelectedEmployee with received selected subject id', () => {
     spyOn(component, 'fetchSelectedEmployee');
     spyOn(component, 'fetchManagers');
     const mockMatOption: MatOption = new MatOption(null, null, null, null);
@@ -253,12 +244,12 @@ describe('ManageEmployeesDataComponent', () => {
 
   describe('fetchManagers method', () => {
     it('should call managerService and immediately invoke reducer method', () => {
-      spyOn(component, 'reduceManagers');
+      spyOn(component, 'reduceSupervisors');
       spyOn(component['_managerService'], 'getManagers').and.returnValue(Observable.of([manager1]));
       component.fetchManagers();
 
       expect(component.managers).toEqual([manager1]);
-      expect(component.reduceManagers).toHaveBeenCalledWith([manager1]);
+      expect(component.reduceSupervisors).toHaveBeenCalledWith([manager1]);
     });
 
     it('should call errorResolver in case of an error', () => {
@@ -296,7 +287,7 @@ describe('ManageEmployeesDataComponent', () => {
     it('should return true if all form controls are valid', () => {
       component.employeeForm = new FormGroup({});
       spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
-      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });
@@ -304,7 +295,7 @@ describe('ManageEmployeesDataComponent', () => {
     it('should return false if employeeForm form control is invalid', () => {
       component.employeeForm = new FormGroup({});
       spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
-      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(true);
+      spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeFalsy();
     });
@@ -312,7 +303,7 @@ describe('ManageEmployeesDataComponent', () => {
     it('should return false if managerFormSpy form control is invalid', () => {
       component.employeeForm = new FormGroup({});
       spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
-      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(false);
+      spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();
     });
@@ -320,7 +311,7 @@ describe('ManageEmployeesDataComponent', () => {
     it('should return false if both form controls are invalid', () => {
       component.employeeForm = new FormGroup({});
       spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
-      spyOnProperty(component.managersCtrl, 'valid', 'get').and.returnValue(false);
+      spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();
     });

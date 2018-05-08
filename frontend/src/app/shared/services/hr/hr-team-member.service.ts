@@ -16,6 +16,18 @@ export class HrTeamMemberService {
 
   constructor(private _http: HttpClient) {}
 
+  public getHrTeamMembers(): Observable<Array<HrTeamMember>> {
+    return this._http.get<Array<HrTeamMember>>(this.url, {
+      headers: this.headers,
+    });
+  }
+
+  public getHrTeamMember(subjectId: number): Observable<HrTeamMember> {
+    return this._http.get<HrTeamMember>(`${this.url}/${subjectId}`, {
+      headers: this.headers,
+    });
+  }
+
   public createHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
     return this._http.post<Employee>(this.url, hrTeamMember, {
       headers: this.headers,
