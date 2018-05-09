@@ -34,8 +34,8 @@ public class ManagerDAOImpl extends BaseDAO implements ManagerDAO {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public Manager updateManager(final Manager manager) {
-    final Manager savedManager = getManager(manager.getSubjectId());
+  public Manager updateManager(final long subjectId, final Manager manager) {
+    final Manager savedManager = getManager(subjectId);
     BeanUtil.copyNotNullProperties(
         manager.getPersonalInformation(),
         savedManager.getPersonalInformation(),

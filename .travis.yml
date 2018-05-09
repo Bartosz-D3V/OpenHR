@@ -47,7 +47,6 @@ script:
   - cd ../frontend/
   - npm run dist
   - xvfb-run -a npm run test -- --single-run --no-progress
-  - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
   - mvn package -Pdev -B -D skipTests -e
   - mvn test -Pdev -B -e

@@ -39,15 +39,10 @@ build:
 
 test:
   - cd ../frontend/
-  - npm run dist
-  - xvfb-run -a npm run test -- --single-run --no-progress
   - xvfb-run -a npm run e2e -- --no-progress --config=protractor.conf.js
   - cd ../backend/
   - mvn package -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
   - mvn test -B -D USERNAME=$USERNAME -D PASSWORD=$PASSWORD
-
-#on_success:
-# - codecov
 
 notifications:
   email: false

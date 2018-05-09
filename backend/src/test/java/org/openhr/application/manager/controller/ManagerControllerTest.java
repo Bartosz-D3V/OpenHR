@@ -70,7 +70,9 @@ public class ManagerControllerTest {
     final MvcResult result =
         mockMvc
             .perform(
-                put("/managers").contentType(MediaType.APPLICATION_JSON).content(managerAsJson))
+                put("/managers/{managerId}", 1L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(managerAsJson))
             .andExpect(status().isOk())
             .andReturn();
     assertNull(result.getResolvedException());

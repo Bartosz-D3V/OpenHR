@@ -34,8 +34,9 @@ public class ManagerFacadeImpl implements ManagerFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
-    return managerService.updateManager(manager);
+  public Manager updateManager(final long subjectId, final Manager manager)
+      throws SubjectDoesNotExistException {
+    return managerService.updateManager(subjectId, manager);
   }
 
   @Override

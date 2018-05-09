@@ -33,4 +33,10 @@ export class HrTeamMemberService {
       headers: this.headers,
     });
   }
+
+  public updateHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
+    return this._http.put<Employee>(`${this.url}/${hrTeamMember.subjectId}`, hrTeamMember, {
+      headers: this.headers,
+    });
+  }
 }

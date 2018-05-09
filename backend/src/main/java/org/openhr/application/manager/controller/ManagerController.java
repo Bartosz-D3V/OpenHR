@@ -50,14 +50,16 @@ public class ManagerController {
   }
 
   @RequestMapping(
+    value = "/{subjectId}",
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseStatus(HttpStatus.OK)
-  public Manager updateManager(@RequestBody final Manager manager)
+  public Manager updateManager(
+      @PathVariable final long subjectId, @RequestBody final Manager manager)
       throws SubjectDoesNotExistException {
-    return managerFacade.updateManager(manager);
+    return managerFacade.updateManager(subjectId, manager);
   }
 
   @RequestMapping(
@@ -91,9 +93,8 @@ public class ManagerController {
   }
 
   @RequestMapping(
-    value = "/hr-assignment",
+    value = "{managerId}/hr-assignment",
     method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseBody
