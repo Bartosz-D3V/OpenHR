@@ -1,5 +1,6 @@
 package org.openhr.application.hr.controller;
 
+import java.util.List;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.facade.HrFacade;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -33,6 +34,16 @@ public class HrController {
   @ResponseStatus(HttpStatus.OK)
   public HrTeamMember getHrTeamMember(@PathVariable final long subjectId) {
     return hrFacade.getHrTeamMember(subjectId);
+  }
+
+  @RequestMapping(
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public List<HrTeamMember> getHrTeamMembers() {
+    return hrFacade.getHrTeamMembers();
   }
 
   @RequestMapping(

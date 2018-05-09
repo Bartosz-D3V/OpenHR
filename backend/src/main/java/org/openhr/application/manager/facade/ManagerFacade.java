@@ -12,7 +12,7 @@ public interface ManagerFacade {
 
   Manager addManager(Manager manager) throws UserAlreadyExists;
 
-  Manager updateManager(Manager manager) throws SubjectDoesNotExistException;
+  Manager updateManager(long subjectId, Manager manager) throws SubjectDoesNotExistException;
 
   List<Manager> getManagers();
 

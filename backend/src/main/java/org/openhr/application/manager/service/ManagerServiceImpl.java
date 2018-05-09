@@ -60,8 +60,9 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
-  public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
-    return managerRepository.updateManager(manager);
+  public Manager updateManager(final long subjectId, final Manager manager)
+      throws SubjectDoesNotExistException {
+    return managerRepository.updateManager(subjectId, manager);
   }
 
   @Override

@@ -46,6 +46,7 @@ import { StaticModalComponent } from '@shared/components/static-modal/static-mod
 import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { SharedModule } from '@modules/shared/shared.module';
 import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
+import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -54,12 +55,11 @@ import { CoreWrapperComponent } from './core-wrapper/core-wrapper.component';
 import { WorkersComponent } from './pages/workers/workers.component';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { ManageLeaveApplicationsComponent } from './pages/manage-leave-applications/manage-leave-applications.component';
-import { ManageEmployeesDataComponent } from './pages/manage-employees-data/manage-employees-data.component';
+import { ManageWorkersDataComponent } from './pages/manage-workers-data/manage-workers-data.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
-import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
 
 @NgModule({
   imports: [
@@ -115,7 +115,7 @@ import { InputModalComponent } from '@shared/components/input-modal/input-modal.
     WorkersComponent,
     AddEmployeeComponent,
     ManageLeaveApplicationsComponent,
-    ManageEmployeesDataComponent,
+    ManageWorkersDataComponent,
     MyApplicationsComponent,
     ApplicationStatusPipe,
     DashboardComponent,

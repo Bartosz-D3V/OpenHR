@@ -1,5 +1,6 @@
 package org.openhr.application.hr.service;
 
+import java.util.List;
 import java.util.Locale;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.repository.HrRepository;
@@ -37,6 +38,12 @@ public class HrServiceImpl implements HrService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public HrTeamMember getHrTeamMember(final long subjectId) {
     return hrRepository.getHrTeamMember(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<HrTeamMember> getHrTeamMembers() {
+    return hrRepository.getHrTeamMembers();
   }
 
   @Override

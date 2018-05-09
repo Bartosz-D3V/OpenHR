@@ -1,5 +1,6 @@
 package org.openhr.application.hr.facade;
 
+import java.util.List;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.service.HrService;
 import org.openhr.common.exception.SubjectDoesNotExistException;
@@ -20,6 +21,12 @@ public class HrFacadeImpl implements HrFacade {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public HrTeamMember getHrTeamMember(final long subjectId) {
     return hrService.getHrTeamMember(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<HrTeamMember> getHrTeamMembers() {
+    return hrService.getHrTeamMembers();
   }
 
   @Override
