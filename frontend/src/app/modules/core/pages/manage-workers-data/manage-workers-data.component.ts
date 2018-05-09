@@ -40,7 +40,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
   public employees: Array<Employee>;
   public managers: Array<Manager>;
   public hrTeamMembers: Array<HrTeamMember>;
-  public subject: Employee;
+  public subject: Subject;
   public filteredWorkers: Observable<Array<Subject>>;
   public filteredSupervisors: Observable<Array<Manager>>;
   public workerForm: FormGroup;
@@ -161,6 +161,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       case Role.MANAGER:
         const manager: Manager = <Manager>subject;
         this.supervisorCtrl.setValue(manager.hrTeamMember);
+        this.supervisorCtrl.setValidators(Validators.required);
         break;
       case Role.HRTEAMMEMBER:
         this.supervisorCtrl.setValidators(null);

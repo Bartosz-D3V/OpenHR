@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -42,6 +42,7 @@ import { ManagerService } from '@shared/services/manager/manager.service';
 import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
 import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { ManageWorkersDataComponent } from './manage-workers-data.component';
+import { Subject } from '@shared/domain/subject/subject';
 
 describe('ManageWorkersDataComponent', () => {
   const employee1: Employee = new Employee(
@@ -93,6 +94,9 @@ describe('ManageWorkersDataComponent', () => {
     updateEmployee(employee: Employee): Observable<Employee> {
       return Observable.of(employee);
     }
+    getEmployees(): Observable<Array<Employee>> {
+      return Observable.of([employee1]);
+    }
   }
 
   @Injectable()
@@ -100,12 +104,18 @@ describe('ManageWorkersDataComponent', () => {
     updateManager(manager: Manager): Observable<Manager> {
       return Observable.of(manager);
     }
+    getManagers(): Observable<Array<Manager>> {
+      return Observable.of([manager1]);
+    }
   }
 
   @Injectable()
   class FakeHrTeamMemberService {
     updateHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
       return Observable.of(hrTeamMember);
+    }
+    getHrTeamMembers(): Observable<Array<HrTeamMember>> {
+      return Observable.of([hrTeamMember1]);
     }
   }
 
@@ -178,10 +188,57 @@ describe('ManageWorkersDataComponent', () => {
     });
   });
 
-  describe('autocomplete methods', () => {
+  describe('constructForm method', () => {
+    beforeEach(() => {
+      component.subject = employee1;
+    });
+
+    it('should construct form', () => {
+      component.constructForm();
+
+      expect(component.workerForm).toBeDefined();
+    });
+
+    it('should construct supervisor controller form', () => {
+      spyOn(component, 'buildSupervisorCtrl').and.callThrough();
+
+      component.constructForm();
+
+      expect(component.buildSupervisorCtrl).toHaveBeenCalledWith(component.subject);
+      expect(component.supervisorCtrl).toBeDefined();
+    });
+  });
+
+  describe('buildSupervisorCtrl method', () => {
+    it('should display manager and make input mandatory for employee', () => {
+      employee1.role = <any>'EMPLOYEE';
+      component.buildSupervisorCtrl(employee1);
+
+      expect(component.supervisorCtrl.validator).toEqual(Validators.required);
+      expect(component.supervisorCtrl.value).toEqual(employee1.manager);
+    });
+
+    it('should display HR team member and make input mandatory for manager', () => {
+      manager1.role = <any>'MANAGER';
+      component.buildSupervisorCtrl(manager1);
+
+      expect(component.supervisorCtrl.validator).toEqual(Validators.required);
+      expect(component.supervisorCtrl.value).toEqual(manager1.hrTeamMember);
+    });
+
+    it('should remove validators for HR team member', () => {
+      hrTeamMember1.role = <any>'HRTEAMMEMBER';
+      component.buildSupervisorCtrl(hrTeamMember1);
+
+      expect(component.supervisorCtrl.validator).toBeNull();
+      expect(component.supervisorCtrl.value).toBeNull();
+    });
+  });
+
+  describe('auto-complete methods', () => {
     const mockEmployees: Array<Employee> = [employee1, employee2];
 
-    it('filterEmployees method should filter an array by last name of the employee', () => {
+    it('filterSubjects method should filter an array by last name of the employee', () => {
       let filteredEmployees: Array<Employee> = component.filterSubjects(mockEmployees, 'Sp');
 
       expect(filteredEmployees.length).toEqual(1);
@@ -214,6 +271,31 @@ describe('ManageWorkersDataComponent', () => {
 
         expect(result).toBeDefined();
         expect(result[0]).toEqual(employee2);
+      });
+    });
+
+    describe('reduceSupervisors', () => {
+      let result: Array<Subject>;
+      const mockSupervisors: Array<Subject> = [manager1, hrTeamMember1];
+
+      it('should not filter results if input is empty', () => {
+        component.reduceSupervisors(mockSupervisors).subscribe((data: Array<Subject>) => {
+          result = data;
+        });
+        component.supervisorCtrl.setValue('');
+
+        expect(result).toBeDefined();
+        expect(result).toEqual(mockSupervisors);
+      });
+
+      it('should filter results accordingly to input value', () => {
+        component.reduceSupervisors(mockSupervisors).subscribe((data: Array<Subject>) => {
+          result = data;
+        });
+        component.supervisorCtrl.setValue('Bla');
+
+        expect(result).toBeDefined();
+        expect(result[0]).toEqual(hrTeamMember1);
       });
     });
   });
@@ -251,6 +333,34 @@ describe('ManageWorkersDataComponent', () => {
 
       expect(component.fetchSelectedEmployee).toHaveBeenCalledWith(1);
       expect(component.fetchManagers).toHaveBeenCalled();
+    });
+
+    describe('fetchWorkers method', () => {
+      it('should fetch employees, managers and HR team members', () => {
+        spyOn(component['_employeeService'], 'getEmployees').and.returnValue(Observable.of([employee1]));
+        spyOn(component['_managerService'], 'getManagers').and.returnValue(Observable.of([manager1]));
+        spyOn(component['_hrTeamMemberService'], 'getHrTeamMembers').and.returnValue(Observable.of([hrTeamMember1]));
+        spyOn(component, 'reduceWorkers');
+
+        component.fetchWorkers();
+
+        expect(component['_employeeService'].getEmployees).toHaveBeenCalled();
+        expect(component['_managerService'].getManagers).toHaveBeenCalled();
+        expect(component['_hrTeamMemberService'].getHrTeamMembers).toHaveBeenCalled();
+        expect(component.employees).toEqual([employee1]);
+        expect(component.managers).toEqual([manager1]);
+        expect(component.hrTeamMembers).toEqual([hrTeamMember1]);
+        expect(component.reduceWorkers).toHaveBeenCalledWith([employee1, manager1, hrTeamMember1]);
+      });
+
+      it('should call errorResolver in case of an error', () => {
+        spyOn(component['_errorResolver'], 'handleError');
+        spyOn(component['_employeeService'], 'getEmployees').and.returnValue(_throw('Error'));
+
+        component.fetchWorkers();
+
+        expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+      });
     });
 
     it('should call fetchSelectedManager with received selected subject id', () => {
@@ -301,6 +411,48 @@ describe('ManageWorkersDataComponent', () => {
     });
   });
 
+  describe('fetchSelectedManager method', () => {
+    it('should call managerService with managerId as an argument', () => {
+      const mockManagerId: number = manager1.subjectId;
+      spyOn(component, 'constructForm').and.callThrough();
+      spyOn(component['_managerService'], 'getManager').and.returnValue(Observable.of(manager1));
+      component.fetchSelectedManager(mockManagerId);
+
+      expect(component['_managerService'].getManager).toHaveBeenCalledWith(mockManagerId);
+      expect(component.constructForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver in case of an error', () => {
+      const mockManagerId: number = manager1.subjectId;
+      spyOn(component['_errorResolver'], 'handleError');
+      spyOn(component['_managerService'], 'getManager').and.returnValue(_throw('Error'));
+      component.fetchSelectedManager(mockManagerId);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+    });
+  });
+
+  describe('fetchSelectedHrTeamMember method', () => {
+    it('should call hrTeamMemberService with hrTeamMemberId as an argument', () => {
+      const mockHrTeamMemberId: number = hrTeamMember1.subjectId;
+      spyOn(component, 'constructForm').and.callThrough();
+      spyOn(component['_hrTeamMemberService'], 'getHrTeamMember').and.returnValue(Observable.of(hrTeamMember1));
+      component.fetchSelectedHrTeamMember(mockHrTeamMemberId);
+
+      expect(component['_hrTeamMemberService'].getHrTeamMember).toHaveBeenCalledWith(mockHrTeamMemberId);
+      expect(component.constructForm).toHaveBeenCalled();
+    });
+
+    it('should call errorResolver in case of an error', () => {
+      const mockHrTeamMemberId: number = hrTeamMember1.subjectId;
+      spyOn(component['_errorResolver'], 'handleError');
+      spyOn(component['_hrTeamMemberService'], 'getHrTeamMember').and.returnValue(_throw('Error'));
+      component.fetchSelectedHrTeamMember(mockHrTeamMemberId);
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+    });
+  });
+
   describe('fetchManagers method', () => {
     it('should call managerService and immediately invoke reducer method', () => {
       spyOn(component, 'reduceSupervisors');
@@ -315,6 +467,25 @@ describe('ManageWorkersDataComponent', () => {
       spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_managerService'], 'getManagers').and.returnValue(_throw('Error'));
       component.fetchManagers();
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalled();
+    });
+  });
+
+  describe('fetchHrTeamMembers method', () => {
+    it('should call hrTeamMemberService and immediately invoke reducer method', () => {
+      spyOn(component, 'reduceSupervisors');
+      spyOn(component['_hrTeamMemberService'], 'getHrTeamMembers').and.returnValue(Observable.of([hrTeamMember1]));
+      component.fetchHrTeamMembers();
+
+      expect(component.hrTeamMembers).toEqual([hrTeamMember1]);
+      expect(component.reduceSupervisors).toHaveBeenCalledWith([hrTeamMember1]);
+    });
+
+    it('should call errorResolver in case of an error', () => {
+      spyOn(component['_errorResolver'], 'handleError');
+      spyOn(component['_hrTeamMemberService'], 'getHrTeamMembers').and.returnValue(_throw('Error'));
+      component.fetchHrTeamMembers();
 
       expect(component['_errorResolver'].handleError).toHaveBeenCalled();
     });
