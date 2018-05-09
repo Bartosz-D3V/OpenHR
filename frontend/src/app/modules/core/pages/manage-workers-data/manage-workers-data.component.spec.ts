@@ -38,6 +38,9 @@ import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Role } from '@shared/domain/subject/role';
 import { Manager } from '@shared/domain/subject/manager';
 import { NotificationService } from '@shared/services/notification/notification.service';
+import { ManagerService } from '@shared/services/manager/manager.service';
+import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
+import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { ManageWorkersDataComponent } from './manage-workers-data.component';
 
 describe('ManageWorkersDataComponent', () => {
@@ -70,6 +73,17 @@ describe('ManageWorkersDataComponent', () => {
     new HrInformation(30, 15),
     Role.MANAGER
   );
+  const hrTeamMember1: HrTeamMember = new HrTeamMember(
+    new PersonalInformation('Gordon', 'Black', null, '1999-05-01'),
+    new ContactInformation(
+      '987654321',
+      'test2@test.com',
+      new Address('First line 1', 'Second line 2', 'Third line 3', 'SB2 92B', 'NYC', 'US')
+    ),
+    new EmployeeInformation('KZ 54 09 74 C', 'Development Team Manager', 'Development Team', '13HJ', '2011-02-02', '2013-02-02'),
+    new HrInformation(30, 15),
+    Role.HRTEAMMEMBER
+  );
   let fakeEmployeeService: EmployeeService;
   let component: ManageWorkersDataComponent;
   let fixture: ComponentFixture<ManageWorkersDataComponent>;
@@ -81,10 +95,24 @@ describe('ManageWorkersDataComponent', () => {
     }
   }
 
+  @Injectable()
+  class FakeManagerService {
+    updateManager(manager: Manager): Observable<Manager> {
+      return Observable.of(manager);
+    }
+  }
+
+  @Injectable()
+  class FakeHrTeamMemberService {
+    updateHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
+      return Observable.of(hrTeamMember);
+    }
+  }
+
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [CapitalizePipe, PageHeaderComponent],
+        declarations: [ManageWorkersDataComponent, CapitalizePipe, PageHeaderComponent],
         imports: [
           NoopAnimationsModule,
           ReactiveFormsModule,
@@ -110,6 +138,8 @@ describe('ManageWorkersDataComponent', () => {
           ErrorResolverService,
           ResponsiveHelperService,
           { provide: EmployeeService, useClass: FakeEmployeeService },
+          { provide: ManagerService, useClass: FakeManagerService },
+          { provide: HrTeamMemberService, useClass: FakeHrTeamMemberService },
         ],
       }).compileComponents();
     })
@@ -208,17 +238,46 @@ describe('ManageWorkersDataComponent', () => {
     });
   });
 
-  it('displaySubject method should call fetchSelectedEmployee with received selected subject id', () => {
-    spyOn(component, 'fetchSelectedEmployee');
-    spyOn(component, 'fetchManagers');
-    const mockMatOption: MatOption = new MatOption(null, null, null, null);
-    employee1.subjectId = 1;
-    mockMatOption.value = employee1;
-    const $event: MatAutocompleteSelectedEvent = new MatAutocompleteSelectedEvent(null, mockMatOption);
-    component.displaySubject($event);
+  describe('displaySubject method', () => {
+    it('should call fetchSelectedEmployee with received selected subject id', () => {
+      spyOn(component, 'fetchSelectedEmployee');
+      spyOn(component, 'fetchManagers');
+      const mockMatOption: MatOption = new MatOption(null, null, null, null);
+      employee1.subjectId = 1;
+      employee1.role = <any>'EMPLOYEE';
+      mockMatOption.value = employee1;
+      const $event: MatAutocompleteSelectedEvent = new MatAutocompleteSelectedEvent(null, mockMatOption);
+      component.displaySubject($event);
 
-    expect(component.fetchSelectedEmployee).toHaveBeenCalledWith(1);
-    expect(component.fetchManagers).toHaveBeenCalled();
+      expect(component.fetchSelectedEmployee).toHaveBeenCalledWith(1);
+      expect(component.fetchManagers).toHaveBeenCalled();
+    });
+
+    it('should call fetchSelectedManager with received selected subject id', () => {
+      spyOn(component, 'fetchSelectedManager');
+      spyOn(component, 'fetchHrTeamMembers');
+      const mockMatOption: MatOption = new MatOption(null, null, null, null);
+      manager1.subjectId = 2;
+      manager1.role = <any>'MANAGER';
+      mockMatOption.value = manager1;
+      const $event: MatAutocompleteSelectedEvent = new MatAutocompleteSelectedEvent(null, mockMatOption);
+      component.displaySubject($event);
+
+      expect(component.fetchSelectedManager).toHaveBeenCalledWith(2);
+      expect(component.fetchHrTeamMembers).toHaveBeenCalled();
+    });
+
+    it('should call fetchSelectedHrTeamMember with received selected subject id', () => {
+      spyOn(component, 'fetchSelectedHrTeamMember');
+      const mockMatOption: MatOption = new MatOption(null, null, null, null);
+      hrTeamMember1.subjectId = 3;
+      hrTeamMember1.role = <any>'HRTEAMMEMBER';
+      mockMatOption.value = hrTeamMember1;
+      const $event: MatAutocompleteSelectedEvent = new MatAutocompleteSelectedEvent(null, mockMatOption);
+      component.displaySubject($event);
+
+      expect(component.fetchSelectedHrTeamMember).toHaveBeenCalledWith(3);
+    });
   });
 
   describe('fetchSelectedEmployee method', () => {
@@ -285,32 +344,32 @@ describe('ManageWorkersDataComponent', () => {
 
   describe('isValid method', () => {
     it('should return true if all form controls are valid', () => {
-      component.employeeForm = new FormGroup({});
-      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
+      component.workerForm = new FormGroup({});
+      spyOnProperty(component.workerForm, 'valid', 'get').and.returnValue(true);
       spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });
 
-    it('should return false if employeeForm form control is invalid', () => {
-      component.employeeForm = new FormGroup({});
-      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
+    it('should return false if workerForm form control is invalid', () => {
+      component.workerForm = new FormGroup({});
+      spyOnProperty(component.workerForm, 'valid', 'get').and.returnValue(false);
       spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeFalsy();
     });
 
     it('should return false if managerFormSpy form control is invalid', () => {
-      component.employeeForm = new FormGroup({});
-      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(true);
+      component.workerForm = new FormGroup({});
+      spyOnProperty(component.workerForm, 'valid', 'get').and.returnValue(true);
       spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();
     });
 
     it('should return false if both form controls are invalid', () => {
-      component.employeeForm = new FormGroup({});
-      spyOnProperty(component.employeeForm, 'valid', 'get').and.returnValue(false);
+      component.workerForm = new FormGroup({});
+      spyOnProperty(component.workerForm, 'valid', 'get').and.returnValue(false);
       spyOnProperty(component.supervisorCtrl, 'valid', 'get').and.returnValue(false);
 
       expect(component.isValid()).toBeFalsy();

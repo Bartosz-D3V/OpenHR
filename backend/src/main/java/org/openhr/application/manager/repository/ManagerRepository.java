@@ -54,8 +54,9 @@ public class ManagerRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public Manager updateManager(final Manager manager) throws SubjectDoesNotExistException {
-    return managerDAO.updateManager(manager);
+  public Manager updateManager(final long subjectId, final Manager manager)
+      throws SubjectDoesNotExistException {
+    return managerDAO.updateManager(subjectId, manager);
   }
 
   @Transactional(propagation = Propagation.SUPPORTS)

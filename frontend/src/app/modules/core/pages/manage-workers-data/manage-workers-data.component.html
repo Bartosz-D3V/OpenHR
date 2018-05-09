@@ -20,7 +20,7 @@
 </section>
 
 <section class="c-drawer" *ngIf="!isLoadingResults && subject">
-  <form [formGroup]="employeeForm">
+  <form [formGroup]="workerForm">
     <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>
     <mat-accordion>
       <mat-expansion-panel [expanded]="stepNumber === 0" (opened)="setStep(0)" hideToggle="true">
@@ -38,7 +38,7 @@
             <label for="employee-details-first-name"></label>
             <input matInput required="required" placeholder="First name" formControlName="firstName"
                    id="employee-details-first-name" name="firstName">
-            <mat-error *ngIf="employeeForm.get('personalInformation.firstName').hasError('required')">
+            <mat-error *ngIf="workerForm.get('personalInformation.firstName').hasError('required')">
               First name is required
             </mat-error>
           </mat-form-field>
@@ -53,7 +53,7 @@
             <label for="employee-details-last-name"></label>
             <input matInput required="required" placeholder="Last name" formControlName="lastName"
                    id="employee-details-last-name" name="lastName">
-            <mat-error *ngIf="employeeForm.get('personalInformation.lastName').hasError('required')">
+            <mat-error *ngIf="workerForm.get('personalInformation.lastName').hasError('required')">
               Last name is required
             </mat-error>
           </mat-form-field>
@@ -62,7 +62,7 @@
             <label for="employee-details-date-of-birth"></label>
             <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth"
                    id="employee-details-date-of-birth" name="dateOfBirth">
-            <mat-error *ngIf="employeeForm.get('personalInformation.dateOfBirth').hasError('required')">
+            <mat-error *ngIf="workerForm.get('personalInformation.dateOfBirth').hasError('required')">
               Date of birth is required
             </mat-error>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -90,16 +90,16 @@
             <label for="employee-details-telephone"></label>
             <input type="tel" matInput placeholder="Telephone" formControlName="telephone"
                    id="employee-details-telephone" name="telephone">
-            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('minlength')">
+            <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('minlength')">
               Telephone number must contains at least 7 digits
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('maxlength')">
+            <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('maxlength')">
               Telephone number must contains maximum 11 digits
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('required')">
+            <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('required')">
               Telephone is required
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('contactInformation.telephone').hasError('pattern')">
+            <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('pattern')">
               Please enter a valid telephone
             </mat-error>
             <mat-icon matSuffix>mode_edit</mat-icon>
@@ -109,10 +109,10 @@
             <label for="employee-details-email"></label>
             <input type="email" matInput placeholder="Email" formControlName="email"
                    id="employee-details-email" name="email">
-            <mat-error *ngIf="employeeForm.get('contactInformation.email').hasError('pattern')">
+            <mat-error *ngIf="workerForm.get('contactInformation.email').hasError('pattern')">
               Please enter a valid email address
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('contactInformation.email').hasError('required')">
+            <mat-error *ngIf="workerForm.get('contactInformation.email').hasError('required')">
               Email is required
             </mat-error>
           </mat-form-field>
@@ -141,10 +141,10 @@
               <label for="employee-details-postcode"></label>
               <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
                      id="employee-details-postcode" name="postcode">
-              <mat-error *ngIf="employeeForm.get('contactInformation.address.postcode').hasError('pattern')">
+              <mat-error *ngIf="workerForm.get('contactInformation.address.postcode').hasError('pattern')">
                 Please enter a valid postcode
               </mat-error>
-              <mat-error *ngIf="employeeForm.get('contactInformation.address.postcode').hasError('required')">
+              <mat-error *ngIf="workerForm.get('contactInformation.address.postcode').hasError('required')">
                 Postcode is required
               </mat-error>
             </mat-form-field>
@@ -186,10 +186,10 @@
             <input type="text" matInput placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber"
                    id="employee-details-nin" name="nin">
-            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
+            <mat-error *ngIf="workerForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
               NIN is required
             </mat-error>
-            <mat-error *ngIf="employeeForm.get('employeeInformation.nationalInsuranceNumber').hasError('pattern')">
+            <mat-error *ngIf="workerForm.get('employeeInformation.nationalInsuranceNumber').hasError('pattern')">
               NIN is not correct
             </mat-error>
           </mat-form-field>
@@ -204,7 +204,7 @@
             <label for="employee-details-employee-number"></label>
             <input type="text" matInput placeholder="Employee ID" formControlName="employeeNumber"
                    id="employee-details-employee-number" name="employeeNumber">
-            <mat-error *ngIf="employeeForm.get('employeeInformation.employeeNumber').hasError('required')">
+            <mat-error *ngIf="workerForm.get('employeeInformation.employeeNumber').hasError('required')">
               Employee ID is required
             </mat-error>
           </mat-form-field>
@@ -246,7 +246,7 @@
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input type="number" matInput placeholder="Allowance"
                    formControlName="allowance" name="allowance">
-            <mat-error *ngIf="employeeForm.get('hrInformation.allowance').hasError('min')">
+            <mat-error *ngIf="workerForm.get('hrInformation.allowance').hasError('min')">
               Allowance cannot be negative
             </mat-error>
           </mat-form-field>
@@ -254,7 +254,7 @@
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
                    formControlName="usedAllowance">
-            <mat-error *ngIf="employeeForm.get('hrInformation.usedAllowance').hasError('min')">
+            <mat-error *ngIf="workerForm.get('hrInformation.usedAllowance').hasError('min')">
               Used allowance cannot be negative
             </mat-error>
           </mat-form-field>
