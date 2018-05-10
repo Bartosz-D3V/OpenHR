@@ -60,8 +60,8 @@
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="employee-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth"
-                   id="employee-details-date-of-birth" name="dateOfBirth">
+            <input matInput [matDatepicker]="picker" required="required" placeholder="Date of birth"
+                   formControlName="dateOfBirth" id="employee-details-date-of-birth" name="dateOfBirth">
             <mat-error *ngIf="workerForm.get('personalInformation.dateOfBirth').hasError('required')">
               Date of birth is required
             </mat-error>
@@ -88,7 +88,7 @@
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <span matPrefix>+44 (0) &nbsp;</span>
             <label for="employee-details-telephone"></label>
-            <input type="tel" matInput placeholder="Telephone" formControlName="telephone"
+            <input type="tel" matInput required="required" placeholder="Telephone" formControlName="telephone"
                    id="employee-details-telephone" name="telephone">
             <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('minlength')">
               Telephone number must contains at least 7 digits
@@ -107,7 +107,7 @@
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="employee-details-email"></label>
-            <input type="email" matInput placeholder="Email" formControlName="email"
+            <input type="email" matInput required="required" placeholder="Email" formControlName="email"
                    id="employee-details-email" name="email">
             <mat-error *ngIf="workerForm.get('contactInformation.email').hasError('pattern')">
               Please enter a valid email address
@@ -183,7 +183,7 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="employee-details-nin"></label>
-            <input type="text" matInput placeholder="National Insurance Number"
+            <input type="text" matInput required="required" placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber"
                    id="employee-details-nin" name="nin">
             <mat-error *ngIf="workerForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
@@ -196,18 +196,29 @@
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="employee-details-position"></label>
-            <input matInput required="required" placeholder="Position" formControlName="position"
+            <input matInput required="required" required="required" placeholder="Position" formControlName="position"
                    id="employee-details-position" name="position">
+            <mat-error *ngIf="workerForm.get('employeeInformation.position').hasError('required')">
+              Position is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="employee-details-employee-number"></label>
-            <input type="text" matInput placeholder="Employee ID" formControlName="employeeNumber"
+            <input type="text" matInput required="required" placeholder="Employee number"
+                   formControlName="employeeNumber"
                    id="employee-details-employee-number" name="employeeNumber">
             <mat-error *ngIf="workerForm.get('employeeInformation.employeeNumber').hasError('required')">
-              Employee ID is required
+              Employee number is required
             </mat-error>
           </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <label for="employee-details-department"></label>
+            <input matInput placeholder="Department" formControlName="department"
+                   id="employee-details-department" name="department">
+          </mat-form-field>
+
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
@@ -244,23 +255,30 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <input type="number" matInput placeholder="Allowance"
+            <input type="number" matInput required="required" placeholder="Allowance"
                    formControlName="allowance" name="allowance">
             <mat-error *ngIf="workerForm.get('hrInformation.allowance').hasError('min')">
               Allowance cannot be negative
             </mat-error>
-          </mat-form-field>
-
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
-                   formControlName="usedAllowance">
-            <mat-error *ngIf="workerForm.get('hrInformation.usedAllowance').hasError('min')">
-              Used allowance cannot be negative
+            <mat-error *ngIf="workerForm.get('hrInformation.allowance').hasError('required')">
+              Allowance is required
             </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-            <input matInput placeholder="Supervisor" aria-label="Supervisor" [matAutocomplete]="autoSupervisors"
+            <input type="number" matInput required="required" placeholder="Used allowance" name="usedAllowance"
+                   formControlName="usedAllowance">
+            <mat-error *ngIf="workerForm.get('hrInformation.usedAllowance').hasError('min')">
+              Used allowance cannot be negative
+            </mat-error>
+            <mat-error *ngIf="workerForm.get('hrInformation.usedAllowance').hasError('required')">
+              Used allowance is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <input matInput [required]="(subject.role === 'ROLE_EMPLOYEE') || (subject.role === 'ROLE_MANAGER')"
+                   placeholder="Supervisor" aria-label="Supervisor" [matAutocomplete]="autoSupervisors"
                    [formControl]="supervisorCtrl">
             <mat-autocomplete #autoSupervisors="matAutocomplete" [displayWith]="displayFullName">
               <mat-option *ngFor="let supervisor of filteredSupervisors | async" [value]="supervisor">

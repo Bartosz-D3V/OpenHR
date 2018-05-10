@@ -15,7 +15,7 @@
           <form [formGroup]="passwordForm" class="c-drawer__element" fxLayout="column" fxFlex.gt-xs="50"
                 fxFlex.xs="100">
             <mat-form-field>
-              <input type="password" #currentPassword matInput placeholder="Current password"
+              <input type="password" #currentPassword matInput required="required" placeholder="Current password"
                      formControlName="oldPassword">
             </mat-form-field>
             <mat-error *ngIf="passwordForm.get('oldPassword').touched &&
@@ -24,7 +24,7 @@
             </mat-error>
 
             <mat-form-field>
-              <input type="password" #newPassword matInput placeholder="New password"
+              <input type="password" #newPassword matInput required="required" placeholder="New password"
                      formControlName="newPassword">
             </mat-form-field>
             <mat-error *ngIf="passwordForm.get('oldPassword').touched &&
@@ -33,7 +33,7 @@
             </mat-error>
 
             <mat-form-field>
-              <input type="password" #repeatPassword matInput placeholder="Repeat new password"
+              <input type="password" #repeatPassword matInput required="required" placeholder="Repeat new password"
                      formControlName="newPasswordRepeat">
             </mat-form-field>
             <mat-error *ngIf="!arePasswordsIdentical(newPassword.value, repeatPassword.value)">
@@ -50,7 +50,7 @@
           </ng-template>
           <form [formGroup]="emailForm" class="c-drawer__element" fxLayout="column" fxFlex.gt-xs="50" fxFlex.xs="100">
             <mat-form-field>
-              <input type="email" #currentEmail matInput placeholder="Email"
+              <input type="email" #currentEmail matInput required="required" placeholder="Email"
                      formControlName="email">
             </mat-form-field>
             <mat-error *ngIf="emailForm.get('email').hasError('pattern')">

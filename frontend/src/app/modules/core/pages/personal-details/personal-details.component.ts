@@ -71,6 +71,10 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
     employeeIdFormControl: new FormControl('', [Validators.required]),
 
+    positionFormControl: new FormControl('', [Validators.required]),
+
+    departmentFormControl: new FormControl(''),
+
     startDateFormControl: new FormControl('', []),
 
     endDateFormControl: new FormControl('', []),

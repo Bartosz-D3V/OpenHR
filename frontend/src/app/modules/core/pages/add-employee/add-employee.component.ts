@@ -88,7 +88,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       hrInformation: this._fb.group({
         allowance: ['', Validators.compose([Validators.required, Validators.min(0), Validators.pattern(RegularExpressions.NUMBERS_ONLY)])],
         usedAllowance: [
-          '',
+          0,
           Validators.compose([Validators.required, Validators.min(0), Validators.pattern(RegularExpressions.NUMBERS_ONLY)]),
         ],
       }),

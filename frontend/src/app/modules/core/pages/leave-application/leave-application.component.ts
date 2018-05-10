@@ -34,7 +34,6 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   private dateRangePickerIsValid: boolean;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication(null, null, null, null, null, null, null, null);
-  public selectorType: DateSelectorType = DateSelectorType.RANGE;
 
   @ViewChild('dateRange') private dateRangeComponent: DateRangeComponent;
 

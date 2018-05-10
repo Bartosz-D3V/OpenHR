@@ -97,13 +97,6 @@ describe('Personal details page', () => {
           });
       });
     });
-
-    describe('Position input field', () => {
-      it('should contain position field with current user position', () => {
-        expect(PersonalDetailsPo.getPositionField().isPresent()).toBeTruthy();
-        expect(PersonalDetailsPo.getPositionField().getAttribute('value')).toBe('');
-      });
-    });
   });
 
   describe('Contact information', () => {
@@ -327,7 +320,7 @@ describe('Personal details page', () => {
       });
     });
 
-    describe('Employee ID', () => {
+    describe('Employee number', () => {
       it('should contain text field with current user employee number', () => {
         expect(PersonalDetailsPo.getEmployeeIDField().isPresent()).toBeTruthy();
         expect(PersonalDetailsPo.getEmployeeIDField().getText()).toBe('');
@@ -339,7 +332,7 @@ describe('Personal details page', () => {
           .click()
           .then(() => {
             expect(PersonalDetailsPo.getEmployeeIDFieldWarningRequired().isPresent()).toBeTruthy();
-            expect(PersonalDetailsPo.getEmployeeIDFieldWarningRequired().getText()).toBe('Employee ID is required');
+            expect(PersonalDetailsPo.getEmployeeIDFieldWarningRequired().getText()).toBe('Employee number is required');
           });
       });
 
@@ -350,6 +343,33 @@ describe('Personal details page', () => {
           .click()
           .then(() => {
             expect(PersonalDetailsPo.getEmployeeIDFieldWarningRequired().isPresent()).toBeFalsy();
+          });
+      });
+    });
+
+    describe('Position input field', () => {
+      it('should contain position field with current user position', () => {
+        expect(PersonalDetailsPo.getPositionField().isPresent()).toBeTruthy();
+        expect(PersonalDetailsPo.getPositionField().getAttribute('value')).toBe('');
+      });
+
+      it('should display error if position is missing', () => {
+        SharedPo.resetValueByKeyboard(PersonalDetailsPo.getPositionField());
+        PersonalDetailsPo.getEmployeeIDField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getPositionFieldWarningRequired().isPresent()).toBeTruthy();
+            expect(PersonalDetailsPo.getPositionFieldWarningRequired().getText()).toBe('Position is required');
+          });
+      });
+
+      it('should not display error if position is provided', () => {
+        SharedPo.resetValueByKeyboard(PersonalDetailsPo.getPositionField());
+        PersonalDetailsPo.getPositionField().sendKeys('Automation tester');
+        PersonalDetailsPo.getEmployeeIDField()
+          .click()
+          .then(() => {
+            expect(PersonalDetailsPo.getPositionFieldWarningRequired().isPresent()).toBeFalsy();
           });
       });
     });

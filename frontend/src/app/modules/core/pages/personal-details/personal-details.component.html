@@ -50,8 +50,8 @@
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-date-of-birth"></label>
-          <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dobFormControl"
-                 id="personal-details-date-of-birth" name="dateOfBirth"
+          <input matInput [matDatepicker]="picker" required="required" placeholder="Date of birth"
+                 formControlName="dobFormControl" id="personal-details-date-of-birth" name="dateOfBirth"
                  [(ngModel)]="subject.personalInformation.dateOfBirth">
           <mat-error id="personal-details-date-of-birth-required"
                      *ngIf="personalInformationFormGroup.controls['dobFormControl'].hasError('required')">
@@ -59,12 +59,6 @@
           </mat-error>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker [touchUi]="isMobile()"></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <label for="personal-details-position"></label>
-          <input matInput placeholder="Position" formControlName="positionFormControl"
-                 id="personal-details-position" name="position" [(ngModel)]="subject.employeeInformation.position">
         </mat-form-field>
       </form>
       <mat-action-row>
@@ -87,7 +81,7 @@
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <span matPrefix>+44 (0) &nbsp;</span>
           <label for="personal-details-telephone"></label>
-          <input type="tel" matInput placeholder="Telephone" formControlName="telephoneFormControl"
+          <input type="tel" matInput required="required" placeholder="Telephone" formControlName="telephoneFormControl"
                  id="personal-details-telephone" name="telephone" [(ngModel)]="subject.contactInformation.telephone">
           <mat-error id="personal-details-telephone-min"
                      *ngIf="contactInformationFormGroup.controls['telephoneFormControl'].hasError('minlength')">
@@ -110,7 +104,7 @@
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-email"></label>
-          <input type="email" matInput placeholder="Email" formControlName="emailFormControl"
+          <input type="email" matInput required="required" placeholder="Email" formControlName="emailFormControl"
                  id="personal-details-email" name="email" [(ngModel)]="subject.contactInformation.email">
           <mat-error id="personal-details-email-pattern"
                      *ngIf="contactInformationFormGroup.controls['emailFormControl'].hasError('pattern')">
@@ -192,8 +186,8 @@
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-nin"></label>
-          <input type="text" matInput placeholder="National Insurance Number" formControlName="ninFormControl"
-                 id="personal-details-nin" name="nin"
+          <input type="text" matInput required="required" placeholder="National Insurance Number"
+                 formControlName="ninFormControl" id="personal-details-nin" name="nin"
                  [(ngModel)]="subject.employeeInformation.nationalInsuranceNumber">
           <mat-error id="personal-details-nin-required"
                      *ngIf="employeeDetailsFormGroup.controls['ninFormControl'].hasError('required')">
@@ -207,13 +201,29 @@
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
           <label for="personal-details-employee-number"></label>
-          <input type="text" matInput placeholder="Employee ID" formControlName="employeeIdFormControl"
-                 id="personal-details-employee-number" name="employeeNumber"
+          <input type="text" matInput required="required" placeholder="Employee number"
+                 formControlName="employeeIdFormControl" id="personal-details-employee-number" name="employeeNumber"
                  [(ngModel)]="subject.employeeInformation.employeeNumber">
           <mat-error id="personal-details-employee-number-required"
                      *ngIf="employeeDetailsFormGroup.controls['employeeIdFormControl'].hasError('required')">
-            Employee ID is required
+            Employee number is required
           </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <label for="personal-details-position"></label>
+          <input matInput required="required" placeholder="Position" formControlName="positionFormControl"
+                 id="personal-details-position" name="position" [(ngModel)]="subject.employeeInformation.position">
+          <mat-error id="personal-details-position-required"
+                     *ngIf="employeeDetailsFormGroup.controls['positionFormControl'].hasError('required')">
+            Position is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <label for="employee-details-department"></label>
+          <input matInput placeholder="Department" formControlName="departmentFormControl"
+                 id="employee-details-department" name="position" [(ngModel)]="subject.employeeInformation.department">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
@@ -254,7 +264,7 @@
             fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input id="personal-details-allowance" type="number" matInput placeholder="Allowance"
+          <input required="required" id="personal-details-allowance" type="number" matInput placeholder="Allowance"
                  formControlName="allowanceFormControl" name="allowance"
                  [ngModel]="subject.hrInformation.allowance">
           <mat-error id="personal-details-allowance-min"
@@ -264,8 +274,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
-          <input id="personal-details-used-allowance" type="number" matInput placeholder="Used allowance"
-                 formControlName="usedAllowanceFormControl"
+          <input required="required" id="personal-details-used-allowance" type="number" matInput
+                 placeholder="Used allowance" formControlName="usedAllowanceFormControl"
                  name="usedAllowance" [ngModel]="subject.hrInformation.usedAllowance">
           <mat-error id="personal-details-used-allowance-min"
                      *ngIf="hrInformationFormGroup.controls['usedAllowanceFormControl'].hasError('min')">

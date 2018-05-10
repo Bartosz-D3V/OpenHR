@@ -134,15 +134,15 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
           employeeInfo.nationalInsuranceNumber,
           Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)]),
         ],
-        position: [employeeInfo.position],
+        position: [employeeInfo.position, Validators.required],
         department: [employeeInfo.department],
         employeeNumber: [employeeInfo.employeeNumber, Validators.required],
         startDate: [employeeInfo.startDate],
         endDate: [employeeInfo.endDate],
       }),
       hrInformation: this._fb.group({
-        allowance: [hrInfo.allowance, Validators.min(0)],
-        usedAllowance: [hrInfo.usedAllowance, Validators.min(0)],
+        allowance: [hrInfo.allowance, Validators.compose([Validators.min(0), Validators.required])],
+        usedAllowance: [hrInfo.usedAllowance, Validators.compose([Validators.min(0), Validators.required])],
       }),
       role: [this.subject.role],
     });
