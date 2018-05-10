@@ -39,7 +39,7 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Manager getManager(final long subjectId) {
+  public Manager getManager(final long subjectId) throws SubjectDoesNotExistException {
     return managerRepository.getManager(subjectId);
   }
 
@@ -66,6 +66,13 @@ public class ManagerServiceImpl implements ManagerService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteManager(final long subjectId) throws SubjectDoesNotExistException {
+    final Manager manager = getManager(subjectId);
+    managerRepository.deleteManager(manager);
+  }
+
+  @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<Manager> getManagers() {
     return managerRepository.getManagers();
@@ -73,8 +80,9 @@ public class ManagerServiceImpl implements ManagerService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
-    return managerRepository.getEmployees(subjectId);
+  public Set<Employee> getManagersEmployees(final long subjectId)
+      throws SubjectDoesNotExistException {
+    return managerRepository.getManagersEmployees(subjectId);
   }
 
   @Override

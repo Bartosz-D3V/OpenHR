@@ -58,6 +58,11 @@ public class EmployeeRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteEmployee(final Employee employee) {
+    employeeDAO.deleteEmployee(employee);
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     return employeeDAO.setManagerToEmployee(employeeId, manager);
   }

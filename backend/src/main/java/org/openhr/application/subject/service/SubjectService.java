@@ -26,8 +26,6 @@ public interface SubjectService {
   void updateSubjectEmployeeInformation(long subjectId, EmployeeInformation employeeInformation)
       throws HibernateException, SubjectDoesNotExistException;
 
-  void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
-
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
 
   List<LightweightSubjectDTO> getLightweightSubjects();

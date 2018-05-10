@@ -9,6 +9,7 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule,
+  MatDialogModule,
   MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
@@ -140,6 +141,7 @@ describe('ManageWorkersDataComponent', () => {
           MatAutocompleteModule,
           MatOptionModule,
           MatSnackBarModule,
+          MatDialogModule,
           MatProgressSpinnerModule,
         ],
         providers: [

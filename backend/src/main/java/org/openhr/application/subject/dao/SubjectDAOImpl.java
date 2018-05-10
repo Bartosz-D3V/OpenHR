@@ -2,7 +2,6 @@ package org.openhr.application.subject.dao;
 
 import java.util.Locale;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openhr.common.dao.BaseDAO;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -51,7 +50,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectPersonalInformation(
       final long subjectId, final PersonalInformation personalInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -61,7 +60,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectContactInformation(
       final long subjectId, final ContactInformation contactInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -71,7 +70,7 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectEmployeeInformation(
       final long subjectId, final EmployeeInformation employeeInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -81,26 +80,11 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.MANDATORY, rollbackFor = HibernateException.class)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateSubjectHRInformation(final long subjectId, final HrInformation hrInformation)
       throws HibernateException {
     final Subject subject = getExistingSubjectDetails(subjectId);
     subject.setHrInformation(hrInformation);
     super.merge(subject);
-  }
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = HibernateException.class)
-  public void deleteSubject(final long subjectId) throws SubjectDoesNotExistException {
-    try {
-      final Session session = sessionFactory.getCurrentSession();
-      session.delete(getSubjectDetails(subjectId));
-      session.flush();
-    } catch (final HibernateException hibernateException) {
-      log.error(hibernateException.getLocalizedMessage());
-    } catch (final SubjectDoesNotExistException subjectDoesNotExistException) {
-      log.error(subjectDoesNotExistException.getMessage());
-      throw subjectDoesNotExistException;
-    }
   }
 }

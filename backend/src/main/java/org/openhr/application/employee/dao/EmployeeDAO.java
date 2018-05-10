@@ -10,5 +10,7 @@ public interface EmployeeDAO {
 
   Employee updateEmployee(long employeeId, Employee employee);
 
+  void deleteEmployee(Employee employee);
+
   Manager setManagerToEmployee(long employeeId, Manager manager);
 }

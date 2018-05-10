@@ -22,8 +22,14 @@ public class ManagerFacadeImpl implements ManagerFacade {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Manager getManager(final long subjectId) {
+  public Manager getManager(final long subjectId) throws SubjectDoesNotExistException {
     return managerService.getManager(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<Manager> getManagers() {
+    return managerService.getManagers();
   }
 
   @Override
@@ -40,15 +46,16 @@ public class ManagerFacadeImpl implements ManagerFacade {
   }
 
   @Override
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public List<Manager> getManagers() {
-    return managerService.getManagers();
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void deleteManager(final long subjectId) throws SubjectDoesNotExistException {
+    managerService.deleteManager(subjectId);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
-    return managerService.getEmployees(subjectId);
+  public Set<Employee> getManagersEmployees(final long subjectId)
+      throws SubjectDoesNotExistException {
+    return managerService.getManagersEmployees(subjectId);
   }
 
   @Override

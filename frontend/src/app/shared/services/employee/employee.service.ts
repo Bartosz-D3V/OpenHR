@@ -45,4 +45,8 @@ export class EmployeeService {
       headers: this.headers,
     });
   }
+
+  public deleteEmployee(subjectId: number): Observable<null> {
+    return this._http.delete<null>(`${this.url}/${subjectId}`);
+  }
 }

@@ -39,4 +39,8 @@ export class HrTeamMemberService {
       headers: this.headers,
     });
   }
+
+  public deleteHrTeamMember(subjectId: number): Observable<null> {
+    return this._http.delete<null>(`${this.url}/${subjectId}`);
+  }
 }

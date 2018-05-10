@@ -56,6 +56,12 @@ public class EmployeeDAOImpl extends BaseDAO implements EmployeeDAO {
     return savedEmployee;
   }
 
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteEmployee(final Employee employee) {
+    super.delete(employee);
+  }
+
   @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     final Manager fetchedManager = (Manager) super.get(Manager.class, manager.getSubjectId());

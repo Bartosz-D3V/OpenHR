@@ -15,6 +15,7 @@ import org.openhr.common.domain.subject.ContactInformation;
 import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,7 +37,7 @@ public class ManagerRepositoryTest {
   @Autowired private ManagerDAO managerDAO;
 
   @Test
-  public void getManagerShouldReturnManagerById() {
+  public void getManagerShouldReturnManagerById() throws SubjectDoesNotExistException {
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockManager);
     final Manager manager = managerDAO.getManager(mockManager.getSubjectId());

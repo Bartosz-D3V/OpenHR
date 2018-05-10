@@ -81,7 +81,7 @@ public class ManagerControllerTest {
   @Test
   @WithMockUser()
   public void getEmployeesShouldHandleError() throws Exception {
-    when(managerFacade.getEmployees(1)).thenThrow(mockException);
+    when(managerFacade.getManagersEmployees(1)).thenThrow(mockException);
 
     final MvcResult result =
         mockMvc
@@ -98,7 +98,7 @@ public class ManagerControllerTest {
     final Set<Employee> employeeSet = new HashSet<>();
     employeeSet.add(new Employee());
     final String employeeSetAsJson = objectMapper.writeValueAsString(employeeSet);
-    when(managerFacade.getEmployees(1)).thenReturn(employeeSet);
+    when(managerFacade.getManagersEmployees(1)).thenReturn(employeeSet);
 
     final MvcResult result =
         mockMvc
@@ -136,7 +136,7 @@ public class ManagerControllerTest {
                 post("/managers/employee-assignment")
                     .param("managerId", String.valueOf(3L))
                     .param("subjectId", String.valueOf(1L)))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
   }

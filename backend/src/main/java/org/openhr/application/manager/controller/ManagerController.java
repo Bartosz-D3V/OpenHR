@@ -34,32 +34,9 @@ public class ManagerController {
   )
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
-  public Manager getManager(@PathVariable final long subjectId) {
-    return managerFacade.getManager(subjectId);
-  }
-
-  @RequestMapping(
-    method = RequestMethod.POST,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseBody
-  @ResponseStatus(HttpStatus.CREATED)
-  public Manager addManager(@RequestBody final Manager manager) throws UserAlreadyExists {
-    return managerFacade.addManager(manager);
-  }
-
-  @RequestMapping(
-    value = "/{subjectId}",
-    method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE},
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseStatus(HttpStatus.OK)
-  public Manager updateManager(
-      @PathVariable final long subjectId, @RequestBody final Manager manager)
+  public Manager getManager(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
-    return managerFacade.updateManager(subjectId, manager);
+    return managerFacade.getManager(subjectId);
   }
 
   @RequestMapping(
@@ -81,11 +58,43 @@ public class ManagerController {
   @ResponseStatus(HttpStatus.OK)
   public Set<Employee> getEmployees(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
-    return managerFacade.getEmployees(subjectId);
+    return managerFacade.getManagersEmployees(subjectId);
+  }
+
+  @RequestMapping(
+    method = RequestMethod.POST,
+    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.CREATED)
+  public Manager addManager(@RequestBody final Manager manager) throws UserAlreadyExists {
+    return managerFacade.addManager(manager);
+  }
+
+  @RequestMapping(
+    value = "/{subjectId}",
+    method = RequestMethod.PUT,
+    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public Manager updateManager(
+      @PathVariable final long subjectId, @RequestBody final Manager manager)
+      throws SubjectDoesNotExistException {
+    return managerFacade.updateManager(subjectId, manager);
+  }
+
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteManager(@PathVariable final long subjectId)
+      throws SubjectDoesNotExistException {
+    managerFacade.deleteManager(subjectId);
   }
 
   @RequestMapping(value = "/employee-assignment", method = RequestMethod.POST)
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void addEmployeeToManager(
       @RequestParam final long managerId, @RequestParam final long subjectId)
       throws SubjectDoesNotExistException {

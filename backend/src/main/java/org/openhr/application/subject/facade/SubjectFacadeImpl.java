@@ -59,13 +59,6 @@ public class SubjectFacadeImpl implements SubjectFacade {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void deleteSubject(final long subjectId)
-      throws HibernateException, SubjectDoesNotExistException {
-    subjectService.deleteSubject(subjectId);
-  }
-
-  @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LightweightSubjectDTO getLightweightSubject(final long subjectId)
       throws SubjectDoesNotExistException {

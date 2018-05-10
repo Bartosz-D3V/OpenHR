@@ -62,7 +62,7 @@ public class ManagerDAOTest {
     mockManager.setEmployees(employees);
     final Session session = sessionFactory.getCurrentSession();
     session.save(mockManager);
-    final Set<Employee> employees2 = managerDAO.getEmployees(mockManager.getSubjectId());
+    final Set<Employee> employees2 = managerDAO.getManagersEmployees(mockManager.getSubjectId());
 
     assertEquals(2, employees2.size());
   }
