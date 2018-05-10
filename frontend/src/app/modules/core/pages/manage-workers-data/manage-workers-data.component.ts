@@ -23,6 +23,8 @@ import { Manager } from '@shared/domain/subject/manager';
 import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
 import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Role } from '@shared/domain/subject/role';
+import { MatDialog } from '@angular/material/dialog';
+import { PromptModalComponent } from '@shared/components/prompt-modal/prompt-modal.component';
 
 @Component({
   selector: 'app-manage-workers-data',
@@ -54,7 +56,8 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     private _responsiveHelper: ResponsiveHelperService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -315,6 +318,34 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     }
   }
 
+  public promptDeletion(): void {
+    this._dialog
+      .open(PromptModalComponent, {
+        width: '250px',
+        height: '175px',
+        hasBackdrop: true,
+        data: { cancelled: false },
+      })
+      .afterClosed()
+      .subscribe((data: boolean) => (data ? this.delete() : null));
+  }
+
+  public delete(): void {
+    const workerRole = `ROLE_${this.subject.role}`;
+    const subjectId: number = this.subject.subjectId;
+    switch (workerRole) {
+      case Role.EMPLOYEE:
+        this.deleteEmployee(subjectId);
+        break;
+      case Role.MANAGER:
+        this.deleteManager(subjectId);
+        break;
+      case Role.HRTEAMMEMBER:
+        this.deleteHrTeamMember(subjectId);
+        break;
+    }
+  }
+
   public updateEmployee(): void {
     const updatedEmployee: Employee = <Employee>this.workerForm.value;
     const updatedManger: Manager = <Manager>this.supervisorCtrl.value;
@@ -365,6 +396,55 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
         this._errorResolver.handleError(httpErrorResponse.error);
       }
     );
+  }
+
+  public deleteEmployee(subjectId: number): void {
+    this.$employees = this._employeeService.deleteEmployee(subjectId).subscribe(
+      () => {
+        const msg = `Employee with id ${subjectId} has been deleted`;
+        this._notificationService.openSnackBar(msg, 'OK');
+        this.resetForm();
+        this.fetchWorkers();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public deleteManager(subjectId: number): void {
+    this.$managers = this._managerService.deleteManager(subjectId).subscribe(
+      () => {
+        const msg = `Manager with id ${subjectId} has been deleted`;
+        this._notificationService.openSnackBar(msg, 'OK');
+        this.resetForm();
+        this.fetchWorkers();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public deleteHrTeamMember(subjectId: number): void {
+    this.$hrTeamMembers = this._hrTeamMemberService.deleteHrTeamMember(subjectId).subscribe(
+      () => {
+        const msg = `Hr Team Member with id ${subjectId} has been deleted`;
+        this._notificationService.openSnackBar(msg, 'OK');
+        this.resetForm();
+        this.fetchWorkers();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
+  }
+
+  public resetForm(): void {
+    this.subject = null;
+    this.workersCtrl.reset();
+    this.workerForm.reset();
+    this.supervisorCtrl.reset();
   }
 
   public isMobile(): boolean {

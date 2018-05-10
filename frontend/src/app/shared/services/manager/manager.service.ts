@@ -46,4 +46,8 @@ export class ManagerService {
       params: params,
     });
   }
+
+  public deleteManager(subjectId: number): Observable<null> {
+    return this._http.delete<null>(`${this.url}/${subjectId}`);
+  }
 }

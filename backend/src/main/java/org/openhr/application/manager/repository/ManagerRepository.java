@@ -44,7 +44,7 @@ public class ManagerRepository {
   }
 
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Manager getManager(final long subjectId) {
+  public Manager getManager(final long subjectId) throws SubjectDoesNotExistException {
     return managerDAO.getManager(subjectId);
   }
 
@@ -59,9 +59,15 @@ public class ManagerRepository {
     return managerDAO.updateManager(subjectId, manager);
   }
 
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteManager(final Manager manager) {
+    managerDAO.deleteManager(manager);
+  }
+
   @Transactional(propagation = Propagation.SUPPORTS)
-  public Set<Employee> getEmployees(final long subjectId) throws SubjectDoesNotExistException {
-    return managerDAO.getEmployees(subjectId);
+  public Set<Employee> getManagersEmployees(final long subjectId)
+      throws SubjectDoesNotExistException {
+    return managerDAO.getManagersEmployees(subjectId);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)

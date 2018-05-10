@@ -71,7 +71,8 @@ public class HrServiceImpl implements HrService {
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
-    hrRepository.deleteHrTeamMember(subjectId);
+    final HrTeamMember hrTeamMember = getHrTeamMember(subjectId);
+    hrRepository.deleteHrTeamMember(hrTeamMember);
   }
 
   @Override

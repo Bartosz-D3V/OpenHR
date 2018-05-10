@@ -69,6 +69,12 @@ public class EmployeeController {
     return employeeFacade.updateEmployee(subjectId, employee);
   }
 
+  @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteEmployee(@PathVariable final long subjectId) {
+    employeeFacade.deleteEmployee(subjectId);
+  }
+
   @RequestMapping(
     value = "/{employeeId}/manager-assignment",
     method = RequestMethod.PUT,

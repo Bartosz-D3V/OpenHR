@@ -70,9 +70,8 @@ public class HrDAOImpl extends BaseDAO implements HrDAO {
   }
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public void deleteHrTeamMember(long subjectId) {
-    final HrTeamMember hrTeamMember = (HrTeamMember) super.get(HrTeamMember.class, subjectId);
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteHrTeamMember(final HrTeamMember hrTeamMember) {
     super.delete(hrTeamMember);
   }
 }

@@ -88,11 +88,6 @@ public class SubjectRepository {
     this.subjectDAO.updateSubjectHRInformation(subjectId, hrInformation);
   }
 
-  @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteSubject(final long subjectId) throws SubjectDoesNotExistException {
-    this.subjectDAO.deleteSubject(subjectId);
-  }
-
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LightweightSubjectDTO getLightweightSubject(final long subjectId)
       throws SubjectDoesNotExistException {

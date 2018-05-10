@@ -7,7 +7,6 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -225,35 +224,6 @@ public class SubjectControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .param("subjectId", "1")
                     .content(employeeInformationAsJson))
-            .andExpect(status().isInternalServerError())
-            .andReturn();
-    assertNotNull(result.getResolvedException());
-    assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
-  }
-
-  @Test
-  @WithMockUser()
-  public void deleteSubjectShouldDeleteSubject() throws Exception {
-    final MvcResult result =
-        mockMvc
-            .perform(
-                delete("/subjects")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .param("subjectId", String.valueOf(mockSubject.getSubjectId())))
-            .andExpect(status().isOk())
-            .andReturn();
-    assertNull(result.getResolvedException());
-  }
-
-  @Test
-  @WithMockUser()
-  public void deleteSubjectShouldHandleError() throws Exception {
-    doThrow(new HibernateException("DB Error")).when(subjectFacade).deleteSubject(anyLong());
-
-    final MvcResult result =
-        mockMvc
-            .perform(
-                delete("/subjects").contentType(MediaType.APPLICATION_JSON).param("subjectId", "1"))
             .andExpect(status().isInternalServerError())
             .andReturn();
     assertNotNull(result.getResolvedException());

@@ -57,8 +57,9 @@ public class HrRepository {
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteHrTeamMember(final long subjectId) throws SubjectDoesNotExistException {
-    hrDAO.deleteHrTeamMember(subjectId);
+  public void deleteHrTeamMember(final HrTeamMember hrTeamMember)
+      throws SubjectDoesNotExistException {
+    hrDAO.deleteHrTeamMember(hrTeamMember);
   }
 
   @Transactional(propagation = Propagation.MANDATORY)

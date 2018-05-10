@@ -56,7 +56,7 @@ public abstract class BaseDAO {
     }
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void delete(final Object object) {
     try {
       final Session session = sessionFactory.getCurrentSession();

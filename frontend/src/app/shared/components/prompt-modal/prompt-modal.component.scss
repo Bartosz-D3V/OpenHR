@@ -1,0 +1,16 @@
+.c-static-modal {
+  &__header {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__text {
+    font-size: 0.8em;
+    margin-top: 10px;
+    text-align: justify;
+  }
+
+  &__btn {
+    margin-top: 10%;
+  }
+}

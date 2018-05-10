@@ -14,5 +14,7 @@ public interface EmployeeFacade {
 
   Employee updateEmployee(long subjectId, Employee employee);
 
+  void deleteEmployee(long subjectId);
+
   Manager setManagerToEmployee(long employeeId, Manager manager);
 }

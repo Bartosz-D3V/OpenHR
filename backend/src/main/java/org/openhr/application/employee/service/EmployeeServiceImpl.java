@@ -66,6 +66,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteEmployee(final long subjectId) {
+    final Employee employee = getEmployee(subjectId);
+    employeeRepository.deleteEmployee(employee);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
   public Manager setManagerToEmployee(final long employeeId, final Manager manager) {
     return employeeRepository.setManagerToEmployee(employeeId, manager);
   }

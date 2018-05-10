@@ -47,6 +47,7 @@ import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-ite
 import { SharedModule } from '@modules/shared/shared.module';
 import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
 import { InputModalComponent } from '@shared/components/input-modal/input-modal.component';
+import { PromptModalComponent } from '@shared/components/prompt-modal/prompt-modal.component';
 import { PersonalDetailsComponent } from './pages/personal-details/personal-details.component';
 import { LeaveApplicationComponent } from './pages/leave-application/leave-application.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -122,9 +123,10 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     ManageDelegationsComponent,
     ApplicationTypePipe,
     TokenExpirationModalComponent,
+    PromptModalComponent,
     InputModalComponent,
   ],
   providers: [JwtHelperService],
-  entryComponents: [TokenExpirationModalComponent, InputModalComponent],
+  entryComponents: [TokenExpirationModalComponent, InputModalComponent, PromptModalComponent],
 })
 export class CoreModule {}

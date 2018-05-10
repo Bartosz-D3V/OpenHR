@@ -75,13 +75,6 @@ public class SubjectServiceImpl implements SubjectService {
   }
 
   @Override
-  @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteSubject(final long subjectId)
-      throws HibernateException, SubjectDoesNotExistException {
-    subjectRepository.deleteSubject(subjectId);
-  }
-
-  @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public LightweightSubjectDTO getLightweightSubject(final long subjectId)
       throws SubjectDoesNotExistException {

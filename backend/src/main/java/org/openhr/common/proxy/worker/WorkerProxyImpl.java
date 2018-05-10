@@ -6,6 +6,7 @@ import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.hr.service.HrService;
 import org.openhr.application.manager.domain.Manager;
 import org.openhr.application.manager.service.ManagerService;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,7 +36,7 @@ public class WorkerProxyImpl implements WorkerProxy {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public Manager getManager(final long managerId) {
+  public Manager getManager(final long managerId) throws SubjectDoesNotExistException {
     return managerService.getManager(managerId);
   }
 

@@ -9,15 +9,17 @@ import org.openhr.common.exception.UserAlreadyExists;
 
 public interface ManagerService {
 
-  Manager getManager(long subjectId);
+  Manager getManager(long subjectId) throws SubjectDoesNotExistException;
+
+  List<Manager> getManagers();
 
   Manager addManager(Manager manager) throws UserAlreadyExists;
 
   Manager updateManager(long subjectId, Manager manager) throws SubjectDoesNotExistException;
 
-  List<Manager> getManagers();
+  void deleteManager(long subjectId) throws SubjectDoesNotExistException;
 
-  Set<Employee> getEmployees(long subjectId) throws SubjectDoesNotExistException;
+  Set<Employee> getManagersEmployees(long subjectId) throws SubjectDoesNotExistException;
 
   void addEmployeeToManager(long managerId, long subjectId) throws SubjectDoesNotExistException;
 

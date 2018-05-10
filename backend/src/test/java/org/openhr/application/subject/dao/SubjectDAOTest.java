@@ -1,12 +1,9 @@
 package org.openhr.application.subject.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -239,25 +236,5 @@ public class SubjectDAOTest {
     assertEquals(
         mockSubject.getEmployeeInformation().getEndDate(),
         subject.getEmployeeInformation().getEndDate());
-  }
-
-  @Test(expected = SubjectDoesNotExistException.class)
-  public void deleteSubjectShouldShouldThrowExceptionIfSubjectDoesNotExist()
-      throws SubjectDoesNotExistException {
-    subjectDAO.deleteSubject(678L);
-  }
-
-  @Test
-  public void deleteSubjectShouldDeleteSubject() throws SubjectDoesNotExistException {
-    subjectDAO.deleteSubject(mockSubject.getSubjectId());
-    Subject actualSubject;
-    final Session session = sessionFactory.getCurrentSession();
-    final Criteria criteria = session.createCriteria(Subject.class);
-    actualSubject =
-        (Subject)
-            criteria.add(Restrictions.eq("subjectId", mockSubject.getSubjectId())).uniqueResult();
-    session.flush();
-
-    assertNull(actualSubject);
   }
 }

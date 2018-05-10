@@ -107,10 +107,4 @@ public class SubjectController {
       throws HibernateException, SubjectDoesNotExistException {
     subjectFacade.updateSubjectEmployeeInformation(subjectId, employeeInformation);
   }
-
-  @RequestMapping(method = RequestMethod.DELETE)
-  public void deleteSubject(@RequestParam final long subjectId)
-      throws HibernateException, SubjectDoesNotExistException {
-    subjectFacade.deleteSubject(subjectId);
-  }
 }

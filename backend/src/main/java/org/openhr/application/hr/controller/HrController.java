@@ -37,16 +37,6 @@ public class HrController {
   }
 
   @RequestMapping(
-    method = RequestMethod.GET,
-    produces = {MediaType.APPLICATION_JSON_VALUE}
-  )
-  @ResponseBody
-  @ResponseStatus(HttpStatus.OK)
-  public List<HrTeamMember> getHrTeamMembers() {
-    return hrFacade.getHrTeamMembers();
-  }
-
-  @RequestMapping(
     method = RequestMethod.POST,
     consumes = {MediaType.APPLICATION_JSON_VALUE},
     produces = {MediaType.APPLICATION_JSON_VALUE}
@@ -69,6 +59,16 @@ public class HrController {
   public HrTeamMember updateHrTeamMember(
       @PathVariable final long subjectId, @RequestBody final HrTeamMember hrTeamMember) {
     return hrFacade.updateHrTeamMember(subjectId, hrTeamMember);
+  }
+
+  @RequestMapping(
+    method = RequestMethod.GET,
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+  )
+  @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
+  public List<HrTeamMember> getHrTeamMembers() {
+    return hrFacade.getHrTeamMembers();
   }
 
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)

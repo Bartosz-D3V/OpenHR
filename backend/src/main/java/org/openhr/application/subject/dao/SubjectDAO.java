@@ -22,6 +22,4 @@ public interface SubjectDAO {
 
   void updateSubjectHRInformation(long subjectId, HrInformation hrInformation)
       throws HibernateException;
-
-  void deleteSubject(long subjectId) throws HibernateException, SubjectDoesNotExistException;
 }
