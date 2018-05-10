@@ -37,10 +37,6 @@ export class PersonalDetailsPo {
     return element(by.id('personal-details-date-of-birth-required'));
   }
 
-  public static getPositionField() {
-    return element(by.id('personal-details-position'));
-  }
-
   public static getPersonalInformationNextButton() {
     return element(by.id('personal-details-personal-information-next'));
   }
@@ -131,6 +127,14 @@ export class PersonalDetailsPo {
 
   public static getEmployeeIDFieldWarningRequired() {
     return element(by.id('personal-details-employee-number-required'));
+  }
+
+  public static getPositionField() {
+    return element(by.id('personal-details-position'));
+  }
+
+  public static getPositionFieldWarningRequired() {
+    return element(by.id('personal-details-position-required'));
   }
 
   public static getStartDateField() {

@@ -13,7 +13,7 @@
                       (startDateChange)="setStartDate($event)"
                       (endDateChange)="setEndDate($event)"
                       (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
-      <mat-select class="c-drawer__element" fxFlex="100" placeholder="Select a leave type"
+      <mat-select class="c-drawer__element" [required]="true" fxFlex="100" placeholder="Select a leave type"
                   formControlName="leaveTypeSelectorController" (selectionChange)="setLeaveType($event.value)">
         <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.leaveCategory">
           {{leaveType.leaveCategory}}

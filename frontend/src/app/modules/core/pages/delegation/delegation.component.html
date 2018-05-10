@@ -11,10 +11,10 @@
   <mat-card>
     <form [formGroup]="applicationForm">
       <form formGroupName="name" fxLayout.gt-xs="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
-           fxLayoutAlign.lt-sm="center center">
+            fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-subject-id"></label>
-          <input matInput placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
+          <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
                  formControlName="subjectId">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'subjectId']).touched &&
@@ -24,7 +24,8 @@
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-first-name"></label>
-          <input matInput id="delegation-first-name" placeholder="First name" name="firstName" formControlName="first">
+          <input matInput id="delegation-first-name" required="required" placeholder="First name" name="firstName"
+                 formControlName="first">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'first']).touched &&
           applicationForm.get(['name', 'first']).hasError('required')">
@@ -39,7 +40,8 @@
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-last-name"></label>
-          <input matInput placeholder="Last name" id="delegation-last-name" name="lastName" formControlName="last">
+          <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
+                 formControlName="last">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'last']).touched &&
           applicationForm.get(['name', 'last']).hasError('required')">
@@ -48,10 +50,11 @@
       </form>
 
       <form formGroupName="organisation" fxLayout.gt-xs="row wrap"
-           fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-position"></label>
-          <input matInput placeholder="Position" id="delegation-position" name="position" formControlName="position">
+          <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
+                 formControlName="position">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['organisation', 'position']).touched &&
           applicationForm.get(['organisation', 'position']).hasError('required')">
@@ -66,11 +69,11 @@
       </form>
 
       <form formGroupName="delegation" fxLayout.gt-xs="row wrap"
-           fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
+            fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
-          <input matInput placeholder="Country" aria-label="Countries" [matAutocomplete]="autoCountries"
-                 formControlName="country">
+          <input matInput required="required" placeholder="Country" aria-label="Countries"
+                 [matAutocomplete]="autoCountries" formControlName="country">
           <mat-autocomplete #autoCountries="matAutocomplete" [displayWith]="displayCountryName">
             <mat-option *ngFor="let country of filteredCountries | async " [value]="country">
               <span>{{country.countryName}}</span>
@@ -84,7 +87,8 @@
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-city"></label>
-          <input #city matInput placeholder="City" id="delegation-city" name="city" formControlName="city">
+          <input #city matInput required="required" placeholder="City" id="delegation-city" name="city"
+                 formControlName="city">
           <mat-error *ngIf="applicationForm.get(['delegation', 'city']).touched &&
           applicationForm.get(['delegation', 'city']).hasError('required')">
             Destination city is required
@@ -93,8 +97,8 @@
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-objective"></label>
-          <input #objective matInput placeholder="Objective" id="delegation-objective" name="objective"
-                 formControlName="objective">
+          <input #objective matInput required="required" placeholder="Objective" id="delegation-objective"
+                 name="objective" formControlName="objective">
           <mat-error *ngIf="applicationForm.get(['delegation', 'objective']).touched &&
           applicationForm.get(['delegation', 'objective']).hasError('required')">
             Objective is required
@@ -103,7 +107,8 @@
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
           <label for="delegation-budget"></label>
-          <input matInput placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
+          <input matInput required="required" placeholder="Budget" id="delegation-budget" name="budget"
+                 formControlName="budget">
           <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
           applicationForm.get(['delegation', 'budget']).hasError('required')">
             Budget is required
@@ -116,7 +121,7 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
-          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+          <input matInput [matDatepicker]="startDatePicker" required="required" placeholder="Start date"
                  formControlName="startDate" name="startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
@@ -132,7 +137,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
-          <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+          <input matInput [matDatepicker]="endDatePicker" required="required" placeholder="End date"
+                 formControlName="endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
           <mat-error *ngIf="(applicationForm.get(['delegation', 'endDate']).touched ||
