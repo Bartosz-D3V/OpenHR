@@ -9,6 +9,7 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +88,7 @@ public class ManagerController {
   }
 
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)
+  @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteManager(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
@@ -94,6 +96,7 @@ public class ManagerController {
   }
 
   @RequestMapping(value = "/employee-assignment", method = RequestMethod.POST)
+  @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_HRTEAMMEMBER')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void addEmployeeToManager(
       @RequestParam final long managerId, @RequestParam final long subjectId)
@@ -106,6 +109,7 @@ public class ManagerController {
     method = RequestMethod.PUT,
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_HRTEAMMEMBER')")
   @ResponseBody
   @ResponseStatus(HttpStatus.ACCEPTED)
   public Manager setManagerToEmployee(

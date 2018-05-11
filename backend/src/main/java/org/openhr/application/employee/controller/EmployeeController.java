@@ -7,6 +7,7 @@ import org.openhr.application.manager.domain.Manager;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +71,7 @@ public class EmployeeController {
   }
 
   @RequestMapping(value = "/{subjectId}", method = RequestMethod.DELETE)
+  @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_HRTEAMMEMBER')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteEmployee(@PathVariable final long subjectId) {
     employeeFacade.deleteEmployee(subjectId);
