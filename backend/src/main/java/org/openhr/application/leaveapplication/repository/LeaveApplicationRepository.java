@@ -12,6 +12,7 @@ import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
+import org.openhr.common.util.iterable.LocalDateRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -163,5 +164,31 @@ public class LeaveApplicationRepository {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public List<LeaveType> getLeaveTypes() throws HibernateException {
     return leaveApplicationDAO.getLeaveTypes();
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  @SuppressWarnings("unchecked")
+  public List<LeaveApplication> getLeaveApplicationsInRange(
+      final LocalDateRange dateRange, final long subjectId) {
+    List<LeaveApplication> leaveApplications;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria = session.createCriteria(LeaveApplication.class);
+      leaveApplications =
+          criteria
+              .createAlias("subject", "subject")
+              .add(
+                  Restrictions.conjunction(
+                      Restrictions.le("startDate", dateRange.getEndDate()),
+                      Restrictions.ge("endDate", dateRange.getStartDate())))
+              .add(Restrictions.eq("subject.subjectId", subjectId))
+              .setReadOnly(true)
+              .list();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+
+    return leaveApplications;
   }
 }

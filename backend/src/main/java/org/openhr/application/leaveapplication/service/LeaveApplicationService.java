@@ -6,6 +6,7 @@ import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.openhr.common.util.iterable.LocalDateRange;
 
 public interface LeaveApplicationService {
 
@@ -42,4 +43,7 @@ public interface LeaveApplicationService {
   LeaveType getLeaveTypeById(long leaveTypeId);
 
   long getLeaveApplicationIdByProcessId(String processInstanceId);
+
+  List<LeaveApplication> getSubjectsLeaveApplicationsInRange(
+      LocalDateRange dateRange, long subjectId);
 }
