@@ -10,6 +10,7 @@ import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
+import org.openhr.common.util.iterable.LocalDateRange;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,6 +51,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
       final Subject subject, final LeaveApplication leaveApplication) throws ValidationException {
     validateLeaveApplication(leaveApplication);
     validateLeftAllowance(subject);
+    validateBookedApplications(leaveApplication, subject.getSubjectId());
     final long leaveTypeId = leaveApplication.getLeaveType().getLeaveTypeId();
     leaveApplication.setLeaveType(getLeaveTypeById(leaveTypeId));
     subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
@@ -72,6 +74,17 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
       throw new ValidationException(
           messageSource.getMessage("error.validation.noleftallowance", null, Locale.getDefault()));
+    }
+  }
+
+  private void validateBookedApplications(
+      final LeaveApplication leaveApplication, final long subjectId) throws ValidationException {
+    final LocalDateRange dateRange =
+        new LocalDateRange(leaveApplication.getStartDate(), leaveApplication.getEndDate());
+    if (!getSubjectsLeaveApplicationsInRange(dateRange, subjectId).isEmpty()) {
+      throw new ValidationException(
+          messageSource.getMessage(
+              "error.validation.selectedrangealreadybooked", null, Locale.getDefault()));
     }
   }
 
@@ -171,5 +184,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public long getLeaveApplicationIdByProcessId(final String processInstanceId) {
     return leaveApplicationRepository.getLeaveApplicationIdByProcessId(processInstanceId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public List<LeaveApplication> getSubjectsLeaveApplicationsInRange(
+      final LocalDateRange dateRange, final long subjectId) {
+    return leaveApplicationRepository.getLeaveApplicationsInRange(dateRange, subjectId);
   }
 }
