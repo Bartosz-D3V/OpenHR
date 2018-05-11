@@ -44,6 +44,12 @@ public class UserFacadeImpl implements UserFacade {
   }
 
   @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public User getUserByUsername(final String username) throws UserDoesNotExist {
+    return userService.getUserByUsername(username);
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void updateNotificationsSettings(final long userId, final boolean notificationsTurnedOn) {
     userService.updateNotificationsSettings(userId, notificationsTurnedOn);

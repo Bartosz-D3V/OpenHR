@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -33,13 +34,20 @@ import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Manager } from '@shared/domain/subject/manager';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { AddEmployeeComponent } from './add-employee.component';
-import { HttpErrorResponse } from '@angular/common/http';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
   let fixture: ComponentFixture<AddEmployeeComponent>;
   let notificationService: NotificationService;
   const mockPersonalInformation: PersonalInformation = new PersonalInformation('John', 'Xavier', null, new Date());
+
+  @Injectable()
+  class FakeCustomAsyncValidatorsService {
+    public validateUsernameIsFree(username: string): Observable<boolean> {
+      return Observable.of(true);
+    }
+  }
 
   @Injectable()
   class FakeEmployeeService {
@@ -98,6 +106,10 @@ describe('AddEmployeeComponent', () => {
         providers: [
           JwtHelperService,
           ResponsiveHelperService,
+          {
+            provide: CustomAsyncValidatorsService,
+            useClass: FakeCustomAsyncValidatorsService,
+          },
           {
             provide: EmployeeService,
             useClass: FakeEmployeeService,
@@ -562,13 +574,15 @@ describe('AddEmployeeComponent', () => {
       });
 
       it('should mark form as valid if input is not empty', () => {
-        const user = 'user';
-        usernameFormControl.setValue(user);
+        spyOn(component['_asyncValidator'], 'validateUsernameIsFree').and.returnValue(null);
+
+        usernameFormControl.setValue('user');
 
         expect(usernameFormControl.valid).toBeTruthy();
       });
 
       it('should mark form as invalid if input is empty', () => {
+        spyOn(component['_asyncValidator'], 'validateUsernameIsFree').and.returnValue(null);
         usernameFormControl.setValue('');
 
         expect(usernameFormControl.valid).toBeFalsy();

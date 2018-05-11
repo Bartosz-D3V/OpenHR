@@ -61,6 +61,8 @@ import { MyApplicationsComponent } from './pages/my-applications/my-applications
 import { ManageDelegationsComponent } from './pages/manage-delegations/manage-delegations.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApplicationTypePipe } from './pages/my-applications/pipe/application-type/application-type.pipe';
+import { AsyncValidatorService } from '@shared/util/async-validators/service/async-validator.service';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 
 @NgModule({
   imports: [
@@ -126,7 +128,7 @@ import { ApplicationTypePipe } from './pages/my-applications/pipe/application-ty
     PromptModalComponent,
     InputModalComponent,
   ],
-  providers: [JwtHelperService],
+  providers: [JwtHelperService, AsyncValidatorService, CustomAsyncValidatorsService],
   entryComponents: [TokenExpirationModalComponent, InputModalComponent, PromptModalComponent],
 })
 export class CoreModule {}

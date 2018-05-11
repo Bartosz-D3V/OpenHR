@@ -6,4 +6,8 @@ export class ObjectHelper {
     delete subject.role;
     return subject;
   }
+
+  public static stringToBool(bool: string): boolean {
+    return JSON.parse(bool.toLocaleLowerCase());
+  }
 }

@@ -7,8 +7,11 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.UserAlreadyExists;
 import org.openhr.common.exception.UserDoesNotExist;
 import org.openhr.common.exception.ValidationException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +70,19 @@ public class UserController {
   @ResponseBody
   public User getUserBySubjectId(@RequestParam final long subjectId) {
     return userFacade.getUserBySubjectId(subjectId);
+  }
+
+  @RequestMapping(method = RequestMethod.HEAD)
+  @ResponseBody
+  public HttpEntity<String> getUserByUsername(@RequestParam final String username) {
+    final HttpHeaders httpHeaders = new HttpHeaders();
+    try {
+      userFacade.getUserByUsername(username);
+      httpHeaders.set("usernameTaken", Boolean.toString(true));
+    } catch (final UserDoesNotExist userDoesNotExist) {
+      httpHeaders.set("usernameTaken", Boolean.toString(false));
+    }
+    return ResponseEntity.noContent().headers(httpHeaders).build();
   }
 
   @RequestMapping(value = "/{userId}/notifications", method = RequestMethod.PUT)
