@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import {
   MatCheckboxModule,
   MatDatepickerModule,
@@ -44,8 +44,11 @@ describe('AddEmployeeComponent', () => {
 
   @Injectable()
   class FakeCustomAsyncValidatorsService {
-    public validateUsernameIsFree(username: string): Observable<boolean> {
-      return Observable.of(true);
+    public validateUsernameIsFree(username: string): ValidationErrors {
+      return null;
+    }
+    public validateEmailIsFree(excludeEmail?: string): ValidationErrors {
+      return null;
     }
   }
 
@@ -328,6 +331,7 @@ describe('AddEmployeeComponent', () => {
       });
 
       it('should mark form as valid if input is filled and email is valid', () => {
+        spyOn(component['_asyncValidator'], 'validateEmailIsFree');
         const validEmail = 'test@test.com';
         emailFormControl.setValue(validEmail);
 

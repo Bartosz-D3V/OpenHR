@@ -2,6 +2,7 @@ package org.openhr.application.subject.service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import org.hibernate.HibernateException;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
@@ -48,6 +49,13 @@ public class SubjectServiceImpl implements SubjectService {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return subjectRepository.getSubjectDetails(subjectId);
+  }
+
+  @Override
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getSubjectDetailsByEmail(final String email, final Optional<String> excludeEmail)
+      throws SubjectDoesNotExistException {
+    return subjectRepository.getSubjectDetailsByEmail(email, excludeEmail);
   }
 
   @Override

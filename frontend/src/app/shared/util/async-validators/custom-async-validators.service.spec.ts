@@ -13,6 +13,9 @@ describe('CustomAsyncValidatorsService', () => {
     usernameIsFree(username: string): Observable<HttpResponse<null>> {
       return Observable.of(null);
     }
+    emailIsFree(email: string): Observable<HttpResponse<null>> {
+      return Observable.of(null);
+    }
   }
 
   beforeEach(() => {

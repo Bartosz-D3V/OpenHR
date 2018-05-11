@@ -1,6 +1,7 @@
 package org.openhr.application.subject.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.HibernateException;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.facade.SubjectFacade;
@@ -9,8 +10,11 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.SubjectDoesNotExistException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +53,21 @@ public class SubjectController {
   public Subject getSubjectDetails(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
     return subjectFacade.getSubjectDetails(subjectId);
+  }
+
+  @RequestMapping(method = RequestMethod.HEAD)
+  @ResponseBody
+  public HttpEntity<String> getSubjectDetailsByEmail(
+      @RequestParam final String email,
+      @RequestParam(required = false) final Optional<String> excludeEmail) {
+    final HttpHeaders httpHeaders = new HttpHeaders();
+    try {
+      subjectFacade.getSubjectDetailsByEmail(email, excludeEmail);
+      httpHeaders.set("emailTaken", Boolean.toString(true));
+    } catch (final SubjectDoesNotExistException e) {
+      httpHeaders.set("emailTaken", Boolean.toString(false));
+    }
+    return ResponseEntity.noContent().headers(httpHeaders).build();
   }
 
   @RequestMapping(

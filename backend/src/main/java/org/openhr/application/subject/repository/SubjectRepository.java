@@ -1,7 +1,11 @@
 package org.openhr.application.subject.repository;
 
+import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.ne;
+
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -60,6 +64,36 @@ public class SubjectRepository {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return this.subjectDAO.getSubjectDetails(subjectId);
+  }
+
+  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+  public Subject getSubjectDetailsByEmail(final String email, final Optional<String> excludeEmail)
+      throws SubjectDoesNotExistException {
+    Subject subject;
+    try {
+      final Session session = sessionFactory.getCurrentSession();
+      final Criteria criteria =
+          session
+              .createCriteria(Subject.class)
+              .createAlias("contactInformation", "contactInformation");
+      subject =
+          (Subject)
+              criteria
+                  .add(
+                      Restrictions.conjunction(eq("contactInformation.email", email))
+                          .add(ne("contactInformation.email", excludeEmail.orElse(null))))
+                  .setMaxResults(1)
+                  .uniqueResult();
+    } catch (final HibernateException e) {
+      log.error(e.getLocalizedMessage());
+      throw e;
+    }
+    if (subject == null) {
+      throw new SubjectDoesNotExistException(
+          messageSource.getMessage("error.subjectdoesnotexist", null, Locale.getDefault()));
+    }
+
+    return subject;
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
