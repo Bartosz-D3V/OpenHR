@@ -10,6 +10,7 @@ import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,6 +84,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   @ResponseStatus(HttpStatus.OK)
   public void rejectLeaveApplicationByManager(
       @RequestParam final String processInstanceId,
@@ -96,6 +98,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   @ResponseStatus(HttpStatus.OK)
   public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
@@ -107,6 +110,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
   @ResponseStatus(HttpStatus.OK)
   public void rejectLeaveApplicationByHR(
       @RequestParam final String processInstanceId,
@@ -120,6 +124,7 @@ public class LeaveApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
   @ResponseStatus(HttpStatus.OK)
   public void approveLeaveApplicationByHR(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException {

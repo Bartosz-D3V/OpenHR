@@ -7,6 +7,7 @@ import org.openhr.common.domain.country.Country;
 import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -105,6 +106,7 @@ public class DelegationApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectDelegationApplicationByManager(@RequestParam final String processInstanceId) {
@@ -116,6 +118,7 @@ public class DelegationApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveDelegationApplicationByManager(@RequestParam final String processInstanceId) {
@@ -127,6 +130,7 @@ public class DelegationApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectDelegationApplicationByHr(@RequestParam final String processInstanceId) {
@@ -138,6 +142,7 @@ public class DelegationApplicationController {
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
   @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveDelegationApplicationByHr(@RequestParam final String processInstanceId) {
