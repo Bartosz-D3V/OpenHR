@@ -16,6 +16,8 @@ public interface UserFacade {
 
   User getUserBySubjectId(long subjectId);
 
+  User getUserByUsername(String username) throws UserDoesNotExist;
+
   void updateNotificationsSettings(long userId, boolean notificationsTurnedOn);
 
   void updatePassword(long userId, PasswordDTO passwordDTO)

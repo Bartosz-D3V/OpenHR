@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -15,6 +15,7 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { CustomValidators } from '@shared/util/validators/custom-validators';
 import { ObjectHelper } from '@shared/util/helpers/object-helper';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -34,6 +35,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     private _managerService: ManagerService,
     private _hrService: HrTeamMemberService,
     private _notificationService: NotificationService,
+    private _asyncValidator: CustomAsyncValidatorsService,
     private _errorResolver: ErrorResolverService,
     private _responsiveHelper: ResponsiveHelperService,
     private _fb: FormBuilder
@@ -97,19 +99,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         {
           password: ['', Validators.required],
           repeatPassword: ['', Validators.required],
-          username: ['', Validators.required],
+          username: ['', Validators.required, this._asyncValidator.validateUsernameIsFree.bind(this._asyncValidator)],
         },
         { validator: CustomValidators.validatePasswords }
       ),
     });
-  }
-
-  public save(): void {
-    if (this.isValid()) {
-      const subject: Subject = <Subject>this.newSubjectForm.value;
-      this.createSubject(subject);
-      this.resetForm();
-    }
   }
 
   public createSubject(subject: Subject): void {
@@ -135,6 +129,14 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       case Role.HRTEAMMEMBER:
         subject = ObjectHelper.removeSubjectHelperProperties(subject);
         return this._hrService.createHrTeamMember(subject);
+    }
+  }
+
+  public save(): void {
+    if (this.isValid()) {
+      const subject: Subject = <Subject>this.newSubjectForm.value;
+      this.createSubject(subject);
+      this.resetForm();
     }
   }
 

@@ -336,6 +336,10 @@
             newSubjectForm.get(['user', 'username']).hasError('required')">
               Username is required
             </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['user', 'username']).touched &&
+            newSubjectForm.get(['user', 'username']).hasError('usernameTaken')">
+              Username already in use
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
