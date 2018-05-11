@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class PasswordDTO implements Serializable {
   private String oldPassword;
-  private String newPassword;
+  private String password;
 
   public PasswordDTO() {
     super();
@@ -18,11 +18,11 @@ public class PasswordDTO implements Serializable {
     this.oldPassword = oldPassword;
   }
 
-  public String getNewPassword() {
-    return newPassword;
+  public String getPassword() {
+    return password;
   }
 
-  public void setNewPassword(final String newPassword) {
-    this.newPassword = newPassword;
+  public void setPassword(final String password) {
+    this.password = password;
   }
 }

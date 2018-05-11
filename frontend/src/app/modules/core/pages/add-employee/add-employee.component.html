@@ -97,7 +97,7 @@
 
           <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
             <label for="personal-details-email"></label>
-            <input type="email" matInput placeholder="Email" formControlName="email"
+            <input type="email" matInput required="required" placeholder="Email" formControlName="email"
                    id="personal-details-email" name="email">
             <mat-error *ngIf="newSubjectForm.get(['contactInformation', 'email']).touched &&
             newSubjectForm.get(['contactInformation', 'email']).hasError('pattern')">
@@ -106,6 +106,10 @@
             <mat-error *ngIf="newSubjectForm.get(['contactInformation', 'email']).touched &&
             newSubjectForm.get(['contactInformation', 'email']).hasError('required')">
               Email is required
+            </mat-error>
+            <mat-error *ngIf="newSubjectForm.get(['contactInformation', 'email']).touched &&
+            newSubjectForm.get(['contactInformation', 'email']).hasError('emailTaken')">
+              Email already in use
             </mat-error>
           </mat-form-field>
 
