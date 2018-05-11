@@ -69,7 +69,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
             Validators.maxLength(11),
           ]),
         ],
-        email: ['', Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)])],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)]),
+          this._asyncValidator.validateEmailIsFree(),
+        ],
         address: this._fb.group({
           firstLineAddress: [''],
           secondLineAddress: [''],
@@ -99,7 +103,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         {
           password: ['', Validators.required],
           repeatPassword: ['', Validators.required],
-          username: ['', Validators.required, this._asyncValidator.validateUsernameIsFree.bind(this._asyncValidator)],
+          username: ['', Validators.required, this._asyncValidator.validateUsernameIsFree()],
         },
         { validator: CustomValidators.validatePasswords }
       ),

@@ -1,6 +1,7 @@
 package org.openhr.application.subject.facade;
 
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.HibernateException;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.service.SubjectService;
@@ -32,6 +33,12 @@ public class SubjectFacadeImpl implements SubjectFacade {
   @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
   public Subject getSubjectDetails(final long subjectId) throws SubjectDoesNotExistException {
     return subjectService.getSubjectDetails(subjectId);
+  }
+
+  @Override
+  public Subject getSubjectDetailsByEmail(final String email, final Optional<String> excludeEmail)
+      throws SubjectDoesNotExistException {
+    return subjectService.getSubjectDetailsByEmail(email, excludeEmail);
   }
 
   @Override
