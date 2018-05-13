@@ -26,7 +26,7 @@ import { Month } from '@shared/constants/enumeration/month';
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
-  public year = moment().year();
+  public currentYear = moment().year();
   public role: Role;
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();

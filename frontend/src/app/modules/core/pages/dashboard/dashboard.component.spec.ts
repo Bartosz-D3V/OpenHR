@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable } from 'rxjs/Observable';
-import { MatPaginatorModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
+import { MatCardModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
 
 import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
 import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
@@ -46,6 +46,7 @@ describe('DashboardComponent', () => {
           MatTableModule,
           MatPaginatorModule,
           MatProgressSpinnerModule,
+          MatCardModule,
         ],
         providers: [
           JwtHelperService,

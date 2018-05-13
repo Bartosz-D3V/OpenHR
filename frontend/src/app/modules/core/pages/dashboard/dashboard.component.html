@@ -10,7 +10,7 @@
   <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
     <mat-card-header>
       <mat-card-title>Total allowance</mat-card-title>
-      <mat-card-subtitle>{{year}}</mat-card-subtitle>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <app-number-indicator [number]="subject?.hrInformation?.allowance"
@@ -21,7 +21,7 @@
   <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
     <mat-card-header>
       <mat-card-title>Used allowance</mat-card-title>
-      <mat-card-subtitle>{{year}}</mat-card-subtitle>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <app-number-indicator [number]="subject?.hrInformation?.usedAllowance"
@@ -32,7 +32,7 @@
   <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
     <mat-card-header>
       <mat-card-title>Left allowance</mat-card-title>
-      <mat-card-subtitle>{{year}}</mat-card-subtitle>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <app-number-indicator [number]="allowanceLeft"
