@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Chart } from 'chart.js';
+import * as moment from 'moment';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
@@ -25,6 +26,7 @@ import { Month } from '@shared/constants/enumeration/month';
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private $dashboardService: ISubscription;
+  public currentYear = moment().year();
   public role: Role;
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();

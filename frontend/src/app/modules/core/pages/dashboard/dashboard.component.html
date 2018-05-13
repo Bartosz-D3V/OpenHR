@@ -5,31 +5,56 @@
 </section>
 
 <section class="c-dashboard" fxLayout="row wrap" fxLayoutAlign.gt-md="start start"
-         fxLayoutAlign.md="space-between start" fxLayoutAlign.lt-md="center start">
+         fxLayoutAlign.md="space-between start" fxLayoutAlign.lt-md="space-between start">
 
-  <div class="c-dashboard__chart" fxFlex.gt-sm="33" fxFlex.sm="45" fxFlex.xs="100" *ngIf="!isLoadingResults">
-    <app-number-indicator [number]="subject?.hrInformation?.allowance"
-                          [description]="'Total allowance'"></app-number-indicator>
-  </div>
+  <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
+    <mat-card-header>
+      <mat-card-title>Total allowance</mat-card-title>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <app-number-indicator [number]="subject?.hrInformation?.allowance"
+                            [description]="'Total allowance'"></app-number-indicator>
+    </mat-card-content>
+  </mat-card>
 
-  <div class="c-dashboard__chart" fxFlex.gt-sm="34" fxFlex.sm="45" fxFlex.xs="100" *ngIf="!isLoadingResults">
-    <app-number-indicator [number]="subject?.hrInformation?.usedAllowance"
-                          [description]="'Used allowance'"></app-number-indicator>
-  </div>
+  <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
+    <mat-card-header>
+      <mat-card-title>Used allowance</mat-card-title>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <app-number-indicator [number]="subject?.hrInformation?.usedAllowance"
+                            [description]="'Used allowance'"></app-number-indicator>
+    </mat-card-content>
+  </mat-card>
 
-  <div class="c-dashboard__chart" fxFlex.gt-sm="33" fxFlex.sm="45" fxFlex.xs="100" *ngIf="!isLoadingResults">
-    <app-number-indicator [number]="allowanceLeft" [description]="'Allowance left'"></app-number-indicator>
-  </div>
+  <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90" *ngIf="!isLoadingResults">
+    <mat-card-header>
+      <mat-card-title>Left allowance</mat-card-title>
+      <mat-card-subtitle>{{currentYear}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <app-number-indicator [number]="allowanceLeft"
+                            [description]="'Left allowance'"></app-number-indicator>
+    </mat-card-content>
+  </mat-card>
 
   <div class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100" [hidden]="isLoadingResults">
     <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
   </div>
 
-  <div class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100"
-       *ngIf="(role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER') && !isLoadingResults">
-    <app-number-indicator [number]="totalDelegationExpenditure.totalExpenditure | currency:'GBP'"
-                          [description]="totalDelegationExpenditure.year"></app-number-indicator>
-  </div>
+  <mat-card class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90"
+            *ngIf="(role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER') && !isLoadingResults">
+    <mat-card-header>
+      <mat-card-title>Total expenditures of the company</mat-card-title>
+      <mat-card-subtitle>{{totalDelegationExpenditure.year}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <app-number-indicator [number]="totalDelegationExpenditure.totalExpenditure | currency:'GBP'"
+                            [description]="totalDelegationExpenditure.year"></app-number-indicator>
+    </mat-card-content>
+  </mat-card>
 
   <div class="c-dashboard__chart" fxFlex.gt-sm="100" fxFlex.sm="100" fxFlex.lt-sm="100" *ngIf="!isLoadingResults">
 
