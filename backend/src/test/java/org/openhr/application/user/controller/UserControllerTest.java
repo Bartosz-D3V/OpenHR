@@ -7,6 +7,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,6 +21,7 @@ import org.openhr.application.user.domain.User;
 import org.openhr.application.user.dto.PasswordDTO;
 import org.openhr.application.user.facade.UserFacade;
 import org.openhr.common.exception.UserAlreadyExists;
+import org.openhr.common.exception.UserDoesNotExist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -149,5 +151,32 @@ public class UserControllerTest {
             .andReturn();
 
     assertNull(result.getResponse().getErrorMessage());
+  }
+
+  @Test
+  @WithMockUser
+  public void getUserByUsernameShouldReturnTrueInHeaderIfUsernameIsTaken() throws Exception {
+    final MvcResult result =
+        mockMvc
+            .perform(head("/users").param("username", "mockUsername"))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+    assertEquals(Boolean.toString(true), result.getResponse().getHeader("usernameTaken"));
+  }
+
+  @Test
+  @WithMockUser
+  public void getUserByUsernameShouldReturnFalseInHeaderIfUsernameIsAvailable() throws Exception {
+    when(userFacade.getUserByUsername("mockUsername"))
+        .thenThrow(new UserDoesNotExist("User does not exist"));
+
+    final MvcResult result =
+        mockMvc
+            .perform(head("/users").param("username", "mockUsername"))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+    assertEquals(Boolean.toString(false), result.getResponse().getHeader("usernameTaken"));
   }
 }
