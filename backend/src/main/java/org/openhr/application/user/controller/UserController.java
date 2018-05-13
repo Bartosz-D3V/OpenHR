@@ -36,7 +36,7 @@ public class UserController {
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseStatus(HttpStatus.OK)
-  public User getUser(@PathVariable final long userId) throws UserDoesNotExist {
+  public User getUser(@PathVariable final long userId) {
     return userFacade.getUser(userId);
   }
 
@@ -88,8 +88,7 @@ public class UserController {
   @RequestMapping(value = "/{userId}/notifications", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updateNotificationsSettings(
-      @PathVariable final long userId, @RequestParam final boolean notificationsTurnedOn)
-      throws UserDoesNotExist {
+      @PathVariable final long userId, @RequestParam final boolean notificationsTurnedOn) {
     userFacade.updateNotificationsSettings(userId, notificationsTurnedOn);
   }
 
@@ -101,7 +100,8 @@ public class UserController {
   )
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ResponseBody
-  public void updatePassword(@PathVariable final long userId, @RequestBody PasswordDTO passwordDTO)
+  public void updatePassword(
+      @PathVariable final long userId, @RequestBody final PasswordDTO passwordDTO)
       throws UserDoesNotExist, ValidationException, SubjectDoesNotExistException {
     userFacade.updatePassword(userId, passwordDTO);
   }
