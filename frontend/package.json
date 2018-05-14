@@ -4,7 +4,7 @@
   "license": "GNU AGPLv3",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "npm run build-themes && ng serve --proxy-config proxy.conf.json",
     "start:pwa": "bash ./tools/run-pwa.sh",
     "build": "ng build",
     "pretest": "npm run lint",
@@ -14,7 +14,8 @@
     "e2e": "ng e2e --proxy-config proxy.conf.json",
     "stylelint": "stylelint --config ./.stylelintrc.json --syntax scss --color ./src/**/*.scss",
     "clean": "rm -rf ./dist ./coverage",
-    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false"
+    "dist": "ng build --prod --build-optimizer --aot --no-sourcemap --extract-licenses=false",
+    "build-themes": "bash ./tools/build-themes.sh"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +24,7 @@
     "@angular/common": "^5.2.1",
     "@angular/compiler": "^5.2.1",
     "@angular/core": "^5.2.1",
-    "@angular/flex-layout": "^2.0.0-beta.12",
+    "@angular/flex-layout": "^5.0.0-beta.14",
     "@angular/forms": "^5.2.1",
     "@angular/http": "^5.2.1",
     "@angular/material": "^5.2.2",

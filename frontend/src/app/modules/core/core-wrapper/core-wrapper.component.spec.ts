@@ -3,15 +3,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable } from 'rxjs/Observable';
-import { MatDialogModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import { MatDialogModule, MatGridListModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
+import { AppComponent } from '@boot/app.component';
 import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
+import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
-import { AppComponent } from '@boot/app.component';
 import { LightweightSubjectService } from './service/lightweight-subject.service';
 import { CoreWrapperComponent } from './core-wrapper.component';
 import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
@@ -27,7 +28,15 @@ describe('CoreComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [CoreWrapperComponent, AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
+        declarations: [
+          CoreWrapperComponent,
+          AppComponent,
+          AvatarComponent,
+          SidenavComponent,
+          SidenavItemListComponent,
+          InitialsPipe,
+          ThemePickerComponent,
+        ],
         imports: [
           HttpClientTestingModule,
           RouterTestingModule,
@@ -37,6 +46,7 @@ describe('CoreComponent', () => {
           MatMenuModule,
           MatIconModule,
           MatDialogModule,
+          MatGridListModule,
         ],
         providers: [
           LightweightSubjectService,

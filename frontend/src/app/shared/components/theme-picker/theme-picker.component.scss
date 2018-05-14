@@ -1,0 +1,48 @@
+@import 'variables';
+
+.c-theme-picker-menu {
+  [mat-menu-item] {
+    flex: 0 0 auto;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  &__content {
+    padding: $theme-picker-menu-padding;
+  }
+
+  &__switch {
+    border-radius: 50%;
+    height: $theme-picker-switch-size;
+    margin: ($theme-picker-grid-cell-size - $theme-picker-switch-size) / 2;
+    overflow: hidden;
+    position: relative;
+    width: $theme-picker-switch-size;
+
+    &::after {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      box-sizing: border-box;
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  &__chosen-icon {
+    color: #FFF;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &--primary {
+    height: 100%;
+    width: 100%;
+  }
+}
+

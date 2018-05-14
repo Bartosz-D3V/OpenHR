@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
-import { MatButtonModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
-
+import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
-import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
-import { SidenavComponent } from './sidenav.component';
-import { AvatarComponent } from '../avatar/avatar.component';
-import { InitialsPipe } from '../../pipes/initials/initials.pipe';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
+import { InitialsPipe } from '../../pipes/initials/initials.pipe';
+import { AvatarComponent } from '../avatar/avatar.component';
+import { SidenavComponent } from './sidenav.component';
+import { SidenavItemListComponent } from './sidenav-item-list/sidenav-item-list.component';
 
 describe('SidenavComponent', () => {
   const mockUser: LightweightSubject = new LightweightSubject(2199, 'John', 'Test', 'Tester');
@@ -19,7 +19,7 @@ describe('SidenavComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [InitialsPipe, AvatarComponent, SidenavComponent, SidenavItemListComponent],
+        declarations: [InitialsPipe, AvatarComponent, SidenavComponent, SidenavItemListComponent, ThemePickerComponent],
         imports: [
           RouterTestingModule,
           BrowserAnimationsModule,
@@ -28,6 +28,7 @@ describe('SidenavComponent', () => {
           MatMenuModule,
           MatToolbarModule,
           MatButtonModule,
+          MatGridListModule,
         ],
         providers: [ResponsiveHelperService],
       }).compileComponents();

@@ -1,19 +1,20 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestBed, async } from '@angular/core/testing';
-import { MatButtonModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { SidenavComponent } from '@shared/components/sidenav/sidenav.component';
 import { SidenavItemListComponent } from '@shared/components/sidenav/sidenav-item-list/sidenav-item-list.component';
 import { AvatarComponent } from '@shared/components/avatar/avatar.component';
+import { ThemePickerComponent } from '@shared/components/theme-picker/theme-picker.component';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 
 describe('AppComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
+        declarations: [AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe, ThemePickerComponent],
         imports: [
           BrowserAnimationsModule,
           MatSidenavModule,
@@ -21,6 +22,7 @@ describe('AppComponent', () => {
           MatIconModule,
           MatMenuModule,
           MatButtonModule,
+          MatGridListModule,
           RouterTestingModule,
         ],
       }).compileComponents();
