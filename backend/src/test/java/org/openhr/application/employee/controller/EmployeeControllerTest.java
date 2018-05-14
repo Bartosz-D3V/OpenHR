@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +62,22 @@ public class EmployeeControllerTest {
 
   @Test
   @WithMockUser
+  public void getEmployeesShouldReturnAllEmployees() throws Exception {
+    final List<Employee> employees = new ArrayList<>();
+    employees.add(new Employee());
+    employees.add(new Employee());
+    when(employeeFacade.getEmployees()).thenReturn(employees);
+    final String employeesAsJSON = objectMapper.writeValueAsString(employees);
+
+    final MvcResult result =
+        mockMvc.perform(get("/employees")).andExpect(status().isOk()).andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(employeesAsJSON, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
   public void createEmployeeShouldReturnCreatedEmployee() throws Exception {
     when(employeeFacade.createEmployee(anyObject())).thenReturn(new Employee());
     final String employeesAsJSON = objectMapper.writeValueAsString(new Employee());
@@ -95,7 +114,19 @@ public class EmployeeControllerTest {
 
   @Test
   @WithMockUser
-  public void setEmployeeManagerShouldAssignAndReturnManger() throws Exception {
+  public void deleteEmployeeShouldAcceptSubjectIdAsPathVariable() throws Exception {
+    final MvcResult result =
+        mockMvc
+            .perform(delete("/employees/{subjectId}", 1L))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+  }
+
+  @Test
+  @WithMockUser
+  public void setManagerToEmployeeShouldAssignAndReturnManger() throws Exception {
     final Employee employee = new Employee();
     final Manager manager = new Manager();
     employee.setManager(manager);

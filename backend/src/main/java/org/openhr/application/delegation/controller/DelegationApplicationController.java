@@ -101,49 +101,29 @@ public class DelegationApplicationController {
         processInstanceId, delegationApplication);
   }
 
-  @RequestMapping(
-    value = "/manager-reject",
-    method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE}
-  )
+  @RequestMapping(value = "/manager-reject", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('ROLE_MANAGER')")
-  @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectDelegationApplicationByManager(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.rejectDelegationApplicationByManager(processInstanceId);
   }
 
-  @RequestMapping(
-    value = "/manager-approve",
-    method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE}
-  )
+  @RequestMapping(value = "/manager-approve", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('ROLE_MANAGER')")
-  @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveDelegationApplicationByManager(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.approveDelegationApplicationByManager(processInstanceId);
   }
 
-  @RequestMapping(
-    value = "/hr-reject",
-    method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE}
-  )
+  @RequestMapping(value = "/hr-reject", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
-  @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectDelegationApplicationByHr(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.rejectDelegationApplicationByHr(processInstanceId);
   }
 
-  @RequestMapping(
-    value = "/hr-approve",
-    method = RequestMethod.PUT,
-    consumes = {MediaType.APPLICATION_JSON_VALUE}
-  )
+  @RequestMapping(value = "/hr-approve", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
-  @ResponseBody
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveDelegationApplicationByHr(@RequestParam final String processInstanceId) {
     delegationApplicationFacade.approveDelegationApplicationByHr(processInstanceId);
