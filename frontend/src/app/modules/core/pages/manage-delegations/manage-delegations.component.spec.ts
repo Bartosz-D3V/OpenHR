@@ -87,7 +87,7 @@ describe('ManageDelegationsComponent', () => {
 
   describe('approveDelegationApplication method', () => {
     it('should approve delegation application', () => {
-      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplication').and.returnValue(Observable.of(null));
       spyOn(component['_notificationService'], 'openSnackBar');
       component.approveDelegationApplication('1A');
       const msg = `Application has been accepted`;
@@ -96,7 +96,7 @@ describe('ManageDelegationsComponent', () => {
     });
 
     it('should fetch applications after approval', () => {
-      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplication').and.returnValue(Observable.of(null));
       spyOn(component, 'fetchDelegationApplications');
       component.approveDelegationApplication('1A');
 
@@ -104,7 +104,7 @@ describe('ManageDelegationsComponent', () => {
     });
 
     it('should call errorResolver if there was an error', () => {
-      spyOn(component['_manageDelegationsService'], 'approveDelegationApplicationByManager').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_manageDelegationsService'], 'approveDelegationApplication').and.returnValue(Observable.throw(mockError));
       spyOn(component['_errorResolver'], 'handleError');
       component.approveDelegationApplication('1A');
 
@@ -114,7 +114,7 @@ describe('ManageDelegationsComponent', () => {
 
   describe('approveDelegationApplication method', () => {
     it('should approve delegation application', () => {
-      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplication').and.returnValue(Observable.of(null));
       spyOn(component['_notificationService'], 'openSnackBar');
       component.rejectDelegationApplication('1A');
       const msg = `Application has been rejected`;
@@ -123,7 +123,7 @@ describe('ManageDelegationsComponent', () => {
     });
 
     it('should fetch applications after approval', () => {
-      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.of(null));
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplication').and.returnValue(Observable.of(null));
       spyOn(component, 'fetchDelegationApplications');
       component.rejectDelegationApplication('1A');
 
@@ -131,7 +131,7 @@ describe('ManageDelegationsComponent', () => {
     });
 
     it('should call errorResolver if there was an error', () => {
-      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplicationByManager').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_manageDelegationsService'], 'rejectDelegationApplication').and.returnValue(Observable.throw(mockError));
       spyOn(component['_errorResolver'], 'handleError');
       component.rejectDelegationApplication('1A');
 

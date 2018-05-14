@@ -25,20 +25,18 @@ export class ManageDelegationsService {
     });
   }
 
-  public approveDelegationApplicationByManager(processInstanceId: string): Observable<any> {
+  public approveDelegationApplication(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams().set('processInstanceId', processInstanceId);
     return this._http.put(`${this.url}/${url}-approve`, null, {
       params: params,
-      headers: this.headers,
     });
   }
 
-  public rejectDelegationApplicationByManager(processInstanceId: string): Observable<any> {
+  public rejectDelegationApplication(processInstanceId: string): Observable<any> {
     const url: string = this.getUrlByRole();
     const params: HttpParams = new HttpParams().set('processInstanceId', processInstanceId);
     return this._http.put(`${this.url}/${url}-reject`, null, {
-      headers: this.headers,
       params: params,
     });
   }

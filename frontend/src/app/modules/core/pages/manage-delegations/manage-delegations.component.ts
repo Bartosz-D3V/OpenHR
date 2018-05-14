@@ -81,7 +81,7 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   }
 
   public approveDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationsService.approveDelegationApplicationByManager(processInstanceId).subscribe(
+    this._manageDelegationsService.approveDelegationApplication(processInstanceId).subscribe(
       () => {
         this.fetchDelegationApplications();
         const message = 'Application has been accepted';
@@ -94,7 +94,7 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   }
 
   public rejectDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationsService.rejectDelegationApplicationByManager(processInstanceId).subscribe(
+    this._manageDelegationsService.rejectDelegationApplication(processInstanceId).subscribe(
       () => {
         this.fetchDelegationApplications();
         const message = 'Application has been rejected';
