@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.openhr.application.employee.domain.Employee;
+import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.facade.SubjectFacade;
 import org.openhr.application.user.domain.User;
 import org.openhr.common.domain.address.Address;
@@ -228,5 +229,27 @@ public class SubjectControllerTest {
             .andReturn();
     assertNotNull(result.getResolvedException());
     assertEquals(mockError.getMessage(), result.getResolvedException().getMessage());
+  }
+
+  @Test
+  @WithMockUser
+  public void getLightweightSubjectsShouldReturnLightweightSubject() throws Exception {
+    final LightweightSubjectDTO subjectDTO = new LightweightSubjectDTO();
+    subjectDTO.setFirstName("Test");
+    subjectDTO.setLastName("Subject");
+    subjectDTO.setPosition("Tester");
+    subjectDTO.setSubjectId(1L);
+
+    when(subjectFacade.getLightweightSubject(1L)).thenReturn(subjectDTO);
+
+    final String subjectDTOAsJSON = objectMapper.writeValueAsString(subjectDTO);
+
+    final MvcResult result =
+        mockMvc
+            .perform(get("/subjects/lightweight/{subjectId}", 1L))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    assertEquals(subjectDTOAsJSON, result.getResponse().getContentAsString());
   }
 }
