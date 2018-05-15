@@ -186,6 +186,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <excludes>
+            <exclude>configuration/**/*</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
 
