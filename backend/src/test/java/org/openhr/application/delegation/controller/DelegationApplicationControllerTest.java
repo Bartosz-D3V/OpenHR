@@ -34,11 +34,11 @@ import org.springframework.test.web.servlet.MvcResult;
 @WebMvcTest(DelegationApplicationController.class)
 public class DelegationApplicationControllerTest {
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @Autowired MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @MockBean DelegationApplicationFacade delegationApplicationFacade;
+  @MockBean private DelegationApplicationFacade delegationApplicationFacade;
 
   @Before
   public void setUp() {

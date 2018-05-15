@@ -49,7 +49,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void addManagerShouldAcceptManagerObject() throws Exception {
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
@@ -63,7 +63,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateManagerShouldAcceptManagerObject() throws Exception {
     final String managerAsJson = objectMapper.writeValueAsString(manager);
 
@@ -79,7 +79,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getEmployeesShouldHandleError() throws Exception {
     when(managerFacade.getManagersEmployees(1)).thenThrow(mockException);
 
@@ -93,7 +93,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getEmployeesShouldReturnEmployees() throws Exception {
     final Set<Employee> employeeSet = new HashSet<>();
     employeeSet.add(new Employee());
@@ -110,7 +110,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void addEmployeeToManagerShouldHandleError() throws Exception {
     employee.setManager(new Manager());
     doThrow(mockException).when(managerFacade).addEmployeeToManager(3L, 1L);
@@ -128,7 +128,7 @@ public class ManagerControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void addEmployeeToManagerShouldAddEmployeeToManager() throws Exception {
     final MvcResult result =
         mockMvc
