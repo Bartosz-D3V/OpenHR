@@ -1,7 +1,6 @@
 package org.openhr.application.leaveapplication.controller;
 
 import java.util.List;
-import org.hibernate.HibernateException;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.facade.LeaveApplicationFacade;
@@ -37,7 +36,7 @@ public class LeaveApplicationController {
   )
   @ResponseBody
   public LeaveApplication getLeaveApplication(@PathVariable final long leaveApplicationId)
-      throws HibernateException, ApplicationDoesNotExistException {
+      throws ApplicationDoesNotExistException {
     return leaveApplicationFacade.getLeaveApplication(leaveApplicationId);
   }
 
@@ -85,7 +84,7 @@ public class LeaveApplicationController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   @PreAuthorize("hasRole('ROLE_MANAGER')")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectLeaveApplicationByManager(
       @RequestParam final String processInstanceId,
       @RequestBody(required = false) final String refusalReason)
@@ -99,7 +98,7 @@ public class LeaveApplicationController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   @PreAuthorize("hasRole('ROLE_MANAGER')")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveLeaveApplicationByManager(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException, SubjectDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplicationByManager(processInstanceId);
@@ -111,7 +110,7 @@ public class LeaveApplicationController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void rejectLeaveApplicationByHR(
       @RequestParam final String processInstanceId,
       @RequestBody(required = false) final String refusalReason)
@@ -125,7 +124,7 @@ public class LeaveApplicationController {
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
   @PreAuthorize("hasRole('ROLE_HRTEAMMEMBER')")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void approveLeaveApplicationByHR(@RequestParam final String processInstanceId)
       throws ApplicationDoesNotExistException {
     leaveApplicationFacade.approveLeaveApplicationByHR(processInstanceId);
