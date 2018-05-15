@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
@@ -13,6 +13,8 @@ import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
 import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
 import { DateRangeService } from './service/date-range.service';
+import { CustomValidators } from '@shared/util/validators/custom-validators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-date-range',
@@ -56,19 +58,19 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Output() public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  public dateRange: FormGroup;
+
   public bankHolidaysEngland: BankHolidayEngland = new BankHolidayEngland('', []);
 
-  public dateRangeGroup: FormGroup = new FormGroup({
-    startDate: new FormControl(this.startDate, []),
-    endDate: new FormControl(this.endDate, []),
-  });
-
-  constructor(private _dateRangeService: DateRangeService, private _responsiveHelper: ResponsiveHelperService) {}
+  constructor(
+    private _dateRangeService: DateRangeService,
+    private _responsiveHelper: ResponsiveHelperService,
+    private _errorResolver: ErrorResolverService,
+    private _fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.setValidators();
-    this.validateStartDateField();
-    this.validateEndDateField();
+    this.buildForm();
     this.getBankHolidays();
   }
 
@@ -77,46 +79,35 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribeAll(): void {
-    if (this.$startDateChange !== undefined) {
+    if (this.$startDateChange) {
       this.$startDateChange.unsubscribe();
     }
-    if (this.$endDateChange !== undefined) {
+    if (this.$endDateChange) {
       this.$endDateChange.unsubscribe();
     }
-    if (this.$bankHolidays !== undefined) {
+    if (this.$bankHolidays) {
       this.$bankHolidays.unsubscribe();
     }
   }
 
   private setValidators(): void {
     if (this.requireStartDate) {
-      this.dateRangeGroup.controls['startDate'].setValidators(Validators.required);
+      this.dateRange.get('startDate').setValidators(Validators.required);
     }
     if (this.requireEndDate) {
-      this.dateRangeGroup.controls['endDate'].setValidators(Validators.required);
+      this.dateRange.get('endDate').setValidators(Validators.required);
     }
   }
 
-  public validateStartDateField(): void {
-    const startDateCtrl: AbstractControl = this.dateRangeGroup.controls['startDate'];
-    this.$startDateChange = startDateCtrl.valueChanges.subscribe((value: Moment) => {
-      if (this.endDate && moment(value).isAfter(this.endDate)) {
-        startDateCtrl.setErrors({ startDateInvalid: true });
-      } else {
-        this.recalculateNumOfDays(this.startDate, this.endDate, false);
-      }
-    });
-  }
-
-  public validateEndDateField(): void {
-    const endDateCtrl: AbstractControl = this.dateRangeGroup.controls['endDate'];
-    this.$endDateChange = endDateCtrl.valueChanges.subscribe((value: MomentInput) => {
-      if (this.startDate && moment(value).isBefore(this.startDate)) {
-        endDateCtrl.setErrors({ endDateInvalid: true });
-      } else {
-        this.recalculateNumOfDays(this.startDate, this.endDate, false);
-      }
-    });
+  public buildForm(): void {
+    this.dateRange = this._fb.group(
+      {
+        startDate: [this.startDate || ''],
+        endDate: [this.endDate || ''],
+      },
+      { validator: CustomValidators.validateDateRange }
+    );
+    this.setValidators();
   }
 
   public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
@@ -137,13 +128,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public updateStartDate(startDate: MomentInput): void {
     this.startDate = startDate;
     this.startDateChange.emit(startDate);
-    this.isValidChange.emit(this.dateRangeGroup.valid);
+    this.isValidChange.emit(this.dateRange.valid);
   }
 
   public updateEndDate(endDate: MomentInput): void {
     this.endDate = endDate;
     this.endDateChange.emit(endDate);
-    this.isValidChange.emit(this.dateRangeGroup.valid);
+    this.isValidChange.emit(this.dateRange.valid);
   }
 
   public updateNumberOfDays(numberOfDays: number): void {
@@ -153,20 +144,23 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public isBankHoliday(date: Moment): boolean {
     const bankHolidays: Array<BankHoliday> = this.bankHolidaysEngland.events;
-    const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => {
-      return moment(event.date).isSame(date);
-    });
+    const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => moment(event.date).isSame(date));
     return !(foundEvent === undefined);
   }
 
   public getBankHolidays(): void {
-    this.$bankHolidays = this._dateRangeService.getBankHolidaysInEnglandAndWales().subscribe((data: BankHolidayEngland) => {
-      this.bankHolidaysEngland = data;
-    });
+    this.$bankHolidays = this._dateRangeService.getBankHolidaysInEnglandAndWales().subscribe(
+      (data: BankHolidayEngland) => {
+        this.bankHolidaysEngland = data;
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      }
+    );
   }
 
   public reset(): void {
-    this.dateRangeGroup.reset();
+    this.dateRange.reset();
   }
 
   public isMobile(): boolean {

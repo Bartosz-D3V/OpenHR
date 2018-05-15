@@ -1,33 +1,32 @@
-<form [formGroup]="dateRangeGroup" fxLayout="row wrap" fxLayout.xs="column">
+<form [formGroup]="dateRange" fxLayout="row wrap" fxLayout.xs="column">
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
     <input matInput [matDatepicker]="dateFrom" [required]="requireStartDate" placeholder="Choose a start date"
-           name="startDate"
-           formControlName="startDate" [(ngModel)]="startDate" (dateChange)="updateStartDate($event.value)">
+           name="startDate" formControlName="startDate" (dateChange)="updateStartDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
     <mat-datepicker #dateFrom [touchUi]=isMobile()></mat-datepicker>
-    <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('startDateInvalid')">
+    <mat-error *ngIf="dateRange.get('startDate').hasError('dateRangeNotValid')">
       Start date cannot be later than end date
     </mat-error>
-    <mat-error *ngIf="dateRangeGroup.controls['startDate'].hasError('required')">
+    <mat-error *ngIf="dateRange.get('startDate').hasError('required')">
       Start date is required
     </mat-error>
   </mat-form-field>
 
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
     <input matInput [matDatepicker]="dateTo" [required]="requireEndDate" placeholder="Choose an end date" name="endDate"
-           formControlName="endDate" [(ngModel)]="endDate" (dateChange)="updateEndDate($event.value)">
+           formControlName="endDate" (dateChange)="updateEndDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
     <mat-datepicker #dateTo [touchUi]="isMobile()"></mat-datepicker>
-    <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('endDateInvalid')">
+    <mat-error *ngIf="dateRange.get('endDate').hasError('dateRangeNotValid')">
       End date cannot be earlier than start date
     </mat-error>
-    <mat-error *ngIf="dateRangeGroup.controls['endDate'].hasError('required')">
+    <mat-error *ngIf="dateRange.get('endDate').hasError('required')">
       End date is required
     </mat-error>
   </mat-form-field>
 
   <section fxFlex.gt-xs="100" fxFlex.xs="100" *ngIf="showDescription">
-    <h3 *ngIf="dateRangeGroup.valid" class="mat-typography c-date-range__description">Number of days taken:
+    <h3 *ngIf="dateRange.valid" class="mat-typography c-date-range__description">Number of days taken:
       {{numberOfDays}}</h3>
   </section>
 </form>
