@@ -13,6 +13,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +70,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getLeaveApplicationShouldReturnAnApplication() throws Exception {
     final String leaveApplicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     when(leaveApplicationFacade.getLeaveApplication(1L)).thenReturn(mockLeaveApplication);
@@ -83,7 +85,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getLeaveApplicationShouldHandle404Exception() throws Exception {
     when(leaveApplicationFacade.getLeaveApplication(1L)).thenThrow(mock404Exception);
 
@@ -97,7 +99,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getLeaveApplicationShouldHandleHibernateError() throws Exception {
     doThrow(mockHibernateException).when(leaveApplicationFacade).getLeaveApplication(1L);
 
@@ -111,7 +113,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void createLeaveApplicationShouldHandle404Error() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockSubject404Exception)
@@ -132,7 +134,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void createLeaveApplicationShouldHandleValidationError() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockValidationException)
@@ -153,7 +155,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void createLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockHibernateException)
@@ -174,7 +176,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void createLeaveApplicationShouldCreateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
@@ -187,11 +189,12 @@ public class LeaveApplicationControllerTest {
                     .content(applicationAsJson))
             .andExpect(status().isCreated())
             .andReturn();
+
     assertNull(result.getResolvedException());
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateLeaveApplicationShouldHandle404Error() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mock404Exception)
@@ -206,12 +209,32 @@ public class LeaveApplicationControllerTest {
                     .content(subjectAsJson))
             .andExpect(status().isNotFound())
             .andReturn();
+
     assertNotNull(result.getResolvedException());
     assertEquals(mock404Error.getMessage(), result.getResolvedException().getMessage());
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
+  public void getSubjectsLeaveApplicationsShouldAcceptSubjectIdAsParameter() throws Exception {
+    final List<LeaveApplication> leaveApplicationList = new ArrayList<>();
+    leaveApplicationList.add(mockLeaveApplication);
+    final String leaveApplicationsAsJSON = objectMapper.writeValueAsString(leaveApplicationList);
+
+    when(leaveApplicationFacade.getSubjectsLeaveApplications(1L)).thenReturn(leaveApplicationList);
+
+    final MvcResult result =
+        mockMvc
+            .perform(get("/leave-applications").param("subjectId", String.valueOf(1L)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(leaveApplicationsAsJSON, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
   public void updateLeaveApplicationShouldHandleHibernateError() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
     doThrow(mockHibernateException)
@@ -231,7 +254,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateLeaveApplicationShouldUpdateAnApplication() throws Exception {
     final String applicationAsJson = objectMapper.writeValueAsString(mockLeaveApplication);
 
@@ -247,7 +270,7 @@ public class LeaveApplicationControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void rejectLeaveApplicationByManagerShouldRejectAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
@@ -258,13 +281,13 @@ public class LeaveApplicationControllerTest {
                     .param("processInstanceId", "1")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(roleAsJson))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void approveLeaveApplicationByManagerShouldApproveAnApplication() throws Exception {
     final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
 
@@ -275,8 +298,80 @@ public class LeaveApplicationControllerTest {
                     .param("processInstanceId", "1")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(roleAsJson))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
+  }
+
+  @Test
+  @WithMockUser
+  public void rejectLeaveApplicationByHRShouldRejectAnApplication() throws Exception {
+    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
+
+    final MvcResult result =
+        mockMvc
+            .perform(
+                put("/leave-applications/hr-reject")
+                    .param("processInstanceId", "1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(roleAsJson))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+  }
+
+  @Test
+  @WithMockUser
+  public void approveLeaveApplicationByHRShouldApproveAnApplication() throws Exception {
+    final String roleAsJson = objectMapper.writeValueAsString(Role.MANAGER);
+
+    final MvcResult result =
+        mockMvc
+            .perform(
+                put("/leave-applications/hr-approve")
+                    .param("processInstanceId", "1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(roleAsJson))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+  }
+
+  @Test
+  @WithMockUser
+  public void getAwaitingForActionLeaveApplicationsShouldAcceptSubjectIdAsParam() throws Exception {
+    final List<LeaveApplication> leaveApplicationList = new ArrayList<>();
+    leaveApplicationList.add(mockLeaveApplication);
+    final String leaveApplicationsAsJSON = objectMapper.writeValueAsString(leaveApplicationList);
+
+    when(leaveApplicationFacade.getAwaitingForActionLeaveApplications(1L))
+        .thenReturn(leaveApplicationList);
+
+    final MvcResult result =
+        mockMvc
+            .perform(get("/leave-applications/awaiting").param("subjectId", String.valueOf(1L)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(leaveApplicationsAsJSON, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
+  public void getLeaveTypesShouldReturnLeaveTypes() throws Exception {
+    final List<LeaveType> leaveTypes = new ArrayList<>();
+    leaveTypes.add(leaveType);
+    final String leaveTypesAsJSON = objectMapper.writeValueAsString(leaveTypes);
+
+    when(leaveApplicationFacade.getLeaveTypes()).thenReturn(leaveTypes);
+
+    final MvcResult result =
+        mockMvc.perform(get("/leave-applications/types")).andExpect(status().isOk()).andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(leaveTypesAsJSON, result.getResponse().getContentAsString());
   }
 }

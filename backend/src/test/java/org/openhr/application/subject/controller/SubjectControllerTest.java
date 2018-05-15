@@ -74,7 +74,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getSubjectsShouldReturnSubjects() throws Exception {
     final List<Subject> subjectList = new ArrayList<>();
     subjectList.add(mockSubject);
@@ -88,7 +88,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getSubjectDetailsShouldHandleError() throws Exception {
     when(subjectFacade.getSubjectDetails(1)).thenThrow(mockException);
 
@@ -102,7 +102,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void getSubjectDetailsShouldReturnSubject() throws Exception {
     final String subjectAsJson = objectMapper.writeValueAsString(mockSubject);
     when(subjectFacade.getSubjectDetails(1)).thenReturn(mockSubject);
@@ -114,7 +114,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectPersonalInformationShouldUpdatePersonalInformation() throws Exception {
     final String personalInformationAsJson =
         objectMapper.writeValueAsString(mockPersonalInformation);
@@ -132,7 +132,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectPersonalInformationShouldHandleError() throws Exception {
     final String personalInformationAsJson =
         objectMapper.writeValueAsString(mockPersonalInformation);
@@ -154,7 +154,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectContactInformationShouldUpdateContactInformation() throws Exception {
     final String contactInformationAsJson = objectMapper.writeValueAsString(mockContactInformation);
 
@@ -171,7 +171,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectContactInformationShouldHandleError() throws Exception {
     final String contactInformationAsJson = objectMapper.writeValueAsString(mockContactInformation);
     doThrow(new HibernateException("DB Error"))
@@ -192,7 +192,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectEmployeeInformationShouldUpdateContactInformation() throws Exception {
     final String employeeInformationAsJson =
         objectMapper.writeValueAsString(mockEmployeeInformation);
@@ -210,7 +210,7 @@ public class SubjectControllerTest {
   }
 
   @Test
-  @WithMockUser()
+  @WithMockUser
   public void updateSubjectEmployeeInformationShouldHandleError() throws Exception {
     final String employeeInformationAsJson =
         objectMapper.writeValueAsString(mockEmployeeInformation);
