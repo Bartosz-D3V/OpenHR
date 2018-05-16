@@ -30,8 +30,6 @@ export class CustomValidators {
       endDateCtrl.setErrors({ dateRangeNotValid: true });
       return error;
     }
-    startDateCtrl.setErrors(null);
-    endDateCtrl.setErrors(null);
     return null;
   }
 }

@@ -1,20 +1,20 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 
 import { NAMED_DATE } from '@config/datepicker-format';
+import { CustomValidators } from '@shared/util/validators/custom-validators';
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
 import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
 import { BankHolidayEngland } from './domain/bank-holiday/england/bank-holiday-england';
 import { BankHoliday } from './domain/bank-holiday/england/bank-holiday';
 import { DateRangeService } from './service/date-range.service';
-import { CustomValidators } from '@shared/util/validators/custom-validators';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-date-range',

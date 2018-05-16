@@ -74,10 +74,6 @@ describe('DateRangeComponent', () => {
   });
 
   describe('date range form group', () => {
-    beforeAll(() => {
-      component.buildForm();
-    });
-
     describe('startDate controller', () => {
       let startDateCtrl: AbstractControl;
 
@@ -94,6 +90,8 @@ describe('DateRangeComponent', () => {
 
       it('should be marked valid if input is empty, but requireStartDate is set to false', () => {
         component.requireStartDate = false;
+        component.buildForm();
+        startDateCtrl = component.dateRange.get('startDate');
         startDateCtrl.setValue(null);
 
         expect(startDateCtrl.valid).toBeTruthy();
@@ -121,7 +119,9 @@ describe('DateRangeComponent', () => {
       });
 
       it('should be marked valid if input is empty, but requireEndDate is set to false', () => {
-        component.requireStartDate = false;
+        component.requireEndDate = false;
+        component.buildForm();
+        endDateCtrl = component.dateRange.get('endDate');
         endDateCtrl.setValue(null);
 
         expect(endDateCtrl.valid).toBeTruthy();
