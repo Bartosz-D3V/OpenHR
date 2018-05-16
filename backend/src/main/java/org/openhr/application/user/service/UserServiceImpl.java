@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
       throws ValidationException, SubjectDoesNotExistException {
     final User user = getUser(userId);
     if (validCredentials(user.getUsername(), passwordDTO.getOldPassword())) {
-      user.setPassword(encodePassword(passwordDTO.getPassword()));
+      user.setPassword(encodePassword(passwordDTO.getNewPassword()));
       userRepository.updateUser(user.getUserId(), user);
     } else {
       throw new ValidationException(

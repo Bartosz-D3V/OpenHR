@@ -3,6 +3,7 @@ package org.openhr.application.subject.controller;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.HibernateException;
+import org.openhr.application.subject.dto.EmailDTO;
 import org.openhr.application.subject.dto.LightweightSubjectDTO;
 import org.openhr.application.subject.facade.SubjectFacade;
 import org.openhr.common.domain.subject.ContactInformation;
@@ -50,6 +51,7 @@ public class SubjectController {
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
   public Subject getSubjectDetails(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
     return subjectFacade.getSubjectDetails(subjectId);
@@ -57,6 +59,7 @@ public class SubjectController {
 
   @RequestMapping(method = RequestMethod.HEAD)
   @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
   public HttpEntity<String> getSubjectDetailsByEmail(
       @RequestParam final String email,
       @RequestParam(required = false) final Optional<String> excludeEmail) {
@@ -76,6 +79,7 @@ public class SubjectController {
     produces = {MediaType.APPLICATION_JSON_VALUE}
   )
   @ResponseBody
+  @ResponseStatus(HttpStatus.OK)
   public LightweightSubjectDTO getLightweightSubject(@PathVariable final long subjectId)
       throws SubjectDoesNotExistException {
     return subjectFacade.getLightweightSubject(subjectId);
@@ -93,10 +97,11 @@ public class SubjectController {
   }
 
   @RequestMapping(
-    value = "personal-information",
+    value = "/personal-information",
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updateSubjectPersonalInformation(
       @RequestParam final long subjectId,
       @RequestBody final PersonalInformation personalInformation)
@@ -105,10 +110,11 @@ public class SubjectController {
   }
 
   @RequestMapping(
-    value = "contact-information",
+    value = "/contact-information",
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updateSubjectContactInformation(
       @RequestParam final long subjectId, @RequestBody final ContactInformation contactInformation)
       throws HibernateException, SubjectDoesNotExistException {
@@ -116,14 +122,23 @@ public class SubjectController {
   }
 
   @RequestMapping(
-    value = "employee-information",
+    value = "/employee-information",
     method = RequestMethod.PUT,
     consumes = {MediaType.APPLICATION_JSON_VALUE}
   )
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void updateSubjectEmployeeInformation(
       @RequestParam final long subjectId,
       @RequestBody final EmployeeInformation employeeInformation)
       throws HibernateException, SubjectDoesNotExistException {
     subjectFacade.updateSubjectEmployeeInformation(subjectId, employeeInformation);
+  }
+
+  @RequestMapping(value = "/{subjectId}/email", method = RequestMethod.PUT)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateSubjectEmail(
+      @PathVariable final long subjectId, @RequestBody final EmailDTO emailDTO)
+      throws SubjectDoesNotExistException {
+    subjectFacade.updateEmail(subjectId, emailDTO.getEmail());
   }
 }

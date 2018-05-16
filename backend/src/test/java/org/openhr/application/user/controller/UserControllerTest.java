@@ -139,7 +139,7 @@ public class UserControllerTest {
   public void updatePasswordShouldAcceptPasswordDTO() throws Exception {
     final PasswordDTO passwordDTO = new PasswordDTO();
     passwordDTO.setOldPassword("Old password");
-    passwordDTO.setPassword("New password");
+    passwordDTO.setNewPassword("New password");
     final String passwordAsJSON = objectMapper.writeValueAsString(passwordDTO);
     final MvcResult result =
         mockMvc

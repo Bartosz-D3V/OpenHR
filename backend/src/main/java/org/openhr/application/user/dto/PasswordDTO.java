@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class PasswordDTO implements Serializable {
   private String oldPassword;
-  private String password;
+  private String newPassword;
+  private String newPasswordRepeat;
 
   public PasswordDTO() {
     super();
@@ -18,11 +19,19 @@ public class PasswordDTO implements Serializable {
     this.oldPassword = oldPassword;
   }
 
-  public String getPassword() {
-    return password;
+  public String getNewPassword() {
+    return newPassword;
   }
 
-  public void setPassword(final String password) {
-    this.password = password;
+  public void setNewPassword(final String newPassword) {
+    this.newPassword = newPassword;
+  }
+
+  public String getNewPasswordRepeat() {
+    return newPasswordRepeat;
+  }
+
+  public void setNewPasswordRepeat(final String newPasswordRepeat) {
+    this.newPasswordRepeat = newPasswordRepeat;
   }
 }

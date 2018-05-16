@@ -77,4 +77,11 @@ public class SubjectFacadeImpl implements SubjectFacade {
   public List<LightweightSubjectDTO> getLightweightSubjects() {
     return subjectService.getLightweightSubjects();
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void updateEmail(final long subjectId, final String updatedEmail)
+      throws SubjectDoesNotExistException {
+    subjectService.updateEmail(subjectId, updatedEmail);
+  }
 }

@@ -30,4 +30,6 @@ public interface SubjectFacade {
   LightweightSubjectDTO getLightweightSubject(long subjectId) throws SubjectDoesNotExistException;
 
   List<LightweightSubjectDTO> getLightweightSubjects();
+
+  void updateEmail(long subjectId, String updatedEmail) throws SubjectDoesNotExistException;
 }

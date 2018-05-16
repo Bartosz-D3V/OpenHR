@@ -46,4 +46,6 @@ public interface SubjectService {
   Role getSubjectRole(long subjectId) throws SubjectDoesNotExistException;
 
   Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;
+
+  void updateEmail(long subjectId, String updatedEmail) throws SubjectDoesNotExistException;
 }

@@ -126,7 +126,7 @@ public class SubjectControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
                     .content(personalInformationAsJson))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
   }
@@ -165,7 +165,7 @@ public class SubjectControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
                     .content(contactInformationAsJson))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
   }
@@ -204,7 +204,7 @@ public class SubjectControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .param("subjectId", String.valueOf(mockSubject.getSubjectId()))
                     .content(employeeInformationAsJson))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
     assertNull(result.getResolvedException());
   }
