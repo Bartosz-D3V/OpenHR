@@ -229,4 +229,9 @@ public class SubjectRepository {
     }
     return usedAllowance;
   }
+
+  @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+  public void updateEmail(final long subjectId, final String updatedEmail) {
+    subjectDAO.updateEmail(subjectId, updatedEmail);
+  }
 }

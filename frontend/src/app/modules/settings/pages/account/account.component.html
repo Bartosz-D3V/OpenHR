@@ -39,6 +39,10 @@
             <mat-error *ngIf="!arePasswordsIdentical(newPassword.value, repeatPassword.value)">
               Passwords do not match
             </mat-error>
+            <mat-error *ngIf="passwordForm.get('newPasswordRepeat').touched &&
+            passwordForm.get('newPasswordRepeat').hasError('required')">
+              Password is required
+            </mat-error>
           </form>
           <button type="submit" mat-raised-button color="accent" [disabled]="!passwordForm.valid"
                   (click)="savePassword()">Save
@@ -56,12 +60,11 @@
             <mat-error *ngIf="emailForm.get('email').hasError('pattern')">
               Please enter a valid email address
             </mat-error>
-            <mat-error *ngIf="emailForm.get('email').touched &&
-        emailForm.get('email').hasError('required')">
+            <mat-error *ngIf="emailForm.get('email').touched && emailForm.get('email').hasError('required')">
               Email is required
             </mat-error>
           </form>
-          <button type="submit" mat-raised-button color="accent" [disabled]="!emailForm.valid">Save</button>
+          <button type="submit" mat-raised-button color="accent" [disabled]="!emailForm.valid" (click)="saveEmail()">Save</button>
         </mat-tab>
       </mat-tab-group>
     </mat-card-content>

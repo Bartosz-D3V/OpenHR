@@ -22,4 +22,6 @@ public interface SubjectDAO {
 
   void updateSubjectHRInformation(long subjectId, HrInformation hrInformation)
       throws HibernateException;
+
+  void updateEmail(long subjectId, String updatedEmail);
 }
