@@ -87,4 +87,12 @@ public class SubjectDAOImpl extends BaseDAO implements SubjectDAO {
     subject.setHrInformation(hrInformation);
     super.merge(subject);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void updateEmail(final long subjectId, final String updatedEmail) {
+    final Subject subject = getExistingSubjectDetails(subjectId);
+    subject.getContactInformation().setEmail(updatedEmail);
+    super.merge(subject);
+  }
 }

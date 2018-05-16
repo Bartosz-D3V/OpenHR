@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { Observable } from 'rxjs/Observable';
 import {
   MatCardModule,
   MatFormFieldModule,
@@ -20,17 +22,32 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { AccountService } from '@modules/settings/pages/account/service/account.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { Password } from '@modules/settings/pages/account/domain/password';
+import { Email } from '@modules/settings/pages/account/domain/email';
 import { AccountComponent } from './account.component';
 
 describe('AccountComponent', () => {
   let component: AccountComponent;
   let fixture: ComponentFixture<AccountComponent>;
+  const mockError: HttpErrorResponse = new HttpErrorResponse({
+    error: 'Unauthorized',
+    status: 401,
+  });
 
   @Injectable()
-  class FakeAccountService {}
+  class FakeAccountService {
+    public updatePassword(password: Password): Observable<any> {
+      return Observable.of(null);
+    }
+    public updateEmail(email: Email): Observable<any> {
+      return Observable.of(null);
+    }
+  }
 
   @Injectable()
-  class FakeErrorResolverService {}
+  class FakeErrorResolverService {
+    public handleError(error: any): void {}
+  }
 
   beforeEach(
     async(() => {
@@ -148,7 +165,7 @@ describe('AccountComponent', () => {
     });
   });
 
-  describe('arePasswordsIdentical', () => {
+  describe('arePasswordsIdentical method', () => {
     it('arePasswordsIdentical should return true if passwords are the same', () => {
       expect(component.arePasswordsIdentical('password1', 'password1')).toBeTruthy();
       expect(component.passwordForm.get('newPasswordRepeat').hasError('passwordDoNotMatch')).toBeFalsy();
@@ -157,6 +174,50 @@ describe('AccountComponent', () => {
     it('arePasswordsIdentical should return false if passwords are not the same and mark the form as dirty', () => {
       expect(component.arePasswordsIdentical('password1', 'password222')).toBeFalsy();
       expect(component.passwordForm.get('newPasswordRepeat').hasError('passwordDoNotMatch')).toBeTruthy();
+    });
+  });
+
+  describe('savePassword method', () => {
+    it('should call service with password object', () => {
+      spyOn(component['_notificationService'], 'openSnackBar');
+      spyOn(component['_accountService'], 'updatePassword').and.returnValue(Observable.of(null));
+
+      const mockPassword: Password = new Password('oldPassword', 'newPassword', 'newPassword');
+      component.passwordForm.patchValue(mockPassword);
+      component.savePassword();
+
+      expect(component['_accountService'].updatePassword).toHaveBeenCalled();
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith('Password updated', 'OK');
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_accountService'], 'updatePassword').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.savePassword();
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
+    });
+  });
+
+  describe('saveEmail method', () => {
+    it('should call service with email object', () => {
+      spyOn(component['_notificationService'], 'openSnackBar');
+      spyOn(component['_accountService'], 'updateEmail').and.returnValue(Observable.of(null));
+
+      const mockEmail: Email = new Email('test@test.com');
+      component.emailForm.patchValue(mockEmail);
+      component.saveEmail();
+
+      expect(component['_accountService'].updateEmail).toHaveBeenCalled();
+      expect(component['_notificationService'].openSnackBar).toHaveBeenCalledWith('Email updated', 'OK');
+    });
+
+    it('should call errorResolver if there was an error', () => {
+      spyOn(component['_accountService'], 'updateEmail').and.returnValue(Observable.throw(mockError));
+      spyOn(component['_errorResolver'], 'handleError');
+      component.saveEmail();
+
+      expect(component['_errorResolver'].handleError).toHaveBeenCalledWith(mockError.error);
     });
   });
 });

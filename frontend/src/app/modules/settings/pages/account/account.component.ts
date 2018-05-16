@@ -8,6 +8,7 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Password } from '@modules/settings/pages/account/domain/password';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Email } from '@modules/settings/pages/account/domain/email';
 
 @Component({
   selector: 'app-account',
@@ -61,7 +62,22 @@ export class AccountComponent implements OnInit, OnDestroy {
     const password: Password = <Password>this.passwordForm.value;
     this._accountService.updatePassword(password).subscribe(
       () => {
-        this._notificationService.openSnackBar('Password updated');
+        this._notificationService.openSnackBar('Password updated', 'OK');
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        this._errorResolver.handleError(httpErrorResponse.error);
+      },
+      () => {
+        this.passwordForm.reset();
+      }
+    );
+  }
+
+  public saveEmail(): void {
+    const email: Email = <Email>this.emailForm.value;
+    this._accountService.updateEmail(email).subscribe(
+      () => {
+        this._notificationService.openSnackBar('Email updated', 'OK');
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);

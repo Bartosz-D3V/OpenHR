@@ -161,4 +161,10 @@ public class SubjectServiceImpl implements SubjectService {
         return null;
     }
   }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void updateEmail(final long subjectId, final String updatedEmail) {
+    subjectRepository.updateEmail(subjectId, updatedEmail);
+  }
 }
