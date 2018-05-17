@@ -21,8 +21,9 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <form formGroupName="personalInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-first-name"></label>
             <input matInput required="required" placeholder="First name" formControlName="firstName"
                    id="personal-details-first-name" name="firstName">
@@ -32,13 +33,13 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-middle-name"></label>
             <input matInput placeholder="Middle name" id="personal-details-middle-name"
                    formControlName="middleName" name="middleName">
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-last-name"></label>
             <input matInput required="required" placeholder="Last name" formControlName="lastName"
                    id="personal-details-last-name" name="lastName">
@@ -48,7 +49,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-date-of-birth"></label>
             <input matInput [matDatepicker]="picker" required="required" placeholder="Date of birth"
                    formControlName="dateOfBirth" id="personal-details-date-of-birth" name="dateOfBirth">
@@ -76,8 +77,9 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <form formGroupName="contactInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
+              fxLayoutGap="5%">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <span matPrefix>+44 (0) &nbsp;</span>
             <label for="personal-details-telephone"></label>
             <input type="tel" matInput required="required" placeholder="Telephone"
@@ -102,7 +104,7 @@
             <mat-icon matSuffix>mode_edit</mat-icon>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-email"></label>
             <input type="email" matInput required="required" placeholder="Email" formControlName="email"
                    id="personal-details-email" name="email">
@@ -118,26 +120,26 @@
 
           <div formGroupName="address" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
                fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-1st-line-address"></label>
               <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
                      id="personal-details-1st-line-address" name="firstLineAddress">
             </mat-form-field>
 
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-2nd-line-address"></label>
               <input type="text" matInput placeholder="Second line address"
                      formControlName="secondLineAddress"
                      id="personal-details-2nd-line-address" name="secondLineAddress">
             </mat-form-field>
 
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-3rd-line-address"></label>
               <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
                      id="personal-details-3rd-line-address" name="thirdLineAddress">
             </mat-form-field>
 
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-postcode"></label>
               <input type="text" matInput required="required" placeholder="Postcode"
                      formControlName="postcode" id="personal-details-postcode" name="postcode">
@@ -151,13 +153,13 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-city"></label>
               <input type="text" matInput placeholder="City" formControlName="city"
                      id="personal-details-city" name="city">
             </mat-form-field>
 
-            <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+            <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-country"></label>
               <input type="text" matInput placeholder="Country" formControlName="country"
                      id="personal-details-country" name="country">
@@ -182,8 +184,9 @@
         </mat-expansion-panel-header>
 
         <form formGroupName="employeeInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
+              fxLayoutGap="5%">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-nin"></label>
             <input type="text" matInput required="required" placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber" id="personal-details-nin" name="nin">
@@ -197,7 +200,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-employee-number"></label>
             <input type="text" matInput required="required" placeholder="Employee number"
                    formControlName="employeeNumber" id="personal-details-employee-number" name="employeeNumber">
@@ -207,7 +210,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-position"></label>
             <input matInput required="required" placeholder="Position" formControlName="position"
                    id="personal-details-position" name="position">
@@ -217,20 +220,20 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="employee-details-department"></label>
             <input matInput placeholder="Department" formControlName="department"
                    id="employee-details-department" name="department">
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <input id="personal-details-start-date" matInput [matDatepicker]="startDatePicker" placeholder="Start date"
                    formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <input id="personal-details-end-date" matInput [matDatepicker]="endDatePicker" placeholder="End date"
                    formControlName="endDate" name="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
@@ -256,9 +259,9 @@
         </mat-expansion-panel-header>
 
         <form formGroupName="hrInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
-
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
+              fxLayoutGap="5%">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <input required="required" id="personal-details-allowance" type="number" matInput placeholder="Allowance"
                    formControlName="allowance" name="allowance">
             <mat-error id="personal-details-allowance-min"
@@ -267,7 +270,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <input required="required" id="personal-details-used-allowance" type="number" matInput
                    placeholder="Used allowance" formControlName="usedAllowance"
                    name="usedAllowance">
@@ -297,7 +300,7 @@
 
         <div fxLayout.gt-sm="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
              fxLayoutAlign.lt-sm="center center">
-          <mat-form-field fxFlex.gt-md="33" fxFlex.md="50" fxFlex.lt-md="100">
+          <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <input required="required" id="personal-details-role" type="text" matInput
                    placeholder="Role" formControlName="role" name="role">
             <mat-error id="personal-details-role-required"
