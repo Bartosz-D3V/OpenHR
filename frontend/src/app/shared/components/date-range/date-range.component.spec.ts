@@ -27,8 +27,6 @@ describe('DateRangeComponent', () => {
   @Injectable()
   class FakeErrorResolverService {
     public handleError(error: any): void {}
-
-    public createAlert(error: any): void {}
   }
 
   beforeEach(
@@ -75,27 +73,28 @@ describe('DateRangeComponent', () => {
     expect(component.showDescription).toBeFalsy();
   });
 
-  it('ngOnInit should trigger validation methods', () => {
-    spyOn(component, 'validateStartDateField');
-    spyOn(component, 'validateEndDateField');
-    component.ngOnInit();
-
-    expect(component.validateStartDateField).toHaveBeenCalled();
-    expect(component.validateEndDateField).toHaveBeenCalled();
-  });
-
   describe('date range form group', () => {
     describe('startDate controller', () => {
       let startDateCtrl: AbstractControl;
 
       beforeEach(() => {
-        startDateCtrl = component.dateRangeGroup.controls['startDate'];
+        startDateCtrl = component.dateRange.get('startDate');
       });
 
       it('should be marked invalid if input is empty', () => {
+        component.requireStartDate = true;
         startDateCtrl.setValue(null);
 
         expect(startDateCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if input is empty, but requireStartDate is set to false', () => {
+        component.requireStartDate = false;
+        component.buildForm();
+        startDateCtrl = component.dateRange.get('startDate');
+        startDateCtrl.setValue(null);
+
+        expect(startDateCtrl.valid).toBeTruthy();
       });
 
       it('should be marked valid if input is not empty', () => {
@@ -109,13 +108,23 @@ describe('DateRangeComponent', () => {
       let endDateCtrl: AbstractControl;
 
       beforeEach(() => {
-        endDateCtrl = component.dateRangeGroup.controls['endDate'];
+        endDateCtrl = component.dateRange.get('endDate');
       });
 
       it('should be marked invalid if input is empty', () => {
+        component.requireEndDate = true;
         endDateCtrl.setValue(null);
 
         expect(endDateCtrl.valid).toBeFalsy();
+      });
+
+      it('should be marked valid if input is empty, but requireEndDate is set to false', () => {
+        component.requireEndDate = false;
+        component.buildForm();
+        endDateCtrl = component.dateRange.get('endDate');
+        endDateCtrl.setValue(null);
+
+        expect(endDateCtrl.valid).toBeTruthy();
       });
 
       it('should be marked valid if input is not empty', () => {
@@ -123,58 +132,6 @@ describe('DateRangeComponent', () => {
 
         expect(endDateCtrl.valid).toBeTruthy();
       });
-    });
-  });
-
-  describe('validateStartDateField', () => {
-    let startDateCtrl: AbstractControl;
-
-    beforeEach(() => {
-      startDateCtrl = component.dateRangeGroup.controls['startDate'];
-    });
-
-    it('should set control as invalid if passed date is later than date in controller', () => {
-      component.endDate = '2020-02-08';
-      startDateCtrl.setValue('2040-02-12');
-      component.validateStartDateField();
-
-      expect(startDateCtrl.valid).toBeFalsy();
-    });
-
-    it('should set control as valid if passed date is before than date in controller', () => {
-      spyOn(component, 'recalculateNumOfDays');
-      component.endDate = '2040-02-12';
-      startDateCtrl.setValue('2020-02-08');
-      component.validateStartDateField();
-
-      expect(startDateCtrl.valid).toBeTruthy();
-      expect(component.recalculateNumOfDays).toHaveBeenCalled();
-    });
-  });
-
-  describe('validateEndDateField', () => {
-    let endDateCtrl: AbstractControl;
-
-    beforeEach(() => {
-      endDateCtrl = component.dateRangeGroup.controls['endDate'];
-    });
-
-    it('should set control as invalid if passed date is earlier than date in controller', () => {
-      component.startDate = '2040-02-12';
-      endDateCtrl.setValue('2020-02-08');
-      component.validateEndDateField();
-
-      expect(endDateCtrl.valid).toBeFalsy();
-    });
-
-    it('should set control as valid if passed date is later than date in controller', () => {
-      spyOn(component, 'recalculateNumOfDays');
-      component.startDate = '2020-02-08';
-      endDateCtrl.setValue('2040-02-12');
-      component.validateEndDateField();
-
-      expect(endDateCtrl.valid).toBeTruthy();
-      expect(component.recalculateNumOfDays).toHaveBeenCalled();
     });
   });
 
@@ -300,8 +257,8 @@ describe('DateRangeComponent', () => {
     let endDateCtrl: AbstractControl;
 
     beforeEach(() => {
-      startDateCtrl = component.dateRangeGroup.controls['startDate'];
-      endDateCtrl = component.dateRangeGroup.controls['endDate'];
+      startDateCtrl = component.dateRange.controls['startDate'];
+      endDateCtrl = component.dateRange.controls['endDate'];
     });
 
     afterEach(() => {
