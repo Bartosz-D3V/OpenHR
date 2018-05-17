@@ -16,7 +16,6 @@ import {
 } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import Spy = jasmine.Spy;
 
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
@@ -32,8 +31,8 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Employee } from '@shared/domain/subject/employee';
-import { PersonalDetailsComponent } from './personal-details.component';
 import { Role } from '@shared/domain/subject/role';
+import { PersonalDetailsComponent } from './personal-details.component';
 import { PersonalDetailsService } from './service/personal-details.service';
 
 describe('PersonalDetailsComponent', () => {
@@ -147,50 +146,74 @@ describe('PersonalDetailsComponent', () => {
   });
 
   describe('First name validator', () => {
+    let firstNameCtrl: AbstractControl;
+
+    beforeEach(() => {
+      component.subject = mockSubject;
+      component.buildForm();
+      firstNameCtrl = component.personalDetailsFormGroup.get(['personalInformation', 'firstName']);
+    });
+
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(name);
+      firstNameCtrl.setValue(name);
 
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeTruthy();
+      expect(firstNameCtrl.valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('firstNameFormControl').setValue(emptyText);
+      firstNameCtrl.setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('firstNameFormControl').valid).toBeFalsy();
+      expect(firstNameCtrl.valid).toBeFalsy();
     });
   });
 
   describe('Last name validator', () => {
+    let lastNameCtrl: AbstractControl;
+
+    beforeEach(() => {
+      component.subject = mockSubject;
+      component.buildForm();
+      lastNameCtrl = component.personalDetailsFormGroup.get(['personalInformation', 'lastName']);
+    });
+
     it('should mark form as valid if input is not empty', () => {
       const name = 'Test';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(name);
+      lastNameCtrl.setValue(name);
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeTruthy();
+      expect(lastNameCtrl.valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('lastNameFormControl').setValue(emptyText);
+      lastNameCtrl.setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('lastNameFormControl').valid).toBeFalsy();
+      expect(lastNameCtrl.valid).toBeFalsy();
     });
   });
 
   describe('Date of birth validator', () => {
+    let dobNameCtrl: AbstractControl;
+
+    beforeEach(() => {
+      component.subject = mockSubject;
+      component.buildForm();
+      dobNameCtrl = component.personalDetailsFormGroup.get(['personalInformation', 'dateOfBirth']);
+    });
+
     it('should mark form as valid if input is not empty', () => {
       const dob: Date = new Date('11 October 1960 15:00 UTC');
-      component.personalInformationFormGroup.get('dobFormControl').setValue(dob);
+      dobNameCtrl.setValue(dob);
 
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeTruthy();
+      expect(dobNameCtrl.valid).toBeTruthy();
     });
 
     it('should mark form as invalid if input is empty', () => {
       const emptyText = '';
-      component.personalInformationFormGroup.get('dobFormControl').setValue(emptyText);
+      dobNameCtrl.setValue(emptyText);
 
-      expect(component.personalInformationFormGroup.get('dobFormControl').valid).toBeFalsy();
+      expect(dobNameCtrl.valid).toBeFalsy();
     });
   });
 
@@ -198,7 +221,9 @@ describe('PersonalDetailsComponent', () => {
     let postcodeFormControl: AbstractControl;
 
     beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      postcodeFormControl = component.personalDetailsFormGroup.get(['contactInformation', 'address', 'postcode']);
       postcodeFormControl.reset();
     });
 
@@ -223,7 +248,9 @@ describe('PersonalDetailsComponent', () => {
     let emailFormControl: AbstractControl;
 
     beforeEach(() => {
-      emailFormControl = component.contactInformationFormGroup.controls['emailFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      emailFormControl = component.personalDetailsFormGroup.get(['contactInformation', 'email']);
       emailFormControl.reset();
     });
 
@@ -248,7 +275,9 @@ describe('PersonalDetailsComponent', () => {
     let telephoneFormControl: AbstractControl;
 
     beforeEach(() => {
-      telephoneFormControl = component.contactInformationFormGroup.controls['telephoneFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      telephoneFormControl = component.personalDetailsFormGroup.get(['contactInformation', 'telephone']);
       telephoneFormControl.reset();
     });
 
@@ -299,7 +328,9 @@ describe('PersonalDetailsComponent', () => {
     let postcodeFormControl: AbstractControl;
 
     beforeEach(() => {
-      postcodeFormControl = component.contactInformationFormGroup.controls['postcodeFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      postcodeFormControl = component.personalDetailsFormGroup.get(['contactInformation', 'address', 'postcode']);
       postcodeFormControl.reset();
     });
 
@@ -338,7 +369,9 @@ describe('PersonalDetailsComponent', () => {
     let ninFormControl: AbstractControl;
 
     beforeEach(() => {
-      ninFormControl = component.employeeDetailsFormGroup.controls['ninFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      ninFormControl = component.personalDetailsFormGroup.get(['employeeInformation', 'nationalInsuranceNumber']);
       ninFormControl.reset();
     });
 
@@ -377,7 +410,9 @@ describe('PersonalDetailsComponent', () => {
     let employeeIdFormControl: AbstractControl;
 
     beforeEach(() => {
-      employeeIdFormControl = component.employeeDetailsFormGroup.controls['employeeIdFormControl'];
+      component.subject = mockSubject;
+      component.buildForm();
+      employeeIdFormControl = component.personalDetailsFormGroup.get(['employeeInformation', 'employeeNumber']);
       employeeIdFormControl.reset();
     });
 
@@ -394,48 +429,20 @@ describe('PersonalDetailsComponent', () => {
   });
 
   describe('isValid method', () => {
-    let spy1: Spy;
-    let spy2: Spy;
-    let spy3: Spy;
-
-    const setFormGroupSpies = function(firstGroupFlag: boolean, secondGroupFlag: boolean, thirdGroupFlag: boolean): void {
-      spy1.and.returnValue(firstGroupFlag);
-      spy2.and.returnValue(secondGroupFlag);
-      spy3.and.returnValue(thirdGroupFlag);
-    };
-
     beforeEach(() => {
-      spy1 = spyOnProperty(component.personalInformationFormGroup, 'valid', 'get');
-      spy2 = spyOnProperty(component.contactInformationFormGroup, 'valid', 'get');
-      spy3 = spyOnProperty(component.employeeDetailsFormGroup, 'valid', 'get');
+      component.subject = mockSubject;
+      component.buildForm();
     });
 
-    it('should return true if all formGroups are valid', () => {
-      setFormGroupSpies(true, true, true);
+    it('should return true if the form is valid', () => {
+      spyOnProperty(component.personalDetailsFormGroup, 'valid', 'get').and.returnValue(true);
 
       expect(component.isValid()).toBeTruthy();
     });
 
-    it('should return false if at least one formGroup is invalid', () => {
-      setFormGroupSpies(false, true, true);
-      expect(component.isValid()).toBeFalsy();
+    it('should return false if the form is invalid', () => {
+      spyOnProperty(component.personalDetailsFormGroup, 'valid', 'get').and.returnValue(false);
 
-      setFormGroupSpies(true, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, true);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(true, false, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, true, false);
-      expect(component.isValid()).toBeFalsy();
-
-      setFormGroupSpies(false, false, false);
       expect(component.isValid()).toBeFalsy();
     });
   });
