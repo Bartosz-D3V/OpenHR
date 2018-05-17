@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
@@ -13,6 +13,10 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Subject } from '@shared/domain/subject/subject';
 import { PersonalDetailsService } from './service/personal-details.service';
+import { PersonalInformation } from '@shared/domain/subject/personal-information';
+import { ContactInformation } from '@shared/domain/subject/contact-information';
+import { HrInformation } from '@shared/domain/subject/hr-information';
+import { EmployeeInformation } from '@shared/domain/subject/employee-information';
 
 @Component({
   selector: 'app-personal-details',
@@ -30,62 +34,7 @@ import { PersonalDetailsService } from './service/personal-details.service';
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
   private $currentSubject: ISubscription;
   public isLoadingResults: boolean;
-
-  public personalInformationFormGroup: FormGroup = new FormGroup({
-    firstNameFormControl: new FormControl('', [Validators.required]),
-
-    lastNameFormControl: new FormControl('', [Validators.required]),
-
-    middleNameFormControl: new FormControl('', []),
-
-    dobFormControl: new FormControl('', [Validators.required]),
-
-    positionFormControl: new FormControl({ disabled: true }, []),
-  });
-
-  public contactInformationFormGroup: FormGroup = new FormGroup({
-    emailFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.EMAIL)]),
-
-    telephoneFormControl: new FormControl('', [
-      Validators.required,
-      Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-      Validators.minLength(7),
-      Validators.maxLength(11),
-    ]),
-
-    firstLineAddressFormControl: new FormControl('', []),
-
-    secondLineAddressFormControl: new FormControl('', []),
-
-    thirdLineAddressFormControl: new FormControl('', []),
-
-    postcodeFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)]),
-
-    cityFormControl: new FormControl('', []),
-
-    countryFormControl: new FormControl('', []),
-  });
-
-  public employeeDetailsFormGroup: FormGroup = new FormGroup({
-    ninFormControl: new FormControl('', [Validators.required, Validators.pattern(RegularExpressions.NIN)]),
-
-    employeeIdFormControl: new FormControl('', [Validators.required]),
-
-    positionFormControl: new FormControl('', [Validators.required]),
-
-    departmentFormControl: new FormControl(''),
-
-    startDateFormControl: new FormControl('', []),
-
-    endDateFormControl: new FormControl('', []),
-  });
-
-  public hrInformationFormGroup: FormGroup = new FormGroup({
-    allowanceFormControl: new FormControl('', [Validators.min(0)]),
-
-    usedAllowanceFormControl: new FormControl('', [Validators.min(0)]),
-  });
-
+  public personalDetailsFormGroup: FormGroup;
   public stepNumber = 0;
   public subject: Subject;
 
@@ -94,24 +43,84 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     private _personalDetailsService: PersonalDetailsService,
     private _responsiveHelper: ResponsiveHelperService,
     private _errorResolver: ErrorResolverService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.getCurrentSubject();
-    this.hrInformationFormGroup.disable();
   }
 
   ngOnDestroy(): void {
     this.$currentSubject.unsubscribe();
   }
 
+  public buildForm(): void {
+    const perInfo: PersonalInformation = this.subject.personalInformation;
+    const contactInfo: ContactInformation = this.subject.contactInformation;
+    const employeeInfo: EmployeeInformation = this.subject.employeeInformation;
+    const hrInfo: HrInformation = this.subject.hrInformation;
+
+    this.personalDetailsFormGroup = this._fb.group({
+      subjectId: [this.subject.subjectId || ''],
+      personalInformation: this._fb.group({
+        firstName: [perInfo.firstName || '', Validators.required],
+        middleName: [perInfo.middleName || ''],
+        lastName: [perInfo.lastName || '', Validators.required],
+        dateOfBirth: [perInfo.dateOfBirth || '', Validators.required],
+      }),
+      contactInformation: this._fb.group({
+        telephone: [
+          contactInfo.telephone || '',
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(RegularExpressions.NUMBERS_ONLY),
+            Validators.minLength(7),
+            Validators.maxLength(11),
+          ]),
+        ],
+        email: [contactInfo.email || '', Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)])],
+        address: this._fb.group({
+          firstLineAddress: [contactInfo.address.firstLineAddress || ''],
+          secondLineAddress: [contactInfo.address.secondLineAddress || ''],
+          thirdLineAddress: [contactInfo.address.thirdLineAddress || ''],
+          postcode: [
+            contactInfo.address.postcode || '',
+            Validators.compose([Validators.required, Validators.pattern(RegularExpressions.UK_POSTCODE)]),
+          ],
+          city: [contactInfo.address.city || ''],
+          country: [contactInfo.address.country || ''],
+        }),
+      }),
+      employeeInformation: this._fb.group({
+        nationalInsuranceNumber: [
+          employeeInfo.nationalInsuranceNumber || '',
+          Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)]),
+        ],
+        position: [employeeInfo.position || '', Validators.required],
+        department: [employeeInfo.department || ''],
+        employeeNumber: [employeeInfo.employeeNumber || '', Validators.required],
+        startDate: [employeeInfo.startDate || ''],
+        endDate: [employeeInfo.endDate || ''],
+      }),
+      hrInformation: this._fb.group({
+        allowance: [hrInfo.allowance || '', Validators.compose([Validators.min(0), Validators.required])],
+        usedAllowance: [hrInfo.usedAllowance || '', Validators.compose([Validators.min(0), Validators.required])],
+      }),
+      role: [this.subject.role || '', Validators.required],
+    });
+
+    this.personalDetailsFormGroup.get('role').disable();
+    this.personalDetailsFormGroup.get('hrInformation').disable();
+  }
+
   public getCurrentSubject(): void {
     this.isLoadingResults = true;
     this.$currentSubject = this._subjectDetailsService.getCurrentSubject().subscribe(
       (response: Subject) => {
-        this.isLoadingResults = false;
         this.subject = response;
+        this.isLoadingResults = false;
+        this.buildForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
@@ -121,7 +130,8 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
   public save(): void {
     if (this.isValid()) {
-      this._personalDetailsService.saveSubject(this.subject).subscribe(
+      const subject: Subject = <Subject>this.personalDetailsFormGroup.getRawValue();
+      this._personalDetailsService.saveSubject(subject).subscribe(
         (result: Subject) => {
           const msg = `Details of user with id ${result.subjectId} have been updated`;
           this._notificationService.openSnackBar(msg, 'OK');
@@ -150,7 +160,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   public isValid(): boolean {
-    return this.personalInformationFormGroup.valid && this.contactInformationFormGroup.valid && this.employeeDetailsFormGroup.valid;
+    return this.personalDetailsFormGroup.valid;
   }
 
   public isMobile(): boolean {

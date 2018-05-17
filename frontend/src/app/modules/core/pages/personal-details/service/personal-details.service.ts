@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { SystemVariables } from '@config/system-variables';
 import { Subject } from '@shared//domain/subject/subject';
 import { Role } from '@shared//domain/subject/role';
+import { ObjectHelper } from '@shared/util/helpers/object-helper';
 
 @Injectable()
 export class PersonalDetailsService {
@@ -17,7 +18,9 @@ export class PersonalDetailsService {
   constructor(private _http: HttpClient) {}
 
   public saveSubject(subject: Subject): Observable<Subject> {
-    return this._http.put<Subject>(`${this.resolveUrl(subject.role)}/${subject.subjectId}`, subject, {
+    const resolvedUrl: string = this.resolveUrl(subject.role);
+    delete subject.role;
+    return this._http.put<Subject>(`${resolvedUrl}/${subject.subjectId}`, subject, {
       headers: this.headers,
     });
   }
