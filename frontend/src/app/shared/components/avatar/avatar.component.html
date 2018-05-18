@@ -4,5 +4,6 @@
 <mat-menu #avatarMenu="matMenu">
   <button [routerLink]="[{ outlets: { core: ['account'] } }]" mat-menu-item>Your account</button>
   <button [routerLink]="[{ outlets: { core: ['settings'] } }]" mat-menu-item>Settings</button>
+  <button [routerLink]="[{ outlets: { core: ['admin'] } }]" mat-menu-item>Administration</button>
   <button [routerLink]="[{ outlets: { core: ['logout'] } }]" (click)="logout()" mat-menu-item>Log out</button>
 </mat-menu>
