@@ -22,4 +22,11 @@ public class AdminConfigurationDAOImpl extends BaseDAO implements AdminConfigura
   public AllowanceSettings getAllowanceSettings() {
     return (AllowanceSettings) super.get(AllowanceSettings.class, 1L);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
+    super.merge(allowanceSettings);
+    return allowanceSettings;
+  }
 }

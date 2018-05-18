@@ -4,4 +4,6 @@ import org.openhr.application.adminconfiguration.domain.AllowanceSettings;
 
 public interface AdminConfigurationService {
   AllowanceSettings getAllowanceSettings();
+
+  AllowanceSettings updateAllowanceSettings(AllowanceSettings allowanceSettings);
 }

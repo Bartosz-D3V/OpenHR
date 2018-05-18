@@ -2,8 +2,10 @@ package org.openhr.application.adminconfiguration.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +29,8 @@ import org.springframework.test.web.servlet.MvcResult;
 @RunWith(SpringRunner.class)
 @WebMvcTest(AdminConfigurationController.class)
 public class AdminConfigurationControllerTest {
+  private AllowanceSettings allowanceSettings;
+
   @Autowired private MockMvc mockMvc;
 
   @Autowired private ObjectMapper objectMapper;
@@ -36,16 +40,16 @@ public class AdminConfigurationControllerTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+    allowanceSettings = new AllowanceSettings();
+    allowanceSettings.setAutoResetAllowance(true);
+    allowanceSettings.setCarryOverUnusedLeave(true);
+    allowanceSettings.setNumberOfDaysToCarryOver(10);
+    allowanceSettings.setResetDate(LocalDate.now());
   }
 
   @Test
   @WithMockUser
   public void getAllowanceSettingsShouldReturnAllowanceSettingsObject() throws Exception {
-    final AllowanceSettings allowanceSettings = new AllowanceSettings();
-    allowanceSettings.setAutoResetAllowance(true);
-    allowanceSettings.setCarryOverUnusedLeave(true);
-    allowanceSettings.setNumberOfDaysToCarryOver(10);
-    allowanceSettings.setResetDate(LocalDate.now());
     final String allowanceSettingsAsJSON = objectMapper.writeValueAsString(allowanceSettings);
 
     when(adminConfigurationFacade.getAllowanceSettings()).thenReturn(allowanceSettings);
@@ -53,6 +57,28 @@ public class AdminConfigurationControllerTest {
     final MvcResult result =
         mockMvc
             .perform(get("/admin-configuration/allowance-settings"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andReturn();
+
+    assertNull(result.getResolvedException());
+    assertEquals(allowanceSettingsAsJSON, result.getResponse().getContentAsString());
+  }
+
+  @Test
+  @WithMockUser
+  public void updateAllowanceSettingsShouldReturnAllowanceSettingsObject() throws Exception {
+    final String allowanceSettingsAsJSON = objectMapper.writeValueAsString(allowanceSettings);
+
+    when(adminConfigurationFacade.updateAllowanceSettings(anyObject()))
+        .thenReturn(allowanceSettings);
+
+    final MvcResult result =
+        mockMvc
+            .perform(
+                put("/admin-configuration/allowance-settings")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(allowanceSettingsAsJSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andReturn();

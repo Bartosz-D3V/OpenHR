@@ -20,4 +20,10 @@ public class AdminConfigurationServiceImpl implements AdminConfigurationService 
   public AllowanceSettings getAllowanceSettings() {
     return adminConfigurationRepository.getAllowanceSettings();
   }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
+    return adminConfigurationRepository.updateAllowanceSettings(allowanceSettings);
+  }
 }

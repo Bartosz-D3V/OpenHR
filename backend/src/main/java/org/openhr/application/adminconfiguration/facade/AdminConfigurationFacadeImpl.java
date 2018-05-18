@@ -19,4 +19,10 @@ public class AdminConfigurationFacadeImpl implements AdminConfigurationFacade {
   public AllowanceSettings getAllowanceSettings() {
     return adminConfigurationService.getAllowanceSettings();
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
+    return adminConfigurationService.updateAllowanceSettings(allowanceSettings);
+  }
 }
