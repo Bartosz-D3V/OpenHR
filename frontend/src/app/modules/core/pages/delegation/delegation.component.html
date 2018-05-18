@@ -10,9 +10,10 @@
   <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
   <mat-card>
     <form [formGroup]="applicationForm">
-      <form formGroupName="name" fxLayout.gt-xs="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
-            fxLayoutAlign.lt-sm="center center">
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+      <form formGroupName="name" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-subject-id"></label>
           <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
                  formControlName="subjectId">
@@ -22,7 +23,7 @@
           Subject ID is required
         </mat-error>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-first-name"></label>
           <input matInput id="delegation-first-name" required="required" placeholder="First name" name="firstName"
                  formControlName="first">
@@ -32,13 +33,13 @@
           First name is required
         </mat-error>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-middle-name"></label>
           <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
                  formControlName="middle">
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-last-name"></label>
           <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
                  formControlName="last">
@@ -51,7 +52,7 @@
 
       <form formGroupName="organisation" fxLayout.gt-xs="row wrap"
             fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-position"></label>
           <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
                  formControlName="position">
@@ -61,7 +62,7 @@
           Position is required
         </mat-error>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-last-name"></label>
           <input matInput placeholder="Department" id="delegation-department" name="department"
                  formControlName="department">
@@ -71,7 +72,7 @@
       <form formGroupName="delegation" fxLayout.gt-xs="row wrap"
             fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutAlign.lt-sm="center center">
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <input matInput required="required" placeholder="Country" aria-label="Countries"
                  [matAutocomplete]="autoCountries" formControlName="country">
           <mat-autocomplete #autoCountries="matAutocomplete" [displayWith]="displayCountryName">
@@ -85,7 +86,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-city"></label>
           <input #city matInput required="required" placeholder="City" id="delegation-city" name="city"
                  formControlName="city">
@@ -95,7 +96,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-objective"></label>
           <input #objective matInput required="required" placeholder="Objective" id="delegation-objective"
                  name="objective" formControlName="objective">
@@ -105,7 +106,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-budget"></label>
           <input matInput required="required" placeholder="Budget" id="delegation-budget" name="budget"
                  formControlName="budget">
@@ -120,7 +121,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <input matInput [matDatepicker]="startDatePicker" required="required" placeholder="Start date"
                  formControlName="startDate" name="startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -136,7 +137,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex.gt-xs="50" fxFlex.xs="100">
+        <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <input matInput [matDatepicker]="endDatePicker" required="required" placeholder="End date"
                  formControlName="endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
