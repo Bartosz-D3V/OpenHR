@@ -8,6 +8,7 @@ import { AllowanceSettings } from '@modules/settings/pages/admin/domain/allowanc
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  providers: [AdminService],
 })
 export class AdminComponent implements OnInit, OnDestroy {
   private $allowanceSettings: ISubscription;
@@ -19,7 +20,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.fetchAllowanceSettings();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.$allowanceSettings) {
+      this.$allowanceSettings.unsubscribe();
+    }
+  }
 
   public fetchAllowanceSettings(): void {
     this.$allowanceSettings = this._allowanceSettings.getAdminAllowanceSettings().subscribe((res: AllowanceSettings) => {
