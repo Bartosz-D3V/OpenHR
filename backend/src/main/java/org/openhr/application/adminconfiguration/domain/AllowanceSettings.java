@@ -13,16 +13,16 @@ public final class AllowanceSettings implements Serializable {
   @Id private int id = 1;
 
   @Column(name = "AUTO_RESET_ALLOWANCE")
-  private boolean autoResetAllowance;
+  private boolean autoResetAllowance = false;
 
   @Column(name = "RESET_DATE")
   private LocalDate resetDate;
 
   @Column(name = "CARRY_OVER_UNUSED_LEAVE")
-  private boolean carryOverUnusedLeave;
+  private boolean carryOverUnusedLeave = false;
 
   @Column(name = "NUMBER_OF_DAYS_TO_CARRY_OVER")
-  private int numberOfDaysToCarryOver;
+  private int numberOfDaysToCarryOver = 0;
 
   public AllowanceSettings() {
     super();

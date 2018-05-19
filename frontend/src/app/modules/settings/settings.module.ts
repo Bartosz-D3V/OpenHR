@@ -12,6 +12,7 @@ import {
   MatIconModule,
   MatTabsModule,
   MatProgressSpinnerModule,
+  MatDatepickerModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -41,6 +42,7 @@ import { AllowanceSettingsComponent } from './pages/admin/components/allowance-s
     MatIconModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
   ],
   declarations: [AccountComponent, SettingsComponent, AdminComponent, AllowanceSettingsComponent],
 })

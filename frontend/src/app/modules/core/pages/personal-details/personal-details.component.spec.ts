@@ -3,13 +3,13 @@ import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/form
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import {
   MatDatepickerModule,
   MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatNativeDateModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
   MatToolbarModule,
@@ -89,7 +89,7 @@ describe('PersonalDetailsComponent', () => {
           MatToolbarModule,
           MatExpansionModule,
           MatDatepickerModule,
-          MatNativeDateModule,
+          MatMomentDateModule,
           MatIconModule,
           MatFormFieldModule,
           MatInputModule,
