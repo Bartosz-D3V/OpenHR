@@ -55,8 +55,6 @@ after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
 
 after_success:
-  - npm install -g codecov
-  - codecov -t $TOKEN
   - bash <(curl -s https://codecov.io/bash) -t $TOKEN
 
 notifications:
