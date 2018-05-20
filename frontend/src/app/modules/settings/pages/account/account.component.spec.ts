@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +24,7 @@ import { AccountService } from '@modules/settings/pages/account/service/account.
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Password } from '@modules/settings/pages/account/domain/password';
 import { Email } from '@modules/settings/pages/account/domain/email';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 import { AccountComponent } from './account.component';
 
 describe('AccountComponent', () => {
@@ -33,6 +34,16 @@ describe('AccountComponent', () => {
     error: 'Unauthorized',
     status: 401,
   });
+
+  @Injectable()
+  class FakeCustomAsyncValidatorsService {
+    public validateUsernameIsFree(username: string): ValidationErrors {
+      return null;
+    }
+    public validateEmailIsFree(excludeEmail?: string): ValidationErrors {
+      return null;
+    }
+  }
 
   @Injectable()
   class FakeAccountService {
@@ -70,6 +81,11 @@ describe('AccountComponent', () => {
         providers: [
           JwtHelperService,
           NotificationService,
+          CustomAsyncValidatorsService,
+          {
+            provide: CustomAsyncValidatorsService,
+            useClass: FakeCustomAsyncValidatorsService,
+          },
           {
             provide: AccountService,
             useClass: FakeAccountService,
@@ -140,18 +156,24 @@ describe('AccountComponent', () => {
   describe('emailForm', () => {
     describe('email', () => {
       it('should be valid if the field is not empty', () => {
+        spyOn(component['_asyncValidator'], 'validateEmailIsFree').and.returnValue(null);
+
         component.emailForm.get('email').setValue('j.j@mail.com');
 
         expect(component.emailForm.get('email').valid).toBeTruthy();
       });
 
       it('should be invalid if the field is empty', () => {
+        spyOn(component['_asyncValidator'], 'validateEmailIsFree').and.returnValue(null);
+
         component.emailForm.get('email').setValue(null);
 
         expect(component.emailForm.get('email').valid).toBeFalsy();
       });
 
       it('should be valid if the value matches the email pattern', () => {
+        spyOn(component['_asyncValidator'], 'validateEmailIsFree').and.returnValue(null);
+
         component.emailForm.get('email').setValue('j.j@mail.com');
 
         expect(component.emailForm.get('email').valid).toBeTruthy();

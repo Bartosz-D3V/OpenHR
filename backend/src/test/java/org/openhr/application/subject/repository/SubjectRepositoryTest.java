@@ -51,11 +51,6 @@ public class SubjectRepositoryTest {
     final Session session = sessionFactory.getCurrentSession();
     mockHrInformation.setAllowance(25L);
     mockHrInformation.setHrInformationId(2L);
-    session.save(mockPersonalInformation);
-    session.save(mockContactInformation);
-    session.save(mockEmployeeInformation);
-    session.save(mockHrInformation);
-    session.saveOrUpdate(mockUser);
     session.saveOrUpdate(mockSubject);
     session.flush();
   }

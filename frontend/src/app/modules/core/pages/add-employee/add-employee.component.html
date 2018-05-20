@@ -46,7 +46,8 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth"
+            <input matInput [matDatepicker]="picker" [required]="'required'" placeholder="Date of birth"
+                   formControlName="dateOfBirth"
                    id="personal-details-date-of-birth" name="dateOfBirth">
             <mat-error *ngIf="newSubjectForm.get(['personalInformation', 'dateOfBirth']).touched &&
             newSubjectForm.get(['personalInformation', 'dateOfBirth']).hasError('required')">
@@ -76,7 +77,7 @@
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <span matPrefix>+44 (0) &nbsp;</span>
             <label for="personal-details-telephone"></label>
-            <input type="tel" matInput placeholder="Telephone" formControlName="telephone"
+            <input type="tel" matInput [required]="'required'" placeholder="Telephone" formControlName="telephone"
                    id="personal-details-telephone" name="telephone">
             <mat-error *ngIf="newSubjectForm.get(['contactInformation', 'telephone']).touched &&
             newSubjectForm.get(['contactInformation', 'telephone']).hasError('minlength')">
@@ -184,7 +185,7 @@
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-nin"></label>
-            <input type="text" matInput placeholder="National Insurance Number"
+            <input type="text" matInput [required]="'required'" placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber" id="personal-details-nin" name="nin">
             <mat-error
               *ngIf="newSubjectForm.get(['employeeInformation', 'nationalInsuranceNumber']).touched &&
@@ -199,7 +200,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-position"></label>
-            <input type="text" matInput placeholder="Position" formControlName="position"
+            <input type="text" matInput [required]="'required'" placeholder="Position" formControlName="position"
                    id="personal-details-position" name="position">
             <mat-error *ngIf="newSubjectForm.get(['employeeInformation', 'position']).touched &&
               newSubjectForm.get(['employeeInformation', 'position']).hasError('required')">
@@ -215,7 +216,8 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-employee-number"></label>
-            <input type="text" matInput placeholder="Employee number" formControlName="employeeNumber"
+            <input type="text" matInput [required]="'required'" placeholder="Employee number"
+                   formControlName="employeeNumber"
                    id="personal-details-employee-number" name="employeeNumber">
             <mat-error *ngIf="newSubjectForm.get(['employeeInformation', 'employeeNumber']).touched &&
               newSubjectForm.get(['employeeInformation', 'employeeNumber']).hasError('required')">
@@ -236,6 +238,7 @@
             <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
           </mat-form-field>
         </form>
+
         <mat-action-row>
           <button mat-button color="warn" (click)="prevStep()">Previous</button>
           <button mat-button color="primary" (click)="nextStep()">Next</button>
@@ -256,7 +259,7 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input type="number" matInput placeholder="Allowance"
+            <input type="number" matInput [required]="'required'" placeholder="Allowance"
                    formControlName="allowance" name="allowance">
             <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'allowance']).touched &&
             newSubjectForm.get(['hrInformation', 'allowance']).hasError('required')">
@@ -273,7 +276,7 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input type="number" matInput placeholder="Used allowance" name="usedAllowance"
+            <input type="number" matInput [required]="'required'" placeholder="Used allowance" name="usedAllowance"
                    formControlName="usedAllowance">
             <mat-error *ngIf="newSubjectForm.get(['hrInformation', 'usedAllowance']).touched &&
             newSubjectForm.get(['hrInformation', 'usedAllowance']).hasError('required')">
@@ -364,7 +367,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="account-details-repeat-password"></label>
-            <input matInput #repeatedPassword type="password" required="required" placeholder="Password"
+            <input matInput #repeatedPassword type="password" required="required" placeholder="Repeat password"
                    id="account-details-repeat-password" name="password" formControlName="repeatPassword">
             <mat-error *ngIf="newSubjectForm.get(['user', 'repeatPassword']).touched &&
             newSubjectForm.get(['user', 'repeatPassword']).hasError('passwordDoNotMatch')">

@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NAMED_DATE } from '@config/datepicker-format';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
@@ -21,7 +24,15 @@ import { CustomAsyncValidatorsService } from '@shared/util/async-validators/cust
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.scss'],
-  providers: [EmployeeService, ManagerService, HrTeamMemberService, NotificationService, ResponsiveHelperService],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
+    EmployeeService,
+    ManagerService,
+    HrTeamMemberService,
+    NotificationService,
+    ResponsiveHelperService,
+  ],
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
   private $newSubject: ISubscription;
@@ -85,7 +96,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
       }),
       employeeInformation: this._fb.group({
         nationalInsuranceNumber: ['', Validators.compose([Validators.required, Validators.pattern(RegularExpressions.NIN)])],
-        position: [''],
+        position: ['', Validators.required],
         department: [''],
         employeeNumber: ['', Validators.required],
         startDate: [''],
@@ -161,7 +172,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public resetForm(): void {
-    this.newSubjectForm.reset();
+    this.newSubjectForm.reset({
+      hrInformation: {
+        usedAllowance: 0,
+      },
+    });
     this.newSubjectForm.markAsPristine();
     this.newSubjectForm.markAsUntouched();
   }
