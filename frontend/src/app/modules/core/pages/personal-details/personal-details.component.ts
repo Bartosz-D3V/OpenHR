@@ -12,11 +12,12 @@ import { ResponsiveHelperService } from '@shared/services/responsive-helper/resp
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Subject } from '@shared/domain/subject/subject';
-import { PersonalDetailsService } from './service/personal-details.service';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { ContactInformation } from '@shared/domain/subject/contact-information';
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { EmployeeInformation } from '@shared/domain/subject/employee-information';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
+import { PersonalDetailsService } from './service/personal-details.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -44,6 +45,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     private _responsiveHelper: ResponsiveHelperService,
     private _errorResolver: ErrorResolverService,
     private _notificationService: NotificationService,
+    private _asyncValidator: CustomAsyncValidatorsService,
     private _fb: FormBuilder
   ) {}
 
@@ -79,7 +81,11 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
             Validators.maxLength(11),
           ]),
         ],
-        email: [contactInfo.email || '', Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)])],
+        email: [
+          contactInfo.email || '',
+          Validators.compose([Validators.required, Validators.pattern(RegularExpressions.EMAIL)]),
+          this._asyncValidator.validateEmailIsFree(contactInfo.email),
+        ],
         address: this._fb.group({
           firstLineAddress: [contactInfo.address.firstLineAddress || ''],
           secondLineAddress: [contactInfo.address.secondLineAddress || ''],

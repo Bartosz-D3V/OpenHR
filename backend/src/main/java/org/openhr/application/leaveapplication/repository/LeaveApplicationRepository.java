@@ -179,6 +179,7 @@ public class LeaveApplicationRepository {
               .createAlias("subject", "subject")
               .add(
                   Restrictions.conjunction(
+                      Restrictions.eq("terminated", true),
                       Restrictions.le("startDate", dateRange.getEndDate()),
                       Restrictions.ge("endDate", dateRange.getStartDate())))
               .add(Restrictions.eq("subject.subjectId", subjectId))

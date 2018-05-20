@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import {
@@ -33,8 +33,8 @@ import { Employee } from '@shared/domain/subject/employee';
 import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Manager } from '@shared/domain/subject/manager';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
-import { AddEmployeeComponent } from './add-employee.component';
 import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
+import { AddEmployeeComponent } from './add-employee.component';
 
 describe('AddEmployeeComponent', () => {
   let component: AddEmployeeComponent;
@@ -332,6 +332,7 @@ describe('AddEmployeeComponent', () => {
 
       it('should mark form as valid if input is filled and email is valid', () => {
         spyOn(component['_asyncValidator'], 'validateEmailIsFree');
+
         const validEmail = 'test@test.com';
         emailFormControl.setValue(validEmail);
 

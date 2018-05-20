@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -7,8 +8,8 @@ import { AccountService } from '@modules/settings/pages/account/service/account.
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
 import { Password } from '@modules/settings/pages/account/domain/password';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Email } from '@modules/settings/pages/account/domain/email';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 
 @Component({
   selector: 'app-account',
@@ -25,6 +26,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     private _accountService: AccountService,
     private _notificationService: NotificationService,
     private _errorResolver: ErrorResolverService,
+    private _asyncValidator: CustomAsyncValidatorsService,
     private _fb: FormBuilder
   ) {}
 
@@ -36,7 +38,11 @@ export class AccountComponent implements OnInit, OnDestroy {
     });
 
     this.emailForm = this._fb.group({
-      email: ['', Validators.compose([Validators.required, Validators.email, Validators.pattern(RegularExpressions.EMAIL)])],
+      email: [
+        '',
+        Validators.compose([Validators.required, Validators.email, Validators.pattern(RegularExpressions.EMAIL)]),
+        this._asyncValidator.validateEmailIsFree(),
+      ],
     });
   }
 

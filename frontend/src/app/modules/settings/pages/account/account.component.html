@@ -48,6 +48,7 @@
                   (click)="savePassword()">Save
           </button>
         </mat-tab>
+
         <mat-tab label="Email">
           <ng-template mat-tab-label>
             <mat-icon>email</mat-icon>
@@ -62,6 +63,10 @@
             </mat-error>
             <mat-error *ngIf="emailForm.get('email').touched && emailForm.get('email').hasError('required')">
               Email is required
+            </mat-error>
+            <mat-error *ngIf="emailForm.get('email').touched &&
+            emailForm.get('email').hasError('emailTaken')">
+              Email already in use
             </mat-error>
           </form>
           <button type="submit" mat-raised-button color="accent" [disabled]="!emailForm.valid" (click)="saveEmail()">Save</button>
