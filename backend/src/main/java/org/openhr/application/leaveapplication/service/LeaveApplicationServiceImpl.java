@@ -9,6 +9,7 @@ import org.openhr.application.leaveapplication.repository.LeaveApplicationReposi
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ApplicationDoesNotExistException;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.openhr.common.util.iterable.LocalDateRange;
 import org.springframework.context.MessageSource;
@@ -111,9 +112,14 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public void approveLeaveApplicationByManager(final long applicationId)
-      throws ApplicationDoesNotExistException {
-    LeaveApplication leaveApplication =
+      throws ApplicationDoesNotExistException, ValidationException, SubjectDoesNotExistException {
+    final LeaveApplication leaveApplication =
         leaveApplicationRepository.getLeaveApplication(applicationId);
+    final Subject subject =
+        subjectService.getSubjectDetails(leaveApplication.getSubject().getSubjectId());
+    validateLeaveApplication(leaveApplication);
+    validateLeftAllowance(subject);
+    validateBookedApplications(leaveApplication, subject.getSubjectId());
     leaveApplication.setApprovedByManager(true);
     leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
@@ -133,9 +139,14 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public void approveLeaveApplicationByHr(final long applicationId)
-      throws ApplicationDoesNotExistException {
+      throws ApplicationDoesNotExistException, SubjectDoesNotExistException, ValidationException {
     final LeaveApplication leaveApplication =
         leaveApplicationRepository.getLeaveApplication(applicationId);
+    final Subject subject =
+        subjectService.getSubjectDetails(leaveApplication.getSubject().getSubjectId());
+    validateLeaveApplication(leaveApplication);
+    validateLeftAllowance(subject);
+    validateBookedApplications(leaveApplication, subject.getSubjectId());
     leaveApplication.setApprovedByHR(true);
     leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }

@@ -6,7 +6,8 @@
   <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
   <mat-card>
     <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="row wrap"
-          fxLayoutAlign.gt-xs="start" fxLayoutAlign.lt-sm="center center" fxFlex.gt-md="50" fxFlex.lt-md="100">
+          fxLayoutAlign.gt-xs="start" fxLayoutAlign.lt-sm="center center" fxFlex.gt-md="50" fxFlex.lt-md="100"
+          fxLayoutGap="5">
       <app-date-range #dateRange class="c-drawer__element" fxFlex="100"
                       [requireStartDate]="true" [requireEndDate]="true" [startDate]="leaveApplication.startDate"
                       [showDescription]="true" [endDate]="leaveApplication.endDate"

@@ -37,6 +37,7 @@ import org.openhr.common.domain.subject.EmployeeInformation;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.PersonalInformation;
 import org.openhr.common.enumeration.Role;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -214,6 +215,7 @@ public class LeaveApplicationProcessTest {
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
+    when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
 
     final Session session = sessionFactory.getCurrentSession();
     session.saveOrUpdate(mockSubject);
@@ -251,13 +253,15 @@ public class LeaveApplicationProcessTest {
   }
 
   @Test
-  public void hrTeamShouldEndWorkflowByApprovingTheApplication() throws ValidationException {
+  public void hrTeamShouldEndWorkflowByApprovingTheApplication()
+      throws ValidationException, SubjectDoesNotExistException {
     when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
+    when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
 
     final Session session = sessionFactory.getCurrentSession();
     session.saveOrUpdate(mockSubject);
@@ -300,12 +304,13 @@ public class LeaveApplicationProcessTest {
 
   @Test
   public void processShouldStartAndSetApprovedByManagerIfManagerMadeAnApplication()
-      throws ValidationException {
+      throws ValidationException, SubjectDoesNotExistException {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
+    when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
 
     final Session session = sessionFactory.getCurrentSession();
     mockSubject.setRole(Role.MANAGER);
@@ -327,13 +332,15 @@ public class LeaveApplicationProcessTest {
   }
 
   @Test
-  public void workflowShouldEndIfHrTeamMemberAppliedForLeave() throws ValidationException {
+  public void workflowShouldEndIfHrTeamMemberAppliedForLeave()
+      throws ValidationException, SubjectDoesNotExistException {
     when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
     when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
+    when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
 
     final Session session = sessionFactory.getCurrentSession();
     mockSubject.setRole(Role.HRTEAMMEMBER);

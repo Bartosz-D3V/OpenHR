@@ -127,12 +127,14 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public updateStartDate(startDate: MomentInput): void {
     this.startDate = startDate;
+    this.recalculateNumOfDays(this.startDate, this.endDate);
     this.startDateChange.emit(startDate);
     this.isValidChange.emit(this.dateRange.valid);
   }
 
   public updateEndDate(endDate: MomentInput): void {
     this.endDate = endDate;
+    this.recalculateNumOfDays(this.startDate, this.endDate);
     this.endDateChange.emit(endDate);
     this.isValidChange.emit(this.dateRange.valid);
   }

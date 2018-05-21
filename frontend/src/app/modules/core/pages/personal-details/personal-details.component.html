@@ -25,7 +25,7 @@
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-first-name"></label>
-            <input matInput required="required" placeholder="First name" formControlName="firstName"
+            <input matInput [required]="'required'" placeholder="First name" formControlName="firstName"
                    id="personal-details-first-name" name="firstName">
             <mat-error id="personal-details-first-name-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'firstName']).hasError('required')">
@@ -41,7 +41,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-last-name"></label>
-            <input matInput required="required" placeholder="Last name" formControlName="lastName"
+            <input matInput [required]="'required'" placeholder="Last name" formControlName="lastName"
                    id="personal-details-last-name" name="lastName">
             <mat-error id="personal-details-last-name-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'lastName']).hasError('required')">
@@ -51,7 +51,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" required="required" placeholder="Date of birth"
+            <input matInput [matDatepicker]="picker" [required]="'required'" placeholder="Date of birth"
                    formControlName="dateOfBirth" id="personal-details-date-of-birth" name="dateOfBirth">
             <mat-error id="personal-details-date-of-birth-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'dateOfBirth']).hasError('required')">
@@ -77,12 +77,12 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <form formGroupName="contactInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
-              fxLayoutGap="5%">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <span matPrefix>+44 (0) &nbsp;</span>
             <label for="personal-details-telephone"></label>
-            <input type="tel" matInput required="required" placeholder="Telephone"
+            <input type="tel" matInput [required]="'required'" placeholder="Telephone"
                    formControlName="telephone"
                    id="personal-details-telephone" name="telephone">
             <mat-error id="personal-details-telephone-min"
@@ -106,7 +106,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-email"></label>
-            <input type="email" matInput required="required" placeholder="Email" formControlName="email"
+            <input type="email" matInput [required]="'required'" placeholder="Email" formControlName="email"
                    id="personal-details-email" name="email">
             <mat-error id="personal-details-email-pattern"
                        *ngIf="personalDetailsFormGroup.get(['contactInformation', 'email']).hasError('pattern')">
@@ -116,10 +116,15 @@
                        *ngIf="personalDetailsFormGroup.get(['contactInformation', 'email']).hasError('required')">
               Email is required
             </mat-error>
+            <mat-error *ngIf="personalDetailsFormGroup.get(['contactInformation', 'email']).touched &&
+            personalDetailsFormGroup.get(['contactInformation', 'email']).hasError('emailTaken')">
+              Email already in use
+            </mat-error>
           </mat-form-field>
 
           <div formGroupName="address" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
+               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-1st-line-address"></label>
               <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
@@ -141,7 +146,7 @@
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
               <label for="personal-details-postcode"></label>
-              <input type="text" matInput required="required" placeholder="Postcode"
+              <input type="text" matInput [required]="'required'" placeholder="Postcode"
                      formControlName="postcode" id="personal-details-postcode" name="postcode">
               <mat-error id="personal-details-postcode-pattern"
                          *ngIf="personalDetailsFormGroup.get(['contactInformation', 'address', 'postcode']).hasError('pattern')">
@@ -184,11 +189,11 @@
         </mat-expansion-panel-header>
 
         <form formGroupName="employeeInformation" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
-              fxLayoutGap="5%">
+              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-nin"></label>
-            <input type="text" matInput required="required" placeholder="National Insurance Number"
+            <input type="text" matInput [required]="'required'" placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber" id="personal-details-nin" name="nin">
             <mat-error id="personal-details-nin-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'nationalInsuranceNumber']).hasError('required')">
@@ -202,7 +207,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-employee-number"></label>
-            <input type="text" matInput required="required" placeholder="Employee number"
+            <input type="text" matInput [required]="'required'" placeholder="Employee number"
                    formControlName="employeeNumber" id="personal-details-employee-number" name="employeeNumber">
             <mat-error id="personal-details-employee-number-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'employeeNumber']).hasError('required')">
@@ -212,7 +217,7 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-position"></label>
-            <input matInput required="required" placeholder="Position" formControlName="position"
+            <input matInput [required]="'required'" placeholder="Position" formControlName="position"
                    id="personal-details-position" name="position">
             <mat-error id="personal-details-position-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'position']).hasError('required')">
@@ -262,7 +267,8 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
               fxLayoutGap="5%">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input required="required" id="personal-details-allowance" type="number" matInput placeholder="Allowance"
+            <input [required]="'required'" id="personal-details-allowance" type="number" matInput
+                   placeholder="Allowance"
                    formControlName="allowance" name="allowance">
             <mat-error id="personal-details-allowance-min"
                        *ngIf="personalDetailsFormGroup.get(['hrInformation', 'allowance']).hasError('min')">
@@ -271,7 +277,7 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input required="required" id="personal-details-used-allowance" type="number" matInput
+            <input [required]="'required'" id="personal-details-used-allowance" type="number" matInput
                    placeholder="Used allowance" formControlName="usedAllowance"
                    name="usedAllowance">
             <mat-error id="personal-details-used-allowance-min"
@@ -298,10 +304,10 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <div fxLayout.gt-sm="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around"
-             fxLayoutAlign.lt-sm="center center">
+        <div fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+             fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input required="required" id="personal-details-role" type="text" matInput
+            <input [required]="'required'" id="personal-details-role" type="text" matInput
                    placeholder="Role" formControlName="role" name="role">
             <mat-error id="personal-details-role-required"
                        *ngIf="personalDetailsFormGroup.get('role').hasError('required')">
@@ -309,6 +315,7 @@
             </mat-error>
           </mat-form-field>
         </div>
+
         <mat-action-row>
           <button mat-button color="warn" (click)="prevStep()">Previous</button>
           <button mat-button color="primary" (click)="nextStep()">End</button>

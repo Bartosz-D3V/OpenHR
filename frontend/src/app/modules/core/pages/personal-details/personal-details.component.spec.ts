@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -32,8 +32,9 @@ import { ResponsiveHelperService } from '@shared/services/responsive-helper/resp
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { Employee } from '@shared/domain/subject/employee';
 import { Role } from '@shared/domain/subject/role';
-import { PersonalDetailsComponent } from './personal-details.component';
+import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
 import { PersonalDetailsService } from './service/personal-details.service';
+import { PersonalDetailsComponent } from './personal-details.component';
 
 describe('PersonalDetailsComponent', () => {
   let component: PersonalDetailsComponent;
@@ -57,6 +58,16 @@ describe('PersonalDetailsComponent', () => {
     mockHrInformation,
     Role.EMPLOYEE
   );
+
+  @Injectable()
+  class FakeCustomAsyncValidatorsService {
+    public validateUsernameIsFree(username: string): ValidationErrors {
+      return null;
+    }
+    public validateEmailIsFree(excludeEmail?: string): ValidationErrors {
+      return null;
+    }
+  }
 
   @Injectable()
   class FakeSubjectDetailsService {
@@ -99,6 +110,11 @@ describe('PersonalDetailsComponent', () => {
         providers: [
           JwtHelperService,
           ResponsiveHelperService,
+          CustomAsyncValidatorsService,
+          {
+            provide: CustomAsyncValidatorsService,
+            useClass: FakeCustomAsyncValidatorsService,
+          },
           {
             provide: PersonalDetailsService,
             useClass: FakePersonalDetailsService,
@@ -264,6 +280,8 @@ describe('PersonalDetailsComponent', () => {
     });
 
     it('should mark form as valid if input is filled and email is valid', () => {
+      spyOn(component['_asyncValidator'], 'validateEmailIsFree').and.returnValue(null);
+
       const validEmail = 'test@test.com';
       emailFormControl.setValue(validEmail);
 
