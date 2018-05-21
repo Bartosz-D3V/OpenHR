@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.openhr.application.allowance.service.AllowanceService;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
-import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,7 @@ public class LeaveApplicationServiceTest {
 
   @Autowired private LeaveApplicationService leaveApplicationService;
 
-  @MockBean private SubjectService subjectService;
+  @MockBean private AllowanceService allowanceService;
 
   @Before()
   public void setUp() {
@@ -46,7 +46,7 @@ public class LeaveApplicationServiceTest {
   @Test(expected = ValidationException.class)
   public void createLeaveApplicationShouldThrowExceptionIfNoLeftAllowance()
       throws ValidationException {
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(0L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(0L);
 
     final LeaveApplication leaveApplication =
         new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(5));

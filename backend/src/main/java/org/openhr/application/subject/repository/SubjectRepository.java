@@ -188,49 +188,7 @@ public class SubjectRepository {
     return lightweightSubjectDTOS;
   }
 
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public long getAllowance(final long subjectId) {
-    long allowance;
-    try {
-      final Session session = sessionFactory.getCurrentSession();
-      final Criteria criteria = session.createCriteria(Subject.class);
-      allowance =
-          (long)
-              criteria
-                  .createAlias("hrInformation", "hrInformation")
-                  .add(Restrictions.eq("subjectId", subjectId))
-                  .setProjection(Projections.property("hrInformation.allowance"))
-                  .uniqueResult();
-      session.flush();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
-    return allowance;
-  }
-
-  @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-  public long getUsedAllowance(final long subjectId) {
-    long usedAllowance;
-    try {
-      final Session session = sessionFactory.getCurrentSession();
-      final Criteria criteria = session.createCriteria(Subject.class);
-      usedAllowance =
-          (long)
-              criteria
-                  .createAlias("hrInformation", "hrInformation")
-                  .add(Restrictions.eq("subjectId", subjectId))
-                  .setProjection(Projections.property("hrInformation.usedAllowance"))
-                  .uniqueResult();
-      session.flush();
-    } catch (final HibernateException e) {
-      log.error(e.getLocalizedMessage());
-      throw e;
-    }
-    return usedAllowance;
-  }
-
-  @Transactional(readOnly = true, propagation = Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   public void updateEmail(final long subjectId, final String updatedEmail) {
     subjectDAO.updateEmail(subjectId, updatedEmail);
   }
