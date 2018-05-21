@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ALLOWANCE_SETTINGS")
 public final class AllowanceSettings implements Serializable {
-  @Id private int id = 1;
+  @Id private long id = 1;
 
   @Column(name = "AUTO_RESET_ALLOWANCE")
   private boolean autoResetAllowance = false;

@@ -9,6 +9,7 @@ import {
   MatDatepickerModule,
   MatInputModule,
   MatSlideToggleModule,
+  MatSnackBarModule,
   MatTabsModule,
   MatToolbarModule,
 } from '@angular/material';
@@ -16,11 +17,13 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize/capitalize.pipe';
-import { AdminService } from '@modules/settings/pages/admin/service/admin.service';
 import { AllowanceSettingsComponent } from '@modules/settings/pages/admin/components/allowance-settings/allowance-settings.component';
+import { AdminService } from '@modules/settings/pages/admin/service/admin.service';
 import { AllowanceSettings } from '@modules/settings/pages/admin/domain/allowance-settings';
-import { AdminComponent } from './admin.component';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { NotificationService } from '@shared/services/notification/notification.service';
+import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { AdminComponent } from './admin.component';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -31,6 +34,11 @@ describe('AdminComponent', () => {
     getAdminAllowanceSettings(): Observable<AllowanceSettings> {
       return Observable.of(new AllowanceSettings());
     }
+  }
+
+  @Injectable()
+  class FakeErrorResolverService {
+    public handleError(error: any): void {}
   }
 
   beforeEach(
@@ -49,9 +57,15 @@ describe('AdminComponent', () => {
           MatMomentDateModule,
           MatInputModule,
           MatCardModule,
+          MatSnackBarModule,
         ],
         providers: [
           ResponsiveHelperService,
+          NotificationService,
+          {
+            provide: ErrorResolverService,
+            useClass: FakeErrorResolverService,
+          },
           {
             provide: AdminService,
             useClass: FakeAdminService,

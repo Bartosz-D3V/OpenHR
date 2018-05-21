@@ -167,4 +167,10 @@ public class SubjectServiceImpl implements SubjectService {
   public void updateEmail(final long subjectId, final String updatedEmail) {
     subjectRepository.updateEmail(subjectId, updatedEmail);
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void resetUsedAllowance() {
+    System.out.println("LOGGGGGGGGING");
+  }
 }

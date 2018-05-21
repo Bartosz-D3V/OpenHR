@@ -4,6 +4,7 @@
 
 <mat-tab-group>
   <mat-tab label="Allowance" (selectChange)="fetchAllowanceSettings()">
-    <app-allowance-settings [allowanceSettings]="allowanceSettings"></app-allowance-settings>
+    <app-allowance-settings [allowanceSettings]="allowanceSettings"
+                            (onSaveAllowanceSettings)="updateAllowanceSettings($event)"></app-allowance-settings>
   </mat-tab>
 </mat-tab-group>

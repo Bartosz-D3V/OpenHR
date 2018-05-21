@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
@@ -17,10 +17,12 @@ import { ResponsiveHelperService } from '@shared/services/responsive-helper/resp
     { provide: MAT_DATE_FORMATS, useValue: NAMED_DATE },
   ],
 })
-export class AllowanceSettingsComponent implements OnInit, OnDestroy {
+export class AllowanceSettingsComponent implements OnInit, OnChanges {
   public allowanceSettingsForm: FormGroup;
 
   @Input() public allowanceSettings: AllowanceSettings;
+
+  @Output() public onSaveAllowanceSettings: EventEmitter<AllowanceSettings> = new EventEmitter<AllowanceSettings>();
 
   constructor(private _responsiveHelper: ResponsiveHelperService, private _fb: FormBuilder) {}
 
@@ -28,18 +30,36 @@ export class AllowanceSettingsComponent implements OnInit, OnDestroy {
     this.buildForm();
   }
 
-  ngOnDestroy(): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['allowanceSettings']) {
+      this.buildForm();
+    }
+  }
 
   public buildForm(): void {
+    const allowanceSettings: AllowanceSettings = this.allowanceSettings;
+
     this.allowanceSettingsForm = this._fb.group({
-      autoResetAllowance: [''],
-      resetDate: [''],
-      carryOverUnusedLeave: [''],
-      numberOfDaysToCarryOver: ['', Validators.pattern(RegularExpressions.NUMBERS_ONLY)],
+      autoResetAllowance: [allowanceSettings ? allowanceSettings.autoResetAllowance : ''],
+      resetDate: [allowanceSettings ? allowanceSettings.resetDate : ''],
+      carryOverUnusedLeave: [allowanceSettings ? allowanceSettings.carryOverUnusedLeave : ''],
+      numberOfDaysToCarryOver: [
+        allowanceSettings ? allowanceSettings.numberOfDaysToCarryOver : 0,
+        Validators.pattern(RegularExpressions.NUMBERS_ONLY),
+      ],
     });
+  }
+
+  public save(): void {
+    const allowanceSettings = <AllowanceSettings>this.allowanceSettingsForm.value;
+    this.onSaveAllowanceSettings.emit(allowanceSettings);
   }
 
   public isMobile(): boolean {
     return this._responsiveHelper.isMobile();
+  }
+
+  public isValid(): boolean {
+    return this.allowanceSettingsForm.valid;
   }
 }
