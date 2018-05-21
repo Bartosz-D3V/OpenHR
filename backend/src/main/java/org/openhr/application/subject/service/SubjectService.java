@@ -48,4 +48,6 @@ public interface SubjectService {
   Subject getSubjectSupervisor(long subjectId) throws SubjectDoesNotExistException;
 
   void updateEmail(long subjectId, String updatedEmail) throws SubjectDoesNotExistException;
+
+  void resetUsedAllowance();
 }

@@ -16,7 +16,13 @@ export class AdminService {
   constructor(private _http: HttpClient) {}
 
   public getAdminAllowanceSettings(): Observable<AllowanceSettings> {
-    return this._http.get<AllowanceSettings>(`${this.url}/allowance`, {
+    return this._http.get<AllowanceSettings>(`${this.url}/allowance-settings`, {
+      headers: this.headers,
+    });
+  }
+
+  public updateAdminAllowanceSettings(allowanceSettings: AllowanceSettings): Observable<AllowanceSettings> {
+    return this._http.put<AllowanceSettings>(`${this.url}/allowance-settings`, allowanceSettings, {
       headers: this.headers,
     });
   }

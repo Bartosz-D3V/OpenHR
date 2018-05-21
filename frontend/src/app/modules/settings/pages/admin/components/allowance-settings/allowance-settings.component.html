@@ -27,5 +27,9 @@
         </mat-error>
       </mat-form-field>
     </form>
+
+    <button id="allowance-settings-submit-button" type="submit" class="c-btn" mat-raised-button color="accent"
+            [disabled]="!isValid()" (click)="save()">Save
+    </button>
   </mat-card>
 </section>
