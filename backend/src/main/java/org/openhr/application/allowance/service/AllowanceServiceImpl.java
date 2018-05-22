@@ -14,6 +14,7 @@ import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
@@ -103,7 +104,7 @@ public class AllowanceServiceImpl implements AllowanceService {
               .startAt(date)
               .withSchedule(
                   SimpleScheduleBuilder.simpleSchedule()
-                      .withIntervalInMilliseconds(60)
+                      .withIntervalInMilliseconds(600)
                       .repeatForever())
               .build();
       final JobDetail jobDetail =
@@ -117,8 +118,11 @@ public class AllowanceServiceImpl implements AllowanceService {
 
   @Override
   public void cancelResetUsedAllowance() throws SchedulerException {
+    final JobKey jobKey = new JobKey("reset-allowance-job");
     final TriggerKey triggerKey = new TriggerKey("reset-allowance-job");
     schedulerService.unschedule(triggerKey);
+    schedulerService.cancel(jobKey);
+    schedulerService.stop();
   }
 
   @Override

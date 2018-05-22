@@ -8,9 +8,11 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.allowance.repository.AllowanceRepository;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.HrInformation;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
@@ -26,12 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class AllowanceServiceTest {
   @Autowired private AllowanceService allowanceService;
 
+  @MockBean private AllowanceRepository allowanceRepository;
+
+  @MockBean private SubjectService subjectService;
+
   @MockBean private HolidayService holidayService;
 
   @Test
   public void getLeftAllowanceInDaysShouldReturnDiffBetweenAllowedLeaveAndUsedLeave() {
-    when(allowanceService.getAllowance(100L)).thenReturn(25L);
-    when(allowanceService.getUsedAllowance(100L)).thenReturn(10L);
+    when(allowanceRepository.getAllowance(100L)).thenReturn(25L);
+    when(allowanceRepository.getUsedAllowance(100L)).thenReturn(10L);
 
     assertEquals(15L, allowanceService.getLeftAllowanceInDays(100L));
   }
@@ -40,8 +46,8 @@ public class AllowanceServiceTest {
   public void subtractDaysFromSubjectAllowanceExcludingFreeDaysShouldUpdateHRInformation()
       throws ValidationException {
     when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
-    when(allowanceService.getAllowance(anyLong())).thenReturn(25L);
-    when(allowanceService.getUsedAllowance(anyLong())).thenReturn(0L);
+    when(allowanceRepository.getAllowance(anyLong())).thenReturn(25L);
+    when(allowanceRepository.getUsedAllowance(anyLong())).thenReturn(0L);
 
     final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
@@ -53,6 +59,7 @@ public class AllowanceServiceTest {
     final Subject updatedSubject =
         allowanceService.subtractDaysFromSubjectAllowanceExcludingFreeDays(
             subject, leaveApplication);
+
     assertEquals(subject.getHrInformation(), updatedSubject.getHrInformation());
   }
 
@@ -61,8 +68,8 @@ public class AllowanceServiceTest {
       subtractDaysFromSubjectAllowanceExcludingFreeDaysShouldThrowErrorIfLeaveWouldExceedLeaveAllowance()
           throws ValidationException {
     when(holidayService.getWorkingDaysInBetween(anyObject(), anyObject())).thenReturn(4L);
-    when(allowanceService.getAllowance(anyLong())).thenReturn(20L);
-    when(allowanceService.getUsedAllowance(anyLong())).thenReturn(17L);
+    when(allowanceRepository.getAllowance(anyLong())).thenReturn(20L);
+    when(allowanceRepository.getUsedAllowance(anyLong())).thenReturn(17L);
 
     final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
