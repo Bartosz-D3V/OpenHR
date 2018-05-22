@@ -38,7 +38,7 @@ public class LeaveApplicationDAOTest {
       new ContactInformation("0123456789", "j.x@g.com", mockAddress);
   private final EmployeeInformation mockEmployeeInformation =
       new EmployeeInformation("S8821 B", "Tester", "Core", "12A", null, null);
-  private final HrInformation mockHrInformation = new HrInformation(25L);
+  private final HrInformation mockHrInformation = new HrInformation(25);
   private final Employee mockEmployee =
       new Employee(
           mockPersonalInformation,

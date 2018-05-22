@@ -30,7 +30,7 @@ public class AllowanceServiceImpl implements AllowanceService {
   private final AllowanceRepository allowanceRepository;
   private final SubjectService subjectService;
   private final HolidayService holidayService;
-  private final SchedulerService schedulerService;
+  private final SchedulerService schedulerService;;
   private final MessageSource messageSource;
 
   public AllowanceServiceImpl(
@@ -96,11 +96,13 @@ public class AllowanceServiceImpl implements AllowanceService {
   }
 
   @Override
-  public void scheduleResetUsedAllowance(final Date date) throws SchedulerException {
+  public void scheduleResetUsedAllowance(final Date date, final long numberOfDaysToCarryOver)
+      throws SchedulerException {
     if (!schedulerService.jobScheduled(new TriggerKey("reset-allowance-job"))) {
       final Trigger trigger =
           TriggerBuilder.newTrigger()
               .withIdentity("reset-allowance-job", "allowance-group")
+              .usingJobData("numberOfDaysToCarryOver", numberOfDaysToCarryOver)
               .startAt(date)
               .withSchedule(
                   SimpleScheduleBuilder.simpleSchedule()
@@ -127,8 +129,8 @@ public class AllowanceServiceImpl implements AllowanceService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
-  public void resetUsedAllowance() {
-    allowanceRepository.resetAllowance();
+  public void resetUsedAllowance(final long numberOfDaysToCarryOver) {
+    allowanceRepository.resetAllowance(numberOfDaysToCarryOver);
   }
 
   private long getYearInMilis() {

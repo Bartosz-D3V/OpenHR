@@ -72,13 +72,20 @@ public class AllowanceRepository {
   }
 
   @Transactional(propagation = Propagation.REQUIRED)
-  public void resetAllowance() {
+  public void resetAllowance(final long numberOfDaysToCarryOver) {
     try {
       final Session session = sessionFactory.getCurrentSession();
       final Criteria criteria = session.createCriteria(HrInformation.class);
       final ScrollableResults scrollableResults = criteria.scroll();
       while (scrollableResults.next()) {
         final HrInformation hrInformation = (HrInformation) scrollableResults.get(0);
+        final long allowance = hrInformation.getAllowance();
+        final long usedAllowance = hrInformation.getUsedAllowance();
+        if (usedAllowance < allowance) {
+          final long diff = (allowance - usedAllowance);
+          final long daysToCarry = diff > numberOfDaysToCarryOver ? numberOfDaysToCarryOver : diff;
+          hrInformation.setAllowance(allowance + daysToCarry);
+        }
         hrInformation.setUsedAllowance(0);
         session.merge(hrInformation);
       }

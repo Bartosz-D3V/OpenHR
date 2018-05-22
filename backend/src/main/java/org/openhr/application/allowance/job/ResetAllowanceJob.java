@@ -15,6 +15,8 @@ public class ResetAllowanceJob implements Job {
   @Override
   public void execute(final JobExecutionContext jobExecutionContext) {
     SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    allowanceService.resetUsedAllowance();
+    final long numberOfDaysToCarryOver =
+        jobExecutionContext.getMergedJobDataMap().getLongValue("numberOfDaysToCarryOver");
+    allowanceService.resetUsedAllowance(numberOfDaysToCarryOver);
   }
 }
