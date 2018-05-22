@@ -51,7 +51,7 @@ public class AllowanceServiceTest {
 
     final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
-    hrInformation.setAllowance(25L);
+    hrInformation.setAllowance(25);
     subject.setHrInformation(hrInformation);
     final LeaveApplication leaveApplication =
         new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));
@@ -73,7 +73,7 @@ public class AllowanceServiceTest {
 
     final Subject subject = new Employee();
     final HrInformation hrInformation = new HrInformation();
-    hrInformation.setAllowance(25L);
+    hrInformation.setAllowance(25);
     subject.setHrInformation(hrInformation);
     final LeaveApplication leaveApplication =
         new LeaveApplication(LocalDate.now(), LocalDate.now().plusDays(4));

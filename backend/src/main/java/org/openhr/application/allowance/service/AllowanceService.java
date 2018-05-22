@@ -18,9 +18,10 @@ public interface AllowanceService {
 
   void revertSubtractedDaysForApplication(Subject subject, LeaveApplication leaveApplication);
 
-  void scheduleResetUsedAllowance(Date date) throws SchedulerException;
+  void scheduleResetUsedAllowance(Date date, long numberOfDaysToCarryOver)
+      throws SchedulerException;
 
   void cancelResetUsedAllowance() throws SchedulerException;
 
-  void resetUsedAllowance();
+  void resetUsedAllowance(long numberOfDaysToCarryOver);
 }

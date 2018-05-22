@@ -55,7 +55,7 @@ public class SubjectControllerTest {
       new ContactInformation("0123456789", "j.x@g.com", mockAddress);
   private static final EmployeeInformation mockEmployeeInformation =
       new EmployeeInformation("S8821 B", "Tester", "Core", "12A", null, null);
-  private static final HrInformation mockHrInformation = new HrInformation(25L);
+  private static final HrInformation mockHrInformation = new HrInformation(25);
   private static final Subject mockSubject =
       new Employee(
           mockPersonalInformation,

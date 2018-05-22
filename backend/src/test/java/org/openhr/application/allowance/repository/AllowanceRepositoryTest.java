@@ -32,7 +32,7 @@ public class AllowanceRepositoryTest {
       new ContactInformation("0123456789", "j.x@g.com", mockAddress);
   private static final EmployeeInformation mockEmployeeInformation =
       new EmployeeInformation("S8821 B", "Tester", "Core", "12A", null, null);
-  private static final HrInformation mockHrInformation = new HrInformation(25L);
+  private static final HrInformation mockHrInformation = new HrInformation(25);
   private static final User mockUser = new User("Jhn13", "testPass");
   private static final Employee mockSubject =
       new Employee(
@@ -49,7 +49,7 @@ public class AllowanceRepositoryTest {
   @Before
   public void setUp() {
     final Session session = sessionFactory.getCurrentSession();
-    mockHrInformation.setAllowance(25L);
+    mockHrInformation.setAllowance(25);
     mockHrInformation.setHrInformationId(2L);
     session.save(mockPersonalInformation);
     session.save(mockContactInformation);
@@ -70,8 +70,8 @@ public class AllowanceRepositoryTest {
   @Test
   public void getUsedAllowanceShouldReturnUsedAllowance() throws HibernateException {
     final Session session = sessionFactory.getCurrentSession();
-    final HrInformation mockHrInformation2 = new HrInformation(20L);
-    mockHrInformation2.setUsedAllowance(10L);
+    final HrInformation mockHrInformation2 = new HrInformation(20);
+    mockHrInformation2.setUsedAllowance(10);
     mockSubject.setHrInformation(mockHrInformation2);
     session.merge(mockSubject);
     final long actualUsedAllowance =
