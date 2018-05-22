@@ -58,6 +58,10 @@ describe('RegularExpressions', () => {
       expect(RegularExpressions.NUMBERS_ONLY.test(exampleNumber2)).toBeTruthy();
     });
 
+    it('should accept negative numbers', () => {
+      expect(RegularExpressions.NUMBERS_ONLY.test('-2000')).toBeTruthy();
+    });
+
     it('should not accept letters', () => {
       const exampleInNumber1 = '1sda233322';
       const exampleInNumber2 = '21556abv';
