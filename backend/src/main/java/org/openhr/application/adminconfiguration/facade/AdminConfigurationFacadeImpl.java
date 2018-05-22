@@ -2,6 +2,7 @@ package org.openhr.application.adminconfiguration.facade;
 
 import org.openhr.application.adminconfiguration.domain.AllowanceSettings;
 import org.openhr.application.adminconfiguration.service.AdminConfigurationService;
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,8 @@ public class AdminConfigurationFacadeImpl implements AdminConfigurationFacade {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
+  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings)
+      throws SchedulerException {
     return adminConfigurationService.updateAllowanceSettings(allowanceSettings);
   }
 }

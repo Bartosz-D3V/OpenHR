@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openhr.application.allowance.service.AllowanceService;
 import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
@@ -77,6 +78,8 @@ public class LeaveApplicationProcessTest {
   @Autowired private LeaveApplicationService leaveApplicationService;
 
   @MockBean private SubjectService subjectService;
+
+  @MockBean private AllowanceService allowanceService;
 
   @MockBean private UserService userService;
 
@@ -174,7 +177,7 @@ public class LeaveApplicationProcessTest {
   public void managerShouldEndWorkflowByRejectingTheApplication() throws Exception {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
 
@@ -212,7 +215,7 @@ public class LeaveApplicationProcessTest {
     when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
     when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
@@ -258,7 +261,7 @@ public class LeaveApplicationProcessTest {
     when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
     when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
@@ -307,7 +310,7 @@ public class LeaveApplicationProcessTest {
       throws ValidationException, SubjectDoesNotExistException {
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
     when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);
@@ -337,7 +340,7 @@ public class LeaveApplicationProcessTest {
     when(userService.notificationsEnabled(mockSubject.getUser().getUserId())).thenReturn(true);
     when(leaveApplicationService.getLeaveTypeById(leaveType.getLeaveTypeId()))
         .thenReturn(leaveType);
-    when(subjectService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
+    when(allowanceService.getLeftAllowanceInDays(anyLong())).thenReturn(25L);
     when(leaveApplicationRepository.dateRangeAlreadyBooked(anyLong(), anyObject(), anyObject()))
         .thenReturn(false);
     when(subjectService.getSubjectDetails(anyLong())).thenReturn(mockSubject);

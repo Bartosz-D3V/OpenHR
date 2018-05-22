@@ -2,6 +2,7 @@ package org.openhr.application.adminconfiguration.controller;
 
 import org.openhr.application.adminconfiguration.domain.AllowanceSettings;
 import org.openhr.application.adminconfiguration.facade.AdminConfigurationFacade;
+import org.quartz.SchedulerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public class AdminConfigurationController {
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
   public AllowanceSettings updateAllowanceSettings(
-      @RequestBody final AllowanceSettings allowanceSettings) {
+      @RequestBody final AllowanceSettings allowanceSettings) throws SchedulerException {
     return adminConfigurationFacade.updateAllowanceSettings(allowanceSettings);
   }
 }
