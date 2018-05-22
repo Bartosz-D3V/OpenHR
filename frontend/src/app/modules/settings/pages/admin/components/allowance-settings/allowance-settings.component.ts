@@ -1,12 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentInput } from 'moment';
 
 import { NAMED_DATE } from '@config/datepicker-format';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { AllowanceSettings } from '@modules/settings/pages/admin/domain/allowance-settings';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
+import { ParentErrorStateMatcher } from '@shared/util/matchers/parent-error-state-matcher';
 
 @Component({
   selector: 'app-allowance-settings',
@@ -18,6 +20,7 @@ import { ResponsiveHelperService } from '@shared/services/responsive-helper/resp
   ],
 })
 export class AllowanceSettingsComponent implements OnInit, OnChanges {
+  public parentMatcher: ParentErrorStateMatcher = new ParentErrorStateMatcher();
   public allowanceSettingsForm: FormGroup;
 
   @Input() public allowanceSettings: AllowanceSettings;
@@ -25,6 +28,17 @@ export class AllowanceSettingsComponent implements OnInit, OnChanges {
   @Output() public onSaveAllowanceSettings: EventEmitter<AllowanceSettings> = new EventEmitter<AllowanceSettings>();
 
   constructor(private _responsiveHelper: ResponsiveHelperService, private _fb: FormBuilder) {}
+
+  public static validateResetDate(formGroup: FormGroup): ValidationErrors {
+    const autoResetAllowance: boolean = formGroup.get('autoResetAllowance').value;
+    const resetDate: MomentInput = formGroup.get('resetDate').value;
+    const error: ValidationErrors = {
+      resetDateRequired: {
+        valid: false,
+      },
+    };
+    return autoResetAllowance && resetDate === null ? error : null;
+  }
 
   ngOnInit(): void {
     this.buildForm();
@@ -39,15 +53,23 @@ export class AllowanceSettingsComponent implements OnInit, OnChanges {
   public buildForm(): void {
     const allowanceSettings: AllowanceSettings = this.allowanceSettings;
 
-    this.allowanceSettingsForm = this._fb.group({
-      autoResetAllowance: [allowanceSettings ? allowanceSettings.autoResetAllowance : ''],
-      resetDate: [allowanceSettings ? allowanceSettings.resetDate : ''],
-      carryOverUnusedLeave: [allowanceSettings ? allowanceSettings.carryOverUnusedLeave : ''],
-      numberOfDaysToCarryOver: [
-        allowanceSettings ? allowanceSettings.numberOfDaysToCarryOver : 0,
-        Validators.pattern(RegularExpressions.NUMBERS_ONLY),
-      ],
-    });
+    this.allowanceSettingsForm = this._fb.group(
+      {
+        autoResetAllowance: [allowanceSettings ? allowanceSettings.autoResetAllowance : ''],
+        resetDate: [allowanceSettings ? allowanceSettings.resetDate : ''],
+        carryOverUnusedLeave: [allowanceSettings ? allowanceSettings.carryOverUnusedLeave : 0],
+        numberOfDaysToCarryOver: [
+          allowanceSettings ? allowanceSettings.numberOfDaysToCarryOver : 0,
+          Validators.compose([
+            Validators.pattern(RegularExpressions.NUMBERS_ONLY),
+            Validators.min(0),
+            Validators.required,
+            Validators.nullValidator,
+          ]),
+        ],
+      },
+      { validator: AllowanceSettingsComponent.validateResetDate }
+    );
   }
 
   public save(): void {
