@@ -2,6 +2,7 @@ package org.openhr.application.subject.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
@@ -26,17 +27,17 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 public class SubjectDAOTest {
-  private static final Address mockAddress =
+  private final Address mockAddress =
       new Address("100 Fishbury Hs", "1 Ldn Road", null, "12 DSL", "London", "UK");
-  private static final PersonalInformation mockPersonalInformation =
+  private final PersonalInformation mockPersonalInformation =
       new PersonalInformation("John", "Xavier", "Alex", null);
-  private static final ContactInformation mockContactInformation =
+  private final ContactInformation mockContactInformation =
       new ContactInformation("0123456789", "j.x@g.com", mockAddress);
-  private static final EmployeeInformation mockEmployeeInformation =
+  private final EmployeeInformation mockEmployeeInformation =
       new EmployeeInformation("S8821 B", "Tester", "Core", "12A", null, null);
-  private static final HrInformation mockHrInformation = new HrInformation(25L);
-  private static final User mockUser = new User("Jhn13", "testPass");
-  private static final Employee mockSubject =
+  private final HrInformation mockHrInformation = new HrInformation(25L);
+  private final User mockUser = new User(UUID.randomUUID().toString().substring(0, 19), "testPass");
+  private final Employee mockSubject =
       new Employee(
           mockPersonalInformation,
           mockContactInformation,
