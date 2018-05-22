@@ -106,7 +106,7 @@ public class AllowanceServiceImpl implements AllowanceService {
               .startAt(date)
               .withSchedule(
                   SimpleScheduleBuilder.simpleSchedule()
-                      .withIntervalInMilliseconds(600)
+                      .withIntervalInMilliseconds(getYearInMilis())
                       .repeatForever())
               .build();
       final JobDetail jobDetail =

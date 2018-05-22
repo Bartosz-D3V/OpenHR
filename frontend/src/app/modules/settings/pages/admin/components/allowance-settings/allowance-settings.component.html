@@ -5,25 +5,45 @@
           fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
           fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
       <div fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-        <mat-slide-toggle formControlName="autoResetAllowance">Automatically reset allowance</mat-slide-toggle>
+        <mat-slide-toggle #autoResetAllowance formControlName="autoResetAllowance">Automatically reset allowance
+        </mat-slide-toggle>
       </div>
 
       <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [matDatepicker]="resetDatePicker" placeholder="Reset date"
-               formControlName="resetDate" name="resetDate">
+               formControlName="resetDate" name="resetDate"
+               [errorStateMatcher]="parentMatcher" readonly>
         <mat-datepicker-toggle matSuffix [for]="resetDatePicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isMobile()" #resetDatePicker></mat-datepicker>
+        <mat-error *ngIf="allowanceSettingsForm.hasError('resetDateRequired')">
+          Initial reset date is required
+        </mat-error>
       </mat-form-field>
 
       <div fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-        <mat-slide-toggle formControlName="carryOverUnusedLeave">Allow to carry over unused leave</mat-slide-toggle>
+        <mat-slide-toggle #carryOverUnusedLeave formControlName="carryOverUnusedLeave">Allow to carry over unused
+          leave
+        </mat-slide-toggle>
       </div>
 
       <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [type]="'number'" placeholder="Maximum days to carry over"
                formControlName="numberOfDaysToCarryOver">
-        <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('pattern')">
+        <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
+        allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('pattern')">
           Number of days to carry over can contains only numerical value
+        </mat-error>
+        <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
+        allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('min')">
+          Number of days to carry over cannot be negative
+        </mat-error>
+        <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
+        allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('required')">
+          Number of days to carry over is required
+        </mat-error>
+        <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
+        allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('null')">
+          Number of days to carry over is required
         </mat-error>
       </mat-form-field>
     </form>
