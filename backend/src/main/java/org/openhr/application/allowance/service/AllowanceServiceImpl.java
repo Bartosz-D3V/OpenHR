@@ -12,15 +12,17 @@ import org.openhr.application.scheduler.service.SchedulerService;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
+import org.openhr.configuration.QuartzConfiguration;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,12 +111,15 @@ public class AllowanceServiceImpl implements AllowanceService {
                       .withIntervalInMilliseconds(getYearInMilis())
                       .repeatForever())
               .build();
-      final JobDetail jobDetail =
-          JobBuilder.newJob(ResetAllowanceJob.class)
-              .withIdentity("reset-allowance-job", "allowance-group")
-              .build();
-      schedulerService.schedule(jobDetail, trigger);
-      schedulerService.start();
+      JobDetailFactoryBean jdfb = QuartzConfiguration.createJobDetail(ResetAllowanceJob.class);
+      jdfb.setBeanName("dynamicJobBean");
+      jdfb.afterPropertiesSet();
+
+      SimpleTriggerFactoryBean stfb = QuartzConfiguration.createTrigger(jdfb.getObject(), 5000L);
+      stfb.setBeanName("dynamicJobBeanTrigger");
+      stfb.afterPropertiesSet();
+
+      new StdSchedulerFactory().getScheduler().scheduleJob(jdfb.getObject(), stfb.getObject());
     }
   }
 
