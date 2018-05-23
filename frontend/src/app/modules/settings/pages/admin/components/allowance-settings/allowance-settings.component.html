@@ -12,11 +12,15 @@
       <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [matDatepicker]="resetDatePicker" placeholder="Reset date"
                formControlName="resetDate" name="resetDate"
-               [errorStateMatcher]="parentMatcher" readonly>
+               [errorStateMatcher]="parentMatcher" appDisableControl [disable]="!autoResetAllowance.checked"
+               appResetControl [reset]="!autoResetAllowance.checked">
         <mat-datepicker-toggle matSuffix [for]="resetDatePicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isMobile()" #resetDatePicker></mat-datepicker>
         <mat-error *ngIf="allowanceSettingsForm.hasError('resetDateRequired')">
           Initial reset date is required
+        </mat-error>
+        <mat-error *ngIf="allowanceSettingsForm.get('resetDate').hasError('matDatepickerParse')">
+          Date is not in the correct format
         </mat-error>
       </mat-form-field>
 
@@ -28,7 +32,8 @@
 
       <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [type]="'number'" placeholder="Maximum days to carry over"
-               formControlName="numberOfDaysToCarryOver">
+               formControlName="numberOfDaysToCarryOver" appDisableControl [disable]="!carryOverUnusedLeave.checked"
+               appResetControl [reset]="!carryOverUnusedLeave.checked">
         <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
         allowanceSettingsForm.get('numberOfDaysToCarryOver').hasError('pattern')">
           Number of days to carry over can contains only numerical value
