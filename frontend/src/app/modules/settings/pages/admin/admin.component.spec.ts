@@ -23,6 +23,8 @@ import { AllowanceSettings } from '@modules/settings/pages/admin/domain/allowanc
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { DisableControlDirective } from '@shared/directives/disable-control/disable-control.directive';
+import { ResetControlDirective } from '@shared/directives/reset-control/reset-control.directive';
 import { AdminComponent } from './admin.component';
 
 describe('AdminComponent', () => {
@@ -44,7 +46,14 @@ describe('AdminComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [AdminComponent, AllowanceSettingsComponent, PageHeaderComponent, CapitalizePipe],
+        declarations: [
+          AdminComponent,
+          AllowanceSettingsComponent,
+          PageHeaderComponent,
+          CapitalizePipe,
+          DisableControlDirective,
+          ResetControlDirective,
+        ],
         imports: [
           ReactiveFormsModule,
           FormsModule,
