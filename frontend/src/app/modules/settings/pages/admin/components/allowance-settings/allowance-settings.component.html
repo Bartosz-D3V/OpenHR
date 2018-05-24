@@ -4,12 +4,12 @@
     <form [formGroup]="allowanceSettingsForm" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
           fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
           fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
-      <div fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
+      <div fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <mat-slide-toggle #autoResetAllowance formControlName="autoResetAllowance">Automatically reset allowance
         </mat-slide-toggle>
       </div>
 
-      <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
+      <mat-form-field fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [matDatepicker]="resetDatePicker" placeholder="Reset date"
                formControlName="resetDate" name="resetDate"
                [errorStateMatcher]="parentMatcher" appDisableControl [disable]="!autoResetAllowance.checked"
@@ -24,13 +24,13 @@
         </mat-error>
       </mat-form-field>
 
-      <div fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
+      <div fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <mat-slide-toggle #carryOverUnusedLeave formControlName="carryOverUnusedLeave">Allow to carry over unused
           leave
         </mat-slide-toggle>
       </div>
 
-      <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
+      <mat-form-field fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input matInput [type]="'number'" placeholder="Maximum days to carry over"
                formControlName="numberOfDaysToCarryOver" appDisableControl [disable]="!carryOverUnusedLeave.checked"
                appResetControl [reset]="!carryOverUnusedLeave.checked">
@@ -52,9 +52,9 @@
         </mat-error>
       </mat-form-field>
     </form>
-
-    <button id="allowance-settings-submit-button" type="submit" class="c-btn" mat-raised-button color="accent"
-            [disabled]="!isValid()" (click)="save()">Save
-    </button>
   </mat-card>
+
+  <button id="allowance-settings-submit-button" type="submit" class="c-btn" mat-raised-button color="accent"
+          [disabled]="!isValid()" (click)="save()">Save
+  </button>
 </section>

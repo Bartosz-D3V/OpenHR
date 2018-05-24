@@ -18,4 +18,9 @@ public class AdminConfigurationRepository {
   public AllowanceSettings getAllowanceSettings() {
     return adminConfigurationDAO.getAllowanceSettings();
   }
+
+  @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+  public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
+    return adminConfigurationDAO.updateAllowanceSettings(allowanceSettings);
+  }
 }

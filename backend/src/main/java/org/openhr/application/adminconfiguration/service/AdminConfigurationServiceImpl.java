@@ -39,6 +39,7 @@ public class AdminConfigurationServiceImpl implements AdminConfigurationService 
       throws SchedulerException, ValidationException {
     validateAllowanceSettings(allowanceSettings);
     updateScheduler(allowanceSettings);
+    adminConfigurationRepository.updateAllowanceSettings(allowanceSettings);
     return allowanceSettings;
   }
 
