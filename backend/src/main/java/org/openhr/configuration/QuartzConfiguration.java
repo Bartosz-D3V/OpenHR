@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.openhr.common.factory.AutowiringSpringQuartzFactory;
-import org.quartz.JobDetail;
-import org.quartz.SimpleTrigger;
 import org.quartz.spi.JobFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -14,10 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
-import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
 @Configuration
 public class QuartzConfiguration {
@@ -61,33 +56,5 @@ public class QuartzConfiguration {
       return new ClassPathResource("/quartz-prod.properties");
     }
     return new ClassPathResource("/quartz-dev.properties");
-  }
-
-  public static SimpleTriggerFactoryBean createTrigger(
-      final JobDetail jobDetail, final long pollFrequencyMs) {
-    final SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
-    factoryBean.setJobDetail(jobDetail);
-    factoryBean.setStartDelay(0L);
-    factoryBean.setRepeatInterval(pollFrequencyMs);
-    factoryBean.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
-    factoryBean.setMisfireInstruction(
-        SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT);
-    return factoryBean;
-  }
-
-  public static CronTriggerFactoryBean createCronTrigger(
-      final JobDetail jobDetail, final String cronExpression) {
-    final CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
-    factoryBean.setJobDetail(jobDetail);
-    factoryBean.setCronExpression(cronExpression);
-    factoryBean.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
-    return factoryBean;
-  }
-
-  public static JobDetailFactoryBean createJobDetail(final Class jobClass) {
-    final JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
-    factoryBean.setJobClass(jobClass);
-    factoryBean.setDurability(true);
-    return factoryBean;
   }
 }
