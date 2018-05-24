@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.openhr.common.factory.AutowiringSpringQuartzFactory;
 import org.quartz.spi.JobFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,8 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 @Configuration
 public class QuartzConfiguration {
+  @Value("${quartz.auto.startup}")
+  private boolean quartzAutoStartup;
 
   private final Environment environment;
 
@@ -35,9 +38,11 @@ public class QuartzConfiguration {
       @Qualifier("dataSource") final DataSource dataSource, final JobFactory jobFactory)
       throws IOException {
     final SchedulerFactoryBean factory = new SchedulerFactoryBean();
+    if (quartzAutoStartup) {
+      factory.setAutoStartup(true);
+      factory.setDataSource(dataSource);
+    }
     factory.setOverwriteExistingJobs(true);
-    factory.setAutoStartup(true);
-    factory.setDataSource(dataSource);
     factory.setJobFactory(jobFactory);
     factory.setQuartzProperties(quartzProperties());
     return factory;
