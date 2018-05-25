@@ -41,6 +41,9 @@ public class QuartzConfiguration {
     if (quartzAutoStartup) {
       factory.setAutoStartup(true);
       factory.setDataSource(dataSource);
+    } else {
+      factory.setAutoStartup(false);
+      factory.setDataSource(null);
     }
     factory.setOverwriteExistingJobs(true);
     factory.setJobFactory(jobFactory);

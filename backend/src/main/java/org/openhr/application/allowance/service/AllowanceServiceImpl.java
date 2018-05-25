@@ -154,7 +154,6 @@ public class AllowanceServiceImpl implements AllowanceService {
     final TriggerKey triggerKey = new TriggerKey(ResetJobAllowanceSettings.name);
     schedulerService.unschedule(triggerKey);
     schedulerService.cancel(jobKey);
-    schedulerService.stop();
   }
 
   @Override

@@ -14,18 +14,6 @@ import org.springframework.stereotype.Service;
 @Configuration
 public class SchedulerServiceImpl implements SchedulerService {
   @Override
-  public void start() throws SchedulerException {
-    final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-    scheduler.start();
-  }
-
-  @Override
-  public void stop() throws SchedulerException {
-    final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-    scheduler.shutdown();
-  }
-
-  @Override
   public void schedule(final JobDetail jobDetail, final Trigger trigger) throws SchedulerException {
     final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
     scheduler.scheduleJob(jobDetail, trigger);
