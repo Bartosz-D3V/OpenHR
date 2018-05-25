@@ -1,14 +1,12 @@
 import { Component, Inject, OnDestroy, Optional } from '@angular/core';
 import { HttpResponse, HttpHeaderResponse, HttpErrorResponse } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { TokenExpirationService } from '@shared/components/token-expiration-modal/service/token-expiration.service';
-import { RefreshToken } from '@shared/components/login-box/domain/refresh-token';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
-import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
 
 @Component({
   selector: 'app-token-expiration-modal',

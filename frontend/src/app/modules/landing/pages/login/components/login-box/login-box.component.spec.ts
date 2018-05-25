@@ -9,8 +9,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 
 import { LoginBoxComponent } from './login-box.component';
-import { LoginService } from './service/login.service';
-import { Credentials } from './domain/credentials';
+import { LoginService } from '../../service/login.service';
+import { Credentials } from '../../domain/credentials';
 import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
 import { TokenExpirationModalComponent } from '@shared/components/token-expiration-modal/token-expiration-modal.component';
 

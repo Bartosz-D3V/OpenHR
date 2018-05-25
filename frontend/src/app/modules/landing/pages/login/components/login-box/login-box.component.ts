@@ -1,13 +1,13 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
-
-import { JwtHelperService } from '../../services/jwt/jwt-helper.service';
-import { Credentials } from './domain/credentials';
-import { LoginService } from './service/login.service';
 import { ISubscription } from 'rxjs/Subscription';
+
+import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
-import { RefreshToken } from '@shared/components/login-box/domain/refresh-token';
+import { RefreshToken } from 'app/modules/landing/pages/login/domain/refresh-token';
+import { Credentials } from '../../domain/credentials';
+import { LoginService } from '../../service/login.service';
 
 @Component({
   selector: 'app-login-box',
@@ -17,6 +17,7 @@ import { RefreshToken } from '@shared/components/login-box/domain/refresh-token'
 })
 export class LoginBoxComponent implements OnInit, OnDestroy {
   private $loginService: ISubscription;
+  private isLoading: boolean;
 
   @Output() public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -29,7 +30,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.$loginService !== undefined) {
+    if (this.$loginService) {
       this.$loginService.unsubscribe();
     }
   }
@@ -42,6 +43,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   }
 
   public login(): void {
+    this.isLoading = true;
     const credentials: Credentials = <Credentials>this.loginBoxForm.value;
     this.$loginService = this._loginService.login(credentials).subscribe(
       (response: HttpResponse<RefreshToken>) => {
@@ -50,6 +52,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
         this._jwtHelper.saveToken(token);
         this._jwtHelper.saveRefreshToken(refreshToken);
         this.onAuthenticated.emit(true);
+        this.isLoading = false;
       },
       (err: HttpResponse<null>) => {
         this.handleErrorResponse(err);
