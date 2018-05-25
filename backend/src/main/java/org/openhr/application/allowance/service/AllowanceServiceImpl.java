@@ -116,6 +116,7 @@ public class AllowanceServiceImpl implements AllowanceService {
     jobDetailFactoryBean.setName(ResetJobAllowanceSettings.name);
     jobDetailFactoryBean.afterPropertiesSet();
     schedulerService.schedule(jobDetailFactoryBean.getObject(), trigger);
+    schedulerService.start();
   }
 
   private void updateResetUsedAllowanceJob(final Date date, final long numberOfDaysToCarryOver)
@@ -129,6 +130,7 @@ public class AllowanceServiceImpl implements AllowanceService {
     final Trigger trigger = buildTrigger(date, numberOfDaysToCarryOver);
     schedulerService.rescheduleJob(triggerKey, trigger);
     schedulerService.replaceJob(jobDetailFactoryBean.getObject());
+    schedulerService.start();
   }
 
   private Trigger buildTrigger(final Date date, final long numberOfDaysToCarryOver) {
