@@ -1,0 +1,10 @@
+<section fxLayout="row wrap">
+  <app-page-header [header]="'Admin configuration'"></app-page-header>
+</section>
+
+<mat-tab-group>
+  <mat-tab label="Allowance" (selectChange)="fetchAllowanceSettings()">
+    <app-allowance-settings [allowanceSettings]="allowanceSettings"
+                            (onSaveAllowanceSettings)="updateAllowanceSettings($event)"></app-allowance-settings>
+  </mat-tab>
+</mat-tab-group>

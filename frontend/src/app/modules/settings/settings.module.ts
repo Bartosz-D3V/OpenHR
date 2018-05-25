@@ -12,6 +12,7 @@ import {
   MatIconModule,
   MatTabsModule,
   MatProgressSpinnerModule,
+  MatDatepickerModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs/hammer';
@@ -20,6 +21,8 @@ import { SharedModule } from '@modules/shared/shared.module';
 import { AppRoutingModule } from '../../app-routing.module';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { AccountComponent } from './pages/account/account.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { AllowanceSettingsComponent } from './pages/admin/components/allowance-settings/allowance-settings.component';
 
 @NgModule({
   imports: [
@@ -39,7 +42,8 @@ import { AccountComponent } from './pages/account/account.component';
     MatIconModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
   ],
-  declarations: [AccountComponent, SettingsComponent],
+  declarations: [AccountComponent, SettingsComponent, AdminComponent, AllowanceSettingsComponent],
 })
 export class SettingsModule {}

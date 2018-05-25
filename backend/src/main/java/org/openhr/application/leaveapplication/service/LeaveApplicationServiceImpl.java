@@ -3,6 +3,7 @@ package org.openhr.application.leaveapplication.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import org.openhr.application.allowance.service.AllowanceService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.application.leaveapplication.domain.LeaveType;
 import org.openhr.application.leaveapplication.repository.LeaveApplicationRepository;
@@ -22,14 +23,17 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 
   private final LeaveApplicationRepository leaveApplicationRepository;
   private final SubjectService subjectService;
+  private final AllowanceService allowanceService;
   private final MessageSource messageSource;
 
   public LeaveApplicationServiceImpl(
       final LeaveApplicationRepository leaveApplicationRepository,
       final SubjectService subjectService,
+      final AllowanceService allowanceService,
       final MessageSource messageSource) {
     this.leaveApplicationRepository = leaveApplicationRepository;
     this.subjectService = subjectService;
+    this.allowanceService = allowanceService;
     this.messageSource = messageSource;
   }
 
@@ -55,7 +59,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     validateBookedApplications(leaveApplication, subject.getSubjectId());
     final long leaveTypeId = leaveApplication.getLeaveType().getLeaveTypeId();
     leaveApplication.setLeaveType(getLeaveTypeById(leaveTypeId));
-    subjectService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
+    allowanceService.subtractDaysFromSubjectAllowanceExcludingFreeDays(subject, leaveApplication);
 
     return leaveApplicationRepository.createLeaveApplication(subject, leaveApplication);
   }
@@ -72,7 +76,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
   }
 
   private void validateLeftAllowance(final Subject subject) throws ValidationException {
-    if (subjectService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
+    if (allowanceService.getLeftAllowanceInDays(subject.getSubjectId()) == 0) {
       throw new ValidationException(
           messageSource.getMessage("error.validation.noleftallowance", null, Locale.getDefault()));
     }
@@ -105,7 +109,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
         leaveApplicationRepository.getLeaveApplication(applicationId);
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByManager(false);
-    subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
+    allowanceService.revertSubtractedDaysForApplication(subject, leaveApplication);
     leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 
@@ -132,7 +136,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
         leaveApplicationRepository.getLeaveApplication(applicationId);
     final Subject subject = getApplicationApplicant(applicationId);
     leaveApplication.setApprovedByHR(false);
-    subjectService.revertSubtractedDaysForApplication(subject, leaveApplication);
+    allowanceService.revertSubtractedDaysForApplication(subject, leaveApplication);
     leaveApplicationRepository.updateLeaveApplication(applicationId, leaveApplication);
   }
 

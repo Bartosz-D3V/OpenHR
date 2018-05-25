@@ -22,7 +22,6 @@ public class HrInformation implements Serializable {
   private long allowance;
 
   @Column(name = "USED_ALLOWANCE")
-  @Max(value = 40)
   private long usedAllowance;
 
   public HrInformation() {

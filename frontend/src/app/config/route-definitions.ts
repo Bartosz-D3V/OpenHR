@@ -17,6 +17,7 @@ import { ManageWorkersDataComponent } from '@modules/core/pages/manage-workers-d
 import { MyApplicationsComponent } from '@modules/core/pages/my-applications/my-applications.component';
 import { DashboardComponent } from '@modules/core/pages/dashboard/dashboard.component';
 import { ManageDelegationsComponent } from '@modules/core/pages/manage-delegations/manage-delegations.component';
+import { AdminComponent } from '@modules/settings/pages/admin/admin.component';
 
 export const routeDefinitions: Routes = [
   {
@@ -114,6 +115,12 @@ export const routeDefinitions: Routes = [
       {
         path: 'settings',
         component: SettingsComponent,
+        outlet: 'core',
+        pathMatch: 'full',
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
         outlet: 'core',
         pathMatch: 'full',
       },
