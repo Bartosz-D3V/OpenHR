@@ -7,6 +7,10 @@ import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 
 public interface SchedulerService {
+  void start() throws SchedulerException;
+
+  void stop() throws SchedulerException;
+
   void schedule(JobDetail jobDetail, Trigger trigger) throws SchedulerException;
 
   void unschedule(TriggerKey triggerKey) throws SchedulerException;
