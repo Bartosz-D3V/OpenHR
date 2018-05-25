@@ -19,7 +19,7 @@ public class AdminConfigurationRepository {
     return adminConfigurationDAO.getAllowanceSettings();
   }
 
-  @Transactional(propagation = Propagation.MANDATORY)
+  @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
   public AllowanceSettings updateAllowanceSettings(final AllowanceSettings allowanceSettings) {
     return adminConfigurationDAO.updateAllowanceSettings(allowanceSettings);
   }

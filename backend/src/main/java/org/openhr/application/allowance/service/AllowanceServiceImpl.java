@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Locale;
+import org.openhr.application.allowance.domain.ResetJobAllowanceSettings;
 import org.openhr.application.allowance.job.ResetAllowanceJob;
 import org.openhr.application.allowance.repository.AllowanceRepository;
 import org.openhr.application.holiday.service.HolidayService;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
+import org.openhr.application.scheduler.factory.SchedulerFactory;
 import org.openhr.application.scheduler.service.SchedulerService;
 import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.subject.Subject;
 import org.openhr.common.exception.ValidationException;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
@@ -21,6 +21,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.springframework.context.MessageSource;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class AllowanceServiceImpl implements AllowanceService {
   private final AllowanceRepository allowanceRepository;
   private final SubjectService subjectService;
   private final HolidayService holidayService;
-  private final SchedulerService schedulerService;;
+  private final SchedulerService schedulerService;
   private final MessageSource messageSource;
 
   public AllowanceServiceImpl(
@@ -98,43 +99,66 @@ public class AllowanceServiceImpl implements AllowanceService {
   @Override
   public void scheduleResetUsedAllowance(final Date date, final long numberOfDaysToCarryOver)
       throws SchedulerException {
-    if (!schedulerService.jobScheduled(new TriggerKey("reset-allowance-job"))) {
-      final Trigger trigger =
-          TriggerBuilder.newTrigger()
-              .withIdentity("reset-allowance-job", "allowance-group")
-              .usingJobData("numberOfDaysToCarryOver", numberOfDaysToCarryOver)
-              .startAt(date)
-              .withSchedule(
-                  SimpleScheduleBuilder.simpleSchedule()
-                      .withIntervalInMilliseconds(getYearInMilis())
-                      .repeatForever())
-              .build();
-      final JobDetail jobDetail =
-          JobBuilder.newJob(ResetAllowanceJob.class)
-              .withIdentity("reset-allowance-job", "allowance-group")
-              .build();
-      schedulerService.schedule(jobDetail, trigger);
-      schedulerService.start();
+    final TriggerKey scheduledJobTrigger =
+        new TriggerKey(ResetJobAllowanceSettings.name, ResetJobAllowanceSettings.group);
+    if (!schedulerService.jobScheduled(scheduledJobTrigger)) {
+      createResetUsedAllowanceJob(date, numberOfDaysToCarryOver);
+    } else {
+      updateResetUsedAllowanceJob(date, numberOfDaysToCarryOver);
     }
+  }
+
+  private void createResetUsedAllowanceJob(final Date date, final long numberOfDaysToCarryOver)
+      throws SchedulerException {
+    final Trigger trigger = buildTrigger(date, numberOfDaysToCarryOver);
+    final JobDetailFactoryBean jobDetailFactoryBean =
+        SchedulerFactory.createJobDetail(ResetAllowanceJob.class);
+    jobDetailFactoryBean.setName(ResetJobAllowanceSettings.name);
+    jobDetailFactoryBean.afterPropertiesSet();
+    schedulerService.schedule(jobDetailFactoryBean.getObject(), trigger);
+  }
+
+  private void updateResetUsedAllowanceJob(final Date date, final long numberOfDaysToCarryOver)
+      throws SchedulerException {
+    final TriggerKey triggerKey =
+        new TriggerKey(ResetJobAllowanceSettings.name, ResetJobAllowanceSettings.group);
+    final JobDetailFactoryBean jobDetailFactoryBean =
+        SchedulerFactory.createJobDetail(ResetAllowanceJob.class);
+    jobDetailFactoryBean.setName(ResetJobAllowanceSettings.name);
+    jobDetailFactoryBean.afterPropertiesSet();
+    final Trigger trigger = buildTrigger(date, numberOfDaysToCarryOver);
+    schedulerService.rescheduleJob(triggerKey, trigger);
+    schedulerService.replaceJob(jobDetailFactoryBean.getObject());
+  }
+
+  private Trigger buildTrigger(final Date date, final long numberOfDaysToCarryOver) {
+    return TriggerBuilder.newTrigger()
+        .withIdentity(ResetJobAllowanceSettings.name, ResetJobAllowanceSettings.group)
+        .usingJobData("numberOfDaysToCarryOver", numberOfDaysToCarryOver)
+        .startAt(date)
+        .withSchedule(
+            SimpleScheduleBuilder.simpleSchedule()
+                .withIntervalInMilliseconds(getYearInMilis())
+                .repeatForever())
+        .build();
+  }
+
+  private long getYearInMilis() {
+    final LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
+    return localDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
   }
 
   @Override
   public void cancelResetUsedAllowance() throws SchedulerException {
-    final JobKey jobKey = new JobKey("reset-allowance-job");
-    final TriggerKey triggerKey = new TriggerKey("reset-allowance-job");
+    final JobKey jobKey = new JobKey(ResetJobAllowanceSettings.name);
+    final TriggerKey triggerKey = new TriggerKey(ResetJobAllowanceSettings.name);
     schedulerService.unschedule(triggerKey);
     schedulerService.cancel(jobKey);
-    schedulerService.stop();
   }
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED)
   public void resetUsedAllowance(final long numberOfDaysToCarryOver) {
     allowanceRepository.resetAllowance(numberOfDaysToCarryOver);
-  }
-
-  private long getYearInMilis() {
-    final LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
-    return localDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
   }
 }
