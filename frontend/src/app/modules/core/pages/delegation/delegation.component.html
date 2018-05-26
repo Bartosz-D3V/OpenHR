@@ -2,17 +2,17 @@
   <app-page-header [header]="'Delegation'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <mat-spinner *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isLoadingResults">
+<section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
   <mat-card>
     <form [formGroup]="applicationForm">
       <form formGroupName="name" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
-              fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
-              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
+            fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
+            fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
         <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
           <label for="delegation-subject-id"></label>
           <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
@@ -154,8 +154,11 @@
         </mat-form-field>
       </form>
     </form>
-
   </mat-card>
-  <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid()" (click)="save()">Submit
-  </button>
+
+  <div class="c-drawer__actions">
+    <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid() || isLoading" (click)="save()">Submit
+    </button>
+    <mat-spinner class="c-loading-spinner" [diameter]="30" [color]="'warn'" *ngIf="isLoading"></mat-spinner>
+  </div>
 </section>

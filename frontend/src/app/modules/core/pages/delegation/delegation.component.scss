@@ -8,8 +8,17 @@
   &__table {
     width: 80%;
   }
+
+  &__actions {
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: start;
+    margin-top: 2%;
+  }
 }
 
-.c-btn {
-  margin-top: 2%;
+.c-loading-spinner {
+  margin-left: 2%;
 }

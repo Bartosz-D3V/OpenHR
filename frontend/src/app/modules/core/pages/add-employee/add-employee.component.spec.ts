@@ -11,6 +11,7 @@ import {
   MatInputModule,
   MatNativeDateModule,
   MatOptionModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule,
   MatToolbarModule,
@@ -105,6 +106,7 @@ describe('AddEmployeeComponent', () => {
           MatSnackBarModule,
           MatOptionModule,
           MatSelectModule,
+          MatProgressSpinnerModule,
         ],
         providers: [
           JwtHelperService,

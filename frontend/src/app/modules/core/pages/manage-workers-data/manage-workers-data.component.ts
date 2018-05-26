@@ -25,6 +25,7 @@ import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Role } from '@shared/domain/subject/role';
 import { MatDialog } from '@angular/material/dialog';
 import { PromptModalComponent } from '@shared/components/prompt-modal/prompt-modal.component';
+import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'app-manage-workers-data',
@@ -37,7 +38,8 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
   private $employees: ISubscription;
   private $managers: ISubscription;
   private $hrTeamMembers: ISubscription;
-  public isLoadingResults: boolean;
+  public isFetching: boolean;
+  public isLoading: boolean;
   public stepNumber = 0;
   public employees: Array<Employee>;
   public managers: Array<Manager>;
@@ -214,73 +216,84 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
   }
 
   public fetchSelectedEmployee(employeeId: number): void {
-    this.isLoadingResults = true;
-    this.$employees = this._employeeService.getEmployee(employeeId).subscribe(
-      (response: Employee) => {
-        this.subject = response;
-        this.constructForm();
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isFetching = true;
+    this.$employees = this._employeeService
+      .getEmployee(employeeId)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (response: Employee) => {
+          this.subject = response;
+          this.constructForm();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public fetchSelectedManager(workerId: number): void {
-    this.isLoadingResults = true;
-    this.$employees = this._managerService.getManager(workerId).subscribe(
-      (response: Manager) => {
-        this.subject = response;
-        this.constructForm();
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isFetching = true;
+    this.$employees = this._managerService
+      .getManager(workerId)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (response: Manager) => {
+          this.subject = response;
+          this.constructForm();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public fetchSelectedHrTeamMember(workerId: number) {
-    this.isLoadingResults = true;
-    this.$employees = this._hrTeamMemberService.getHrTeamMember(workerId).subscribe(
-      (response: HrTeamMember) => {
-        this.subject = response;
-        this.constructForm();
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isFetching = true;
+    this.$employees = this._hrTeamMemberService
+      .getHrTeamMember(workerId)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (response: HrTeamMember) => {
+          this.subject = response;
+          this.constructForm();
+          this.isLoading = false;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public fetchManagers(): void {
-    this.isLoadingResults = true;
-    this.$managers = this._managerService.getManagers().subscribe(
-      (response: Array<Manager>) => {
-        this.managers = response;
-        this.filteredSupervisors = this.reduceSupervisors(response);
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$managers = this._managerService
+      .getManagers()
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: Array<Manager>) => {
+          this.managers = response;
+          this.filteredSupervisors = this.reduceSupervisors(response);
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public fetchHrTeamMembers(): void {
-    this.isLoadingResults = true;
-    this.$hrTeamMembers = this._hrTeamMemberService.getHrTeamMembers().subscribe(
-      (response: Array<HrTeamMember>) => {
-        this.hrTeamMembers = response;
-        this.filteredSupervisors = this.reduceSupervisors(response);
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$hrTeamMembers = this._hrTeamMemberService
+      .getHrTeamMembers()
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: Array<HrTeamMember>) => {
+          this.hrTeamMembers = response;
+          this.filteredSupervisors = this.reduceSupervisors(response);
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public displayFullName(subject?: Subject): string | undefined {
@@ -347,97 +360,119 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
   }
 
   public updateEmployee(): void {
+    this.isLoading = true;
     const updatedEmployee: Employee = <Employee>this.workerForm.value;
     const updatedManger: Manager = <Manager>this.supervisorCtrl.value;
     this.$employees = Observable.zip(
       this._employeeService.updateEmployee(updatedEmployee),
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
       (employee: Employee, manager: Manager) => ({ employee, manager })
-    ).subscribe(
-      pair => {
-        const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.subject = pair.employee;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        pair => {
+          const msg = `Employee with id ${pair.employee.subjectId} has been updated`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.subject = pair.employee;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public updateManager(): void {
+    this.isLoading = true;
     const updatedManager: Manager = <Manager>this.workerForm.value;
     const updatedHrTeamMember: HrTeamMember = <HrTeamMember>this.supervisorCtrl.value;
     this.$managers = Observable.zip(
       this._managerService.updateManager(updatedManager),
       this._managerService.updateManagerHrTeamMember(updatedManager.subjectId, updatedHrTeamMember.subjectId),
       (manager: Manager, hrTeamMember: HrTeamMember) => ({ manager, hrTeamMember })
-    ).subscribe(
-      pair => {
-        const msg = `Manager with id ${pair.manager.subjectId} has been updated`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.subject = pair.manager;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        pair => {
+          const msg = `Manager with id ${pair.manager.subjectId} has been updated`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.subject = pair.manager;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public updateHrTeamMember(): void {
+    this.isLoading = true;
     const updatedHrTeamMember: HrTeamMember = <HrTeamMember>this.workerForm.value;
-    this.$hrTeamMembers = this._hrTeamMemberService.updateHrTeamMember(updatedHrTeamMember).subscribe(
-      (hrTeamMember: HrTeamMember) => {
-        const msg = `HR Team Member with id ${hrTeamMember.subjectId} has been updated`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.subject = hrTeamMember;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.$hrTeamMembers = this._hrTeamMemberService
+      .updateHrTeamMember(updatedHrTeamMember)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (hrTeamMember: HrTeamMember) => {
+          const msg = `HR Team Member with id ${hrTeamMember.subjectId} has been updated`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.subject = hrTeamMember;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public deleteEmployee(subjectId: number): void {
-    this.$employees = this._employeeService.deleteEmployee(subjectId).subscribe(
-      () => {
-        const msg = `Employee with id ${subjectId} has been deleted`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.resetForm();
-        this.fetchWorkers();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$employees = this._employeeService
+      .deleteEmployee(subjectId)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        () => {
+          const msg = `Employee with id ${subjectId} has been deleted`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.resetForm();
+          this.fetchWorkers();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public deleteManager(subjectId: number): void {
-    this.$managers = this._managerService.deleteManager(subjectId).subscribe(
-      () => {
-        const msg = `Manager with id ${subjectId} has been deleted`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.resetForm();
-        this.fetchWorkers();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$managers = this._managerService
+      .deleteManager(subjectId)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        () => {
+          const msg = `Manager with id ${subjectId} has been deleted`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.resetForm();
+          this.fetchWorkers();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public deleteHrTeamMember(subjectId: number): void {
-    this.$hrTeamMembers = this._hrTeamMemberService.deleteHrTeamMember(subjectId).subscribe(
-      () => {
-        const msg = `Hr Team Member with id ${subjectId} has been deleted`;
-        this._notificationService.openSnackBar(msg, 'OK');
-        this.resetForm();
-        this.fetchWorkers();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$hrTeamMembers = this._hrTeamMemberService
+      .deleteHrTeamMember(subjectId)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        () => {
+          const msg = `Hr Team Member with id ${subjectId} has been deleted`;
+          this._notificationService.openSnackBar(msg, 'OK');
+          this.resetForm();
+          this.fetchWorkers();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public resetForm(): void {

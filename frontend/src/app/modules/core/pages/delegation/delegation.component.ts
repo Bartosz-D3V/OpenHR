@@ -8,6 +8,7 @@ import { map, startWith } from 'rxjs/operators';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/finally';
 
 import { DelegationService } from '@modules/core/pages/delegation/service/delegation.service';
 import { SubjectDetailsService } from '@shared/services/subject/subject-details.service';
@@ -29,7 +30,8 @@ import { CustomValidators } from '@shared/util/validators/custom-validators';
 export class DelegationComponent implements OnInit, OnDestroy {
   private $delegation: ISubscription;
   public subject: Subject;
-  public isLoadingResults: boolean;
+  public isLoading: boolean;
+  public isFetching: boolean;
   public applicationForm: FormGroup;
   public filteredCountries: Observable<Array<Country>>;
   public countries: Array<Country>;
@@ -57,7 +59,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.$delegation !== undefined) {
+    if (this.$delegation) {
       this.$delegation.unsubscribe();
     }
   }
@@ -96,22 +98,23 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   public fetchData(): void {
-    this.isLoadingResults = true;
+    this.isFetching = true;
     this.$delegation = Observable.zip(
       this._subjectDetails.getCurrentSubject(),
       this._delegationService.getCountries(),
       (subject: Subject, countries: Array<Country>) => ({ subject, countries })
-    ).subscribe(
-      pair => {
-        this.subject = pair.subject;
-        this.countries = pair.countries;
-        this.isLoadingResults = false;
-        this.constructForm();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        pair => {
+          this.subject = pair.subject;
+          this.countries = pair.countries;
+          this.constructForm();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public filterCountries(countries: Array<Country>, name: string): Array<Country> {
@@ -141,44 +144,54 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
   public fetchDelegationApplication(applicationId: number): void {
     this.fetchData();
-    this.isLoadingResults = true;
-    this.$delegation = this._delegationService.getDelegationApplication(applicationId).subscribe(
-      (val: DelegationApplication) => {
-        this.delegationApplication = val;
-        this.isLoadingResults = false;
-        this.constructForm();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isFetching = true;
+    this.$delegation = this._delegationService
+      .getDelegationApplication(applicationId)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (val: DelegationApplication) => {
+          this.delegationApplication = val;
+          this.constructForm();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public createApplication(application: DelegationApplication): void {
-    this._delegationService.createDelegationApplication(application).subscribe(
-      (response: DelegationApplication) => {
-        const message = `Application with id ${response.applicationId} has been created`;
-        this.resetForm();
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this._delegationService
+      .createDelegationApplication(application)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: DelegationApplication) => {
+          const message = `Application with id ${response.applicationId} has been created`;
+          this.resetForm();
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public updateApplication(application: DelegationApplication): void {
     delete application['subject'];
-    this._delegationService.updateDelegationApplication(application).subscribe(
-      (response: DelegationApplication) => {
-        const message = `Application with id ${response.applicationId} has been updated`;
-        this.resetForm();
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this._delegationService
+      .updateDelegationApplication(application)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: DelegationApplication) => {
+          const message = `Application with id ${response.applicationId} has been updated`;
+          this.resetForm();
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public save(): void {

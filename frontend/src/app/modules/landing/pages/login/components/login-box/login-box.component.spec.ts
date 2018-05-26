@@ -4,7 +4,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+} from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 
@@ -57,6 +65,7 @@ describe('LoginBoxComponent', () => {
         imports: [
           ReactiveFormsModule,
           NoopAnimationsModule,
+          HttpClientTestingModule,
           FormsModule,
           MatCardModule,
           MatButtonModule,
@@ -64,7 +73,7 @@ describe('LoginBoxComponent', () => {
           MatInputModule,
           MatDialogModule,
           MatFormFieldModule,
-          HttpClientTestingModule,
+          MatProgressSpinnerModule,
         ],
         declarations: [LoginBoxComponent, TokenExpirationModalComponent],
         providers: [

@@ -18,7 +18,7 @@ import 'rxjs/add/operator/finally';
 })
 export class LoginBoxComponent implements OnInit, OnDestroy {
   private $loginService: ISubscription;
-  private isLoading: boolean;
+  public isLoading: boolean;
 
   @Output() public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -70,7 +70,6 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
     switch (err.status) {
       case 401:
         this.loginBoxForm.controls['password'].setErrors({ unauthorized: true });
-        break;
     }
   }
 }

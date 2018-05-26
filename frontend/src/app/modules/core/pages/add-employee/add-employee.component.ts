@@ -6,6 +6,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/finally';
 
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { Subject } from '@shared/domain/subject/subject';
@@ -36,6 +37,7 @@ import { CustomAsyncValidatorsService } from '@shared/util/async-validators/cust
 })
 export class AddEmployeeComponent implements OnInit, OnDestroy {
   private $newSubject: ISubscription;
+  public isLoading: boolean;
   public roles: Array<Role> = [Role.EMPLOYEE, Role.MANAGER, Role.HRTEAMMEMBER];
   public newSubjectForm: FormGroup;
   public subject: Subject;
@@ -122,15 +124,18 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
   }
 
   public createSubject(subject: Subject): void {
-    this.$newSubject = this.getServiceMethod(subject).subscribe(
-      (response: Subject) => {
-        const message = `Person with id ${response.subjectId} has been created`;
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this.$newSubject = this.getServiceMethod(subject)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: Subject) => {
+          const message = `Person with id ${response.subjectId} has been created`;
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public getServiceMethod(subject: Subject): Observable<Subject> {
