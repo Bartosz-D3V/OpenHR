@@ -8,6 +8,7 @@ import { TokenObserverService } from '@shared/services/token-observer/token-obse
 import { RefreshToken } from 'app/modules/landing/pages/login/domain/refresh-token';
 import { Credentials } from '../../domain/credentials';
 import { LoginService } from '../../service/login.service';
+import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'app-login-box',
@@ -45,25 +46,31 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   public login(): void {
     this.isLoading = true;
     const credentials: Credentials = <Credentials>this.loginBoxForm.value;
-    this.$loginService = this._loginService.login(credentials).subscribe(
-      (response: HttpResponse<RefreshToken>) => {
-        const token: string = response.headers.get('Authorization');
-        const refreshToken: string = response.body.refreshToken;
-        this._jwtHelper.saveToken(token);
-        this._jwtHelper.saveRefreshToken(refreshToken);
-        this.onAuthenticated.emit(true);
+    this.$loginService = this._loginService
+      .login(credentials)
+      .finally(() => {
         this.isLoading = false;
-      },
-      (err: HttpResponse<null>) => {
-        this.handleErrorResponse(err);
-      }
-    );
+      })
+      .subscribe(
+        (response: HttpResponse<RefreshToken>) => {
+          const token: string = response.headers.get('Authorization');
+          const refreshToken: string = response.body.refreshToken;
+          this._jwtHelper.saveToken(token);
+          this._jwtHelper.saveRefreshToken(refreshToken);
+          this.onAuthenticated.emit(true);
+          this.isLoading = false;
+        },
+        (err: HttpResponse<null>) => {
+          this.handleErrorResponse(err);
+        }
+      );
   }
 
   public handleErrorResponse(err: HttpResponse<null>): void {
     switch (err.status) {
       case 401:
         this.loginBoxForm.controls['password'].setErrors({ unauthorized: true });
+        break;
     }
   }
 }
