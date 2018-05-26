@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/finally';
 
 import { NAMED_DATE } from '@config/datepicker-format';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
@@ -34,7 +35,8 @@ import { PersonalDetailsService } from './service/personal-details.service';
 })
 export class PersonalDetailsComponent implements OnInit, OnDestroy {
   private $currentSubject: ISubscription;
-  public isLoadingResults: boolean;
+  public isLoading: boolean;
+  public isFetching: boolean;
   public personalDetailsFormGroup: FormGroup;
   public stepNumber = 0;
   public subject: Subject;
@@ -121,11 +123,11 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getCurrentSubject(): void {
-    this.isLoadingResults = true;
+    this.isFetching = true;
     this.$currentSubject = this._subjectDetailsService.getCurrentSubject().subscribe(
       (response: Subject) => {
         this.subject = response;
-        this.isLoadingResults = false;
+        this.isFetching = false;
         this.buildForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
@@ -135,9 +137,12 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.isValid()) {
-      const subject: Subject = <Subject>this.personalDetailsFormGroup.getRawValue();
-      this._personalDetailsService.saveSubject(subject).subscribe(
+    this.isLoading = true;
+    const subject: Subject = <Subject>this.personalDetailsFormGroup.getRawValue();
+    this._personalDetailsService
+      .saveSubject(subject)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
         (result: Subject) => {
           const msg = `Details of user with id ${result.subjectId} have been updated`;
           this._notificationService.openSnackBar(msg, 'OK');
@@ -146,7 +151,6 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
           this._errorResolver.handleError(httpErrorResponse.error);
         }
       );
-    }
   }
 
   public setStep(stepNumber: number): void {

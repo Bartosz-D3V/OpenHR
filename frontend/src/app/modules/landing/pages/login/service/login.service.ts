@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { SystemVariables } from '@config/system-variables';
 import { Credentials } from '../domain/credentials';
-import { RefreshToken } from '@shared/components/login-box/domain/refresh-token';
+import { RefreshToken } from '../domain/refresh-token';
 
 @Injectable()
 export class LoginService {

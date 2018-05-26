@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,10 +35,9 @@ import { Address } from '@shared/domain/subject/address';
 import { Role } from '@shared/domain/subject/role';
 import { PersonalInformation } from '@shared/domain/subject/personal-information';
 import { Country } from '@shared/domain/country/country';
-import { DelegationComponent } from './delegation.component';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { DelegationApplication } from '@shared/domain/application/delegation-application';
-import { HttpErrorResponse } from '@angular/common/http';
+import { DelegationComponent } from './delegation.component';
 
 describe('DelegationComponent', () => {
   let component: DelegationComponent;
@@ -83,6 +83,7 @@ describe('DelegationComponent', () => {
           MatAutocompleteModule,
           MatProgressSpinnerModule,
           MatSnackBarModule,
+          MatProgressSpinnerModule,
         ],
         providers: [
           JwtHelperService,
@@ -416,7 +417,7 @@ describe('DelegationComponent', () => {
       component.fetchDelegationApplication(1);
 
       expect(component.delegationApplication).toEqual(mockDelegation);
-      expect(component.isLoadingResults).toBeFalsy();
+      expect(component.isFetching).toBeFalsy();
       expect(component.applicationForm).toBeDefined();
       expect(component.constructForm).toHaveBeenCalled();
     });

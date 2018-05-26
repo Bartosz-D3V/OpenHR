@@ -9,6 +9,7 @@ import {
   MatDatepickerModule,
   MatInputModule,
   MatMenuModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSnackBarModule,
@@ -27,7 +28,6 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
-import { DateSelectorType } from './enumeration/date-selector-type.enum';
 import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { LeaveType } from '@shared/domain/application/leave-type';
 import { LeaveApplicationService } from './service/leave-application.service';
@@ -73,6 +73,7 @@ describe('LeaveApplicationComponent', () => {
           MatRadioModule,
           MatCardModule,
           MatSnackBarModule,
+          MatProgressSpinnerModule,
         ],
         providers: [
           JwtHelperService,

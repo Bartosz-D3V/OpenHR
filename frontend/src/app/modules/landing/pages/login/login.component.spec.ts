@@ -4,11 +4,18 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+} from '@angular/material';
 
-import { LoginBoxComponent } from '@shared/components/login-box/login-box.component';
-import { LoginService } from '@shared/components/login-box/service/login.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LoginBoxComponent } from '@modules/landing/pages/login/components/login-box/login-box.component';
+import { LoginService } from '@modules/landing/pages/login/service/login.service';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -25,6 +32,7 @@ describe('LoginComponent', () => {
         imports: [
           ReactiveFormsModule,
           NoopAnimationsModule,
+          HttpClientTestingModule,
           FormsModule,
           RouterTestingModule,
           MatCardModule,
@@ -32,7 +40,7 @@ describe('LoginComponent', () => {
           MatIconModule,
           MatFormFieldModule,
           MatInputModule,
-          HttpClientTestingModule,
+          MatProgressSpinnerModule,
         ],
         providers: [JwtHelperService, { provide: LoginService, useClass: MockLoginService }],
       }).compileComponents();

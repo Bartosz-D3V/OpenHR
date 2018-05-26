@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoginService } from '@shared/components/login-box/service/login.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
+import { LoginService } from '@modules/landing/pages/login/service/login.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 export class LoginComponent {
   constructor(private _router: Router) {}
 
-  openApp(authenticated: boolean): void {
+  public openApp(authenticated: boolean): void {
     if (authenticated) {
       this._router.navigate(['/app']);
     }

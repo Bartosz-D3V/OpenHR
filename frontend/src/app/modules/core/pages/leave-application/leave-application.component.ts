@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/finally';
 import { MomentInput } from 'moment';
 
 import { NAMED_DATE } from '@config/datepicker-format';
@@ -31,6 +32,7 @@ import { LeaveApplicationService } from './service/leave-application.service';
 export class LeaveApplicationComponent implements OnInit, OnDestroy {
   private $leaveTypes: ISubscription;
   private dateRangePickerIsValid: boolean;
+  public isLoading: boolean;
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication(null, null, null, null, null, null, null, null);
 
@@ -86,17 +88,21 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    this._leaveApplicationService.submitLeaveApplication(this.leaveApplication).subscribe(
-      (response: LeaveApplication) => {
-        const message = `Application with id ${response.applicationId} has been created`;
-        this.leaveApplicationFormGroup.reset();
-        this.dateRangeComponent.reset();
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.isLoading = true;
+    this._leaveApplicationService
+      .submitLeaveApplication(this.leaveApplication)
+      .finally(() => (this.isLoading = false))
+      .subscribe(
+        (response: LeaveApplication) => {
+          const message = `Application with id ${response.applicationId} has been created`;
+          this.leaveApplicationFormGroup.reset();
+          this.dateRangeComponent.reset();
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public isMobile(): boolean {

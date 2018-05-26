@@ -10,10 +10,16 @@
   &__actions {
     align-items: center;
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: center;
   }
 
   &__title {
     font-size: 1.5em;
   }
+}
+
+.c-loading-spinner {
+  margin-left: 2%;
 }
