@@ -32,14 +32,17 @@ public class DashboardServiceTest {
   public void setUp() {
     final LeaveApplication leaveApplication1 = new LeaveApplication();
     leaveApplication1.setStartDate(LocalDate.of(2018, Month.MAY, 5));
+    leaveApplication1.setEndDate(LocalDate.of(2018, Month.JUNE, 1));
     leaveApplication1.setTerminated(true);
     leaveApplication1.setApprovedByHR(true);
     final LeaveApplication leaveApplication2 = new LeaveApplication();
-    leaveApplication2.setStartDate(LocalDate.of(2018, Month.MAY, 27));
+    leaveApplication2.setStartDate(LocalDate.of(2018, Month.DECEMBER, 5));
+    leaveApplication2.setEndDate(LocalDate.of(2019, Month.JANUARY, 1));
     leaveApplication2.setTerminated(true);
     leaveApplication2.setApprovedByHR(true);
     final LeaveApplication leaveApplication3 = new LeaveApplication();
     leaveApplication3.setStartDate(LocalDate.of(2018, Month.AUGUST, 1));
+    leaveApplication3.setEndDate(LocalDate.of(2018, Month.AUGUST, 9));
     leaveApplication3.setTerminated(true);
     leaveApplication3.setApprovedByHR(false);
 
@@ -61,21 +64,20 @@ public class DashboardServiceTest {
     when(dashboardRepository.getApplicationsInCurrentYear(1L)).thenReturn(leaveApplications);
     final List<MonthSummaryDTO> result = dashboardService.getMonthlySummaryReport(1L);
 
-    assertEquals(12, result.size());
-    assertEquals(0, result.get(0).getNumberOfApplications());
+    assertEquals(1, result.get(0).getNumberOfApplications());
     assertEquals(0, result.get(1).getNumberOfApplications());
     assertEquals(0, result.get(2).getNumberOfApplications());
     assertEquals(0, result.get(3).getNumberOfApplications());
-    assertEquals(0, result.get(5).getNumberOfApplications());
+    assertEquals(27, result.get(4).getNumberOfApplications());
+    assertEquals(1, result.get(5).getNumberOfApplications());
     assertEquals(0, result.get(6).getNumberOfApplications());
+    assertEquals(9, result.get(7).getNumberOfApplications());
     assertEquals(0, result.get(8).getNumberOfApplications());
     assertEquals(0, result.get(9).getNumberOfApplications());
     assertEquals(0, result.get(10).getNumberOfApplications());
-    assertEquals(0, result.get(11).getNumberOfApplications());
+    assertEquals(27, result.get(11).getNumberOfApplications());
 
-    assertEquals(2, result.get(4).getNumberOfApplications());
     assertEquals(Month.MAY, result.get(4).getMonth());
-    assertEquals(1, result.get(7).getNumberOfApplications());
     assertEquals(Month.AUGUST, result.get(7).getMonth());
   }
 

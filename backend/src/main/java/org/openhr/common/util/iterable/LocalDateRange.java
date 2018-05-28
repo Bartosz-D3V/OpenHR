@@ -30,7 +30,7 @@ public class LocalDateRange implements Iterable<LocalDate> {
     return stream().iterator();
   }
 
-  private Stream<LocalDate> stream() {
+  public Stream<LocalDate> stream() {
     return Stream.iterate(startDate, d -> d.plusDays(1))
         .limit(ChronoUnit.DAYS.between(startDate, endDate) + 1);
   }
