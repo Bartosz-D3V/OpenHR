@@ -10,6 +10,8 @@ import org.openhr.application.dashboard.dto.StatusRatioDTO;
 import org.openhr.application.dashboard.repository.DashboardRepository;
 import org.openhr.application.leaveapplication.domain.LeaveApplication;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.util.date.DateRangeUtil;
+import org.openhr.common.util.iterable.LocalDateRange;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,8 +67,17 @@ public class DashboardServiceImpl implements DashboardService {
       final long monthCounter =
           leaveApplications
               .stream()
-              .filter(leaveApplication -> leaveApplication.getStartDate().getMonth() == month)
-              .count();
+              .filter(
+                  leaveApplication ->
+                      DateRangeUtil.monthInRange(
+                          new LocalDateRange(
+                              leaveApplication.getStartDate(), leaveApplication.getEndDate()),
+                          month))
+              .mapToLong(
+                  leaveApplication ->
+                      DateRangeUtil.diffDaysInMonth(
+                          leaveApplication.getStartDate(), leaveApplication.getEndDate(), month))
+              .sum();
       monthSummaryDTO.setMonth(month);
       monthSummaryDTO.setNumberOfApplications(monthCounter);
       result.add(monthSummaryDTO);
