@@ -247,7 +247,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       );
   }
 
-  public fetchSelectedHrTeamMember(workerId: number) {
+  public fetchSelectedHrTeamMember(workerId: number): void {
     this.isFetching = true;
     this.$employees = this._hrTeamMemberService
       .getHrTeamMember(workerId)

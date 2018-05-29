@@ -40,7 +40,7 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
     private _dialog: MatDialog
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.isLoadingResults = true;
     this.fetchLeaveApplications();
   }

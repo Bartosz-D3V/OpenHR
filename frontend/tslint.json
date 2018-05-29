@@ -131,7 +131,14 @@
       true,
       "allow-null-check"
     ],
-    "typedef": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "property-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ],
     "typedef-whitespace": [
       true,
       {
