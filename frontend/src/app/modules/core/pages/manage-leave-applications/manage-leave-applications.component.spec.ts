@@ -102,9 +102,9 @@ describe('ManageLeaveApplicationsComponent', () => {
     it('should set loading to true', () => {
       spyOn(component['_manageLeaveApplicationsService'], 'getAwaitingForActionLeaveApplications').and.returnValue(Observable.of({}));
 
-      expect(component.isLoadingResults).toBeTruthy();
+      expect(component.isFetching).toBeTruthy();
       component.fetchLeaveApplications();
-      expect(component.isLoadingResults).toBeFalsy();
+      expect(component.isFetching).toBeFalsy();
     });
 
     it('should set leave applications field', () => {

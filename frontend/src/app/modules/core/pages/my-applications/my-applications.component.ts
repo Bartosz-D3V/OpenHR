@@ -4,7 +4,9 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/retry';
 
+import { SystemVariables } from '@config/system-variables';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -19,7 +21,7 @@ import { MyApplicationsService } from './service/my-applications.service';
 })
 export class MyApplicationsComponent implements OnInit, OnDestroy {
   private $leaveApplications: ISubscription;
-  public isLoadingResults: boolean;
+  public isFetching: boolean;
   public displayedColumns: Array<string> = ['type', 'from', 'to', 'status', 'ics', 'info', 'action'];
   public resultsLength = 0;
   public dataSource: MatTableDataSource<Application> = new MatTableDataSource<Application>();
@@ -35,47 +37,52 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.isLoadingResults = true;
     this.fetchApplications();
   }
 
   public ngOnDestroy(): void {
-    if (this.$leaveApplications !== undefined) {
+    if (this.$leaveApplications) {
       this.$leaveApplications.unsubscribe();
     }
   }
 
   public fetchApplications(): void {
+    this.isFetching = true;
     const subjectId: number = this._jwtHelper.getSubjectId();
     Observable.zip(
       this._myApplications.getSubmittedLeaveApplications(subjectId),
       this._myApplications.getSubmittedDelegationApplications(subjectId),
       (leaveApplications: Array<Application>, delegationApplications: Array<Application>) => ({ leaveApplications, delegationApplications })
-    ).subscribe(
-      pair => {
-        this.isLoadingResults = false;
-        const applications: Array<Application> = pair.leaveApplications.concat(pair.delegationApplications);
-        this.resultsLength = applications.length;
-        this.dataSource.data = applications;
-        this.dataSource.paginator = this.paginator;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .retry(SystemVariables.RETRY_TIMES)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        pair => {
+          const applications: Array<Application> = pair.leaveApplications.concat(pair.delegationApplications);
+          this.resultsLength = applications.length;
+          this.dataSource.data = applications;
+          this.dataSource.paginator = this.paginator;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public downloadICS(applicationId: number): void {
-    this.$leaveApplications = this._myApplications.downloadICS(applicationId).subscribe(
-      (data: HttpResponse<any>) => {
-        const blob: Blob = new Blob([data], { type: 'text/calendar' });
-        const url: string = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.$leaveApplications = this._myApplications
+      .downloadICS(applicationId)
+      .retry(SystemVariables.RETRY_TIMES)
+      .subscribe(
+        (data: HttpResponse<any>) => {
+          const blob: Blob = new Blob([data], { type: 'text/calendar' });
+          const url: string = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public applicationIsRejected(application: Application): boolean {

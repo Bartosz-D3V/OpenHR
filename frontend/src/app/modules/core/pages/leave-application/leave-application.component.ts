@@ -5,9 +5,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/retry';
 import * as moment from 'moment';
 
 import { NAMED_DATE } from '@config/datepicker-format';
+import { SystemVariables } from '@config/system-variables';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
 import { NotificationService } from '@shared/services/notification/notification.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -103,6 +105,7 @@ export class LeaveApplicationComponent implements OnInit, AfterViewInit, OnDestr
     this._leaveApplicationService
       .submitLeaveApplication(this.leaveApplication)
       .finally(() => (this.isLoading = false))
+      .retry(SystemVariables.RETRY_TIMES)
       .subscribe(
         (response: LeaveApplication) => {
           const message = `Application with id ${response.applicationId} has been created`;

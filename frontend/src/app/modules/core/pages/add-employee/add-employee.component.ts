@@ -7,7 +7,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { ISubscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/retry';
 
+import { SystemVariables } from '@config/system-variables';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { Subject } from '@shared/domain/subject/subject';
 import { Role } from '@shared/domain/subject/role';
@@ -127,6 +129,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$newSubject = this.getServiceMethod(subject)
       .finally(() => (this.isLoading = false))
+      .retry(SystemVariables.RETRY_TIMES)
       .subscribe(
         (response: Subject) => {
           const message = `Person with id ${response.subjectId} has been created`;
