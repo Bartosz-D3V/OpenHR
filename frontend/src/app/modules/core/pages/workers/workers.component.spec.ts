@@ -72,13 +72,13 @@ describe('WorkersComponent', () => {
     const mockWorkers: Array<LightweightSubject> = [new LightweightSubject(1, 'Robinson', 'Cruzoe', 'Sailor')];
 
     it('should fetch the workers and attach to the data table', () => {
-      expect(component.isLoadingResults).toBeTruthy();
+      expect(component.isFetching).toBeTruthy();
       spyOn(component['_workersService'], 'getWorkers').and.returnValue(Observable.of(mockWorkers));
       component.fetchWorkers();
 
       expect(component.workers.length).toEqual(1);
       expect(component.dataSource.data).toEqual(mockWorkers);
-      expect(component.isLoadingResults).toBeFalsy();
+      expect(component.isFetching).toBeFalsy();
     });
 
     it('should call error resolver if an error occurred', () => {
@@ -86,7 +86,7 @@ describe('WorkersComponent', () => {
         error: 'Unauthorized',
         status: 401,
       });
-      expect(component.isLoadingResults).toBeTruthy();
+      expect(component.isFetching).toBeTruthy();
       spyOn(component['_errorResolver'], 'handleError');
       spyOn(component['_workersService'], 'getWorkers').and.returnValue(Observable.throw(mockError));
       component.fetchWorkers();

@@ -3,6 +3,8 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/finally';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
@@ -11,6 +13,7 @@ import { DelegationApplication } from '@shared/domain/application/delegation-app
 import { ManageDelegationsService } from '@modules/core/pages/manage-delegations/service/manage-delegations.service';
 import { LightweightSubjectService } from '@modules/core/core-wrapper/service/lightweight-subject.service';
 import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
+import { SystemVariables } from '@config/system-variables';
 
 @Component({
   selector: 'app-manage-delegations',
@@ -22,7 +25,7 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   private $delegationApplications: ISubscription;
   private $subjects: ISubscription;
   private subjects: Map<string, LightweightSubject> = new Map<string, LightweightSubject>();
-  public isLoadingResults: boolean;
+  public isFetching: boolean;
   public displayedColumns: Array<string> = [
     'applicationId',
     'from',
@@ -47,7 +50,6 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.isLoadingResults = true;
     this.fetchDelegationApplications();
   }
 
@@ -65,14 +67,15 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   }
 
   public fetchDelegationApplications(): void {
-    this.isLoadingResults = true;
+    this.isFetching = true;
     this.$delegationApplications = this._manageDelegationsService
       .getAwaitingForActionDelegationApplications(this._jwtHelper.getSubjectId())
+      .retry(SystemVariables.RETRY_TIMES)
+      .finally(() => (this.isFetching = false))
       .subscribe(
         (result: Array<DelegationApplication>) => {
           this.dataSource = new MatTableDataSource<DelegationApplication>(result);
           this.dataSource.paginator = this.paginator;
-          this.isLoadingResults = false;
         },
         (httpErrorResponse: HttpErrorResponse) => {
           this._errorResolver.handleError(httpErrorResponse.error);
@@ -81,37 +84,46 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   }
 
   public approveDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationsService.approveDelegationApplication(processInstanceId).subscribe(
-      () => {
-        this.fetchDelegationApplications();
-        const message = 'Application has been accepted';
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this._manageDelegationsService
+      .approveDelegationApplication(processInstanceId)
+      .retry(SystemVariables.RETRY_TIMES)
+      .subscribe(
+        () => {
+          this.fetchDelegationApplications();
+          const message = 'Application has been accepted';
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public rejectDelegationApplication(processInstanceId: string): void {
-    this._manageDelegationsService.rejectDelegationApplication(processInstanceId).subscribe(
-      () => {
-        this.fetchDelegationApplications();
-        const message = 'Application has been rejected';
-        this._notificationService.openSnackBar(message, 'OK');
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this._manageDelegationsService
+      .rejectDelegationApplication(processInstanceId)
+      .retry(SystemVariables.RETRY_TIMES)
+      .subscribe(
+        () => {
+          this.fetchDelegationApplications();
+          const message = 'Application has been rejected';
+          this._notificationService.openSnackBar(message, 'OK');
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public getSubjectFullName(subjectId: number): LightweightSubject {
     if (!this.subjects.has(subjectId.toString())) {
-      this.$subjects = this._lightweightSubjectService.getUser(subjectId).subscribe((res: LightweightSubject) => {
-        this.subjects.set(subjectId.toString(), res);
-        return res;
-      });
+      this.$subjects = this._lightweightSubjectService
+        .getUser(subjectId)
+        .retry(SystemVariables.RETRY_TIMES)
+        .subscribe((res: LightweightSubject) => {
+          this.subjects.set(subjectId.toString(), res);
+          return res;
+        });
     }
     return this.subjects.get(subjectId.toString());
   }

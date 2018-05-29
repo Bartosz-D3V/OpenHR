@@ -51,7 +51,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this.$accountService !== undefined) {
+    if (this.$accountService) {
       this.$accountService.unsubscribe();
     }
   }
