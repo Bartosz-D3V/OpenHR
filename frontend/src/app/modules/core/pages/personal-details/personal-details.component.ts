@@ -53,11 +53,11 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getCurrentSubject();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.$currentSubject.unsubscribe();
   }
 

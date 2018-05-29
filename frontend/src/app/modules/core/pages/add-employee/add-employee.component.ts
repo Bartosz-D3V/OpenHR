@@ -56,11 +56,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$newSubject) {
       this.$newSubject.unsubscribe();
     }

@@ -52,11 +52,11 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     private _errorResolver: ErrorResolverService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getLeaveTypes();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.$leaveTypes.unsubscribe();
   }
 

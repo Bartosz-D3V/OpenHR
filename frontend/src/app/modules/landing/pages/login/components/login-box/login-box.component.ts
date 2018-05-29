@@ -26,11 +26,11 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
 
   constructor(private _loginService: LoginService, private _jwtHelper: JwtHelperService, private _fb: FormBuilder) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.createForm();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$loginService) {
       this.$loginService.unsubscribe();
     }

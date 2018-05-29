@@ -64,11 +64,11 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     private _dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchWorkers();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsubscribeAll();
   }
 
@@ -253,7 +253,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       );
   }
 
-  public fetchSelectedHrTeamMember(workerId: number) {
+  public fetchSelectedHrTeamMember(workerId: number): void {
     this.isFetching = true;
     this.$employees = this._hrTeamMemberService
       .getHrTeamMember(workerId)

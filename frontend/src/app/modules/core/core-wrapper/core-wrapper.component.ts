@@ -27,7 +27,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.$user = this._lightweightSubject
       .getUser(this._jwtHelper.getSubjectId())
       .retry(SystemVariables.RETRY_TIMES)
@@ -38,7 +38,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
     this._tokenObserver.observe();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.$user.unsubscribe();
   }
 }

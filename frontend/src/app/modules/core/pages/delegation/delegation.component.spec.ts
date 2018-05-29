@@ -57,7 +57,7 @@ describe('DelegationComponent', () => {
 
   @Injectable()
   class FakeDelegationService {
-    getCountries(): Observable<Array<Country>> {
+    public getCountries(): Observable<Array<Country>> {
       return Observable.of([]);
     }
   }

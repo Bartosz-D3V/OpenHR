@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class InitialsPipe implements PipeTransform {
   private readonly SINGLE_SPACE: string = ' ';
 
-  transform(fullName: string): string {
+  public transform(fullName: string): string {
     if (fullName !== null) {
       const splittedName: Array<string> = fullName.trim().split(this.SINGLE_SPACE);
 

@@ -14,7 +14,7 @@ export class SidenavItemListComponent implements OnInit {
 
   constructor(private _jwtHelper: JwtHelperService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
   }
 }

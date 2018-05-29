@@ -33,7 +33,7 @@ describe('AdminComponent', () => {
 
   @Injectable()
   class FakeAdminService {
-    getAdminAllowanceSettings(): Observable<AllowanceSettings> {
+    public getAdminAllowanceSettings(): Observable<AllowanceSettings> {
       return Observable.of(new AllowanceSettings());
     }
   }

@@ -3,7 +3,13 @@
     "node_modules/codelyzer"
   ],
   "rules": {
+    "adjacent-overload-signatures": true,
+    "array-type": [
+      true,
+      "generic"
+    ],
     "arrow-return-shorthand": true,
+    "binary-expression-operand-order": true,
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -30,7 +36,7 @@
       true,
       140
     ],
-    "member-access": false,
+    "member-access": true,
     "member-ordering": [
       true,
       {
@@ -44,6 +50,7 @@
     ],
     "no-arg": true,
     "no-bitwise": true,
+    "no-consecutive-blank-lines": true,
     "no-console": [
       true,
       "log",
@@ -56,7 +63,8 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
-    "no-duplicate-imports": false,
+    "no-duplicate-switch-case": true,
+    "no-duplicate-imports": true,
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
@@ -64,7 +72,10 @@
       true,
       "ignore-params"
     ],
+    "no-irregular-whitespace": true,
+    "no-internal-module": true,
     "no-invalid-this": true,
+    "no-invalid-template-strings": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
@@ -74,10 +85,14 @@
     "no-this-assignment": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
+    "no-unnecessary-type-assertion": true,
     "no-unused-expression": true,
     "no-unused-variable": false,
-    "no-require-imports": false,
+    "no-reference": true,
+    "no-return-await": true,
+    "no-require-imports": true,
     "no-use-before-declare": true,
+    "no-unsafe-finally": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [
@@ -87,7 +102,9 @@
       "check-else",
       "check-whitespace"
     ],
+    "only-arrow-functions": true,
     "prefer-const": true,
+    "prefer-object-spread": true,
     "quotemark": [
       true,
       "single"
@@ -114,7 +131,14 @@
       true,
       "allow-null-check"
     ],
-    "typedef": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "property-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ],
     "typedef-whitespace": [
       true,
       {
@@ -152,6 +176,7 @@
       "app",
       "kebab-case"
     ],
+    "use-isnan": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
