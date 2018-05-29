@@ -113,6 +113,7 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setStartDate should set the start date in domain object and itself', () => {
+    spyOn(component, 'filterComingBankHolidays');
     component.setStartDate(mockStartDate);
 
     expect(component.leaveApplication.startDate).toBeDefined();
@@ -120,6 +121,7 @@ describe('LeaveApplicationComponent', () => {
   });
 
   it('setEndDate should set the end date in domain object and itself', () => {
+    spyOn(component, 'filterComingBankHolidays');
     component.setEndDate(mockEndDate);
 
     expect(component.leaveApplication.endDate).toBeDefined();

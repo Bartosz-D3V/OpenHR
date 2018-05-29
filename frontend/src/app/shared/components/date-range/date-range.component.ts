@@ -55,6 +55,8 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Output() public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
+  @Output() public bankHolidays: EventEmitter<Array<BankHoliday>> = new EventEmitter<Array<BankHoliday>>();
+
   @Output() public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public dateRange: FormGroup;
@@ -153,6 +155,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.$bankHolidays = this._dateRangeService.getBankHolidaysInEnglandAndWales().subscribe(
       (data: BankHolidayEngland) => {
         this.bankHolidaysEngland = data;
+        this.bankHolidays.emit(data.events);
       },
       (httpErrorResponse: HttpErrorResponse) => {
         this._errorResolver.handleError(httpErrorResponse.error);
