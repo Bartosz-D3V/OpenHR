@@ -2,11 +2,11 @@
   <app-page-header [header]="'Manage delegations'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <mat-spinner *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isLoadingResults">
+<section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Manage delegation applications</mat-toolbar>
   <mat-card>
     <mat-table #table [dataSource]="dataSource">

@@ -2,13 +2,13 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/finally';
 
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { TokenObserverService } from '@shared/services/token-observer/token-observer.service';
 import { RefreshToken } from 'app/modules/landing/pages/login/domain/refresh-token';
 import { Credentials } from '../../domain/credentials';
 import { LoginService } from '../../service/login.service';
-import 'rxjs/add/operator/finally';
 
 @Component({
   selector: 'app-login-box',
@@ -48,9 +48,7 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
     const credentials: Credentials = <Credentials>this.loginBoxForm.value;
     this.$loginService = this._loginService
       .login(credentials)
-      .finally(() => {
-        this.isLoading = false;
-      })
+      .finally(() => (this.isLoading = false))
       .subscribe(
         (response: HttpResponse<RefreshToken>) => {
           const token: string = response.headers.get('Authorization');
@@ -58,7 +56,6 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
           this._jwtHelper.saveToken(token);
           this._jwtHelper.saveRefreshToken(refreshToken);
           this.onAuthenticated.emit(true);
-          this.isLoading = false;
         },
         (err: HttpResponse<null>) => {
           this.handleErrorResponse(err);

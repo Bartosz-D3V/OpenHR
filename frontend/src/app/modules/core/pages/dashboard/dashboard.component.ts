@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/retry';
 
+import { SystemVariables } from '@config/system-variables';
 import { DashboardService } from '@modules/core/pages/dashboard/service/dashboard.service';
 import { MonthSummary } from '@modules/core/pages/dashboard/domain/month-summary';
 import { ChartData } from '@modules/core/pages/dashboard/domain/chart-data';
@@ -31,7 +33,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public subject: Subject;
   public dataSource: MatTableDataSource<Subject> = new MatTableDataSource<Subject>();
   public displayedColumns: Array<string> = ['firstName', 'lastName', 'position'];
-  public isLoadingResults: boolean;
+  public isFetching: boolean;
   public allowanceLeft: number;
   public totalDelegationExpenditure: TotalExpenditure;
 
@@ -60,7 +62,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isLoadingResults = true;
     this.role = this._jwtHelper.getUsersRole() ? this._jwtHelper.getUsersRole()[0] : null;
     this.fetchChartsData();
   }
@@ -76,6 +77,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public fetchChartsData(): void {
+    this.isFetching = true;
     this.$dashboardService = Observable.zip(
       this._subjectService.getCurrentSubject(),
       this._dashboardService.getSubjectsOnLeave(),
@@ -87,19 +89,21 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         monthlyReport,
         totalExpenditure,
       })
-    ).subscribe(
-      pair => {
-        this.subject = pair.subject;
-        this.dataSource.data = pair.subjectsOnLeave;
-        this.totalDelegationExpenditure = pair.totalExpenditure;
-        this.buildMonthlySummariesChart(DashboardComponent.splitMonthlySummaries(pair.monthlyReport));
-        this.setAllowanceInfo(pair.subject);
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .retry(SystemVariables.RETRY_TIMES)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        pair => {
+          this.subject = pair.subject;
+          this.dataSource.data = pair.subjectsOnLeave;
+          this.totalDelegationExpenditure = pair.totalExpenditure;
+          this.buildMonthlySummariesChart(DashboardComponent.splitMonthlySummaries(pair.monthlyReport));
+          this.setAllowanceInfo(pair.subject);
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public setAllowanceInfo(subject: Subject): void {

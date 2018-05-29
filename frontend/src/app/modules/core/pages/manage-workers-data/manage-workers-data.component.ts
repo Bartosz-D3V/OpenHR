@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { ISubscription } from 'rxjs/Subscription';
 import { map, startWith } from 'rxjs/operators';
 import 'rxjs/add/observable/zip';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/retry';
 
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
 import { ResponsiveHelperService } from '@shared/services/responsive-helper/responsive-helper.service';
@@ -25,7 +27,7 @@ import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
 import { Role } from '@shared/domain/subject/role';
 import { MatDialog } from '@angular/material/dialog';
 import { PromptModalComponent } from '@shared/components/prompt-modal/prompt-modal.component';
-import 'rxjs/add/operator/finally';
+import { SystemVariables } from '@config/system-variables';
 
 @Component({
   selector: 'app-manage-workers-data',
@@ -201,24 +203,27 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       this._managerService.getManagers(),
       this._hrTeamMemberService.getHrTeamMembers(),
       (employees: Array<Employee>, managers: Array<Manager>, hrTeamMembers: Array<HrTeamMember>) => ({ employees, managers, hrTeamMembers })
-    ).subscribe(
-      pair => {
-        this.employees = pair.employees;
-        this.managers = pair.managers;
-        this.hrTeamMembers = pair.hrTeamMembers;
-        const workers: Array<Subject> = pair.employees.concat(pair.managers).concat(pair.hrTeamMembers);
-        this.filteredWorkers = this.reduceWorkers(workers);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    )
+      .retry(SystemVariables.RETRY_TIMES)
+      .subscribe(
+        pair => {
+          this.employees = pair.employees;
+          this.managers = pair.managers;
+          this.hrTeamMembers = pair.hrTeamMembers;
+          const workers: Array<Subject> = pair.employees.concat(pair.managers).concat(pair.hrTeamMembers);
+          this.filteredWorkers = this.reduceWorkers(workers);
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public fetchSelectedEmployee(employeeId: number): void {
     this.isFetching = true;
     this.$employees = this._employeeService
       .getEmployee(employeeId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isFetching = false))
       .subscribe(
         (response: Employee) => {
@@ -235,6 +240,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isFetching = true;
     this.$employees = this._managerService
       .getManager(workerId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isFetching = false))
       .subscribe(
         (response: Manager) => {
@@ -251,6 +257,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isFetching = true;
     this.$employees = this._hrTeamMemberService
       .getHrTeamMember(workerId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isFetching = false))
       .subscribe(
         (response: HrTeamMember) => {
@@ -268,6 +275,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$managers = this._managerService
       .getManagers()
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         (response: Array<Manager>) => {
@@ -284,6 +292,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$hrTeamMembers = this._hrTeamMemberService
       .getHrTeamMembers()
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         (response: Array<HrTeamMember>) => {
@@ -368,6 +377,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       this._employeeService.updateEmployeesManager(updatedEmployee.subjectId, updatedManger),
       (employee: Employee, manager: Manager) => ({ employee, manager })
     )
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         pair => {
@@ -390,6 +400,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
       this._managerService.updateManagerHrTeamMember(updatedManager.subjectId, updatedHrTeamMember.subjectId),
       (manager: Manager, hrTeamMember: HrTeamMember) => ({ manager, hrTeamMember })
     )
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         pair => {
@@ -408,6 +419,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     const updatedHrTeamMember: HrTeamMember = <HrTeamMember>this.workerForm.value;
     this.$hrTeamMembers = this._hrTeamMemberService
       .updateHrTeamMember(updatedHrTeamMember)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         (hrTeamMember: HrTeamMember) => {
@@ -425,6 +437,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$employees = this._employeeService
       .deleteEmployee(subjectId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         () => {
@@ -443,6 +456,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$managers = this._managerService
       .deleteManager(subjectId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         () => {
@@ -461,6 +475,7 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.$hrTeamMembers = this._hrTeamMemberService
       .deleteHrTeamMember(subjectId)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         () => {

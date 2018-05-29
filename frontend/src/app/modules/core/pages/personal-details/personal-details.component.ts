@@ -5,6 +5,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/retry';
 
 import { NAMED_DATE } from '@config/datepicker-format';
 import { RegularExpressions } from '@shared/constants/regexps/regular-expressions';
@@ -18,6 +19,7 @@ import { ContactInformation } from '@shared/domain/subject/contact-information';
 import { HrInformation } from '@shared/domain/subject/hr-information';
 import { EmployeeInformation } from '@shared/domain/subject/employee-information';
 import { CustomAsyncValidatorsService } from '@shared/util/async-validators/custom-async-validators.service';
+import { SystemVariables } from '@config/system-variables';
 import { PersonalDetailsService } from './service/personal-details.service';
 
 @Component({
@@ -124,16 +126,19 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
 
   public getCurrentSubject(): void {
     this.isFetching = true;
-    this.$currentSubject = this._subjectDetailsService.getCurrentSubject().subscribe(
-      (response: Subject) => {
-        this.subject = response;
-        this.isFetching = false;
-        this.buildForm();
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.$currentSubject = this._subjectDetailsService
+      .getCurrentSubject()
+      .retry(SystemVariables.RETRY_TIMES)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (response: Subject) => {
+          this.subject = response;
+          this.buildForm();
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 
   public save(): void {
@@ -141,6 +146,7 @@ export class PersonalDetailsComponent implements OnInit, OnDestroy {
     const subject: Subject = <Subject>this.personalDetailsFormGroup.getRawValue();
     this._personalDetailsService
       .saveSubject(subject)
+      .retry(SystemVariables.RETRY_TIMES)
       .finally(() => (this.isLoading = false))
       .subscribe(
         (result: Subject) => {

@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ISubscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/finally';
 
 import { SettingsService } from './service/settings.service';
 import { JwtHelperService } from '@shared/services/jwt/jwt-helper.service';
 import { User } from '@modules/settings/pages/settings/domain/user';
 import { ErrorResolverService } from '@shared/services/error-resolver/error-resolver.service';
+import { SystemVariables } from '@config/system-variables';
 
 @Component({
   selector: 'app-settings',
@@ -15,8 +18,7 @@ import { ErrorResolverService } from '@shared/services/error-resolver/error-reso
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   private $settings: ISubscription;
-  public isLoadingResults: boolean;
-  public darkModeOn: boolean;
+  public isFetching: boolean;
   public user: User;
 
   public static booleanToFlag(bool: boolean): string {
@@ -48,16 +50,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   public fetchUser(): void {
-    this.isLoadingResults = true;
+    this.isFetching = true;
     const subjectId: number = this._jwtHelper.getSubjectId();
-    this.$settings = this._settingsService.getUserBySubjectId(subjectId).subscribe(
-      (response: User) => {
-        this.user = response;
-        this.isLoadingResults = false;
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        this._errorResolver.handleError(httpErrorResponse.error);
-      }
-    );
+    this.$settings = this._settingsService
+      .getUserBySubjectId(subjectId)
+      .retry(SystemVariables.RETRY_TIMES)
+      .finally(() => (this.isFetching = false))
+      .subscribe(
+        (response: User) => {
+          this.user = response;
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          this._errorResolver.handleError(httpErrorResponse.error);
+        }
+      );
   }
 }

@@ -46,12 +46,12 @@ export class AccountComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
   }
 
-  ngOnDestroy(): void {
-    if (this.$accountService !== undefined) {
+  public ngOnDestroy(): void {
+    if (this.$accountService) {
       this.$accountService.unsubscribe();
     }
   }

@@ -2,11 +2,11 @@
   <app-page-header [header]="'Settings'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <mat-spinner *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isLoadingResults">
+<section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Settings</mat-toolbar>
   <mat-card>
     <div fxLayout="row" fxLayout.md="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="space-around"

@@ -5,6 +5,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/retry';
 import { MomentInput } from 'moment';
 
 import { NAMED_DATE } from '@config/datepicker-format';
@@ -15,6 +16,7 @@ import { DateRangeComponent } from '@shared/components/date-range/date-range.com
 import { LeaveType } from '@shared/domain/application/leave-type';
 import { LeaveApplication } from '@shared/domain/application/leave-application';
 import { LeaveApplicationService } from './service/leave-application.service';
+import { SystemVariables } from '@config/system-variables';
 
 @Component({
   selector: 'app-leave-application',
@@ -92,6 +94,7 @@ export class LeaveApplicationComponent implements OnInit, OnDestroy {
     this._leaveApplicationService
       .submitLeaveApplication(this.leaveApplication)
       .finally(() => (this.isLoading = false))
+      .retry(SystemVariables.RETRY_TIMES)
       .subscribe(
         (response: LeaveApplication) => {
           const message = `Application with id ${response.applicationId} has been created`;
