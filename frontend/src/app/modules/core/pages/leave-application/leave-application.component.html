@@ -4,28 +4,54 @@
 
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Apply for a leave</mat-toolbar>
-  <mat-card>
-    <form [formGroup]="leaveApplicationFormGroup" fxLayout.gt-xs="row wrap" fxLayout.xs="row wrap"
-          fxLayoutAlign.gt-xs="start" fxLayoutAlign.lt-sm="center center" fxFlex.gt-md="50" fxFlex.lt-md="100"
-          fxLayoutGap="5">
-      <app-date-range #dateRange class="c-drawer__element" fxFlex="100"
+  <mat-card fxLayout.gt-md="row nowrap" fxLayout.md="row nowrap" fxLayout.lt-md="row wrap"
+            fxLayoutAlign.gt-md="space-between start" fxLayoutAlign.md="space-between start"
+            fxLayoutAlign.lt-md="center start">
+    <form [formGroup]="leaveApplicationFormGroup" fxFlex.gt-md="45" fxFlex.md="45" fxFlex.lt-md="100">
+      <app-date-range #dateRange class="c-drawer__element"
                       [requireStartDate]="true" [requireEndDate]="true" [startDate]="leaveApplication.startDate"
                       [showDescription]="true" [endDate]="leaveApplication.endDate"
                       (startDateChange)="setStartDate($event)"
                       (endDateChange)="setEndDate($event)"
                       (isValidChange)="isDateRangePickerValid($event)"></app-date-range>
-      <mat-select class="c-drawer__element" [required]="true" fxFlex="100" placeholder="Select a leave type"
+
+      <mat-select class="c-drawer__element" [required]="true" placeholder="Select a leave type"
                   formControlName="leaveTypeSelectorController" (selectionChange)="setLeaveType($event.value)">
         <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.leaveCategory">
           {{leaveType.leaveCategory}}
         </mat-option>
       </mat-select>
-      <mat-form-field class="c-drawer__element" fxFlex="100" class="c-textarea">
+
+      <mat-form-field class="c-drawer__element">
         <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
                   formControlName="messageController" [(ngModel)]="leaveApplication.message"></textarea>
         <mat-hint align="end">{{message?.value.length || 0}} / 500</mat-hint>
       </mat-form-field>
     </form>
+
+    <div fxFlex.gt-md="45" fxFlex.md="45" fxFlex.lt-md="100">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bank holiday</mat-card-title>
+          <mat-card-subtitle>In between your leave</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="bankHolidaysDuringLeave.length > 0; else displayMsg">
+            <ul>
+              <li class="c-drawer__li" *ngFor="let bankHoliday of bankHolidaysDuringLeave">{{bankHoliday.title}} on
+                {{bankHoliday.date | date:'longDate'}}
+              </li>
+            </ul>
+          </div>
+          <ng-template #displayMsg>
+            <p class="c-drawer__paragraph">
+              No bank holidays in between selected dates
+            </p>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
   </mat-card>
 
   <div class="c-drawer__actions">
