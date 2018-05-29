@@ -8,7 +8,7 @@ import { Role } from '../../domain/subject/role';
 export class MainGuard implements CanActivate {
   constructor(private _router: Router, private _jwtHelper: JwtHelperService) {}
 
-  canActivate(): boolean {
+  public canActivate(): boolean {
     if (
       !this._jwtHelper.isTokenExpired() &&
       (this._jwtHelper.hasRole(Role.EMPLOYEE) || this._jwtHelper.hasRole(Role.MANAGER) || this._jwtHelper.hasRole(Role.HRTEAMMEMBER))

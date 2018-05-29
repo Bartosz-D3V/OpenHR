@@ -29,7 +29,7 @@ describe('LoginBoxComponent', () => {
 
   @Injectable()
   class FakeLoginService {
-    login(credentials: Credentials): Observable<any> {
+    public login(credentials: Credentials): Observable<any> {
       return Observable.of(
         new Response(
           {
@@ -44,7 +44,7 @@ describe('LoginBoxComponent', () => {
       );
     }
 
-    unathorizedLogin(credentials: Credentials): Observable<any> {
+    public unathorizedLogin(credentials: Credentials): Observable<any> {
       return Observable.throw(
         new HttpErrorResponse({
           error: 'Unauthorized',
@@ -56,7 +56,7 @@ describe('LoginBoxComponent', () => {
 
   @Injectable()
   class FakeTokenObserverService {
-    observe(): any {}
+    public observe(): any {}
   }
 
   beforeEach(

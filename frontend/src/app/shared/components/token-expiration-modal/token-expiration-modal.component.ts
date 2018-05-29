@@ -27,7 +27,7 @@ export class TokenExpirationModalComponent implements OnDestroy {
     public data: any
   ) {}
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$token) {
       this.$token.unsubscribe();
     }

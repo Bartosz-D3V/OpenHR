@@ -46,12 +46,12 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
     private _errorResolver: ErrorResolverService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isLoadingResults = true;
     this.fetchDelegationApplications();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsubscribeAll();
   }
 

@@ -7,7 +7,7 @@ import { ApplicationType } from '@shared/constants/enumeration/application-type'
   name: 'applicationType',
 })
 export class ApplicationTypePipe implements PipeTransform {
-  transform(value: Application): string {
+  public transform(value: Application): string {
     return value.applicationType === ApplicationType.LEAVE_APPLICATION
       ? 'Leave application'
       : value.applicationType === ApplicationType.DELEGATION_APPLICATION ? 'Delegation application' : null;

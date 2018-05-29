@@ -62,11 +62,11 @@ export class ManageWorkersDataComponent implements OnInit, OnDestroy {
     private _dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchWorkers();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsubscribeAll();
   }
 

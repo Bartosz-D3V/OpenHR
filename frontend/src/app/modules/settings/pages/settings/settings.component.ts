@@ -33,11 +33,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _errorResolver: ErrorResolverService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchUser();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$settings) {
       this.$settings.unsubscribe();
     }

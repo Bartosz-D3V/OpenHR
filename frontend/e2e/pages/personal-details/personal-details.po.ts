@@ -5,7 +5,7 @@ export class PersonalDetailsPo {
     return element(by.id('personal-details-header'));
   }
 
-  static getPersonalDetailsLinkButton() {
+  public static getPersonalDetailsLinkButton() {
     return element(by.id('sidenav-personal-details'));
   }
 

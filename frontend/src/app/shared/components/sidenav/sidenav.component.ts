@@ -18,7 +18,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(private _router: Router, private _responsiveHelper: ResponsiveHelperService) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this._router.events.subscribe(() => {
       if (this.isScreenSmall() && this.sidenav) {
         this.sidenav.close();
