@@ -39,7 +39,7 @@ export class ManagerService {
     });
   }
 
-  public updateManagerHrTeamMember(subjectId: number, hrTeamMemberId: number) {
+  public updateManagerHrTeamMember(subjectId: number, hrTeamMemberId: number): Observable<Manager> {
     const params: HttpParams = new HttpParams().set('hrTeamMemberId', hrTeamMemberId.toString());
     return this._http.put<Manager>(`${this.url}/${subjectId}/hr-assignment`, null, {
       headers: this.headers,

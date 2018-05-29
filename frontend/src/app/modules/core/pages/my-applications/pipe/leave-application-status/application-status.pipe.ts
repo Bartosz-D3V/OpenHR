@@ -7,7 +7,7 @@ import { ApplicationStatuses } from '@modules/core/pages/my-applications/enumera
   name: 'applicationStatus',
 })
 export class ApplicationStatusPipe implements PipeTransform {
-  transform(application: Application): ApplicationStatuses {
+  public transform(application: Application): ApplicationStatuses {
     if (application.terminated) {
       return application.approvedByHR
         ? ApplicationStatuses.ACCEPTED

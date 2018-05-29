@@ -8,7 +8,7 @@ import { Role } from '../../domain/subject/role';
 export class ManagerGuard implements CanActivate {
   constructor(private _jwtHelper: JwtHelperService) {}
 
-  canActivate(): boolean {
+  public canActivate(): boolean {
     return !this._jwtHelper.isTokenExpired() && (this._jwtHelper.hasRole(Role.MANAGER) || this._jwtHelper.hasRole(Role.HRTEAMMEMBER));
   }
 }

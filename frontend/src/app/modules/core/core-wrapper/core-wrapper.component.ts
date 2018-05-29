@@ -25,7 +25,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.$user = this._lightweightSubject.getUser(this._jwtHelper.getSubjectId()).subscribe((value: LightweightSubject) => {
       this.user = new LightweightSubject(value.subjectId, value.firstName, value.lastName, value.position);
       this._router.navigate([{ outlets: { core: ['dashboard'] } }], { relativeTo: this._activatedRoute });
@@ -33,7 +33,7 @@ export class CoreWrapperComponent implements OnInit, OnDestroy {
     this._tokenObserver.observe();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.$user.unsubscribe();
   }
 }

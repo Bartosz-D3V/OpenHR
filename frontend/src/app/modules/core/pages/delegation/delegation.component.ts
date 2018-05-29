@@ -54,11 +54,11 @@ export class DelegationComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchData();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$delegation) {
       this.$delegation.unsubscribe();
     }

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ISubscription } from 'rxjs/Subscription';
-import { Moment, MomentInput } from 'moment';
 import * as moment from 'moment';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 
@@ -40,9 +39,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Input() public showDescription?;
 
-  @Input() public startDate?: MomentInput;
+  @Input() public startDate?: moment.MomentInput;
 
-  @Input() public endDate?: MomentInput;
+  @Input() public endDate?: moment.MomentInput;
 
   @Input() public requireStartDate = true;
 
@@ -50,9 +49,9 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public numberOfDays: number;
 
-  @Output() public startDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+  @Output() public startDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
 
-  @Output() public endDateChange: EventEmitter<MomentInput> = new EventEmitter<MomentInput>();
+  @Output() public endDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
 
   @Output() public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -69,12 +68,12 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
     this.getBankHolidays();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsubscribeAll();
   }
 
@@ -110,12 +109,12 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.setValidators();
   }
 
-  public recalculateNumOfDays(startDate: MomentInput, endDate: MomentInput, excludeEndDate?: boolean): void {
+  public recalculateNumOfDays(startDate: moment.MomentInput, endDate: moment.MomentInput, excludeEndDate?: boolean): void {
     let diffDays: number = moment(endDate).diff(startDate, 'days') + (excludeEndDate ? -1 : 0) + 1;
     let diffDaysCounter: number = diffDays;
     while (diffDaysCounter > 0) {
       diffDaysCounter--;
-      const date: Moment = moment(endDate).subtract(diffDaysCounter, 'days');
+      const date: moment.Moment = moment(endDate).subtract(diffDaysCounter, 'days');
       if (date.isoWeekday() === 6 || date.isoWeekday() === 7 || this.isBankHoliday(date)) {
         diffDays--;
       }
@@ -125,14 +124,14 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.updateNumberOfDays(diffDays);
   }
 
-  public updateStartDate(startDate: MomentInput): void {
+  public updateStartDate(startDate: moment.MomentInput): void {
     this.startDate = startDate;
     this.recalculateNumOfDays(this.startDate, this.endDate);
     this.startDateChange.emit(startDate);
     this.isValidChange.emit(this.dateRange.valid);
   }
 
-  public updateEndDate(endDate: MomentInput): void {
+  public updateEndDate(endDate: moment.MomentInput): void {
     this.endDate = endDate;
     this.recalculateNumOfDays(this.startDate, this.endDate);
     this.endDateChange.emit(endDate);
@@ -144,7 +143,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.numberOfDaysChange.emit(numberOfDays);
   }
 
-  public isBankHoliday(date: Moment): boolean {
+  public isBankHoliday(date: moment.Moment): boolean {
     const bankHolidays: Array<BankHoliday> = this.bankHolidaysEngland.events;
     const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => moment(event.date).isSame(date));
     return !(foundEvent === undefined);

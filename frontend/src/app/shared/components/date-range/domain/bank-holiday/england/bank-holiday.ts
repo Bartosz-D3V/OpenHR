@@ -1,8 +1,8 @@
 import { MomentInput } from 'moment';
 
 export class BankHoliday {
-  title: string;
-  date: MomentInput;
-  notes: string;
-  bunting: boolean;
+  public title: string;
+  public date: MomentInput;
+  public notes: string;
+  public bunting: boolean;
 }

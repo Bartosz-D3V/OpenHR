@@ -92,30 +92,30 @@ describe('ManageWorkersDataComponent', () => {
 
   @Injectable()
   class FakeEmployeeService {
-    updateEmployee(employee: Employee): Observable<Employee> {
+    public updateEmployee(employee: Employee): Observable<Employee> {
       return Observable.of(employee);
     }
-    getEmployees(): Observable<Array<Employee>> {
+    public getEmployees(): Observable<Array<Employee>> {
       return Observable.of([employee1]);
     }
   }
 
   @Injectable()
   class FakeManagerService {
-    updateManager(manager: Manager): Observable<Manager> {
+    public updateManager(manager: Manager): Observable<Manager> {
       return Observable.of(manager);
     }
-    getManagers(): Observable<Array<Manager>> {
+    public getManagers(): Observable<Array<Manager>> {
       return Observable.of([manager1]);
     }
   }
 
   @Injectable()
   class FakeHrTeamMemberService {
-    updateHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
+    public updateHrTeamMember(hrTeamMember: HrTeamMember): Observable<HrTeamMember> {
       return Observable.of(hrTeamMember);
     }
-    getHrTeamMembers(): Observable<Array<HrTeamMember>> {
+    public getHrTeamMembers(): Observable<Array<HrTeamMember>> {
       return Observable.of([hrTeamMember1]);
     }
   }

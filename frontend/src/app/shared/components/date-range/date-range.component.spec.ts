@@ -6,8 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatInputModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MomentInput } from 'moment';
-import moment = require('moment');
+import * as moment from 'moment';
 
 import { ResponsiveHelperService } from '../../services/responsive-helper/responsive-helper.service';
 import { ErrorResolverService } from '../../services/error-resolver/error-resolver.service';
@@ -186,8 +185,8 @@ describe('DateRangeComponent', () => {
   });
 
   it('updateStartDate should emmit and update new value', () => {
-    let result: MomentInput;
-    component.startDateChange.subscribe((newStartDate: MomentInput) => {
+    let result: moment.MomentInput;
+    component.startDateChange.subscribe((newStartDate: moment.MomentInput) => {
       result = newStartDate;
     });
     component.updateStartDate('2019-05-10');
@@ -199,8 +198,8 @@ describe('DateRangeComponent', () => {
   });
 
   it('updateEndDate should emmit and update new value', () => {
-    let result: MomentInput;
-    component.endDateChange.subscribe((newEndDate: MomentInput) => {
+    let result: moment.MomentInput;
+    component.endDateChange.subscribe((newEndDate: moment.MomentInput) => {
       result = newEndDate;
     });
     component.updateEndDate('2019-05-10');

@@ -34,12 +34,12 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isLoadingResults = true;
     this.fetchApplications();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$leaveApplications !== undefined) {
       this.$leaveApplications.unsubscribe();
     }

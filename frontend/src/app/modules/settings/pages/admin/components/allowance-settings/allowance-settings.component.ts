@@ -40,11 +40,11 @@ export class AllowanceSettingsComponent implements OnInit, OnChanges {
     return autoResetAllowance && resetDate === null ? error : null;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes['allowanceSettings']) {
       this.buildForm();
     }

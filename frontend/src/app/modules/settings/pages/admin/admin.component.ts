@@ -23,11 +23,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     private _errorResolver: ErrorResolverService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchAllowanceSettings();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$allowanceSettings) {
       this.$allowanceSettings.unsubscribe();
     }

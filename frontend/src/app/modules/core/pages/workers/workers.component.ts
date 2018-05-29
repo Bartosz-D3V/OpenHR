@@ -24,11 +24,11 @@ export class WorkersComponent implements OnInit, OnDestroy {
 
   constructor(private _workersService: WorkersService, private _errorResolver: ErrorResolverService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchWorkers();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.$workers) {
       this.$workers.unsubscribe();
     }
