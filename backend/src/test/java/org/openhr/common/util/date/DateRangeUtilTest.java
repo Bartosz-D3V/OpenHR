@@ -77,4 +77,28 @@ public class DateRangeUtilTest {
     assertFalse(DateRangeUtil.monthInRange(localDateRange, Month.DECEMBER));
     assertFalse(DateRangeUtil.monthInRange(localDateRange, Month.JUNE));
   }
+
+  @Test
+  public void dateRangeOverlapShouldReturnTrueIfBothDatePeriodsOverlap() {
+    final LocalDate startDate1 = LocalDate.of(2020, Month.MAY, 1);
+    final LocalDate endDate1 = LocalDate.of(2020, Month.JUNE, 5);
+    final LocalDateRange range1 = new LocalDateRange(startDate1, endDate1);
+    final LocalDate startDate2 = LocalDate.of(2020, Month.JUNE, 3);
+    final LocalDate endDate2 = LocalDate.of(2020, Month.JUNE, 30);
+    final LocalDateRange range2 = new LocalDateRange(startDate2, endDate2);
+
+    assertTrue(DateRangeUtil.dateRangeOverlap(range1, range2));
+  }
+
+  @Test
+  public void dateRangeOverlapShouldReturnFalseIfBothDatePeriodsDoNotOverlap() {
+    final LocalDate startDate1 = LocalDate.of(2020, Month.MAY, 1);
+    final LocalDate endDate1 = LocalDate.of(2020, Month.JUNE, 5);
+    final LocalDateRange range1 = new LocalDateRange(startDate1, endDate1);
+    final LocalDate startDate2 = LocalDate.of(2020, Month.JUNE, 6);
+    final LocalDate endDate2 = LocalDate.of(2020, Month.JUNE, 30);
+    final LocalDateRange range2 = new LocalDateRange(startDate2, endDate2);
+
+    assertFalse(DateRangeUtil.dateRangeOverlap(range1, range2));
+  }
 }
