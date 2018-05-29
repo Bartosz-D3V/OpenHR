@@ -114,7 +114,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     let diffDaysCounter: number = diffDays;
     while (diffDaysCounter > 0) {
       diffDaysCounter--;
-      const date: Moment = moment(endDate).subtract(diffDaysCounter, 'days');
+      const date: moment.Moment = moment(endDate).subtract(diffDaysCounter, 'days');
       if (date.isoWeekday() === 6 || date.isoWeekday() === 7 || this.isBankHoliday(date)) {
         diffDays--;
       }
@@ -143,7 +143,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.numberOfDaysChange.emit(numberOfDays);
   }
 
-  public isBankHoliday(date: Moment): boolean {
+  public isBankHoliday(date: moment.Moment): boolean {
     const bankHolidays: Array<BankHoliday> = this.bankHolidaysEngland.events;
     const foundEvent: BankHoliday = bankHolidays.find((event: BankHoliday) => moment(event.date).isSame(date));
     return !(foundEvent === undefined);
