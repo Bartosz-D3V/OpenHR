@@ -1,6 +1,5 @@
 coverage:
   precision: 2
-coverage:
   status:
     project: on
       default:
@@ -9,5 +8,6 @@ coverage:
       default:
         target: 60%
 ignore:
-  - "./backend/src/main/java/org/openhr/configuration/**/*"
-
+  - "configuration/**/*"
+  - "facade/**/*"
+  - "bean/**/*"
