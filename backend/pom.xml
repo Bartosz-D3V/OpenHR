@@ -184,6 +184,15 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.1</version>
+        <configuration>
+          <excludes>
+            <exclude>**/configuration/*</exclude>
+            <exclude>**/facade/*</exclude>
+            <exclude>**/bean/*</exclude>
+            <exclude>**/domain/*</exclude>
+            <exclude>**/security/*</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <goals>
