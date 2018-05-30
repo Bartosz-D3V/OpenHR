@@ -42,8 +42,8 @@ import { NotificationService } from '@shared/services/notification/notification.
 import { ManagerService } from '@shared/services/manager/manager.service';
 import { HrTeamMemberService } from '@shared/services/hr/hr-team-member.service';
 import { HrTeamMember } from '@shared/domain/subject/hr-team-member';
-import { ManageWorkersDataComponent } from './manage-workers-data.component';
 import { Subject } from '@shared/domain/subject/subject';
+import { ManageWorkersDataComponent } from './manage-workers-data.component';
 
 describe('ManageWorkersDataComponent', () => {
   const employee1: Employee = new Employee(

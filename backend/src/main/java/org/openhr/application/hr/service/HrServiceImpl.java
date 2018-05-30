@@ -79,7 +79,7 @@ public class HrServiceImpl implements HrService {
   @Transactional(propagation = Propagation.MANDATORY)
   public void addManagerToHr(final long hrTeamMemberId, final long managerId)
       throws SubjectDoesNotExistException {
-    final HrTeamMember hrTeamMember = getHrTeamMember(hrTeamMemberId);
+    final HrTeamMember hrTeamMember = hrRepository.getHrTeamMember(hrTeamMemberId);
     if (hrTeamMember == null) {
       throw new SubjectDoesNotExistException(
           messageSource.getMessage("error.hrteammemberdoesnotexist", null, Locale.getDefault()));
