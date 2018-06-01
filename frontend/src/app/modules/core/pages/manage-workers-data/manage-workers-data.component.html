@@ -2,10 +2,10 @@
   <app-page-header [header]="'Manage workers\' data'"></app-page-header>
 
   <mat-form-field fxLayoutAlign="center" fxFlex="100">
-    <input matInput placeholder="Start typing last name" aria-label="Employee" [matAutocomplete]="autoEmployees"
-           [formControl]="workersCtrl">
-    <mat-autocomplete #autoEmployees="matAutocomplete" [displayWith]="displayFullName"
-                      (optionSelected)="displaySubject($event)">
+    <input aria-label="Select worker" type="text" matInput placeholder="Start typing last name"
+           [matAutocomplete]="autoEmployees" [formControl]="workersCtrl">
+    <mat-autocomplete aria-label="Select worker" role="combobox" #autoEmployees="matAutocomplete"
+                      [displayWith]="displayFullName" (optionSelected)="displaySubject($event)">
       <mat-option *ngFor="let worker of filteredWorkers | async" [value]="worker">
         <span>{{worker.personalInformation.firstName}} {{ worker.personalInformation.lastName }}</span>
       </mat-option>
@@ -15,11 +15,11 @@
 
 <section fxLayout="row wrap">
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isFetching && subject">
+<section role="main" class="c-drawer" *ngIf="!isFetching && subject">
   <form [formGroup]="workerForm">
     <mat-toolbar [color]="'primary'">Employee details</mat-toolbar>
     <mat-accordion>
@@ -36,23 +36,23 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-first-name"></label>
-            <input matInput required="required" placeholder="First name" formControlName="firstName"
-                   id="employee-details-first-name" name="firstName">
+            <input aria-label="First name" type="text" aria-required="true" matInput required="required"
+                   placeholder="First name" formControlName="firstName" id="employee-details-first-name"
+                   name="firstName">
             <mat-error *ngIf="workerForm.get('personalInformation.firstName').hasError('required')">
               First name is required
             </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-middle-name"></label>
-            <input matInput placeholder="Middle name" id="employee-details-middle-name"
+            <input aria-label="Middle name" type="text" aria-required="false" matInput placeholder="Middle name"
+                   id="employee-details-middle-name"
                    formControlName="middleName" name="middleName">
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-last-name"></label>
-            <input matInput required="required" placeholder="Last name" formControlName="lastName"
+            <input aria-label="Last name" type="text" aria-required="true" matInput required="required"
+                   placeholder="Last name" formControlName="lastName"
                    id="employee-details-last-name" name="lastName">
             <mat-error *ngIf="workerForm.get('personalInformation.lastName').hasError('required')">
               Last name is required
@@ -60,8 +60,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" required="required" placeholder="Date of birth"
+            <input aria-label="Date of birth" type="date" aria-required="true" matInput [matDatepicker]="picker"
+                   required="required" placeholder="Date of birth"
                    formControlName="dateOfBirth" id="employee-details-date-of-birth" name="dateOfBirth">
             <mat-error *ngIf="workerForm.get('personalInformation.dateOfBirth').hasError('required')">
               Date of birth is required
@@ -71,7 +71,7 @@
           </mat-form-field>
         </form>
         <mat-action-row>
-          <button mat-button color="primary" (click)="nextStep()">Next</button>
+          <button aria-label="Next step" type="button" mat-button color="primary" (click)="nextStep()">Next</button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -89,8 +89,8 @@
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <span matPrefix>+44 (0) &nbsp;</span>
-            <label for="employee-details-telephone"></label>
-            <input type="tel" matInput required="required" placeholder="Telephone" formControlName="telephone"
+            <input aria-label="Telephone" aria-required="true" type="tel" matInput required="required"
+                   placeholder="Telephone" formControlName="telephone"
                    id="employee-details-telephone" name="telephone">
             <mat-error *ngIf="workerForm.get('contactInformation.telephone').hasError('minlength')">
               Telephone number must contains at least 7 digits
@@ -108,8 +108,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-email"></label>
-            <input type="email" matInput required="required" placeholder="Email" formControlName="email"
+            <input aria-label="Email" aria-required="true" type="email" matInput required="required" placeholder="Email"
+                   formControlName="email"
                    id="employee-details-email" name="email">
             <mat-error *ngIf="workerForm.get('contactInformation.email').hasError('pattern')">
               Please enter a valid email address
@@ -122,26 +122,26 @@
           <div formGroupName="address" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
                fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch">
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-1st-line-address"></label>
-              <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
+              <input aria-label="First line" aria-required="false" type="text" matInput placeholder="First line address"
+                     formControlName="firstLineAddress"
                      id="employee-details-1st-line-address" name="firstLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-2nd-line-address"></label>
-              <input type="text" matInput placeholder="Second line address" formControlName="secondLineAddress"
+              <input aria-label="Second line" type="text" aria-required="false" matInput
+                     placeholder="Second line address" formControlName="secondLineAddress"
                      id="employee-details-2nd-line-address" name="secondLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-3rd-line-address"></label>
-              <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
+              <input aria-label="Third line" type="text" aria-required="false" matInput placeholder="Third line address"
+                     formControlName="thirdLineAddress"
                      id="employee-details-3rd-line-address" name="thirdLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-postcode"></label>
-              <input type="text" matInput required="required" placeholder="Postcode" formControlName="postcode"
+              <input aria-label="Postcode" type="text" aria-required="true" matInput required="required"
+                     placeholder="Postcode" formControlName="postcode"
                      id="employee-details-postcode" name="postcode">
               <mat-error *ngIf="workerForm.get('contactInformation.address.postcode').hasError('pattern')">
                 Please enter a valid postcode
@@ -152,22 +152,23 @@
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-city"></label>
-              <input type="text" matInput placeholder="City" formControlName="city"
+              <input aria-label="City" type="text" aria-required="false" matInput placeholder="City"
+                     formControlName="city"
                      id="employee-details-city" name="city">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="employee-details-country"></label>
-              <input type="text" matInput placeholder="Country" formControlName="country"
+              <input aria-label="Country" type="text" aria-required="false" matInput placeholder="Country"
+                     formControlName="country"
                      id="employee-details-country" name="country">
             </mat-form-field>
           </div>
 
         </form>
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button mat-button color="primary" (click)="nextStep()">Next</button>
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" mat-button color="primary" (click)="nextStep()">Next</button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -186,8 +187,8 @@
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="employee-details-nin"></label>
-            <input type="text" matInput required="required" placeholder="National Insurance Number"
-                   formControlName="nationalInsuranceNumber"
+            <input aria-label="National Insurance Number" type="text" aria-required="true" matInput required="required"
+                   placeholder="National Insurance Number" formControlName="nationalInsuranceNumber"
                    id="employee-details-nin" name="nin">
             <mat-error *ngIf="workerForm.get('employeeInformation.nationalInsuranceNumber').hasError('required')">
               NIN is required
@@ -198,8 +199,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-position"></label>
-            <input matInput required="required" required="required" placeholder="Position" formControlName="position"
+            <input aria-label="Position" type="text" aria-required="true" matInput required="required"
+                   required="required" placeholder="Position" formControlName="position"
                    id="employee-details-position" name="position">
             <mat-error *ngIf="workerForm.get('employeeInformation.position').hasError('required')">
               Position is required
@@ -207,8 +208,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-employee-number"></label>
-            <input type="text" matInput required="required" placeholder="Employee number"
+            <input aria-label="Employee number" type="text" aria-required="true" matInput required="required"
+                   placeholder="Employee number"
                    formControlName="employeeNumber"
                    id="employee-details-employee-number" name="employeeNumber">
             <mat-error *ngIf="workerForm.get('employeeInformation.employeeNumber').hasError('required')">
@@ -217,21 +218,23 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-department"></label>
-            <input matInput placeholder="Department" formControlName="department"
+            <input aria-label="Department" type="text" aria-required="false" matInput placeholder="Department"
+                   formControlName="department"
                    id="employee-details-department" name="department">
           </mat-form-field>
 
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+            <input aria-label="Start date" type="date" aria-required="false" matInput [matDatepicker]="startDatePicker"
+                   placeholder="Start date"
                    formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate"
+            <input aria-label="End name" type="date" aria-required="false" matInput [matDatepicker]="endDatePicker"
+                   placeholder="End date" formControlName="endDate"
                    name="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endDatePicker [touchUi]="isMobile()"></mat-datepicker>
@@ -239,8 +242,9 @@
         </form>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button mat-button color="primary" (click)="nextStep()">Next</button>
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" mat-button color="primary" (click)="nextStep()">Next</button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -259,7 +263,8 @@
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input type="number" matInput required="required" placeholder="Allowance"
+            <input aria-label="Allowance" type="number" aria-required="true" matInput required="required"
+                   placeholder="Allowance"
                    formControlName="allowance" name="allowance">
             <mat-error *ngIf="workerForm.get('hrInformation.allowance').hasError('min')">
               Allowance cannot be negative
@@ -270,7 +275,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input type="number" matInput required="required" placeholder="Used allowance" name="usedAllowance"
+            <input aria-label="Used allowance" type="number" aria-required="true" matInput required="required"
+                   placeholder="Used allowance" name="usedAllowance"
                    formControlName="usedAllowance">
             <mat-error *ngIf="workerForm.get('hrInformation.usedAllowance').hasError('min')">
               Used allowance cannot be negative
@@ -281,10 +287,12 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input matInput [required]="(subject.role === 'ROLE_EMPLOYEE') || (subject.role === 'ROLE_MANAGER')"
-                   placeholder="Supervisor" aria-label="Supervisor" [matAutocomplete]="autoSupervisors"
+            <input aria-label="Supervisor" type="text" aria-required="true" matInput
+                   [required]="(subject.role === 'ROLE_EMPLOYEE') || (subject.role === 'ROLE_MANAGER')"
+                   placeholder="Supervisor" [matAutocomplete]="autoSupervisors"
                    [formControl]="supervisorCtrl">
-            <mat-autocomplete #autoSupervisors="matAutocomplete" [displayWith]="displayFullName">
+            <mat-autocomplete aria-label="Supervisor" role="combobox" #autoSupervisors="matAutocomplete"
+                              [displayWith]="displayFullName">
               <mat-option *ngFor="let supervisor of filteredSupervisors | async" [value]="supervisor">
                 <span>{{supervisor.personalInformation.firstName}} {{ supervisor.personalInformation.lastName }}</span>
               </mat-option>
@@ -296,20 +304,24 @@
         </form>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button mat-button color="primary" (click)="nextStep()">End</button>
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" mat-button color="primary" (click)="nextStep()">End</button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
 
     <mat-action-row class="c-drawer__actions">
-      <button type="submit" mat-raised-button color="accent" [disabled]="!isValid() || isLoading"
+      <button aria-label="Submit" type="submit" type="submit" mat-raised-button color="accent"
+              [disabled]="!isValid() || isLoading"
               (click)="save()">Save
       </button>
-      <button type="submit" class="c-btn" mat-raised-button color="warn" [disabled]="!subject || isLoading"
+      <button aria-label="Delete" type="submit" class="c-btn" mat-raised-button color="warn"
+              [disabled]="!subject || isLoading"
               (click)="promptDeletion()">Delete
       </button>
-      <mat-spinner class="c-loading-spinner" [diameter]="30" [color]="'warn'" *ngIf="isLoading"></mat-spinner>
+      <mat-spinner aria-label="loading" class="c-loading-spinner" [diameter]="30" [color]="'warn'"
+                   *ngIf="isLoading"></mat-spinner>
     </mat-action-row>
   </form>
 </section>

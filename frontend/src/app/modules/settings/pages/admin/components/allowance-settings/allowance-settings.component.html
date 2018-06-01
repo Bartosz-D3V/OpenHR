@@ -1,6 +1,6 @@
 <section class="c-drawer">
   <mat-toolbar [color]="'primary'">Allowance settings</mat-toolbar>
-  <mat-card>
+  <mat-card role="presentation">
     <form [formGroup]="allowanceSettingsForm" fxLayout.gt-md="row wrap" fxLayout.md="row wrap"
           fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
           fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
@@ -10,8 +10,8 @@
       </div>
 
       <mat-form-field fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-        <input matInput [matDatepicker]="resetDatePicker" placeholder="Reset date"
-               formControlName="resetDate" name="resetDate"
+        <input aria-label="Reset date" aria-required="true" matInput [matDatepicker]="resetDatePicker"
+               placeholder="Reset date" formControlName="resetDate" name="resetDate"
                [errorStateMatcher]="parentMatcher" appDisableControl [disable]="!autoResetAllowance.checked"
                appResetControl [reset]="!autoResetAllowance.checked">
         <mat-datepicker-toggle matSuffix [for]="resetDatePicker"></mat-datepicker-toggle>
@@ -31,7 +31,7 @@
       </div>
 
       <mat-form-field fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-        <input matInput [type]="'number'" placeholder="Maximum days to carry over"
+        <input aria-label="Carry over unused leave" matInput [type]="'number'" placeholder="Maximum days to carry over"
                formControlName="numberOfDaysToCarryOver" appDisableControl [disable]="!carryOverUnusedLeave.checked"
                appResetControl [reset]="!carryOverUnusedLeave.checked">
         <mat-error *ngIf="allowanceSettingsForm.get('numberOfDaysToCarryOver').touched &&
@@ -54,7 +54,7 @@
     </form>
   </mat-card>
 
-  <button id="allowance-settings-submit-button" type="submit" class="c-btn" mat-raised-button color="accent"
-          [disabled]="!isValid()" (click)="save()">Save
+  <button aria-label="Save" id="allowance-settings-submit-button" type="submit" class="c-btn" mat-raised-button
+          color="accent" [disabled]="!isValid()" (click)="save()">Save
   </button>
 </section>

@@ -2,22 +2,22 @@
   <app-page-header [header]="'Manage leave applications'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
 <section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Manage leave applications</mat-toolbar>
-  <mat-card>
-    <mat-table #table [dataSource]="dataSource">
+  <mat-card role="presentation">
+    <mat-table role="table" #table [dataSource]="dataSource">
 
       <ng-container matColumnDef="applicationId">
-        <mat-header-cell *matHeaderCellDef> Application ID</mat-header-cell>
+        <mat-header-cell aria-label="Application ID" *matHeaderCellDef> Application ID</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.applicationId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
-        <mat-header-cell *matHeaderCellDef> From</mat-header-cell>
+        <mat-header-cell aria-label="From" *matHeaderCellDef> From</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication"> {{leaveApplication.startDate}}</mat-cell>
       </ng-container>
 
@@ -27,7 +27,7 @@
       </ng-container>
 
       <ng-container matColumnDef="employeeName">
-        <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
+        <mat-header-cell aria-label="Employee name" *matHeaderCellDef> Employee name</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
           <div *ngIf="getSubjectFullName(leaveApplication.subjectId) as subject; else loadingTemplate">
             {{subject.firstName}} {{subject.lastName}}
@@ -38,17 +38,19 @@
 
       <ng-container matColumnDef="info">
         <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication">
-          <mat-icon class="mat-24" [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
+        <mat-cell aria-label="Additional information" *matCellDef="let leaveApplication">
+          <mat-icon aria-hidden="false" role="presentation" class="mat-24"
+                    [ngClass]="{'c-drawer__element--off': !leaveApplication.message}"
                     matTooltip="{{leaveApplication.message}}" [matTooltipPosition]="'above'">mode_comment
           </mat-icon>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="reject">
-        <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
+        <mat-header-cell aria-label="Reject" *matHeaderCellDef> Reject</mat-header-cell>
         <mat-cell *matCellDef="let leaveApplication">
-          <button mat-icon-button color="accent" (click)="rejectLeaveApplication(leaveApplication.processInstanceId)">
+          <button aria-label="Reject" type="submit" mat-icon-button color="accent"
+                  (click)="rejectLeaveApplication(leaveApplication.processInstanceId)">
             <mat-icon class="mat-24">cancel</mat-icon>
           </button>
         </mat-cell>
@@ -56,8 +58,9 @@
 
       <ng-container matColumnDef="approve">
         <mat-header-cell *matHeaderCellDef> Approve</mat-header-cell>
-        <mat-cell *matCellDef="let leaveApplication">
-          <button mat-icon-button color="accent" (click)="approveLeaveApplication(leaveApplication.processInstanceId)">
+        <mat-cell aria-label="Approve" *matCellDef="let leaveApplication">
+          <button aria-label="Approve" type="submit" mat-icon-button color="accent"
+                  (click)="approveLeaveApplication(leaveApplication.processInstanceId)">
             <mat-icon class="mat-24">done</mat-icon>
           </button>
         </mat-cell>
