@@ -2,40 +2,41 @@
   <app-page-header [header]="'My Applications'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
 <section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">My applications</mat-toolbar>
-  <mat-card>
+  <mat-card role="presentation">
     <mat-table #table [dataSource]="dataSource">
 
       <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-header-cell aria-label="Role" *matHeaderCellDef>Type</mat-header-cell>
         <mat-cell *matCellDef="let application"> {{application | applicationType}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
-        <mat-header-cell *matHeaderCellDef>From</mat-header-cell>
+        <mat-header-cell aria-label="From" *matHeaderCellDef>From</mat-header-cell>
         <mat-cell *matCellDef="let application"> {{application.startDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="to">
-        <mat-header-cell *matHeaderCellDef>To</mat-header-cell>
+        <mat-header-cell aria-label="To" *matHeaderCellDef>To</mat-header-cell>
         <mat-cell *matCellDef="let application"> {{application.endDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-header-cell aria-label="Status" *matHeaderCellDef>Status</mat-header-cell>
         <mat-cell *matCellDef="let application"> {{application | applicationStatus}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="ics">
-        <mat-header-cell *matHeaderCellDef>ICS</mat-header-cell>
+        <mat-header-cell aria-label="Download a calendar file" *matHeaderCellDef>ICS</mat-header-cell>
         <mat-cell *matCellDef="let application">
-          <button mat-icon-button color="accent" [disabled]="!(application.terminated && application.approvedByHR)"
+          <button aria-label="Download" type="button" mat-icon-button color="accent"
+                  [disabled]="!(application.terminated && application.approvedByHR)"
                   (click)="downloadICS(application.applicationId)" download>
             <mat-icon class="mat-24">event</mat-icon>
           </button>
@@ -43,9 +44,9 @@
       </ng-container>
 
       <ng-container matColumnDef="info">
-        <mat-header-cell *matHeaderCellDef>Additional information</mat-header-cell>
+        <mat-header-cell aria-label="Additional information" *matHeaderCellDef>Additional information</mat-header-cell>
         <mat-cell *matCellDef="let application">
-          <mat-icon class="mat-24"
+          <mat-icon aria-hidden="false" class="mat-24"
                     [ngClass]="{'c-drawer__element--off': !(application.message || application.objective)}"
                     matTooltip="{{application.message || application.objective}}" [matTooltipPosition]="'above'">
             mode_comment
@@ -54,9 +55,10 @@
       </ng-container>
 
       <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-header-cell aria-label="Action" *matHeaderCellDef>Action</mat-header-cell>
         <mat-cell *matCellDef="let application">
-          <button mat-icon-button color="accent" *ngIf="application.applicationType === 'DELEGATION_APPLICATION'"
+          <button aria-label="Amend application" type="button" mat-icon-button color="accent"
+                  *ngIf="application.applicationType === 'DELEGATION_APPLICATION'"
                   [disabled]="!applicationIsRejected(application)"
                   (click)="amendApplication(application.applicationId)">
             <mat-icon class="mat-24">create</mat-icon>

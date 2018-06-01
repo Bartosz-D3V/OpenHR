@@ -23,14 +23,15 @@
       </mat-select>
 
       <mat-form-field class="c-drawer__element">
-        <textarea matInput #message maxlength="500" placeholder="Message (optional)" name="message"
+        <textarea aria-label="Message" aria-required="false" matInput #message maxlength="500"
+                  placeholder="Message (optional)" name="message"
                   formControlName="messageController" [(ngModel)]="leaveApplication.message"></textarea>
         <mat-hint align="end">{{message?.value.length || 0}} / 500</mat-hint>
       </mat-form-field>
     </form>
 
     <div fxFlex.gt-md="45" fxFlex.md="45" fxFlex.lt-md="100">
-      <mat-card>
+      <mat-card role="listitem">
         <mat-card-header>
           <mat-card-title>Bank holiday</mat-card-title>
           <mat-card-subtitle>In between your leave</mat-card-subtitle>
@@ -55,9 +56,10 @@
   </mat-card>
 
   <div class="c-drawer__actions">
-    <button type="submit" class="c-btn" mat-raised-button color="accent" [disabled]="!isValid() || isLoading"
-            (click)="submitForm()">Submit
+    <button aria-label="Submit" type="submit" class="c-btn" mat-raised-button color="accent"
+            [disabled]="!isValid() || isLoading" (click)="submitForm()">Submit
     </button>
-    <mat-spinner class="c-loading-spinner" [diameter]="30" [color]="'warn'" *ngIf="isLoading"></mat-spinner>
+    <mat-spinner aria-label="loading" class="c-loading-spinner" [diameter]="30" [color]="'warn'"
+                 *ngIf="isLoading"></mat-spinner>
   </div>
 </section>

@@ -4,10 +4,10 @@
     Session has expired.
     Please either refresh session, or logout.
   </p>
-  <button mat-raised-button class="c-static-modal__btn" color="accent" [mat-dialog-close]="false"
-          (click)="refreshToken()">Refresh
+  <button aria-label="Refresh" type="Submit" mat-raised-button class="c-static-modal__btn" color="accent"
+          [mat-dialog-close]="false" (click)="refreshToken()">Refresh
   </button>
-  <button mat-raised-button class="c-static-modal__btn" color="warn" [mat-dialog-close]="true"
-          (click)="logout()">Logout
+  <button aria-label="Logout" type="Submit" mat-raised-button class="c-static-modal__btn" color="warn"
+          [mat-dialog-close]="true" (click)="logout()">Logout
   </button>
 </div>

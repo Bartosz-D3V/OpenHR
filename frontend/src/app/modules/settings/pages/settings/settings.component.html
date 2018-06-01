@@ -2,13 +2,13 @@
   <app-page-header [header]="'Settings'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isFetching">
+<section role="main" class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Settings</mat-toolbar>
-  <mat-card>
+  <mat-card role="presentation">
     <div fxLayout="row" fxLayout.md="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="space-around"
          fxLayoutAlign.xs="center center">
       <mat-slide-toggle #notificationsTurnedOn [(ngModel)]="user.notificationsTurnedOn" (change)="updateUser()">
