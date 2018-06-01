@@ -19,6 +19,7 @@ import { CustomAsyncValidatorsService } from '@shared/util/async-validators/cust
 })
 export class AccountComponent implements OnInit, OnDestroy {
   private $accountService: ISubscription;
+  public hidePassword = true;
   public passwordForm: FormGroup;
   public emailForm: FormGroup;
 

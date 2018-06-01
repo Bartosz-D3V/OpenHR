@@ -2,11 +2,11 @@
   <app-page-header id="personal-details-header" [header]="'Personal details'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="subject">
+<section role="main" class="c-drawer" *ngIf="subject">
   <form [formGroup]="personalDetailsFormGroup">
     <mat-toolbar [color]="'primary'">My details</mat-toolbar>
     <mat-accordion>
@@ -24,8 +24,8 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-first-name"></label>
-            <input matInput [required]="'required'" placeholder="First name" formControlName="firstName"
+            <input aria-label="First name" type="text" aria-required="true" matInput [required]="'required'"
+                   placeholder="First name" formControlName="firstName"
                    id="personal-details-first-name" name="firstName">
             <mat-error id="personal-details-first-name-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'firstName']).hasError('required')">
@@ -34,14 +34,14 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-middle-name"></label>
-            <input matInput placeholder="Middle name" id="personal-details-middle-name"
+            <input aria-label="Middle name" type="text" aria-required="false" matInput placeholder="Middle name"
+                   id="personal-details-middle-name"
                    formControlName="middleName" name="middleName">
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-last-name"></label>
-            <input matInput [required]="'required'" placeholder="Last name" formControlName="lastName"
+            <input aria-label="Last name" type="text" aria-required="true" matInput [required]="'required'"
+                   placeholder="Last name" formControlName="lastName"
                    id="personal-details-last-name" name="lastName">
             <mat-error id="personal-details-last-name-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'lastName']).hasError('required')">
@@ -50,8 +50,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" [required]="'required'" placeholder="Date of birth"
+            <input aria-label="Date of birth" type="date" aria-required="true" matInput [matDatepicker]="picker"
+                   [required]="'required'" placeholder="Date of birth"
                    formControlName="dateOfBirth" id="personal-details-date-of-birth" name="dateOfBirth">
             <mat-error id="personal-details-date-of-birth-required"
                        *ngIf="personalDetailsFormGroup.get(['personalInformation', 'dateOfBirth']).hasError('required')">
@@ -62,7 +62,8 @@
           </mat-form-field>
         </form>
         <mat-action-row>
-          <button id="personal-details-personal-information-next" mat-button color="primary" (click)="nextStep()">Next
+          <button aria-label="Next step" type="button" id="personal-details-personal-information-next" mat-button
+                  color="primary" (click)="nextStep()">Next
           </button>
         </mat-action-row>
       </mat-expansion-panel>
@@ -80,11 +81,9 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <span matPrefix>+44 (0) &nbsp;</span>
-            <label for="personal-details-telephone"></label>
-            <input type="tel" matInput [required]="'required'" placeholder="Telephone"
-                   formControlName="telephone"
-                   id="personal-details-telephone" name="telephone">
+            <span aria-label="Telephone prefix" matPrefix>+44 (0) &nbsp;</span>
+            <input aria-label="Telephone" type="tel" aria-required="true" matInput [required]="'required'"
+                   placeholder="Telephone" formControlName="telephone" id="personal-details-telephone" name="telephone">
             <mat-error id="personal-details-telephone-min"
                        *ngIf="personalDetailsFormGroup.get(['contactInformation', 'telephone']).hasError('minlength')">
               Telephone number must contains at least 7 digits
@@ -106,7 +105,8 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-email"></label>
-            <input type="email" matInput [required]="'required'" placeholder="Email" formControlName="email"
+            <input aria-label="Email" type="email" aria-required="true" matInput [required]="'required'"
+                   placeholder="Email" formControlName="email"
                    id="personal-details-email" name="email">
             <mat-error id="personal-details-email-pattern"
                        *ngIf="personalDetailsFormGroup.get(['contactInformation', 'email']).hasError('pattern')">
@@ -126,28 +126,27 @@
                fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
                fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-1st-line-address"></label>
-              <input type="text" matInput placeholder="First line address" formControlName="firstLineAddress"
+              <input aria-label="First line" type="text" aria-required="false" matInput placeholder="First line address"
+                     formControlName="firstLineAddress"
                      id="personal-details-1st-line-address" name="firstLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-2nd-line-address"></label>
-              <input type="text" matInput placeholder="Second line address"
+              <input aria-label="Second line" type="text" aria-required="false" matInput
+                     placeholder="Second line address"
                      formControlName="secondLineAddress"
                      id="personal-details-2nd-line-address" name="secondLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-3rd-line-address"></label>
-              <input type="text" matInput placeholder="Third line address" formControlName="thirdLineAddress"
+              <input aria-label="Third line" type="text" aria-required="false" matInput placeholder="Third line address"
+                     formControlName="thirdLineAddress"
                      id="personal-details-3rd-line-address" name="thirdLineAddress">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-postcode"></label>
-              <input type="text" matInput [required]="'required'" placeholder="Postcode"
-                     formControlName="postcode" id="personal-details-postcode" name="postcode">
+              <input aria-label="Postcode" type="text" aria-required="true" matInput [required]="'required'"
+                     placeholder="Postcode" formControlName="postcode" id="personal-details-postcode" name="postcode">
               <mat-error id="personal-details-postcode-pattern"
                          *ngIf="personalDetailsFormGroup.get(['contactInformation', 'address', 'postcode']).hasError('pattern')">
                 Please enter a valid postcode
@@ -159,21 +158,23 @@
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-city"></label>
-              <input type="text" matInput placeholder="City" formControlName="city"
+              <input aria-label="City" type="text" aria-required="false" matInput placeholder="City"
+                     formControlName="city"
                      id="personal-details-city" name="city">
             </mat-form-field>
 
             <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-              <label for="personal-details-country"></label>
-              <input type="text" matInput placeholder="Country" formControlName="country"
+              <input aria-label="Country" type="text" aria-required="false" matInput placeholder="Country"
+                     formControlName="country"
                      id="personal-details-country" name="country">
             </mat-form-field>
           </div>
         </form>
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button id="personal-details-contact-information-next" mat-button color="primary" (click)="nextStep()">Next
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" id="personal-details-contact-information-next" mat-button
+                  color="primary" (click)="nextStep()">Next
           </button>
         </mat-action-row>
       </mat-expansion-panel>
@@ -192,8 +193,8 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
               fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-nin"></label>
-            <input type="text" matInput [required]="'required'" placeholder="National Insurance Number"
+            <input aria-label="National Insurance Number" type="text" aria-required="true" matInput
+                   [required]="'required'" placeholder="National Insurance Number"
                    formControlName="nationalInsuranceNumber" id="personal-details-nin" name="nin">
             <mat-error id="personal-details-nin-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'nationalInsuranceNumber']).hasError('required')">
@@ -206,9 +207,9 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-employee-number"></label>
-            <input type="text" matInput [required]="'required'" placeholder="Employee number"
-                   formControlName="employeeNumber" id="personal-details-employee-number" name="employeeNumber">
+            <input aria-label="Employee number" type="text" aria-required="true" matInput [required]="'required'"
+                   placeholder="Employee number" formControlName="employeeNumber" id="personal-details-employee-number"
+                   name="employeeNumber">
             <mat-error id="personal-details-employee-number-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'employeeNumber']).hasError('required')">
               Employee number is required
@@ -216,8 +217,8 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="personal-details-position"></label>
-            <input matInput [required]="'required'" placeholder="Position" formControlName="position"
+            <input aria-label="Position" type="text" aria-required="true" matInput [required]="'required'"
+                   placeholder="Position" formControlName="position"
                    id="personal-details-position" name="position">
             <mat-error id="personal-details-position-required"
                        *ngIf="personalDetailsFormGroup.get(['employeeInformation', 'position']).hasError('required')">
@@ -226,20 +227,22 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <label for="employee-details-department"></label>
-            <input matInput placeholder="Department" formControlName="department"
+            <input aria-label="Department" type="text" aria-required="false" matInput placeholder="Department"
+                   formControlName="department"
                    id="employee-details-department" name="department">
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input id="personal-details-start-date" matInput [matDatepicker]="startDatePicker" placeholder="Start date"
+            <input aria-label="Start date" type="date" aria-required="false" id="personal-details-start-date" matInput
+                   [matDatepicker]="startDatePicker" placeholder="Start date"
                    formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input id="personal-details-end-date" matInput [matDatepicker]="endDatePicker" placeholder="End date"
+            <input aria-label="End date" type="date" aria-required="false" id="personal-details-end-date" matInput
+                   [matDatepicker]="endDatePicker" placeholder="End date"
                    formControlName="endDate" name="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endDatePicker [touchUi]="isMobile()"></mat-datepicker>
@@ -247,8 +250,10 @@
         </form>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button id="personal-details-employee-information-next" mat-button color="primary" (click)="nextStep()">Next
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" id="personal-details-employee-information-next" mat-button
+                  color="primary" (click)="nextStep()">Next
           </button>
         </mat-action-row>
       </mat-expansion-panel>
@@ -267,9 +272,9 @@
               fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around wrap" fxLayoutAlign.lt-md="center stretch"
               fxLayoutGap="5%">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input [required]="'required'" id="personal-details-allowance" type="number" matInput
-                   placeholder="Allowance"
-                   formControlName="allowance" name="allowance">
+            <input aria-label="Allowance" type="number" aria-required="true" [required]="'required'"
+                   id="personal-details-allowance" type="number" matInput
+                   placeholder="Allowance" formControlName="allowance" name="allowance">
             <mat-error id="personal-details-allowance-min"
                        *ngIf="personalDetailsFormGroup.get(['hrInformation', 'allowance']).hasError('min')">
               Allowance cannot be negative
@@ -277,9 +282,9 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input [required]="'required'" id="personal-details-used-allowance" type="number" matInput
-                   placeholder="Used allowance" formControlName="usedAllowance"
-                   name="usedAllowance">
+            <input aria-label="Used allowance" type="number" aria-required="true" [required]="'required'"
+                   id="personal-details-used-allowance" type="number" matInput
+                   placeholder="Used allowance" formControlName="usedAllowance" name="usedAllowance">
             <mat-error id="personal-details-used-allowance-min"
                        *ngIf="personalDetailsFormGroup.get(['hrInformation', 'usedAllowance']).hasError('min')">
               Used allowance cannot be negative
@@ -307,8 +312,8 @@
         <div fxLayout.lt-md="column" fxLayoutAlign.gt-md="space-around stretch"
              fxLayoutAlign.md="space-between stretch" fxLayoutAlign.lt-md="center stretch" fxLayoutGap="5">
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input [required]="'required'" id="personal-details-role" type="text" matInput
-                   placeholder="Role" formControlName="role" name="role">
+            <input aria-label="Role" type="text" aria-required="true" [required]="'required'" id="personal-details-role"
+                   type="text" matInput placeholder="Role" formControlName="role" name="role">
             <mat-error id="personal-details-role-required"
                        *ngIf="personalDetailsFormGroup.get('role').hasError('required')">
               Role is required
@@ -317,17 +322,19 @@
         </div>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Previous</button>
-          <button mat-button color="primary" (click)="nextStep()">End</button>
+          <button aria-label="Previous step" type="button" mat-button color="warn" (click)="prevStep()">Previous
+          </button>
+          <button aria-label="Next step" type="button" mat-button color="primary" (click)="nextStep()">End</button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
 
     <mat-action-row class="c-drawer__actions">
-      <button id="personal-details-submit-button" type="submit"  mat-raised-button color="accent"
+      <button id="personal-details-submit-button" type="submit" mat-raised-button color="accent"
               [disabled]="!isValid() || isLoading" (click)="save()">Save
       </button>
-      <mat-spinner class="c-loading-spinner" [diameter]="30" [color]="'warn'" *ngIf="isLoading"></mat-spinner>
+      <mat-spinner aria-label="loading" aria-label="loading" class="c-loading-spinner" [diameter]="30" [color]="'warn'"
+                   *ngIf="isLoading"></mat-spinner>
     </mat-action-row>
   </form>
 </section>

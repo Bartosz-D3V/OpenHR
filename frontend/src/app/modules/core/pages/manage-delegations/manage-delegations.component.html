@@ -2,32 +2,32 @@
   <app-page-header [header]="'Manage delegations'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
 <section class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Manage delegation applications</mat-toolbar>
-  <mat-card>
-    <mat-table #table [dataSource]="dataSource">
+  <mat-card role="presentation">
+    <mat-table role="table" #table [dataSource]="dataSource">
 
       <ng-container matColumnDef="applicationId">
-        <mat-header-cell *matHeaderCellDef> Application ID</mat-header-cell>
+        <mat-header-cell aria-label="Application ID" *matHeaderCellDef> Application ID</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.applicationId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="from">
-        <mat-header-cell *matHeaderCellDef> From</mat-header-cell>
+        <mat-header-cell aria-label="From" *matHeaderCellDef> From</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.startDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="to">
-        <mat-header-cell *matHeaderCellDef> To</mat-header-cell>
+        <mat-header-cell aria-label="To" *matHeaderCellDef> To</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.endDate}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="employeeName">
-        <mat-header-cell *matHeaderCellDef> Employee name</mat-header-cell>
+        <mat-header-cell aria-label="Employee name" *matHeaderCellDef> Employee name</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication">
           <div *ngIf="getSubjectFullName(delegationApplication.subjectId) as subject; else loadingTemplate">
             {{subject.firstName}} {{subject.lastName}}
@@ -37,27 +37,27 @@
       </ng-container>
 
       <ng-container matColumnDef="country">
-        <mat-header-cell *matHeaderCellDef> Country</mat-header-cell>
+        <mat-header-cell aria-label="Country" *matHeaderCellDef> Country</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.country.countryName}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="city">
-        <mat-header-cell *matHeaderCellDef> City</mat-header-cell>
+        <mat-header-cell aria-label="City" *matHeaderCellDef> City</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.city}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="budget">
-        <mat-header-cell *matHeaderCellDef> Budget</mat-header-cell>
+        <mat-header-cell aria-label="Budget" *matHeaderCellDef> Budget</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication"> {{delegationApplication.budget | currency:'GBP'}}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="reject">
-        <mat-header-cell *matHeaderCellDef> Reject</mat-header-cell>
+        <mat-header-cell aria-label="Reject" *matHeaderCellDef> Reject</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication">
-          <button mat-icon-button color="accent"
+          <button aria-label="Reject" type="submit" mat-icon-button color="accent"
                   (click)="rejectDelegationApplication(delegationApplication.processInstanceId)">
             <mat-icon class="mat-24">cancel</mat-icon>
           </button>
@@ -67,7 +67,7 @@
       <ng-container matColumnDef="approve">
         <mat-header-cell *matHeaderCellDef> Approve</mat-header-cell>
         <mat-cell *matCellDef="let delegationApplication">
-          <button mat-icon-button color="accent"
+          <button aria-label="Accept" mat-icon-button color="accent"
                   (click)="approveDelegationApplication(delegationApplication.processInstanceId)">
             <mat-icon class="mat-24">done</mat-icon>
           </button>

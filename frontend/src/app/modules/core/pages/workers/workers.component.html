@@ -2,11 +2,11 @@
   <app-page-header [header]="'Employees'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isFetching">
+<section role="main" class="c-drawer" *ngIf="!isFetching">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -14,17 +14,17 @@
   <div class="c-table">
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-header-cell aria-label="Person ID" *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.subjectId}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-header-cell aria-label="Name" *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Position</mat-header-cell>
+        <mat-header-cell aria-label="Position" *matHeaderCellDef mat-sort-header>Position</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.position}}</mat-cell>
       </ng-container>
 

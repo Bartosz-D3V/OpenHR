@@ -2,20 +2,19 @@
   <app-page-header [header]="'Delegation'"></app-page-header>
 
   <div fxLayoutAlign="center center" fxFlex="100">
-    <mat-spinner *ngIf="isFetching"></mat-spinner>
+    <mat-spinner aria-label="loading" *ngIf="isFetching"></mat-spinner>
   </div>
 </section>
 
-<section class="c-drawer" *ngIf="!isFetching">
+<section role="document" class="c-drawer" *ngIf="!isFetching">
   <mat-toolbar [color]="'primary'">Apply for a delegation</mat-toolbar>
   <mat-card>
     <form [formGroup]="applicationForm">
       <form formGroupName="name" fxLayout.gt-xs="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around stretch"
             fxLayoutAlign.lt-sm="center stretch" fxLayoutGap="5">
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-subject-id"></label>
-          <input matInput required="required" placeholder="Subject ID" id="delegation-subject-id" name="subjectId"
-                 formControlName="subjectId">
+          <input aria-label="Subject ID" aria-required="true" matInput required="required" placeholder="Subject ID"
+                 id="delegation-subject-id" name="subjectId" formControlName="subjectId">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'subjectId']).touched &&
           applicationForm.get(['name', 'subjectId']).hasError('required')">
@@ -23,9 +22,8 @@
         </mat-error>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-first-name"></label>
-          <input matInput id="delegation-first-name" required="required" placeholder="First name" name="firstName"
-                 formControlName="first">
+          <input aria-label="First name" aria-required="true" matInput id="delegation-first-name" required="required"
+                 placeholder="First name" name="firstName" formControlName="first">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'first']).touched &&
           applicationForm.get(['name', 'first']).hasError('required')">
@@ -33,15 +31,14 @@
         </mat-error>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-middle-name"></label>
-          <input matInput placeholder="Middle name" id="delegation-middle-name" name="middleName"
-                 formControlName="middle">
+          <input aria-label="Middle name" aria-required="false" matInput placeholder="Middle name"
+                 id="delegation-middle-name"
+                 name="middleName" formControlName="middle">
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-last-name"></label>
-          <input matInput required="required" placeholder="Last name" id="delegation-last-name" name="lastName"
-                 formControlName="last">
+          <input aria-label="Last name" aria-required="true" matInput required="required" placeholder="Last name"
+                 id="delegation-last-name" name="lastName" formControlName="last">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['name', 'last']).touched &&
           applicationForm.get(['name', 'last']).hasError('required')">
@@ -53,9 +50,8 @@
             fxLayoutAlign="space-around stretch"
             fxLayoutAlign.lt-sm="center stretch">
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-position"></label>
-          <input matInput required="required" placeholder="Position" id="delegation-position" name="position"
-                 formControlName="position">
+          <input aria-label="Position" aria-required="true" matInput required="required" placeholder="Position"
+                 id="delegation-position" name="position" formControlName="position">
         </mat-form-field>
         <mat-error *ngIf="applicationForm.get(['organisation', 'position']).touched &&
           applicationForm.get(['organisation', 'position']).hasError('required')">
@@ -63,9 +59,8 @@
         </mat-error>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-last-name"></label>
-          <input matInput placeholder="Department" id="delegation-department" name="department"
-                 formControlName="department">
+          <input aria-label="Department" aria-required="true" matInput placeholder="Department"
+                 id="delegation-department" name="department" formControlName="department">
         </mat-form-field>
       </form>
 
@@ -73,9 +68,10 @@
             fxLayoutAlign="space-around stretch"
             fxLayoutAlign.lt-sm="center stretch">
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <input matInput required="required" placeholder="Country" aria-label="Countries"
+          <input aria-label="Country" aria-required="true" matInput required="required" placeholder="Country"
                  [matAutocomplete]="autoCountries" formControlName="country">
-          <mat-autocomplete #autoCountries="matAutocomplete" [displayWith]="displayCountryName">
+          <mat-autocomplete aria-label="Country" role="combobox" #autoCountries="matAutocomplete"
+                            [displayWith]="displayCountryName">
             <mat-option *ngFor="let country of filteredCountries | async " [value]="country">
               <span>{{country.countryName}}</span>
             </mat-option>
@@ -87,9 +83,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-city"></label>
-          <input #city matInput required="required" placeholder="City" id="delegation-city" name="city"
-                 formControlName="city">
+          <input aria-label="City" aria-required="true" #city matInput required="required" placeholder="City"
+                 id="delegation-city" name="city" formControlName="city">
           <mat-error *ngIf="applicationForm.get(['delegation', 'city']).touched &&
           applicationForm.get(['delegation', 'city']).hasError('required')">
             Destination city is required
@@ -97,9 +92,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-objective"></label>
-          <input #objective matInput required="required" placeholder="Objective" id="delegation-objective"
-                 name="objective" formControlName="objective">
+          <input aria-label="Objective" aria-required="true" #objective matInput required="required"
+                 placeholder="Objective" id="delegation-objective" name="objective" formControlName="objective">
           <mat-error *ngIf="applicationForm.get(['delegation', 'objective']).touched &&
           applicationForm.get(['delegation', 'objective']).hasError('required')">
             Objective is required
@@ -107,9 +101,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <label for="delegation-budget"></label>
-          <input matInput required="required" placeholder="Budget" id="delegation-budget" name="budget"
-                 formControlName="budget">
+          <input aria-label="Budget" aria-required="true" type="number" matInput required="required"
+                 placeholder="Budget" id="delegation-budget" name="budget" formControlName="budget">
           <mat-error *ngIf="applicationForm.get(['delegation', 'budget']).touched &&
           applicationForm.get(['delegation', 'budget']).hasError('required')">
             Budget is required
@@ -122,8 +115,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <input matInput [matDatepicker]="startDatePicker" required="required" placeholder="Start date"
-                 formControlName="startDate" name="startDate">
+          <input aria-label="Start date" aria-required="true" type="date" matInput [matDatepicker]="startDatePicker"
+                 required="required" placeholder="Start date" formControlName="startDate" name="startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
           <mat-error *ngIf="(applicationForm.get(['delegation', 'startDate']).touched ||
@@ -138,8 +131,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <input matInput [matDatepicker]="endDatePicker" required="required" placeholder="End date"
-                 formControlName="endDate">
+          <input aria-label="End date" aria-required="true" type="date" matInput [matDatepicker]="endDatePicker"
+                 required="required" placeholder="End date" formControlName="endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
           <mat-error *ngIf="(applicationForm.get(['delegation', 'endDate']).touched ||
@@ -157,8 +150,10 @@
   </mat-card>
 
   <div class="c-drawer__actions">
-    <button mat-raised-button color="primary" class="c-btn" [disabled]="!isValid() || isLoading" (click)="save()">Submit
+    <button aria-label="Submit" type="button" mat-raised-button color="primary" class="c-btn"
+            [disabled]="!isValid() || isLoading" (click)="save()">Submit
     </button>
-    <mat-spinner class="c-loading-spinner" [diameter]="30" [color]="'warn'" *ngIf="isLoading"></mat-spinner>
+    <mat-spinner aria-label="loading" class="c-loading-spinner" [diameter]="30" [color]="'warn'"
+                 *ngIf="isLoading"></mat-spinner>
   </div>
 </section>
