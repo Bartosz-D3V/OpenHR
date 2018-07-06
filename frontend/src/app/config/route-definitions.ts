@@ -23,7 +23,6 @@ export const routeDefinitions: Routes = [
   {
     path: 'app',
     component: CoreWrapperComponent,
-    canActivate: [MainGuard],
     children: [
       {
         path: '',

@@ -60,7 +60,7 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input aria-label="Date of birth" type="date" aria-required="true" matInput [matDatepicker]="picker"
+            <input aria-label="Date of birth" type="text" aria-required="true" matInput [matDatepicker]="picker"
                    required="required" placeholder="Date of birth"
                    formControlName="dateOfBirth" id="employee-details-date-of-birth" name="dateOfBirth">
             <mat-error *ngIf="workerForm.get('personalInformation.dateOfBirth').hasError('required')">
@@ -225,15 +225,14 @@
 
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input aria-label="Start date" type="date" aria-required="false" matInput [matDatepicker]="startDatePicker"
-                   placeholder="Start date"
-                   formControlName="startDate" name="startDate">
+            <input aria-label="Start date" type="text" aria-required="false" matInput [matDatepicker]="startDatePicker"
+                   placeholder="Start date" formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #startDatePicker [touchUi]="isMobile()"></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input aria-label="End name" type="date" aria-required="false" matInput [matDatepicker]="endDatePicker"
+            <input aria-label="End name" type="text" aria-required="false" matInput [matDatepicker]="endDatePicker"
                    placeholder="End date" formControlName="endDate"
                    name="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>

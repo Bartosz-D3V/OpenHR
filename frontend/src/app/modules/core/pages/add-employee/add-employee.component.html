@@ -46,9 +46,8 @@
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
             <label for="personal-details-date-of-birth"></label>
-            <input matInput [matDatepicker]="picker" [required]="'required'" placeholder="Date of birth"
-                   formControlName="dateOfBirth"
-                   id="personal-details-date-of-birth" name="dateOfBirth">
+            <input matInput [matDatepicker]="picker" type="text" [required]="'required'" placeholder="Date of birth"
+                   formControlName="dateOfBirth" id="personal-details-date-of-birth" name="dateOfBirth">
             <mat-error *ngIf="newSubjectForm.get(['personalInformation', 'dateOfBirth']).touched &&
             newSubjectForm.get(['personalInformation', 'dateOfBirth']).hasError('required')">
               Date of birth is required
@@ -226,14 +225,15 @@
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input matInput [matDatepicker]="startDatePicker" placeholder="Start date"
-                   formControlName="startDate" name="startDate">
+            <input matInput [matDatepicker]="startDatePicker" type="text" placeholder="Start date"
+                   aria-label="Start date" formControlName="startDate" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field fxFlex.gt-md="30" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
-            <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+            <input matInput [matDatepicker]="endDatePicker" type="text" placeholder="End date"
+                   aria-label="End date" formControlName="endDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>
           </mat-form-field>
