@@ -1,8 +1,8 @@
 <form [formGroup]="dateRange" fxLayout="row wrap" fxLayout.xs="column">
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
-    <input aria-label="Start date" matInput [matDatepicker]="dateFrom" [required]="requireStartDate"
-           placeholder="Choose a start date"
-           name="startDate" formControlName="startDate" (dateChange)="updateStartDate($event.value)">
+    <input aria-label="Start date" type="text" matInput [matDatepicker]="dateFrom" [required]="requireStartDate"
+           placeholder="Choose a start date" name="startDate" formControlName="startDate"
+           (dateChange)="updateStartDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
     <mat-datepicker #dateFrom [touchUi]=isMobile()></mat-datepicker>
     <mat-error *ngIf="dateRange.get('startDate').hasError('dateRangeNotValid')">
@@ -14,7 +14,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex.gt-xs="{{mainFlexProperty}}" fxFlex.xs="{{mobileFlexProperty}}">
-    <input aria-label="End date" matInput [matDatepicker]="dateTo" [required]="requireEndDate"
+    <input aria-label="End date" type="text" matInput [matDatepicker]="dateTo" [required]="requireEndDate"
            placeholder="Choose an end date" name="endDate"
            formControlName="endDate" (dateChange)="updateEndDate($event.value)">
     <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>

@@ -115,7 +115,7 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <input aria-label="Start date" aria-required="true" type="date" matInput [matDatepicker]="startDatePicker"
+          <input aria-label="Start date" aria-required="true" type="text" matInput [matDatepicker]="startDatePicker"
                  required="required" placeholder="Start date" formControlName="startDate" name="startDate">
           <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #startDatePicker></mat-datepicker>
@@ -131,7 +131,7 @@
         </mat-form-field>
 
         <mat-form-field fxFlex.gt-xs="45" fxFlex.xs="100">
-          <input aria-label="End date" aria-required="true" type="date" matInput [matDatepicker]="endDatePicker"
+          <input aria-label="End date" aria-required="true" type="text" matInput [matDatepicker]="endDatePicker"
                  required="required" placeholder="End date" formControlName="endDate">
           <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
           <mat-datepicker [touchUi]="isMobile()" #endDatePicker></mat-datepicker>

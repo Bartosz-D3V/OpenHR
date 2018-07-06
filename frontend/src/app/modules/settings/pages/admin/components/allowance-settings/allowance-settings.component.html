@@ -11,7 +11,7 @@
 
       <mat-form-field fxFlex.gt-md="50" fxFlex.md="45" fxFlex.sm="40" fxFlex.xs="80">
         <input aria-label="Reset date" aria-required="true" matInput [matDatepicker]="resetDatePicker"
-               placeholder="Reset date" formControlName="resetDate" name="resetDate"
+               placeholder="Reset date" formControlName="resetDate" name="resetDate" type="text"
                [errorStateMatcher]="parentMatcher" appDisableControl [disable]="!autoResetAllowance.checked"
                appResetControl [reset]="!autoResetAllowance.checked">
         <mat-datepicker-toggle matSuffix [for]="resetDatePicker"></mat-datepicker-toggle>
