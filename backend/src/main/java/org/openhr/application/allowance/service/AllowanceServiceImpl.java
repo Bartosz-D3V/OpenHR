@@ -91,7 +91,7 @@ public class AllowanceServiceImpl implements AllowanceService {
         holidayService.getWorkingDaysInBetween(
             leaveApplication.getStartDate(), leaveApplication.getEndDate());
     final long currentlyUsedAllowance = subject.getHrInformation().getUsedAllowance();
-    final long newUsedAllowance = currentlyUsedAllowance + allowanceSubtracted;
+    final long newUsedAllowance = currentlyUsedAllowance - allowanceSubtracted;
     subject.getHrInformation().setUsedAllowance(newUsedAllowance);
     subjectService.updateSubjectHRInformation(subject.getSubjectId(), subject.getHrInformation());
   }
