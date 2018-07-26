@@ -180,6 +180,7 @@ public class LeaveApplicationRepository {
               .add(
                   Restrictions.conjunction(
                       Restrictions.eq("terminated", true),
+                      Restrictions.eq("approvedByHR", true),
                       Restrictions.le("startDate", dateRange.getEndDate()),
                       Restrictions.ge("endDate", dateRange.getStartDate())))
               .add(Restrictions.eq("subject.subjectId", subjectId))
