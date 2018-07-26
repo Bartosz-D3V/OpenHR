@@ -5,12 +5,14 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.openhr.application.delegation.domain.DelegationApplication;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 
 public interface DelegationApplicationService {
   List<Country> getCountries();
 
   DelegationApplication createDelegationApplication(
-      Subject subject, DelegationApplication delegationApplication);
+      Subject subject, DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException;
 
   DelegationApplication getDelegationApplication(long delegationApplicationId);
 
@@ -22,6 +24,9 @@ public interface DelegationApplicationService {
   List<DelegationApplication> getSubjectsDelegationApplications(long subjectId);
 
   List<DelegationApplication> getAwaitingForActionDelegationApplications(long subjectId);
+
+  void assignToSupervisor(DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException;
 
   void assignToApplicant(DelegationApplication delegationApplication);
 
