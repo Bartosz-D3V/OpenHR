@@ -8,8 +8,10 @@ import org.openhr.application.employee.domain.Employee;
 import org.openhr.application.employee.service.EmployeeService;
 import org.openhr.application.hr.domain.HrTeamMember;
 import org.openhr.application.manager.domain.Manager;
+import org.openhr.application.subject.service.SubjectService;
 import org.openhr.common.domain.country.Country;
 import org.openhr.common.domain.subject.Subject;
+import org.openhr.common.exception.SubjectDoesNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class DelegationApplicationServiceImpl implements DelegationApplicationService {
   private final DelegationApplicationRepository delegationApplicationRepository;
   private final EmployeeService employeeService;
+  private final SubjectService subjectService;
 
   public DelegationApplicationServiceImpl(
       final DelegationApplicationRepository delegationApplicationRepository,
-      final EmployeeService employeeService) {
+      final EmployeeService employeeService,
+      final SubjectService subjectService) {
     this.delegationApplicationRepository = delegationApplicationRepository;
     this.employeeService = employeeService;
+    this.subjectService = subjectService;
   }
 
   @Override
@@ -35,8 +40,10 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   @Override
   @Transactional(propagation = Propagation.MANDATORY)
   public DelegationApplication createDelegationApplication(
-      final Subject subject, final DelegationApplication delegationApplication) {
+      final Subject subject, final DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException {
     delegationApplication.setSubject(subject);
+    delegationApplication.setAssignee(subjectService.getSubjectSupervisor(subject.getSubjectId()));
     return delegationApplicationRepository.createDelegationApplication(delegationApplication);
   }
 
@@ -73,6 +80,16 @@ public class DelegationApplicationServiceImpl implements DelegationApplicationSe
   public List<DelegationApplication> getAwaitingForActionDelegationApplications(
       final long subjectId) {
     return delegationApplicationRepository.getAwaitingForActionDelegationApplications(subjectId);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void assignToSupervisor(final DelegationApplication delegationApplication)
+      throws SubjectDoesNotExistException {
+    final Subject supervisor =
+        subjectService.getSubjectSupervisor(delegationApplication.getSubject().getSubjectId());
+    delegationApplication.setAssignee(supervisor);
+    delegationApplicationRepository.updateDelegationApplication(delegationApplication);
   }
 
   @Override

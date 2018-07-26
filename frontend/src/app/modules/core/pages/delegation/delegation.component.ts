@@ -177,8 +177,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   public updateApplication(application: DelegationApplication): void {
-    delete application['subject'];
     this.isLoading = true;
+    delete application['subjectId'];
     this._delegationService
       .updateDelegationApplication(application)
       .finally(() => (this.isLoading = false))
