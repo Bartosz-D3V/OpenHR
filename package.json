@@ -2,7 +2,7 @@
   "scripts": {
     "lint-staged": "lint-staged --config .lintstagedrc",
     "prepretty": "cd frontend",
-    "pretty": "prettier --write **/*.{js,ts}",
+    "pretty": "prettier --write **/*.{js,ts,scss}",
     "postpretty": "cd ..",
     "google-format": "bash ./tools/google-format.sh",
     "deploy": "bash ./tools/deploy.sh",
