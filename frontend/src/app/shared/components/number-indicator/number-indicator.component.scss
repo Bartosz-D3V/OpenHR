@@ -4,6 +4,14 @@
   &__num {
     font-size: $dashboard-main-font;
     text-align: center;
+
+    @media screen and (max-width: 1280px) {
+      font-size: $dashboard-main-font-tablet;
+    }
+
+    @media screen and (max-width: 840px) {
+      font-size: $dashboard-main-font-smartphone;
+    }
   }
 
   &__txt {

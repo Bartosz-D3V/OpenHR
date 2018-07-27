@@ -40,11 +40,6 @@
     </mat-card-content>
   </mat-card>
 
-  <div role="figure" class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100"
-       [hidden]="isFetching">
-    <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
-  </div>
-
   <mat-card role="figure" class="c-dashboard__card" fxFlex.gt-sm="25" fxFlex.sm="35" fxFlex.xs="90"
             *ngIf="(role === 'ROLE_MANAGER' || role === 'ROLE_HRTEAMMEMBER') && !isFetching">
     <mat-card-header>
@@ -56,6 +51,12 @@
                             [description]="totalDelegationExpenditure.year"></app-number-indicator>
     </mat-card-content>
   </mat-card>
+
+  <div role="figure" class="c-dashboard__chart" fxFlex.gt-sm="50" fxFlex.sm="100" fxFlex.lt-sm="100"
+       [hidden]="isFetching">
+    <canvas #monthlySummariesChart id="monthlySummariesChart">{{ monthlySummariesChart }}</canvas>
+  </div>
+
 
   <div class="c-dashboard__chart" fxFlex.gt-sm="100" fxFlex.sm="100" fxFlex.lt-sm="100" *ngIf="!isFetching">
 
