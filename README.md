@@ -4,7 +4,7 @@
 Progressive, open-source leave management system for staff.
 </p>
 <p align="center">
-    [![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
+[![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
 </p>
 
 ## Primary objective
@@ -27,29 +27,43 @@ Delegation is understood as a situation when an employee is asked to move to des
 ### Managing information
 
 • Secure users’ passwords using one-way encryption
+
 • Store information about employees’ supervisor
+
 • Allow HR Team to amend users’ data
-• Provide validation – e.g. validating National Insurance Number (NIN) pattern, UK postcode pattern etc.
-• Provide validation for elements like National Insurance Number or email address that must be unique.
+
+• Provide validation – e.g. validating National Insurance Number (NIN) pattern, UK postcode pattern etc
+
+• Provide validation for elements like National Insurance Number or email address that must be unique
 
 ### Leave application & allowance
 
-• Allow users to apply for different types of leave – maternity, paternity, annual and, sick leaves.
+• Allow users to apply for different types of leave – maternity, paternity, annual and, sick leaves
+
 • Automatically detect bank holidays
-• Client and server-side validation to avoid booking a holiday that is longer than annual allowance and to avoid submitting incorrect date range or date range that has already been applied for.
+
+• Client and server-side validation to avoid booking a holiday that is longer than annual allowance and to avoid submitting incorrect date
+
+range or date range that has already been applied for
+
 • Allow do download calendar file (ICS) as a reminder
 
 ### Delegation application & management
 
 • Provide list of countries that the user can select from
+
 • Provide client and server-side validation to avoid submitting incorrect data
 
 ### Modern web development standards
 
 • Design and application that will drive excellent quality, in terms of visual fidelity, user interface (UI) and ease of use user experience (UX)
+
 • Use Material Design for UI, UX and accessibility reasons
-• Use RESTful architecture using non-blocking asynchronous calls to provide smooth and efficient UX.
-• Implement Progressive Web Application checklist that will result in a number of benefits for users: offline mode, mobile application and splash screens.
+
+• Use RESTful architecture using non-blocking asynchronous calls to provide smooth and efficient UX
+
+• Implement Progressive Web Application checklist that will result in a number of benefits for users: offline mode, mobile application and splash screens
+
 • Implement Responsive Web Design standards so application will look good on every screen resolution and every device
 
 ### Auto-rescheduling used leave
