@@ -17,27 +17,25 @@ describe('StaticModalComponent', () => {
     public close(): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [StaticModalComponent],
-        imports: [NoopAnimationsModule, MatDialogModule],
-        providers: [
-          {
-            provide: MatDialogRef,
-            useClass: FakeMatDialogRef,
-          },
-          {
-            provide: MatDialog,
-            useClass: FakeMatDialog,
-          },
-          {
-            provide: OverlayContainer,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [StaticModalComponent],
+      imports: [NoopAnimationsModule, MatDialogModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useClass: FakeMatDialogRef,
+        },
+        {
+          provide: MatDialog,
+          useClass: FakeMatDialog,
+        },
+        {
+          provide: OverlayContainer,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StaticModalComponent);

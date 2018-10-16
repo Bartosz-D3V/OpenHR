@@ -28,35 +28,33 @@ describe('DateRangeComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [DateRangeComponent],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          MomentDateModule,
-          FlexLayoutModule,
-          MatDatepickerModule,
-          MatInputModule,
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-        ],
-        providers: [
-          ResponsiveHelperService,
-          JwtHelperService,
-          {
-            provide: DateRangeService,
-            useClass: FakeDateRangeService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DateRangeComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MomentDateModule,
+        FlexLayoutModule,
+        MatDatepickerModule,
+        MatInputModule,
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+      ],
+      providers: [
+        ResponsiveHelperService,
+        JwtHelperService,
+        {
+          provide: DateRangeService,
+          useClass: FakeDateRangeService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DateRangeComponent);
@@ -276,24 +274,18 @@ describe('DateRangeComponent', () => {
   });
 
   describe('isMobile', () => {
-    it(
-      'should return true if screen is less than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-        expect(component.isMobile()).toBeTruthy();
-      })
-    );
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-    it(
-      'should return false if screen is greater than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-        expect(component.isMobile()).toBeFalsy();
-      })
-    );
+      expect(component.isMobile()).toBeFalsy();
+    }));
   });
 });

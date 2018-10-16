@@ -60,44 +60,42 @@ describe('AccountComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AccountComponent, PageHeaderComponent, CapitalizePipe],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          FlexLayoutModule,
-          FormsModule,
-          ReactiveFormsModule,
-          MatToolbarModule,
-          MatFormFieldModule,
-          MatCardModule,
-          MatInputModule,
-          MatTabsModule,
-          MatIconModule,
-          MatSnackBarModule,
-        ],
-        providers: [
-          JwtHelperService,
-          NotificationService,
-          CustomAsyncValidatorsService,
-          {
-            provide: CustomAsyncValidatorsService,
-            useClass: FakeCustomAsyncValidatorsService,
-          },
-          {
-            provide: AccountService,
-            useClass: FakeAccountService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AccountComponent, PageHeaderComponent, CapitalizePipe],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        FlexLayoutModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatInputModule,
+        MatTabsModule,
+        MatIconModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        JwtHelperService,
+        NotificationService,
+        CustomAsyncValidatorsService,
+        {
+          provide: CustomAsyncValidatorsService,
+          useClass: FakeCustomAsyncValidatorsService,
+        },
+        {
+          provide: AccountService,
+          useClass: FakeAccountService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountComponent);

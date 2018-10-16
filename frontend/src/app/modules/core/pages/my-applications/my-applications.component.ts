@@ -26,7 +26,8 @@ export class MyApplicationsComponent implements OnInit, OnDestroy {
   public resultsLength = 0;
   public dataSource: MatTableDataSource<Application> = new MatTableDataSource<Application>();
 
-  @ViewChild(MatPaginator) public paginator: MatPaginator;
+  @ViewChild(MatPaginator)
+  public paginator: MatPaginator;
 
   constructor(
     private _myApplications: MyApplicationsService,

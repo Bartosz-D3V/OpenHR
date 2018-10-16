@@ -7,12 +7,7 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": [
-        "assets",
-        "favicon.ico",
-        "manifest.json",
-        "browserconfig.xml"
-      ],
+      "assets": ["assets", "favicon.ico", "manifest.json", "browserconfig.xml"],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -21,15 +16,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "serviceWorker": true,
-      "styles": [
-        "styles.scss"
-      ],
+      "styles": ["styles.scss"],
       "scripts": [],
       "stylePreprocessorOptions": {
-        "includePaths": [
-          "style/variables",
-          "style/mixins"
-        ]
+        "includePaths": ["style/variables", "style/mixins"]
       },
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -43,46 +43,44 @@ describe('AdminComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AdminComponent,
-          AllowanceSettingsComponent,
-          PageHeaderComponent,
-          CapitalizePipe,
-          DisableControlDirective,
-          ResetControlDirective,
-        ],
-        imports: [
-          ReactiveFormsModule,
-          FormsModule,
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          MatTabsModule,
-          MatToolbarModule,
-          MatSlideToggleModule,
-          MatDatepickerModule,
-          MatMomentDateModule,
-          MatInputModule,
-          MatCardModule,
-          MatSnackBarModule,
-        ],
-        providers: [
-          ResponsiveHelperService,
-          NotificationService,
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-          {
-            provide: AdminService,
-            useClass: FakeAdminService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AdminComponent,
+        AllowanceSettingsComponent,
+        PageHeaderComponent,
+        CapitalizePipe,
+        DisableControlDirective,
+        ResetControlDirective,
+      ],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatInputModule,
+        MatCardModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        ResponsiveHelperService,
+        NotificationService,
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+        {
+          provide: AdminService,
+          useClass: FakeAdminService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminComponent);

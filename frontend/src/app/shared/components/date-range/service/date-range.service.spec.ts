@@ -12,10 +12,7 @@ describe('DateRangeService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([DateRangeService], (service: DateRangeService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([DateRangeService], (service: DateRangeService) => {
+    expect(service).toBeTruthy();
+  }));
 });

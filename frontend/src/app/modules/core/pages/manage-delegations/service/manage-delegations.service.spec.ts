@@ -14,10 +14,7 @@ describe('ManageDelegationsService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([ManageDelegationsService], (service: ManageDelegationsService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([ManageDelegationsService], (service: ManageDelegationsService) => {
+    expect(service).toBeTruthy();
+  }));
 });

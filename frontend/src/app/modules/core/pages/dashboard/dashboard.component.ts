@@ -37,9 +37,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   public allowanceLeft: number;
   public totalDelegationExpenditure: TotalExpenditure;
 
-  @ViewChild('monthlySummariesChart') public monthlySummariesCanvas: ElementRef;
+  @ViewChild('monthlySummariesChart')
+  public monthlySummariesCanvas: ElementRef;
 
-  @ViewChild(MatPaginator) public paginator: MatPaginator;
+  @ViewChild(MatPaginator)
+  public paginator: MatPaginator;
 
   constructor(
     private _dashboardService: DashboardService,

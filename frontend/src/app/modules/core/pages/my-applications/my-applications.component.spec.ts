@@ -43,46 +43,44 @@ describe('MyApplicationsComponent', () => {
     }
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          MyApplicationsComponent,
-          ApplicationStatusPipe,
-          ApplicationTypePipe,
-          InitialsPipe,
-          CapitalizePipe,
-          PageHeaderComponent,
-        ],
-        imports: [
-          RouterTestingModule,
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          MatDialogModule,
-          MatCardModule,
-          MatIconModule,
-          MatToolbarModule,
-          MatPaginatorModule,
-          MatTableModule,
-          MatProgressSpinnerModule,
-          MatSnackBarModule,
-          MatTooltipModule,
-        ],
-        providers: [
-          ErrorResolverService,
-          JwtHelperService,
-          {
-            provide: MyApplicationsService,
-            useClass: FakeMyApplicationsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        MyApplicationsComponent,
+        ApplicationStatusPipe,
+        ApplicationTypePipe,
+        InitialsPipe,
+        CapitalizePipe,
+        PageHeaderComponent,
+      ],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+      ],
+      providers: [
+        ErrorResolverService,
+        JwtHelperService,
+        {
+          provide: MyApplicationsService,
+          useClass: FakeMyApplicationsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MyApplicationsComponent);

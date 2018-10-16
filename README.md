@@ -1,30 +1,78 @@
-[![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
+# OpenHR
 
-# Frontend
+<p align="center">
+Progressive, open-source leave management system for staff.
+</p>
+<p align="center">
+    [![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.1.
+## Primary objective
 
-## Development server
+### Human resources management
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To provide a web-based application that would allow to keep track of employees’ personal information and allow users to amend its information.
 
-## Code scaffolding
+### Leave application management
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Provide workflow for applying for a leave application. Leave application should automatically exclude bank holidays and weekends. It should be approved by a manager and HR team, if is applied by an employee, or only by HR team if is applied by a manager.
 
-## Build
+### Delegation application management
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Allow delegations to other destinations for professional purposes. Delegation should be approved in the same way as a leave application, but once rejected, it should be amended by an employee and workflow should start again.
+Delegation is understood as a situation when an employee is asked to move to destination other than the workplace for professional purposes.
 
-## Running unit tests
+## Sub-objectives
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Managing information
 
-## Running end-to-end tests
+• Secure users’ passwords using one-way encryption
+• Store information about employees’ supervisor
+• Allow HR Team to amend users’ data
+• Provide validation – e.g. validating National Insurance Number (NIN) pattern, UK postcode pattern etc.
+• Provide validation for elements like National Insurance Number or email address that must be unique.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+### Leave application & allowance
 
-## Further help
+• Allow users to apply for different types of leave – maternity, paternity, annual and, sick leaves.
+• Automatically detect bank holidays
+• Client and server-side validation to avoid booking a holiday that is longer than annual allowance and to avoid submitting incorrect date range or date range that has already been applied for.
+• Allow do download calendar file (ICS) as a reminder
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Delegation application & management
+
+• Provide list of countries that the user can select from
+• Provide client and server-side validation to avoid submitting incorrect data
+
+### Modern web development standards
+
+• Design and application that will drive excellent quality, in terms of visual fidelity, user interface (UI) and ease of use user experience (UX)
+• Use Material Design for UI, UX and accessibility reasons
+• Use RESTful architecture using non-blocking asynchronous calls to provide smooth and efficient UX.
+• Implement Progressive Web Application checklist that will result in a number of benefits for users: offline mode, mobile application and splash screens.
+• Implement Responsive Web Design standards so application will look good on every screen resolution and every device
+
+### Auto-rescheduling used leave
+
+User with appropriate role (e.g. HR Team Member or a Manager), should be able to set up the date when the leave allowance of all employees should be reset. This operation should be done automatically every year at a selected date. In addition, it should be possible to select maximum days to carry forward to the next year.
+
+## Install
+
+```bash
+yarn // or...
+npm install
+```
+
+## Run
+
+```bash
+yarn start // <-- Start front-end application
+mvn spring-boot:run  // <-- Server application
+```
+
+## Test
+
+```bash
+yarn test // <-- Start front-end application
+mvn test  // <-- Server application
+```

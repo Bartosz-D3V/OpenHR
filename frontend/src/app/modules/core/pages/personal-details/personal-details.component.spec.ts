@@ -88,49 +88,47 @@ describe('PersonalDetailsComponent', () => {
     public createAlert(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [PersonalDetailsComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          MatToolbarModule,
-          MatExpansionModule,
-          MatDatepickerModule,
-          MatMomentDateModule,
-          MatIconModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatSnackBarModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          ResponsiveHelperService,
-          CustomAsyncValidatorsService,
-          {
-            provide: CustomAsyncValidatorsService,
-            useClass: FakeCustomAsyncValidatorsService,
-          },
-          {
-            provide: PersonalDetailsService,
-            useClass: FakePersonalDetailsService,
-          },
-          {
-            provide: SubjectDetailsService,
-            useClass: FakeSubjectDetailsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [PersonalDetailsComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatExpansionModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        ResponsiveHelperService,
+        CustomAsyncValidatorsService,
+        {
+          provide: CustomAsyncValidatorsService,
+          useClass: FakeCustomAsyncValidatorsService,
+        },
+        {
+          provide: PersonalDetailsService,
+          useClass: FakePersonalDetailsService,
+        },
+        {
+          provide: SubjectDetailsService,
+          useClass: FakeSubjectDetailsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonalDetailsComponent);

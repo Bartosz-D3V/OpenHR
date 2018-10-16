@@ -25,10 +25,7 @@ describe('CustomAsyncValidatorsService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([CustomAsyncValidatorsService], (service: CustomAsyncValidatorsService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([CustomAsyncValidatorsService], (service: CustomAsyncValidatorsService) => {
+    expect(service).toBeTruthy();
+  }));
 });

@@ -9,14 +9,12 @@ describe('PromptModalComponent', () => {
   let component: PromptModalComponent;
   let fixture: ComponentFixture<PromptModalComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [PromptModalComponent],
-        imports: [MatButtonModule, NoopAnimationsModule, FormsModule, MatDialogModule],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [PromptModalComponent],
+      imports: [MatButtonModule, NoopAnimationsModule, FormsModule, MatDialogModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PromptModalComponent);

@@ -122,13 +122,11 @@ export class DelegationComponent implements OnInit, OnDestroy {
   }
 
   public reduceCountries(countries: Array<Country>): Observable<Array<Country>> {
-    return this.applicationForm
-      .get(['delegation', 'country'])
-      .valueChanges.pipe(
-        startWith<string | Country>(''),
-        map(value => (typeof value === 'string' ? value : value ? value.countryName : null)),
-        map(name => (name ? this.filterCountries(countries, name) : countries.slice()))
-      );
+    return this.applicationForm.get(['delegation', 'country']).valueChanges.pipe(
+      startWith<string | Country>(''),
+      map(value => (typeof value === 'string' ? value : value ? value.countryName : null)),
+      map(name => (name ? this.filterCountries(countries, name) : countries.slice()))
+    );
   }
 
   public displayCountryName(country?: Country): string | undefined {

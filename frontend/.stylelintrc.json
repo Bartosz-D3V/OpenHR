@@ -1,10 +1,6 @@
 {
-  "plugins": [
-    "stylelint-scss"
-  ],
-  "extends": [
-    "stylelint-config-sass-guidelines"
-  ],
+  "plugins": ["stylelint-scss"],
+  "extends": ["stylelint-config-sass-guidelines"],
   "rules": {
     "max-nesting-depth": 2,
     "color-hex-case": "lower",

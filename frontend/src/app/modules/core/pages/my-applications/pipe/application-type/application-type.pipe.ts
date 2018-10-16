@@ -10,6 +10,8 @@ export class ApplicationTypePipe implements PipeTransform {
   public transform(value: Application): string {
     return value.applicationType === ApplicationType.LEAVE_APPLICATION
       ? 'Leave application'
-      : value.applicationType === ApplicationType.DELEGATION_APPLICATION ? 'Delegation application' : null;
+      : value.applicationType === ApplicationType.DELEGATION_APPLICATION
+        ? 'Delegation application'
+        : null;
   }
 }

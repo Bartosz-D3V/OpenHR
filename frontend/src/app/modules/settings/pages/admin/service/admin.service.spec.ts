@@ -11,10 +11,7 @@ describe('AdminService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([AdminService], (service: AdminService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([AdminService], (service: AdminService) => {
+    expect(service).toBeTruthy();
+  }));
 });

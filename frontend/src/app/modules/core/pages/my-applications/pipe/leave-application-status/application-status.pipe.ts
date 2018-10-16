@@ -13,7 +13,9 @@ export class ApplicationStatusPipe implements PipeTransform {
         ? ApplicationStatuses.ACCEPTED
         : !application.approvedByManager
           ? ApplicationStatuses.REJECTEDBYMANAGER
-          : !application.approvedByHR ? ApplicationStatuses.REJECTEDBYHR : ApplicationStatuses.ACCEPTED;
+          : !application.approvedByHR
+            ? ApplicationStatuses.REJECTEDBYHR
+            : ApplicationStatuses.ACCEPTED;
     }
     return ApplicationStatuses.AWAITING;
   }

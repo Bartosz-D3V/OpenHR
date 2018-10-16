@@ -52,45 +52,43 @@ describe('LeaveApplicationComponent', () => {
     public createAlert(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [LeaveApplicationComponent, DateRangeComponent, PageHeaderComponent, CapitalizePipe],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          FlexLayoutModule,
-          MatDatepickerModule,
-          MomentDateModule,
-          MatStepperModule,
-          MatButtonModule,
-          MatMenuModule,
-          MatToolbarModule,
-          MatSelectModule,
-          MatInputModule,
-          MatRadioModule,
-          MatCardModule,
-          MatSnackBarModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          NotificationService,
-          {
-            provide: LeaveApplicationService,
-            useClass: FakeLeaveApplicationService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-          ResponsiveHelperService,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LeaveApplicationComponent, DateRangeComponent, PageHeaderComponent, CapitalizePipe],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FlexLayoutModule,
+        MatDatepickerModule,
+        MomentDateModule,
+        MatStepperModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatSelectModule,
+        MatInputModule,
+        MatRadioModule,
+        MatCardModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        NotificationService,
+        {
+          provide: LeaveApplicationService,
+          useClass: FakeLeaveApplicationService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+        ResponsiveHelperService,
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeaveApplicationComponent);
@@ -183,24 +181,18 @@ describe('LeaveApplicationComponent', () => {
   });
 
   describe('isMobile method', () => {
-    it(
-      'should return true if screen is less than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-        expect(component.isMobile()).toBeTruthy();
-      })
-    );
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-    it(
-      'should return false if screen is greater than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-        expect(component.isMobile()).toBeFalsy();
-      })
-    );
+      expect(component.isMobile()).toBeFalsy();
+    }));
   });
 });

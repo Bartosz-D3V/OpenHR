@@ -33,31 +33,43 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   private $startDateChange: ISubscription;
   private $endDateChange: ISubscription;
 
-  @Input() public mainFlexProperty?: number;
+  @Input()
+  public mainFlexProperty?: number;
 
-  @Input() public mobileFlexProperty?: number;
+  @Input()
+  public mobileFlexProperty?: number;
 
-  @Input() public showDescription?;
+  @Input()
+  public showDescription?;
 
-  @Input() public startDate?: moment.MomentInput;
+  @Input()
+  public startDate?: moment.MomentInput;
 
-  @Input() public endDate?: moment.MomentInput;
+  @Input()
+  public endDate?: moment.MomentInput;
 
-  @Input() public requireStartDate = true;
+  @Input()
+  public requireStartDate = true;
 
-  @Input() public requireEndDate = true;
+  @Input()
+  public requireEndDate = true;
 
   public numberOfDays: number;
 
-  @Output() public startDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
+  @Output()
+  public startDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
 
-  @Output() public endDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
+  @Output()
+  public endDateChange: EventEmitter<moment.MomentInput> = new EventEmitter<moment.MomentInput>();
 
-  @Output() public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  public numberOfDaysChange: EventEmitter<number> = new EventEmitter<number>();
 
-  @Output() public bankHolidays: EventEmitter<Array<BankHoliday>> = new EventEmitter<Array<BankHoliday>>();
+  @Output()
+  public bankHolidays: EventEmitter<Array<BankHoliday>> = new EventEmitter<Array<BankHoliday>>();
 
-  @Output() public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  public isValidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public dateRange: FormGroup;
 

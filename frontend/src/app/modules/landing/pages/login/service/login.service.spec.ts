@@ -30,36 +30,30 @@ describe('LoginService', () => {
     const mockCredentials: Credentials = new Credentials('User', 'password');
     const apiLink: string = SystemVariables.API_URL + '/auth/login';
 
-    it(
-      'should query current service URL',
-      fakeAsync(() => {
-        service.login(mockCredentials).subscribe();
-        http.expectOne(apiLink);
-      })
-    );
+    it('should query current service URL', fakeAsync(() => {
+      service.login(mockCredentials).subscribe();
+      http.expectOne(apiLink);
+    }));
 
     describe('login', () => {
-      it(
-        'should return an Observable of type Response',
-        fakeAsync(() => {
-          let result: HttpResponse<null>;
-          let error: any;
-          service.login(mockCredentials).subscribe((res: HttpResponse<null>) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: apiLink,
-              method: 'POST',
-            })
-            .flush({
-              headers: mockHeaders,
-            });
-          tick();
+      it('should return an Observable of type Response', fakeAsync(() => {
+        let result: HttpResponse<null>;
+        let error: any;
+        service.login(mockCredentials).subscribe((res: HttpResponse<null>) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: apiLink,
+            method: 'POST',
+          })
+          .flush({
+            headers: mockHeaders,
+          });
+        tick();
 
-          expect(error).toBeUndefined();
-          expect(result).toBeDefined();
-          expect(result.hasOwnProperty('headers')).toBeTruthy();
-        })
-      );
+        expect(error).toBeUndefined();
+        expect(result).toBeDefined();
+        expect(result.hasOwnProperty('headers')).toBeTruthy();
+      }));
     });
   });
 });

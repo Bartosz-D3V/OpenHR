@@ -12,14 +12,12 @@ describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AboutComponent, PageHeaderComponent, CapitalizePipe],
-        imports: [FormsModule, ReactiveFormsModule, MatToolbarModule, MatCardModule],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AboutComponent, PageHeaderComponent, CapitalizePipe],
+      imports: [FormsModule, ReactiveFormsModule, MatToolbarModule, MatCardModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AboutComponent);

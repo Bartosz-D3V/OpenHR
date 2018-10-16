@@ -41,39 +41,37 @@ describe('ManageDelegationsComponent', () => {
   @Injectable()
   class FakeManageDelegationsService {}
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ManageDelegationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          MatDialogModule,
-          MatCardModule,
-          MatIconModule,
-          MatToolbarModule,
-          MatPaginatorModule,
-          MatTableModule,
-          MatProgressSpinnerModule,
-          MatSnackBarModule,
-          MatTooltipModule,
-        ],
-        providers: [
-          ErrorResolverService,
-          JwtHelperService,
-          NotificationService,
-          {
-            provide: ManageDelegationsService,
-            useClass: FakeManageDelegationsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ManageDelegationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+      ],
+      providers: [
+        ErrorResolverService,
+        JwtHelperService,
+        NotificationService,
+        {
+          provide: ManageDelegationsService,
+          useClass: FakeManageDelegationsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageDelegationsComponent);

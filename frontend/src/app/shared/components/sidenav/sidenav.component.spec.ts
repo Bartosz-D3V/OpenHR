@@ -16,23 +16,21 @@ describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [InitialsPipe, AvatarComponent, SidenavComponent, SidenavItemListComponent],
-        imports: [
-          RouterTestingModule,
-          BrowserAnimationsModule,
-          MatIconModule,
-          MatSidenavModule,
-          MatMenuModule,
-          MatToolbarModule,
-          MatButtonModule,
-        ],
-        providers: [ResponsiveHelperService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [InitialsPipe, AvatarComponent, SidenavComponent, SidenavItemListComponent],
+      imports: [
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatButtonModule,
+      ],
+      providers: [ResponsiveHelperService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidenavComponent);
