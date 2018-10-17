@@ -11,7 +11,8 @@ import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
   providers: [JwtHelperService],
 })
 export class AvatarComponent {
-  @Input() public user: LightweightSubject;
+  @Input()
+  public user: LightweightSubject;
 
   constructor(private _jwtHelper: JwtHelperService, private _router: Router) {}
 

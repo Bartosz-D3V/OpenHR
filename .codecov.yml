@@ -1,16 +1,2 @@
 coverage:
   precision: 2
-  status:
-    project: on
-      default:
-        target: 60%
-    patch: on
-      default:
-        target: 60%
-ignore:
-  - "**/configuration/*"
-  - "**/facade/*"
-  - "**/bean/*"
-  - "**/domain/*"
-  - "**/security/*"
-

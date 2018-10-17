@@ -32,7 +32,8 @@ export class ManageLeaveApplicationsComponent implements OnInit, OnDestroy {
   public resultsLength = 0;
   public dataSource: MatTableDataSource<LeaveApplication>;
 
-  @ViewChild(MatPaginator) private paginator: MatPaginator;
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
 
   constructor(
     private _manageLeaveApplicationsService: ManageLeaveApplicationsService,

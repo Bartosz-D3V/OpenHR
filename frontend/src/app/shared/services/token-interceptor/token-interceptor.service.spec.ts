@@ -33,15 +33,12 @@ describe('TokenInterceptorService', () => {
     expect(service).toBeTruthy();
   });
 
-  it(
-    'should add Bearer token to request',
-    fakeAsync(() => {
-      let response: any;
-      http.get('/api').subscribe((res: any) => {
-        response = res;
-      });
+  it('should add Bearer token to request', fakeAsync(() => {
+    let response: any;
+    http.get('/api').subscribe((res: any) => {
+      response = res;
+    });
 
-      httpTest.expectOne(req => req.headers.has('Authorization'));
-    })
-  );
+    httpTest.expectOne(req => req.headers.has('Authorization'));
+  }));
 });

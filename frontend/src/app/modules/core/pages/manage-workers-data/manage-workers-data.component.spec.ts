@@ -120,42 +120,40 @@ describe('ManageWorkersDataComponent', () => {
     }
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ManageWorkersDataComponent, CapitalizePipe, PageHeaderComponent],
-        imports: [
-          NoopAnimationsModule,
-          ReactiveFormsModule,
-          FormsModule,
-          HttpClientTestingModule,
-          MatCardModule,
-          MatButtonModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatToolbarModule,
-          MatExpansionModule,
-          MatDatepickerModule,
-          MatNativeDateModule,
-          MatIconModule,
-          MatAutocompleteModule,
-          MatOptionModule,
-          MatSnackBarModule,
-          MatDialogModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          NotificationService,
-          ErrorResolverService,
-          ResponsiveHelperService,
-          { provide: EmployeeService, useClass: FakeEmployeeService },
-          { provide: ManagerService, useClass: FakeManagerService },
-          { provide: HrTeamMemberService, useClass: FakeHrTeamMemberService },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ManageWorkersDataComponent, CapitalizePipe, PageHeaderComponent],
+      imports: [
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientTestingModule,
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatToolbarModule,
+        MatExpansionModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        NotificationService,
+        ErrorResolverService,
+        ResponsiveHelperService,
+        { provide: EmployeeService, useClass: FakeEmployeeService },
+        { provide: ManagerService, useClass: FakeManagerService },
+        { provide: HrTeamMemberService, useClass: FakeHrTeamMemberService },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageWorkersDataComponent);
@@ -494,25 +492,19 @@ describe('ManageWorkersDataComponent', () => {
   });
 
   describe('isMobile', () => {
-    it(
-      'should return true if screen is less than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-        expect(component.isMobile()).toBeTruthy();
-      })
-    );
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-    it(
-      'should return false if screen is greater than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-        expect(component.isMobile()).toBeFalsy();
-      })
-    );
+      expect(component.isMobile()).toBeFalsy();
+    }));
   });
 
   describe('isValid method', () => {

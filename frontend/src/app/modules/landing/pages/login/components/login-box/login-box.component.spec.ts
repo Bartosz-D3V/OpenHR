@@ -59,30 +59,28 @@ describe('LoginBoxComponent', () => {
     public observe(): any {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          ReactiveFormsModule,
-          NoopAnimationsModule,
-          HttpClientTestingModule,
-          FormsModule,
-          MatCardModule,
-          MatButtonModule,
-          MatIconModule,
-          MatInputModule,
-          MatDialogModule,
-          MatFormFieldModule,
-          MatProgressSpinnerModule,
-        ],
-        declarations: [LoginBoxComponent, TokenExpirationModalComponent],
-        providers: [
-          { provide: LoginService, useClass: FakeLoginService },
-          { provide: TokenObserverService, useClass: FakeTokenObserverService },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        HttpClientTestingModule,
+        FormsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatProgressSpinnerModule,
+      ],
+      declarations: [LoginBoxComponent, TokenExpirationModalComponent],
+      providers: [
+        { provide: LoginService, useClass: FakeLoginService },
+        { provide: TokenObserverService, useClass: FakeTokenObserverService },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginBoxComponent);

@@ -11,27 +11,25 @@ describe('InputModalComponent', () => {
   let fixture: ComponentFixture<InputModalComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [InputModalComponent],
-        imports: [NoopAnimationsModule, FormsModule, MatInputModule, MatDialogModule, MatInputModule, MatButtonModule, MatFormFieldModule],
-        providers: [
-          {
-            provide: MatDialogRef,
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [InputModalComponent],
+      imports: [NoopAnimationsModule, FormsModule, MatInputModule, MatDialogModule, MatInputModule, MatButtonModule, MatFormFieldModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+        },
+        { provide: MAT_DIALOG_DATA, useValue: { refusalReason: null, cancelled: false } },
+        {
+          provide: OverlayContainer,
+          useFactory: () => {
+            overlayContainerElement = document.createElement('div');
+            return { getContainerElement: () => overlayContainerElement };
           },
-          { provide: MAT_DIALOG_DATA, useValue: { refusalReason: null, cancelled: false } },
-          {
-            provide: OverlayContainer,
-            useFactory: () => {
-              overlayContainerElement = document.createElement('div');
-              return { getContainerElement: () => overlayContainerElement };
-            },
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputModalComponent);

@@ -32,57 +32,48 @@ describe('WorkersService', () => {
   describe('API access methods', () => {
     const apiLink: string = SystemVariables.API_URL + '/subjects';
 
-    it(
-      'should query current service URL',
-      fakeAsync(() => {
-        service.getWorkers().subscribe();
-        http.expectOne(`${apiLink}/lightweight`);
-      })
-    );
+    it('should query current service URL', fakeAsync(() => {
+      service.getWorkers().subscribe();
+      http.expectOne(`${apiLink}/lightweight`);
+    }));
 
     describe('getEmployees', () => {
-      it(
-        'should return an Observable of type Array of type employee',
-        fakeAsync(() => {
-          let result: Array<LightweightSubject>;
-          let error: any;
-          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/lightweight`,
-              method: 'GET',
-            })
-            .flush(mockEmployees);
-          tick();
+      it('should return an Observable of type Array of type employee', fakeAsync(() => {
+        let result: Array<LightweightSubject>;
+        let error: any;
+        service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/lightweight`,
+            method: 'GET',
+          })
+          .flush(mockEmployees);
+        tick();
 
-          expect(error).toBeUndefined();
-          expect(result).toBeDefined();
-          expect(result[0]).toBeDefined();
-          expect(result[0].subjectId).toEqual(1);
-          expect(result[1]).toBeDefined();
-          expect(result[1].subjectId).toEqual(2);
-        })
-      );
+        expect(error).toBeUndefined();
+        expect(result).toBeDefined();
+        expect(result[0]).toBeDefined();
+        expect(result[0].subjectId).toEqual(1);
+        expect(result[1]).toBeDefined();
+        expect(result[1].subjectId).toEqual(2);
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Array<LightweightSubject>;
-          let error: any;
-          service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/lightweight`,
-              method: 'GET',
-            })
-            .error(new ErrorEvent('404'));
-          tick();
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Array<LightweightSubject>;
+        let error: any;
+        service.getWorkers().subscribe((res: Array<LightweightSubject>) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/lightweight`,
+            method: 'GET',
+          })
+          .error(new ErrorEvent('404'));
+        tick();
 
-          expect(result).toBeUndefined();
-          expect(error).toBeDefined();
-          expect(error.message).toBe('Http failure response for /api/subjects/lightweight: 0 ');
-        })
-      );
+        expect(result).toBeUndefined();
+        expect(error).toBeDefined();
+        expect(error.message).toBe('Http failure response for /api/subjects/lightweight: 0 ');
+      }));
     });
   });
 });

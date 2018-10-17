@@ -14,26 +14,24 @@ describe('AllowanceSettingsComponent', () => {
   let component: AllowanceSettingsComponent;
   let fixture: ComponentFixture<AllowanceSettingsComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AllowanceSettingsComponent, DisableControlDirective, ResetControlDirective],
-        imports: [
-          ReactiveFormsModule,
-          FormsModule,
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          MatSlideToggleModule,
-          MatInputModule,
-          MatDatepickerModule,
-          MatToolbarModule,
-          MatCardModule,
-          MatMomentDateModule,
-        ],
-        providers: [ResponsiveHelperService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AllowanceSettingsComponent, DisableControlDirective, ResetControlDirective],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        MatSlideToggleModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatMomentDateModule,
+      ],
+      providers: [ResponsiveHelperService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AllowanceSettingsComponent);

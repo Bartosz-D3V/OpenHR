@@ -29,50 +29,41 @@ describe('LightweightSubjectService', () => {
     const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Black', 'Tester');
 
     describe('getCurrentSubject', () => {
-      it(
-        'should query current service URL',
-        fakeAsync(() => {
-          service.getUser(1).subscribe();
+      it('should query current service URL', fakeAsync(() => {
+        service.getUser(1).subscribe();
 
-          http.expectOne(`${apiLink}/lightweight/1`);
-        })
-      );
+        http.expectOne(`${apiLink}/lightweight/1`);
+      }));
 
-      it(
-        'should return an Observable of type Subject',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/lightweight/1`,
-              method: 'GET',
-            })
-            .flush(mockUser);
-          tick();
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/lightweight/1`,
+            method: 'GET',
+          })
+          .flush(mockUser);
+        tick();
 
-          expect(error).toBeUndefined();
-          expect(typeof result).toBe('object');
-          expect(JSON.stringify(result)).toEqual(JSON.stringify(mockUser));
-        })
-      );
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockUser));
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/lightweight/1`,
-              method: 'GET',
-            })
-            .error(new ErrorEvent('404'));
-          tick();
-        })
-      );
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        service.getUser(1).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/lightweight/1`,
+            method: 'GET',
+          })
+          .error(new ErrorEvent('404'));
+        tick();
+      }));
     });
   });
 });

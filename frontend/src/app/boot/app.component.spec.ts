@@ -10,29 +10,24 @@ import { AvatarComponent } from '@shared/components/avatar/avatar.component';
 import { InitialsPipe } from '@shared/pipes/initials/initials.pipe';
 
 describe('AppComponent', () => {
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
-        imports: [
-          BrowserAnimationsModule,
-          MatSidenavModule,
-          MatToolbarModule,
-          MatIconModule,
-          MatMenuModule,
-          MatButtonModule,
-          RouterTestingModule,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
+      imports: [
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatMenuModule,
+        MatButtonModule,
+        RouterTestingModule,
+      ],
+    }).compileComponents();
+  }));
 
-  it(
-    'should create the app',
-    async(() => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.debugElement.componentInstance;
-      expect(app).toBeTruthy();
-    })
-  );
+  it('should create the app', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
 });

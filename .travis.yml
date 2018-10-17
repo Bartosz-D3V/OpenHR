@@ -14,10 +14,10 @@ env:
 
 cache:
   directories:
-     - ./frontend/node_modules
-     - $HOME/.cache/yarn
-     - $HOME/.npm
-     - $HOME/.m2
+    - ./frontend/node_modules
+    - $HOME/.cache/yarn
+    - $HOME/.npm
+    - $HOME/.m2
 
 matrix:
   fast_finish: true
@@ -50,7 +50,7 @@ script:
   - cd ../backend/
   - mvn package -Pdev -B -D skipTests -e
   - mvn test -Pdev -B -e
-  
+
 after_script:
   - mysql -u root -e 'DROP DATABASE openhr'
 

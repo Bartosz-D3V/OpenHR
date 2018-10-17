@@ -45,25 +45,23 @@ describe('PersonalDetailsService', () => {
     public createAlert(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [
-          JwtHelperService,
-          SubjectDetailsService,
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        JwtHelperService,
+        SubjectDetailsService,
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    });
 
-      http = TestBed.get(HttpTestingController);
-      subjectDetailsService = TestBed.get(SubjectDetailsService);
-      errorResolverService = TestBed.get(ErrorResolverService);
-    })
-  );
+    http = TestBed.get(HttpTestingController);
+    subjectDetailsService = TestBed.get(SubjectDetailsService);
+    errorResolverService = TestBed.get(ErrorResolverService);
+  }));
 
   it('should be created', () => {
     expect(subjectDetailsService).toBeTruthy();
@@ -73,50 +71,41 @@ describe('PersonalDetailsService', () => {
     const apiLink: string = SystemVariables.API_URL + '/subjects';
 
     describe('getSubjectById', () => {
-      it(
-        'should query current service URL',
-        fakeAsync(() => {
-          subjectDetailsService.getSubjectById(223).subscribe();
+      it('should query current service URL', fakeAsync(() => {
+        subjectDetailsService.getSubjectById(223).subscribe();
 
-          http.expectOne(`${apiLink}/223`);
-        })
-      );
+        http.expectOne(`${apiLink}/223`);
+      }));
 
-      it(
-        'should return an Observable of type Subject',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          subjectDetailsService.getSubjectById(223).subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/223`,
-              method: 'GET',
-            })
-            .flush(mockSubject);
-          tick();
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        subjectDetailsService.getSubjectById(223).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/223`,
+            method: 'GET',
+          })
+          .flush(mockSubject);
+        tick();
 
-          expect(error).toBeUndefined();
-          expect(typeof result).toBe('object');
-          expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
-        })
-      );
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          subjectDetailsService.getSubjectById(223).subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/223`,
-              method: 'GET',
-            })
-            .error(new ErrorEvent('404'));
-          tick();
-        })
-      );
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        subjectDetailsService.getSubjectById(223).subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/223`,
+            method: 'GET',
+          })
+          .error(new ErrorEvent('404'));
+        tick();
+      }));
     });
 
     describe('getCurrentSubject', () => {
@@ -124,50 +113,41 @@ describe('PersonalDetailsService', () => {
         spyOn(subjectDetailsService['_jwtHelper'], 'getSubjectId').and.returnValue(1);
       });
 
-      it(
-        'should query current service URL',
-        fakeAsync(() => {
-          subjectDetailsService.getCurrentSubject().subscribe();
+      it('should query current service URL', fakeAsync(() => {
+        subjectDetailsService.getCurrentSubject().subscribe();
 
-          http.expectOne(`${apiLink}/1`);
-        })
-      );
+        http.expectOne(`${apiLink}/1`);
+      }));
 
-      it(
-        'should return an Observable of type Subject',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          subjectDetailsService.getCurrentSubject().subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/1`,
-              method: 'GET',
-            })
-            .flush(mockSubject);
-          tick();
+      it('should return an Observable of type Subject', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        subjectDetailsService.getCurrentSubject().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/1`,
+            method: 'GET',
+          })
+          .flush(mockSubject);
+        tick();
 
-          expect(error).toBeUndefined();
-          expect(typeof result).toBe('object');
-          expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
-        })
-      );
+        expect(error).toBeUndefined();
+        expect(typeof result).toBe('object');
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(mockSubject));
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          subjectDetailsService.getCurrentSubject().subscribe((res: Object) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/1`,
-              method: 'GET',
-            })
-            .error(new ErrorEvent('404'));
-          tick();
-        })
-      );
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        subjectDetailsService.getCurrentSubject().subscribe((res: Object) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/1`,
+            method: 'GET',
+          })
+          .error(new ErrorEvent('404'));
+        tick();
+      }));
     });
   });
 });

@@ -20,7 +20,8 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   private $loginService: ISubscription;
   public isLoading: boolean;
 
-  @Output() public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  public onAuthenticated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public loginBoxForm: FormGroup;
 

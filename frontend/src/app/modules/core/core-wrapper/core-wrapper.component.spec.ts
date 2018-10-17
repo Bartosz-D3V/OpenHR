@@ -24,36 +24,34 @@ describe('CoreComponent', () => {
   const mockUser: LightweightSubject = new LightweightSubject(1, 'John', 'Test', 'Tester');
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [CoreWrapperComponent, AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
-        imports: [
-          HttpClientTestingModule,
-          RouterTestingModule,
-          NoopAnimationsModule,
-          MatSidenavModule,
-          MatToolbarModule,
-          MatMenuModule,
-          MatIconModule,
-          MatDialogModule,
-        ],
-        providers: [
-          LightweightSubjectService,
-          ErrorResolverService,
-          TokenObserverService,
-          JwtHelperService,
-          {
-            provide: OverlayContainer,
-            useFactory: () => {
-              overlayContainerElement = document.createElement('div');
-              return { getContainerElement: () => overlayContainerElement };
-            },
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CoreWrapperComponent, AppComponent, AvatarComponent, SidenavComponent, SidenavItemListComponent, InitialsPipe],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatMenuModule,
+        MatIconModule,
+        MatDialogModule,
+      ],
+      providers: [
+        LightweightSubjectService,
+        ErrorResolverService,
+        TokenObserverService,
+        JwtHelperService,
+        {
+          provide: OverlayContainer,
+          useFactory: () => {
+            overlayContainerElement = document.createElement('div');
+            return { getContainerElement: () => overlayContainerElement };
           },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CoreWrapperComponent);

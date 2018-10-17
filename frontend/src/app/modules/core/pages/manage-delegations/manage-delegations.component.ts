@@ -39,7 +39,8 @@ export class ManageDelegationsComponent implements OnInit, OnDestroy {
   ];
   public dataSource: MatTableDataSource<DelegationApplication>;
 
-  @ViewChild(MatPaginator) public paginator: MatPaginator;
+  @ViewChild(MatPaginator)
+  public paginator: MatPaginator;
 
   constructor(
     private _lightweightSubjectService: LightweightSubjectService,

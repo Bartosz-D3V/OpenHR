@@ -13,7 +13,8 @@ import { LightweightSubject } from '@shared/domain/subject/lightweight-subject';
   providers: [ResponsiveHelperService],
 })
 export class SidenavComponent implements OnInit {
-  @Input() public user: LightweightSubject;
+  @Input()
+  public user: LightweightSubject;
   public sidenav: MatSidenav;
 
   constructor(private _router: Router, private _responsiveHelper: ResponsiveHelperService) {}

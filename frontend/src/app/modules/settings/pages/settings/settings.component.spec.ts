@@ -34,33 +34,31 @@ describe('SettingsComponent', () => {
     public createAlert(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SettingsComponent, PageHeaderComponent, CapitalizePipe],
-        imports: [
-          HttpClientTestingModule,
-          FormsModule,
-          ReactiveFormsModule,
-          FlexLayoutModule,
-          MatToolbarModule,
-          MatSlideToggleModule,
-          MatCardModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          {
-            provide: SettingsService,
-            useClass: FakeSettingsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SettingsComponent, PageHeaderComponent, CapitalizePipe],
+      imports: [
+        HttpClientTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FlexLayoutModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        {
+          provide: SettingsService,
+          useClass: FakeSettingsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SettingsComponent);

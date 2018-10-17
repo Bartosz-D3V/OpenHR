@@ -35,57 +35,48 @@ describe('ManageLeaveApplicationsService', () => {
   describe('API access methods', () => {
     const apiLink: string = SystemVariables.API_URL + '/leave-applications';
 
-    it(
-      'should query current service URL',
-      fakeAsync(() => {
-        service.getAwaitingForActionLeaveApplications(45).subscribe();
-        http.expectOne(`${apiLink}/awaiting?subjectId=45`);
-      })
-    );
+    it('should query current service URL', fakeAsync(() => {
+      service.getAwaitingForActionLeaveApplications(45).subscribe();
+      http.expectOne(`${apiLink}/awaiting?subjectId=45`);
+    }));
 
     describe('getUnacceptedLeaveApplications', () => {
-      it(
-        'should return an Observable of type Array of type LeaveApplication',
-        fakeAsync(() => {
-          let result: any;
-          let error: any;
-          service
-            .getAwaitingForActionLeaveApplications(45)
-            .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/awaiting?subjectId=45`,
-              method: 'GET',
-            })
-            .flush(mockLeaveApplications);
+      it('should return an Observable of type Array of type LeaveApplication', fakeAsync(() => {
+        let result: any;
+        let error: any;
+        service
+          .getAwaitingForActionLeaveApplications(45)
+          .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/awaiting?subjectId=45`,
+            method: 'GET',
+          })
+          .flush(mockLeaveApplications);
 
-          tick();
-          expect(error).toBeUndefined();
-          expect(result).toBeDefined();
-          expect(result.length).toEqual(mockLeaveApplications.length);
-        })
-      );
+        tick();
+        expect(error).toBeUndefined();
+        expect(result).toBeDefined();
+        expect(result.length).toEqual(mockLeaveApplications.length);
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          service
-            .getAwaitingForActionLeaveApplications(45)
-            .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/awaiting?subjectId=45`,
-              method: 'GET',
-            })
-            .error(new ErrorEvent('404'));
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        service
+          .getAwaitingForActionLeaveApplications(45)
+          .subscribe((res: Array<LeaveApplication>) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/awaiting?subjectId=45`,
+            method: 'GET',
+          })
+          .error(new ErrorEvent('404'));
 
-          tick();
-          expect(error).toBeDefined();
-          expect(result).toBeUndefined();
-        })
-      );
+        tick();
+        expect(error).toBeDefined();
+        expect(result).toBeUndefined();
+      }));
     });
 
     describe('approveLeaveApplicationByManager', () => {
@@ -93,43 +84,37 @@ describe('ManageLeaveApplicationsService', () => {
         spyOn(service['_jwtHelper'], 'getUsersRole').and.returnValue([Role.MANAGER]);
       });
 
-      it(
-        'send a PUT request to server with processInstanceId',
-        fakeAsync(() => {
-          let result: any;
-          let error: any;
-          service.approveLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/manager-approve?processInstanceId=45`,
-              method: 'PUT',
-            })
-            .flush(null);
+      it('send a PUT request to server with processInstanceId', fakeAsync(() => {
+        let result: any;
+        let error: any;
+        service.approveLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/manager-approve?processInstanceId=45`,
+            method: 'PUT',
+          })
+          .flush(null);
 
-          tick();
-          expect(error).toBeUndefined();
-          expect(result).toBeDefined();
-        })
-      );
+        tick();
+        expect(error).toBeUndefined();
+        expect(result).toBeDefined();
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          service.approveLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/manager-approve?processInstanceId=45`,
-              method: 'PUT',
-            })
-            .error(new ErrorEvent('404'));
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        service.approveLeaveApplicationByManager('45').subscribe((res: any) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/manager-approve?processInstanceId=45`,
+            method: 'PUT',
+          })
+          .error(new ErrorEvent('404'));
 
-          tick();
-          expect(error).toBeDefined();
-          expect(result).toBeUndefined();
-        })
-      );
+        tick();
+        expect(error).toBeDefined();
+        expect(result).toBeUndefined();
+      }));
     });
 
     describe('rejectLeaveApplicationByManager', () => {
@@ -137,43 +122,37 @@ describe('ManageLeaveApplicationsService', () => {
         spyOn(service['_jwtHelper'], 'getUsersRole').and.returnValue([Role.HRTEAMMEMBER]);
       });
 
-      it(
-        'send a PUT request to server with processInstanceId',
-        fakeAsync(() => {
-          let result: any;
-          let error: any;
-          service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/hr-reject?processInstanceId=45`,
-              method: 'PUT',
-            })
-            .flush(null);
+      it('send a PUT request to server with processInstanceId', fakeAsync(() => {
+        let result: any;
+        let error: any;
+        service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/hr-reject?processInstanceId=45`,
+            method: 'PUT',
+          })
+          .flush(null);
 
-          tick();
-          expect(error).toBeUndefined();
-          expect(result).toBeDefined();
-        })
-      );
+        tick();
+        expect(error).toBeUndefined();
+        expect(result).toBeDefined();
+      }));
 
-      it(
-        'should resolve error if server is down',
-        fakeAsync(() => {
-          let result: Object;
-          let error: any;
-          service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
-          http
-            .expectOne({
-              url: `${apiLink}/hr-reject?processInstanceId=45`,
-              method: 'PUT',
-            })
-            .error(new ErrorEvent('404'));
+      it('should resolve error if server is down', fakeAsync(() => {
+        let result: Object;
+        let error: any;
+        service.rejectLeaveApplicationByManager('45', null).subscribe((res: any) => (result = res), (err: any) => (error = err));
+        http
+          .expectOne({
+            url: `${apiLink}/hr-reject?processInstanceId=45`,
+            method: 'PUT',
+          })
+          .error(new ErrorEvent('404'));
 
-          tick();
-          expect(error).toBeDefined();
-          expect(result).toBeUndefined();
-        })
-      );
+        tick();
+        expect(error).toBeDefined();
+        expect(result).toBeUndefined();
+      }));
     });
   });
 });

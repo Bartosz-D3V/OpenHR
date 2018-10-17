@@ -85,60 +85,58 @@ describe('AddEmployeeComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AddEmployeeComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          MatToolbarModule,
-          MatToolbarModule,
-          MatExpansionModule,
-          MatDatepickerModule,
-          MatNativeDateModule,
-          MatIconModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatCheckboxModule,
-          MatSnackBarModule,
-          MatOptionModule,
-          MatSelectModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          ResponsiveHelperService,
-          {
-            provide: CustomAsyncValidatorsService,
-            useClass: FakeCustomAsyncValidatorsService,
-          },
-          {
-            provide: EmployeeService,
-            useClass: FakeEmployeeService,
-          },
-          {
-            provide: ManagerService,
-            useClass: FakeManagerService,
-          },
-          {
-            provide: HrTeamMemberService,
-            useClass: FakeHrTeamMemberService,
-          },
-          {
-            provide: NotificationService,
-            useClass: FakeNotificationService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AddEmployeeComponent, PageHeaderComponent, StaticModalComponent, CapitalizePipe],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatToolbarModule,
+        MatExpansionModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatSnackBarModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        ResponsiveHelperService,
+        {
+          provide: CustomAsyncValidatorsService,
+          useClass: FakeCustomAsyncValidatorsService,
+        },
+        {
+          provide: EmployeeService,
+          useClass: FakeEmployeeService,
+        },
+        {
+          provide: ManagerService,
+          useClass: FakeManagerService,
+        },
+        {
+          provide: HrTeamMemberService,
+          useClass: FakeHrTeamMemberService,
+        },
+        {
+          provide: NotificationService,
+          useClass: FakeNotificationService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEmployeeComponent);
@@ -686,24 +684,18 @@ describe('AddEmployeeComponent', () => {
   });
 
   describe('isMobile', () => {
-    it(
-      'should return true if screen is less than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-        expect(component.isMobile()).toBeTruthy();
-      })
-    );
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-    it(
-      'should return false if screen is greater than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-        expect(component.isMobile()).toBeFalsy();
-      })
-    );
+      expect(component.isMobile()).toBeFalsy();
+    }));
   });
 });

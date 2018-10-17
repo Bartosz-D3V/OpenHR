@@ -51,42 +51,40 @@ describe('ManageLeaveApplicationsComponent', () => {
     }
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ManageLeaveApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent, InputModalComponent],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          FormsModule,
-          MatInputModule,
-          MatDialogModule,
-          MatCardModule,
-          MatIconModule,
-          MatToolbarModule,
-          MatPaginatorModule,
-          MatTableModule,
-          MatProgressSpinnerModule,
-          MatSnackBarModule,
-          MatTooltipModule,
-        ],
-        providers: [
-          ErrorResolverService,
-          JwtHelperService,
-          NotificationService,
-          {
-            provide: ManageLeaveApplicationsService,
-            useClass: FakeManageLeaveApplicationsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-          MatDialog,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ManageLeaveApplicationsComponent, InitialsPipe, CapitalizePipe, PageHeaderComponent, InputModalComponent],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        FormsModule,
+        MatInputModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+      ],
+      providers: [
+        ErrorResolverService,
+        JwtHelperService,
+        NotificationService,
+        {
+          provide: ManageLeaveApplicationsService,
+          useClass: FakeManageLeaveApplicationsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+        MatDialog,
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageLeaveApplicationsComponent);

@@ -22,7 +22,8 @@ export class WorkersComponent implements OnInit, OnDestroy {
   public tableColumns: Array<string> = ['id', 'name', 'position'];
   public dataSource: MatTableDataSource<LightweightSubject> = new MatTableDataSource();
 
-  @ViewChild(MatPaginator) public paginator: MatPaginator;
+  @ViewChild(MatPaginator)
+  public paginator: MatPaginator;
 
   constructor(private _workersService: WorkersService, private _errorResolver: ErrorResolverService) {}
 

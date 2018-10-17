@@ -62,39 +62,37 @@ describe('DelegationComponent', () => {
     }
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [DelegationComponent, PageHeaderComponent, CapitalizePipe, DateRangeComponent],
-        imports: [
-          RouterTestingModule,
-          HttpClientTestingModule,
-          MomentDateModule,
-          NoopAnimationsModule,
-          FormsModule,
-          FlexLayoutModule,
-          ReactiveFormsModule,
-          MatToolbarModule,
-          MatDatepickerModule,
-          MatFormFieldModule,
-          MatCardModule,
-          MatInputModule,
-          MatTableModule,
-          MatAutocompleteModule,
-          MatProgressSpinnerModule,
-          MatSnackBarModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          NotificationService,
-          ErrorResolverService,
-          ResponsiveHelperService,
-          { provide: DelegationService, useClass: FakeDelegationService },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DelegationComponent, PageHeaderComponent, CapitalizePipe, DateRangeComponent],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+        MomentDateModule,
+        NoopAnimationsModule,
+        FormsModule,
+        FlexLayoutModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatInputModule,
+        MatTableModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        NotificationService,
+        ErrorResolverService,
+        ResponsiveHelperService,
+        { provide: DelegationService, useClass: FakeDelegationService },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DelegationComponent);
@@ -452,24 +450,18 @@ describe('DelegationComponent', () => {
   });
 
   describe('isMobile method', () => {
-    it(
-      'should return true if screen is less than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
+    it('should return true if screen is less than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(true);
 
-        expect(component.isMobile()).toBeTruthy();
-      })
-    );
+      expect(component.isMobile()).toBeTruthy();
+    }));
 
-    it(
-      'should return false if screen is greater than 480px',
-      inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
-        component['_responsiveHelper'] = service;
-        spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
+    it('should return false if screen is greater than 480px', inject([ResponsiveHelperService], (service: ResponsiveHelperService) => {
+      component['_responsiveHelper'] = service;
+      spyOn(component['_responsiveHelper'], 'isMobile').and.returnValue(false);
 
-        expect(component.isMobile()).toBeFalsy();
-      })
-    );
+      expect(component.isMobile()).toBeFalsy();
+    }));
   });
 });

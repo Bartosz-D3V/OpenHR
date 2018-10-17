@@ -21,36 +21,34 @@ describe('TokenExpirationModalComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [TokenExpirationModalComponent],
-        imports: [RouterTestingModule, HttpClientTestingModule, FormsModule, MatDialogModule, MatButtonModule],
-        providers: [
-          TokenExpirationService,
-          JwtHelperService,
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [TokenExpirationModalComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule, FormsModule, MatDialogModule, MatButtonModule],
+      providers: [
+        TokenExpirationService,
+        JwtHelperService,
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+        {
+          provide: MatDialogRef,
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { cancelled: false },
+        },
+        {
+          provide: OverlayContainer,
+          useFactory: () => {
+            overlayContainerElement = document.createElement('div');
+            return { getContainerElement: () => overlayContainerElement };
           },
-          {
-            provide: MatDialogRef,
-          },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: { cancelled: false },
-          },
-          {
-            provide: OverlayContainer,
-            useFactory: () => {
-              overlayContainerElement = document.createElement('div');
-              return { getContainerElement: () => overlayContainerElement };
-            },
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TokenExpirationModalComponent);

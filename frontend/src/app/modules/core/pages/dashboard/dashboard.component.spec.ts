@@ -35,37 +35,35 @@ describe('DashboardComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [DashboardComponent, NumberIndicatorComponent],
-        imports: [
-          NoopAnimationsModule,
-          HttpClientTestingModule,
-          FlexLayoutModule,
-          MatTableModule,
-          MatPaginatorModule,
-          MatProgressSpinnerModule,
-          MatCardModule,
-        ],
-        providers: [
-          JwtHelperService,
-          {
-            provide: DashboardService,
-            useClass: FakeDashboardService,
-          },
-          {
-            provide: SubjectDetailsService,
-            useClass: FakeSubjectDetailsService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DashboardComponent, NumberIndicatorComponent],
+      imports: [
+        NoopAnimationsModule,
+        HttpClientTestingModule,
+        FlexLayoutModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+      ],
+      providers: [
+        JwtHelperService,
+        {
+          provide: DashboardService,
+          useClass: FakeDashboardService,
+        },
+        {
+          provide: SubjectDetailsService,
+          useClass: FakeSubjectDetailsService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);

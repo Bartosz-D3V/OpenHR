@@ -30,33 +30,31 @@ describe('WorkersComponent', () => {
     public handleError(error: any): void {}
   }
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [CapitalizePipe, PageHeaderComponent, WorkersComponent],
-        imports: [
-          HttpClientTestingModule,
-          NoopAnimationsModule,
-          MatTableModule,
-          MatPaginatorModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatProgressSpinnerModule,
-        ],
-        providers: [
-          JwtHelperService,
-          {
-            provide: WorkersService,
-            useClass: FakeEmployeesService,
-          },
-          {
-            provide: ErrorResolverService,
-            useClass: FakeErrorResolverService,
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CapitalizePipe, PageHeaderComponent, WorkersComponent],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+      ],
+      providers: [
+        JwtHelperService,
+        {
+          provide: WorkersService,
+          useClass: FakeEmployeesService,
+        },
+        {
+          provide: ErrorResolverService,
+          useClass: FakeErrorResolverService,
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WorkersComponent);

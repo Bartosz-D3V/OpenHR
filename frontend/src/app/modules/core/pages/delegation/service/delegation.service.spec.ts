@@ -19,10 +19,7 @@ describe('DelegationService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([DelegationService], (service: DelegationService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([DelegationService], (service: DelegationService) => {
+    expect(service).toBeTruthy();
+  }));
 });

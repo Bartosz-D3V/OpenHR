@@ -2,7 +2,7 @@
   "scripts": {
     "lint-staged": "lint-staged --config .lintstagedrc",
     "prepretty": "cd frontend",
-    "pretty": "prettier --write **/*.{js,ts,scss}",
+    "pretty": "prettier --write **/*.{js,ts,scss,md,yml,json}",
     "postpretty": "cd ..",
     "google-format": "bash ./tools/google-format.sh",
     "deploy": "bash ./tools/deploy.sh",
@@ -11,6 +11,7 @@
   "dependencies": {},
   "devDependencies": {
     "husky": "0.15.0-rc.13",
-    "lint-staged": "^7.0.0"
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.14.3"
   }
 }

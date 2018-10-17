@@ -24,13 +24,13 @@ plugins:
 
 ratings:
   paths:
-  - "**/*.java"
-  - "**/*.ts"
-  - "**/*.scss"
-  - "**/*.md",
-  - "**/*.sh",
-  - "package.json"
-  - "yarn.lock"
+    - "**/*.java"
+    - "**/*.ts"
+    - "**/*.scss"
+    - "**/*.md"
+    - "**/*.sh"
+    - "package.json"
+    - "yarn.lock"
 
 exclude_paths:
   - "./frontend/node_modules"
@@ -41,4 +41,3 @@ exclude_paths:
   - "./backend/src/test"
   - "./backend/src/**/*.{js,css,html}"
   - "./backend/.mvn/"
-

@@ -1,8 +1,8 @@
 ## Steps to reproduce the issue
 
-1.
+1. 2.
+
 2.
-3. 
 
 ## Expected result
 

@@ -23,9 +23,11 @@ export class AllowanceSettingsComponent implements OnInit, OnChanges {
   public parentMatcher: ParentErrorStateMatcher = new ParentErrorStateMatcher();
   public allowanceSettingsForm: FormGroup;
 
-  @Input() public allowanceSettings: AllowanceSettings;
+  @Input()
+  public allowanceSettings: AllowanceSettings;
 
-  @Output() public onSaveAllowanceSettings: EventEmitter<AllowanceSettings> = new EventEmitter<AllowanceSettings>();
+  @Output()
+  public onSaveAllowanceSettings: EventEmitter<AllowanceSettings> = new EventEmitter<AllowanceSettings>();
 
   constructor(private _responsiveHelper: ResponsiveHelperService, private _fb: FormBuilder) {}
 

@@ -13,15 +13,13 @@ describe('AvatarComponent', () => {
   let jwtHelper: JwtHelperService;
   const mockUser: LightweightSubject = new LightweightSubject(2199, 'John', 'Test', 'Tester');
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [InitialsPipe, AvatarComponent],
-        imports: [MatMenuModule, MatButtonModule, RouterTestingModule],
-        providers: [JwtHelperService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [InitialsPipe, AvatarComponent],
+      imports: [MatMenuModule, MatButtonModule, RouterTestingModule],
+      providers: [JwtHelperService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarComponent);

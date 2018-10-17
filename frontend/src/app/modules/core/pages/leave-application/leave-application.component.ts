@@ -41,7 +41,8 @@ export class LeaveApplicationComponent implements OnInit, AfterViewInit, OnDestr
   public leaveTypes: Array<LeaveType> = [];
   public leaveApplication: LeaveApplication = new LeaveApplication(null, null, null, null, null, null, null, null);
 
-  @ViewChild('dateRange') private dateRangeComponent: DateRangeComponent;
+  @ViewChild('dateRange')
+  private dateRangeComponent: DateRangeComponent;
 
   public leaveApplicationFormGroup: FormGroup = new FormGroup({
     leaveTypeSelectorController: new FormControl('', [Validators.required]),
