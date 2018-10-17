@@ -4,7 +4,9 @@
 Progressive, open-source leave management system for staff.
 </p>
 <p align="center">
-[![Build Status](https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master)](https://travis-ci.com/Bartosz-D3V/OpenHR)
+  <a href="https://travis-ci.com/Bartosz-D3V/OpenHR">
+    <img src="https://travis-ci.com/Bartosz-D3V/OpenHR.svg?token=tqZyPRhzSnop7iN2Y7Ug&branch=master"/>
+  </a>
 </p>
 
 ## Primary objective
@@ -69,6 +71,23 @@ range or date range that has already been applied for
 ### Auto-rescheduling used leave
 
 User with appropriate role (e.g. HR Team Member or a Manager), should be able to set up the date when the leave allowance of all employees should be reset. This operation should be done automatically every year at a selected date. In addition, it should be possible to select maximum days to carry forward to the next year.
+
+## Technology stack
+
+### Backend
+
+- Java 8
+- Spring Boot
+- Spring Security
+- Alfresco Activiti
+- JUnit + Mockito
+
+### Frontend
+
+- Angular
+- Typescript
+- Angular Material
+- Jasmine + Karma
 
 ## Install
 
